@@ -6,6 +6,9 @@
 
 # Lsky Pro - Your photo album on the cloud.
 
+![homepage.png](./public/static/app/images/demo/1.png)
+![homepage.png](./public/static/app/images/demo/2.png)
+
 主要特性
 ---
 - 支持第三方云储存，支持本地、阿里云OSS、腾讯云COS、七牛云、又拍云。
