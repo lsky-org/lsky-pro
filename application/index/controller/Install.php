@@ -25,7 +25,7 @@ class Install extends Controller
         $configPath = Env::get('config_path');
 
         if (file_exists($rootPath . 'install.lock') && !Session::has('install_success')) {
-            exit('你已安装成功，重新安装请删除根目录install.lock文件！');
+            exit('你已安装成功，请勿重复安装！');
         }
 
         $phpVerGt56 = PHP_VERSION >= 5.6;
@@ -107,7 +107,7 @@ class Install extends Controller
                     }
                     Session::flash('install_success', true);
                     // 删除sql文件
-                    //@unlink($rootPath . 'install.sql');
+                    @unlink($rootPath . 'install.sql');
                     return $this->success('设置成功');
                 }
                 break;
