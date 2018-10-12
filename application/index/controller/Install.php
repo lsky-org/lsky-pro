@@ -107,7 +107,7 @@ class Install extends Controller
                     }
                     Session::flash('install_success', true);
                     // 删除sql文件
-                    @unlink($rootPath . 'install.sql');
+                    //@unlink($rootPath . 'install.sql');
                     return $this->success('设置成功');
                 }
                 break;
