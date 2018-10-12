@@ -2,7 +2,7 @@
 
 ![logo.png](./public/static/app/images/logo.png)
 
-#### Lsky Pro - Your photo album on the cloud.
+# Lsky Pro - Your photo album on the cloud.
 
 #### 简介：
 ---
