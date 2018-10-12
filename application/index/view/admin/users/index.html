@@ -1,0 +1,216 @@
+{extend name="common:base" /}
+
+{block name="title"}用户管理 - {$config.site_name}{/block}
+
+{block name="main"}
+<div class="mdui-container">
+  <main>
+    <div class="mdui-chip">
+      <span class="mdui-chip-icon"><i class="mdui-icon material-icons">&#xe88e;</i></span>
+      <span class="mdui-chip-title">系统共有 <small class="mdui-text-color-red">{$users->total()}</small> 个用户</span>
+      <a href="" class="mdui-chip-delete" mdui-tooltip="{content: '刷新', position: 'right'}"><i class="mdui-icon material-icons">&#xe863;</i></a>
+    </div>
+    <div class="mdui-clearfix mdui-m-t-1"></div>
+    <form action="" method="post" id="search-form">
+      <select class="where mdui-select mdui-float-left" name="state" mdui-select>
+        <option value="">全部</option>
+        <option value="1" {if 1 eq $state}selected{/if}>正常</option>
+        <option value="2" {if 2 eq $state}selected{/if}>冻结</option>
+      </select>
+      <input type="hidden" name="page" value="1">
+      <input class="mdui-textfield-input search-input mdui-float-left" type="text" name="keyword" placeholder="回车搜索..." value="{$keyword}" autocomplete="off"/>
+    </form>
+    <div class="mdui-clearfix"></div>
+    <div class="mdui-table-fluid mdui-m-t-2 mdui-m-b-2">
+      <table class="mdui-table mdui-table-selectable">
+        <thead>
+        <tr>
+          <th>用户名</th>
+          <th>昵称</th>
+          <th>邮箱</th>
+          <th>已使用容量</th>
+          <th>总容量</th>
+          <th>账号状态</th>
+          <th>注册IP</th>
+          <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {foreach $users as $value}
+        <tr data-id="{$value.id}">
+          <td>{$value.username}</td>
+          <td>{$value.nickname}</td>
+          <td>{$value.email}</td>
+          <td>{$value.use_quota|format_size}</td>
+          <td>{$value.quota|format_size}</td>
+          <td>
+            <select class="mdui-select state">
+              <option value="1" {if 1 eq $value.state}selected{/if}>正常</option>
+              <option value="0" {if 0 eq $value.state}selected{/if}>冻结</option>
+            </select>
+          </td>
+          <td>{$value.reg_ip}</td>
+          <td>
+            <div class="mdui-btn-group">
+              <button class="mdui-btn mdui-btn-raised mdui-btn-dense edit">编辑</button>
+              <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-red mdui-btn-dense del">删除</button>
+            </div>
+          </td>
+        </tr>
+        {/foreach}
+        </tbody>
+      </table>
+    </div>
+    <div class="page">
+      {$users|raw}
+    </div>
+    <select class="operation mdui-select" mdui-select>
+      <option value="">选中项</option>
+      <option value="frozen">冻结</option>
+      <option value="delete">删除</option>
+    </select>
+  </main>
+  <div class="mdui-dialog" id="edit-dialog">
+    <form action="{:url('admin/users/edit')}" method="post">
+      <div class="mdui-dialog-content">
+        <div class="mdui-dialog-title">修改用户数据</div>
+        <div class="mdui-textfield">
+          <label class="mdui-textfield-label">用户名</label>
+          <input class="mdui-textfield-input" type="text" name="username" value="" placeholder="用户名" autocomplete="off"/>
+        </div>
+        <div class="mdui-textfield">
+          <label class="mdui-textfield-label">邮箱</label>
+          <input class="mdui-textfield-input" type="email" name="email" value="" placeholder="邮箱" autocomplete="off"/>
+        </div>
+        <div class="mdui-textfield">
+          <label class="mdui-textfield-label">昵称</label>
+          <input class="mdui-textfield-input" type="text" name="nickname" value="" maxlength="15" placeholder="昵称" autocomplete="off"/>
+        </div>
+        <div class="mdui-textfield">
+          <label class="mdui-textfield-label">储存容量</label>
+          <input class="mdui-textfield-input" type="text" name="quota" value="" placeholder="储存容量" autocomplete="off"/>
+        </div>
+        <div class="mdui-textfield">
+          <label class="mdui-textfield-label">已使用储存容量</label>
+          <input class="mdui-textfield-input" type="text" name="quota" value="" placeholder="已使用储存容量" autocomplete="off"/>
+        </div>
+        <div class="mdui-textfield">
+          <label class="mdui-textfield-label">密码</label>
+          <input class="mdui-textfield-input" type="password" name="password" placeholder="密码，不修改请留空" autocomplete="off"/>
+        </div>
+        <div class="mdui-textfield">
+          <label class="mdui-textfield-label">确认密码</label>
+          <input class="mdui-textfield-input" type="password" name="password_confirm" placeholder="确认密码" autocomplete="off"/>
+        </div>
+      </div>
+      <input type="hidden" name="id" value="">
+      <div class="mdui-dialog-actions">
+        <button type="button" class="mdui-btn mdui-ripple" mdui-dialog-cancel>取消</button>
+        <button class="mdui-btn mdui-ripple">修改</button>
+      </div>
+    </form>
+  </div>
+</div>
+{/block}
+
+{block name="js"}
+<script>
+  $(function () {
+    var dialog = new mdui.Dialog('#edit-dialog');
+    var methods = {
+      delete: function (id, batch, callback) {
+        var msg = '确认删除该用户吗？';
+        if (batch) {
+          msg = '确认删除选中项用户吗？';
+        }
+        mdui.confirm(msg, function () {
+          app.request("{:url('admin/users/delete')}", {id: id}, function () {
+            callback && callback();
+          });
+        }, function () {
+
+        }, {confirmText: '确定', cancelText: '取消'});
+      },
+      frozen: function (id, batch, callback) {
+        var msg = '确认冻结该用户吗？';
+        if (batch) {
+          msg = '确认冻结选中项用户吗？';
+        }
+        mdui.confirm(msg, function () {
+          app.request("{:url('admin/users/frozen')}", {id: id}, function () {
+            callback && callback();
+          });
+        }, function () {
+
+        }, {confirmText: '确定', cancelText: '取消'});
+      }
+    };
+    $('.mdui-select.operation').on('close.mdui.select', function () {
+      if ($(this).val() !== '') {
+        var selected = $('tr.mdui-table-row-selected');
+        var val = $(this).val();
+        var array = [];
+        if (selected.length) {
+          selected.each(function (index, value) {
+            array.push($(value).data('id'));
+          });
+
+          if ('frozen' === val) {
+            methods.frozen(array, true, function () {
+              history.go(0);
+            })
+          } else if ('delete' === val) {
+            methods.delete(array, true, function () {
+              selected.remove();
+            });
+          }
+        } else {
+          mdui.snackbar({
+            message: '至少选择一项数据！'
+          });
+        }
+      }
+    });
+    // 提交
+    $('#edit-dialog form').submit(function (e) {
+      e.preventDefault();
+      app.request("{:url('admin/users/edit')}", $(this).serialize(), function () {
+        dialog.close();
+        history.go(0);
+      });
+    });
+    // 状态切换
+    $('td select.state').change(function () {
+      var tr = $(this).closest('tr');
+      app.request("{:url('admin/users/setState')}", {id: tr.data('id'), state: $(this).val()});
+    });
+    // 编辑
+    $('td button.edit').click(function () {
+      var tr = $(this).closest('tr');
+      app.ajax("{:url('admin/users/getUser')}", {id: tr.data('id')}, function (response) {
+        if (response.code) {
+          var form = $("#edit-dialog form");
+          for (x in response.data) {
+            var input = form.find("input[name='" + x + "']");
+            if (input.length) {
+              input.val(response.data[x]);
+            }
+          }
+          dialog.open();
+        } else {
+          mdui.snackbar({
+            message: response.msg
+          });
+        }
+      });
+    });
+    // 删除
+    $('td button.del').click(function () {
+      var tr = $(this).closest('tr');
+      methods.delete(tr.data('id'), false, function () {
+        tr.remove();
+      });
+    });
+  });
+</script>
+{/block}

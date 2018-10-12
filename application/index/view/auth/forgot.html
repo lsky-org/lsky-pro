@@ -1,0 +1,72 @@
+{extend name="common:base" /}
+
+{block name="title"}找回密码 - {$config.site_name}{/block}
+
+{block name="main"}
+<div class="mdui-container">
+  <main>
+    <div class="mdui-row">
+      <div class="forgot-container">
+        <div class="panel mdui-col-sm-6 mdui-col-md-6 mdui-col-offset-sm-3 mdui-col-offset-md-3">
+          <div class="panel-header">找回密码</div>
+          <div class="panel-body-box">
+            <form id="send-code" action="{:url('auth/forgot')}" method="post">
+              <div class="mdui-textfield mdui-textfield-floating-label">
+                <label class="mdui-textfield-label">请输入邮箱</label>
+                <input class="mdui-textfield-input" type="email" name="email" value="" required/>
+              </div>
+              <div class="mdui-textfield mdui-textfield-floating-label">
+                <label class="mdui-textfield-label">验证码</label>
+                <input class="mdui-textfield-input" type="text" name="captcha" maxlength="5" autocomplete="off" required/>
+                <img src="{:captcha_src()}" class="captcha" onclick="this.src = '{:captcha_src()}' + '?t=' + new Date().getTime()" alt="验证码">
+              </div>
+              <div class="mdui-textfield mdui-textfield-floating-label">
+                <button class="mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple">发送验证码</button>
+              </div>
+            </form>
+            <form id="reset-password" class="none" action="{:url('auth/forgot')}" method="post">
+              <div class="mdui-textfield mdui-textfield-floating-label">
+                <label class="mdui-textfield-label">邮件验证码</label>
+                <input class="mdui-textfield-input" type="text" name="code" maxlength="5" autocomplete="off" required/>
+              </div>
+              <div class="mdui-textfield mdui-textfield-floating-label">
+                <label class="mdui-textfield-label">新密码</label>
+                <input class="mdui-textfield-input" type="password" name="password" value="" required/>
+              </div>
+              <div class="mdui-textfield mdui-textfield-floating-label">
+                <label class="mdui-textfield-label">确认新密码</label>
+                <input class="mdui-textfield-input" type="password" name="password_confirm" value="" required/>
+              </div>
+              <div class="mdui-textfield mdui-textfield-floating-label">
+                <button class="mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple">重置密码</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+{/block}
+
+{block name="js"}
+<script>
+  $(function () {
+    $('#send-code').submit(function (e) {
+      e.preventDefault();
+      app.request("{:url('auth/sendCode')}", $(this).serialize(), function () {
+        $('#send-code').addClass('none');
+        $('#reset-password').removeClass('none');
+      }, function () {
+        $('.captcha').click();
+      });
+    });
+    $('#reset-password').submit(function (e) {
+      e.preventDefault();
+      app.request("{:url('auth/forgot')}", $(this).serialize(), function () {
+        window.location.href = "{:url('auth/login')}";
+      });
+    });
+  });
+</script>
+{/block}

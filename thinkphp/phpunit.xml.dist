@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/4.1/phpunit.xsd"
+         backupGlobals="false"
+         colors="true"
+         bootstrap="./base.php"
+         failOnRisky="true"
+         failOnWarning="true"
+>
+    <php>
+        <ini name="error_reporting" value="-1" />
+        <ini name="intl.default_locale" value="en" />
+        <ini name="intl.error_level" value="0" />
+        <ini name="memory_limit" value="-1" />
+        <env name="DUMP_LIGHT_ARRAY" value="" />
+        <env name="DUMP_STRING_LENGTH" value="" />
+        <env name="LDAP_HOST" value="127.0.0.1" />
+        <env name="LDAP_PORT" value="3389" />
+        <env name="REDIS_HOST" value="localhost" />
+        <env name="MEMCACHED_HOST" value="localhost" />
+    </php>
+
+    <testsuites>
+        <testsuite name="ThinkPHP Test Suite">
+            <directory>./library/think/*/tests/</directory>
+        </testsuite>
+    </testsuites>
+
+    <filter>
+        <whitelist>
+            <directory>./library/</directory>
+            <exclude>
+                <directory>./library/think/*/tests</directory>
+                <directory>./library/think/*/assets</directory>
+                <directory>./library/think/*/resources</directory>
+                <directory>./library/think/*/vendor</directory>
+            </exclude>
+        </whitelist>
+    </filter>
+</phpunit>

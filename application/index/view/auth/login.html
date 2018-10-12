@@ -1,0 +1,46 @@
+{extend name="common:base" /}
+
+{block name="title"}登录 - {$config.site_name}{/block}
+
+{block name="css"}
+  <link href="/static/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+{/block}
+
+{block name="main"}
+<div class="mdui-container">
+  <main>
+    <div class="mdui-row">
+      <div class="login-container">
+        <div class="panel mdui-col-sm-6 mdui-col-md-6 mdui-col-offset-sm-3 mdui-col-offset-md-3">
+          <div class="panel-header">登录账号</div>
+          <div class="panel-body-box">
+            <form action="{:url('auth/login')}" method="post">
+              {include file="common:alert"}
+              <div class="mdui-textfield mdui-textfield-floating-label">
+                <label class="mdui-textfield-label">邮箱</label>
+                <input class="mdui-textfield-input" type="email" name="account" value="{:input('post.account')}"/>
+              </div>
+              <div class="mdui-textfield mdui-textfield-floating-label">
+                <label class="mdui-textfield-label">密码</label>
+                <input class="mdui-textfield-input" type="password" name="password"/>
+              </div>
+              <div class="mdui-textfield mdui-textfield-floating-label">
+                <button class="mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple">登录</button>
+              </div>
+              {:token()}
+            </form>
+            <p class="mdui-clearfix mdui-m-t-1">
+              <a class="mdui-float-left" href="{:url('auth/forgot')}">忘记密码？</a>
+              <a class="mdui-float-right" href="{:url('auth/register')}">注册账号</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+{/block}
+
+{block name="js"}
+<script src="/static/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+{/block}

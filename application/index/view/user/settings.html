@@ -1,0 +1,54 @@
+{extend name="common:base" /}
+
+{block name="title"}设置 - {$config.site_name}{/block}
+
+{block name="main"}
+<div class="mdui-container">
+  <main>
+    <div class="mdui-col-sm-8 mdui-col-md-8">
+      <form action="{:url('user/settings')}" method="post">
+        <div class="mdui-textfield">
+          <label class="mdui-textfield-label">用户名</label>
+          <input class="mdui-textfield-input" type="text" value="{$user.username}" disabled/>
+        </div>
+        <div class="mdui-textfield">
+          <label class="mdui-textfield-label">邮箱</label>
+          <input class="mdui-textfield-input" type="email" value="{$user.email}" disabled/>
+        </div>
+        <div class="mdui-textfield">
+          <label class="mdui-textfield-label">昵称</label>
+          <input class="mdui-textfield-input" type="text" name="nickname" value="{$user.nickname}" maxlength="15" placeholder="昵称"/>
+        </div>
+        <div class="mdui-textfield">
+          <label class="mdui-textfield-label">原密码</label>
+          <input class="mdui-textfield-input" type="password" name="password_old" placeholder="原密码，不修改请留空"/>
+        </div>
+        <div class="mdui-textfield">
+          <label class="mdui-textfield-label">密码</label>
+          <input class="mdui-textfield-input" type="password" name="password" placeholder="密码，不修改请留空"/>
+        </div>
+        <div class="mdui-textfield">
+          <label class="mdui-textfield-label">确认密码</label>
+          <input class="mdui-textfield-input" type="password" name="password_confirm" placeholder="确认密码"/>
+        </div>
+        <div class="mdui-textfield">
+          <button type="submit" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent">保存</button>
+          <button type="reset" class="mdui-btn mdui-btn-raised mdui-ripple">重置</button>
+        </div>
+      </form>
+    </div>
+  </main>
+</div>
+{/block}
+{block name="js"}
+<script>
+  $(function () {
+    $('form').submit(function (e) {
+      e.preventDefault();
+      app.request(this.action, $(this).serialize(), function () {
+        history.go(0)
+      })
+    });
+  });
+</script>
+{/block}

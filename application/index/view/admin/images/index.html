@@ -1,0 +1,134 @@
+{extend name="common:base" /}
+
+{block name="title"}图片管理 - {$config.site_name}{/block}
+
+{block name="css"}
+  <link rel="stylesheet" href="/static/jquery-viewer/1.2.0/css/viewer.css">
+{/block}
+
+{block name="main"}
+<div class="mdui-container">
+  <main>
+    <div class="mdui-chip">
+      <span class="mdui-chip-icon"><i class="mdui-icon material-icons">&#xe88e;</i></span>
+      <span class="mdui-chip-title">系统共有 <small class="mdui-text-color-red">{$images->total()}</small> 张图片</span>
+      <a href="" class="mdui-chip-delete" mdui-tooltip="{content: '刷新', position: 'right'}"><i class="mdui-icon material-icons">&#xe863;</i></a>
+    </div>
+    <div class="mdui-clearfix mdui-m-t-1"></div>
+    <form action="" method="post" id="search-form">
+      <select class="strategy mdui-select mdui-float-left" name="strategy" mdui-select>
+        <option value="">全部</option>
+        {foreach $strategyList as $key => $value}
+        <option value="{$key}" {if $key eq $strategy}selected{/if}>{$value.name}</option>
+        {/foreach}
+      </select>
+      <input type="hidden" name="page" value="1">
+      <input class="mdui-textfield-input search-input mdui-float-left" type="text" name="keyword" placeholder="回车搜索..." value="{$keyword}" autocomplete="off"/>
+    </form>
+    <div class="mdui-clearfix"></div>
+    <div class="mdui-table-fluid mdui-m-t-2 mdui-m-b-2">
+      <table class="mdui-table mdui-table-selectable">
+        <thead>
+        <tr>
+          <th>所属用户</th>
+          <th>储存策略</th>
+          <th>路径</th>
+          <th>大小</th>
+          <th>类型</th>
+          <th>上传时间</th>
+          <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {foreach $images as $key => $value}
+        <tr data-id="{$value.id}">
+          <td>{$value.username}</td>
+          <td>{$value.strategy}</td>
+          <td>{$value.pathname}</td>
+          <td class="mdui-text-color-light-blue">{$value.size|format_size}</td>
+          <td>{$value.mime}</td>
+          <td>{$value.create_time}</td>
+          <td>
+            <img class="none" data-original="{$value.url}" src="{$value.url}">
+            <div class="mdui-btn-group">
+              <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-btn-dense see" data-key="{$key}">查看图片</button>
+              <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-red mdui-btn-dense del">删除</button>
+            </div>
+          </td>
+        </tr>
+        {/foreach}
+        </tbody>
+      </table>
+    </div>
+    <div class="page">
+      {$images|raw}
+    </div>
+    <select class="operation mdui-select" mdui-select>
+      <option value="">选中项</option>
+      <option value="delete">删除</option>
+    </select>
+  </main>
+</div>
+{/block}
+
+{block name="js"}
+<script src="/static/jquery-viewer/1.2.0/js/viewer.js"></script>
+<script src="/static/jquery-viewer/1.2.0/js/jquery-viewer.js"></script>
+<script>
+  $(function () {
+    var viewer = $('tbody').viewer({
+      url: 'data-original',
+      zIndex: 999999999
+    });
+
+    var methods = {
+      delete: function (id, batch, callback) {
+        var msg = '确认删除该图片吗？';
+        if (batch) {
+          msg = '确认删除选中项图片吗？';
+        }
+        mdui.confirm(msg, function () {
+          app.request("{:url('admin/images/delete')}", {id: id}, function () {
+            callback && callback();
+          });
+        }, function () {
+
+        }, {confirmText: '确定', cancelText: '取消'});
+      }
+    };
+    $('.mdui-select.operation').on('close.mdui.select', function () {
+      if ($(this).val() !== '') {
+        var selected = $('tr.mdui-table-row-selected');
+        var val = $(this).val();
+        var array = [];
+        if (selected.length) {
+          selected.each(function (index, value) {
+            array.push($(value).data('id'));
+          });
+
+          if ('delete' === val) {
+            methods.delete(array, true, function () {
+              selected.remove();
+            });
+          }
+        } else {
+          mdui.snackbar({
+            message: '至少选择一项数据！'
+          });
+        }
+      }
+    });
+    // 查看图片
+    $('td button.see').click(function () {
+      viewer.data('viewer').view($(this).data('key'))
+    });
+    // 删除
+    $('td button.del').click(function () {
+      var tr = $(this).closest('tr');
+      methods.delete(tr.data('id'), false, function () {
+        tr.remove();
+      });
+    });
+  })
+</script>
+{/block}

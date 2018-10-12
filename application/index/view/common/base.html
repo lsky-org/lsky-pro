@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=no"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-siteapp"/>
+  <meta name="keywords" content="{$config.site_keywords}"/>
+  <meta name="description" content="{$config.site_description}"/>
+  <title>{block name="title"}Lsky Pro{/block}</title>
+  {block name="css"}{/block}
+  <link rel="stylesheet" href="/static/app/iconfont/iconfont.css">
+  <link rel="stylesheet" href="/static/mdui/0.4.1/css/mdui.min.css">
+  <link rel="stylesheet" href="/static/app/css/app.css">
+  <!--[if IE]>
+  <script>window.location.href = '/compatibility.html';</script>
+  <![endif]-->
+</head>
+<body class="mdui-theme-accent-indigo mdui-appbar-with-toolbar {if cookie('?menu') and cookie('menu') eq 'open'}mdui-drawer-body-left{/if}">
+{block name="header"}
+<div class="mdui-appbar mdui-appbar-fixed">
+  <div class="mdui-toolbar mdui-color-black">
+    <span mdui-drawer="{target: '#menu'}" class="mdui-btn mdui-btn-icon open-menu"><i class="mdui-icon material-icons">&#xe5d2;</i></span>
+    <a href="{:url('/')}" class="mdui-typo-headline">{$config.site_name}</a>
+    <div class="mdui-toolbar-spacer"></div>
+    {if $user}
+    <!-- User -->
+    <a href="javascript:void(0)" mdui-menu="{target: '#user'}" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">&#xe853;</i></a>
+    <ul class="mdui-menu" id="user">
+      <li class="mdui-menu-item">
+        <a href="{:url('user/images')}" class="mdui-ripple">我的图片</a>
+        <a href="{:url('user/settings')}" class="mdui-ripple">设置</a>
+      </li>
+      <li class="mdui-divider"></li>
+      <li class="mdui-menu-item">
+        <a href="{:url('user/logout')}" class="mdui-ripple">退出账号</a>
+      </li>
+    </ul>
+    {/if}
+    <!-- More -->
+    <span mdui-menu="{target: '#more'}" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">&#xe5d4;</i></span>
+    <ul class="mdui-menu" id="more">
+      <li class="mdui-menu-item">
+        <a href="https://www.wispx.cn" target="_blank" class="mdui-ripple">熊二哈的猫窝</a>
+      </li>
+    </ul>
+  </div>
+</div>
+{/block}
+{block name="left"}
+<div id="menu" class="mdui-drawer mdui-drawer-{if cookie('?menu') and cookie('menu') eq 'open'}open{else /}close{/if}">
+  <div class="mdui-list" mdui-collapse="{accordion: true}">
+    <a class="mdui-list-item mdui-ripple {if $uri eq 'index/index'}mdui-list-item-active{/if}" href="/">
+      <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-blue">&#xe88a;</i>
+      <div class="mdui-list-item-content">首页</div>
+    </a>
+    {if $user}
+    <a class="mdui-list-item mdui-ripple {if $uri eq 'user/images'}mdui-list-item-active{/if}" href="{:url('user/images')}">
+      <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-deep-orange">&#xe251;</i>
+      <div class="mdui-list-item-content">我的图片</div>
+    </a>
+    <a class="mdui-list-item mdui-ripple {if $uri eq 'user/settings'}mdui-list-item-active{/if}" href="{:url('user/settings')}">
+      <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-theme">&#xe8b8;</i>
+      <div class="mdui-list-item-content">设置</div>
+    </a>
+    {if $user.is_admin}
+    <div class="mdui-collapse-item mdui-collapse-item-open">
+      <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+        <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-brown">&#xe8b9;</i>
+        <div class="mdui-list-item-content">系统管理</div>
+        <i class="mdui-collapse-item-arrow mdui-icon material-icons">&#xe313;</i>
+      </div>
+      <div class="mdui-collapse-item-body mdui-list">
+        <a href="{:url('admin/users/index')}" class="mdui-list-item mdui-ripple {if $uri eq 'admin.users/index'}mdui-list-item-active{/if}">用户管理</a>
+        <a href="{:url('admin/images/index')}" class="mdui-list-item mdui-ripple {if $uri eq 'admin.images/index'}mdui-list-item-active{/if}">图片管理</a>
+        <a href="{:url('admin/strategy/index')}" class="mdui-list-item mdui-ripple {if $uri eq 'admin.strategy/index'}mdui-list-item-active{/if}">储存策略</a>
+        <a href="{:url('admin/system/index')}" class="mdui-list-item mdui-ripple {if $uri eq 'admin.system/index'}mdui-list-item-active{/if}">系统设置</a>
+        <a href="{:url('admin/update/index')}" class="mdui-list-item mdui-ripple {if $uri eq 'admin.update/index'}mdui-list-item-active{/if}">系统更新</a>
+      </div>
+    </div>
+    {/if}
+    <div class="quota-container">
+      <p>容量使用：</p>
+      <progress max="{$user.quota}" value="{$user.use_quota}"></progress>
+      <p>
+        <span class="use-quota">{:format_size($user.use_quota)}</span> /
+        <span class="quota">{:format_size($user.quota)}</span>
+      </p>
+    </div>
+    {else /}
+    <a class="mdui-list-item mdui-ripple {if $uri eq 'auth/login'}mdui-list-item-active{/if}" href="{:url('auth/login')}">
+      <i class="mdui-list-item-icon mdui-icon material-icons iconfont icon-login mdui-text-color-teal"></i>
+      <div class="mdui-list-item-content">登录</div>
+    </a>
+    <a class="mdui-list-item mdui-ripple {if $uri eq 'auth/register'}mdui-list-item-active{/if}" href="{:url('auth/register')}">
+      <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-purple">&#xe7f0;</i>
+      <div class="mdui-list-item-content">注册</div>
+    </a>
+    {/if}
+  </div>
+</div>
+{/block}
+{block name="main"}
+<div class="mdui-container">
+  <main></main>
+</div>
+{/block}
+{block name="footer"}
+<div class="mdui-fab-wrapper">
+  <button id="to-top" class="mdui-fab mdui-ripple mdui-fab-hide mdui-color-theme-accent">
+    <i class="mdui-icon material-icons">&#xe5d8;</i>
+  </button>
+</div>
+<div id="loading-container">
+  <div class="mask"></div>
+  <div class="loading">
+    <div class="mdui-spinner mdui-spinner-colorful"></div>
+  </div>
+</div>
+<footer>
+  <div class="mdui-container">
+    Copyright &copy; 2018 Wisp X. All rights reserved. 请勿上传违反中国大陆和香港法律的图片，违者后果自负。
+  </div>
+</footer>
+{/block}
+<script src="/static/jquery/3.3.1/jquery.min.js"></script>
+<script src="/static/mdui/0.4.1/js/mdui.min.js"></script>
+<script src="/static/app/js/app.js"></script>
+{block name="js"}{/block}
+<script>
+  $(function () {
+    var toTop = $("#to-top"), toTopHide = function () {
+      if ($(window).scrollTop() > 50) {
+        toTop.removeClass('mdui-fab-hide');
+      } else {
+        toTop.addClass('mdui-fab-hide');
+      }
+    };
+    if ($(window).scrollTop() > 50) {
+      toTopHide();
+    }
+    $(window).scroll(function() {
+      toTopHide();
+    });
+
+    toTop.click(function () {
+      $('body,html').animate({ scrollTop: 0 }, 500);
+    });
+
+    $('.open-menu').click(function () {
+      if ($(window).width() > 1024) {
+        app.cookie.set('menu', $('body').hasClass('mdui-drawer-body-left') ? 'open' : 'close', 10, '/');
+      }
+    });
+  });
+</script>
+</body>
+</html>

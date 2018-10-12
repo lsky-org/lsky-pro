@@ -1,0 +1,62 @@
+{extend name="common:base" /}
+
+{block name="title"}储存策略 - {$config.site_name}{/block}
+
+{block name="main"}
+<div class="mdui-container">
+  <main>
+    <div class="strategy-container">
+      <div class="mdui-chip current-strategy none mdui-m-b-2">
+        <span class="mdui-chip-icon mdui-color-blue"><i class="mdui-icon material-icons">&#xe1db;</i></span>
+        <span class="mdui-chip-title"></span>
+      </div>
+      <div id="tab" class="mdui-tab mdui-tab-scrollable" mdui-tab>
+        {foreach $strategy as $key => $value}
+        <a href="#tab-{$key}" class="mdui-ripple {if $key eq $config.storage_strategy}mdui-tab-active{/if}">{$value.name}</a>
+        {/foreach}
+      </div>
+      <div class="mdui-col-sm-8 mdui-col-md-8">
+        {foreach $configs as $key => $value}
+        <div id="tab-{$key}" class="{if $key neq $config.storage_strategy}none{/if}">
+          <form action="{:url('admin/strategy/index')}" method="post">
+            {foreach $value as $val}
+            <div class="mdui-textfield">
+              <label class="mdui-textfield-label">{$val.title}{$val.tip ? '(' . $val.tip . ')' : ''}</label>
+              {switch $val.type}
+              {case text}
+              <input class="mdui-textfield-input" type="{$val.input_type}" name="{$val.name}" value="{$val.value}" autocomplete="off" placeholder="{$val.title}"/>
+              {/case}
+              {/switch}
+            </div>
+            {/foreach}
+            <input type="hidden" name="storage_strategy" value="{$key}">
+            <button type="submit" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent">保存</button>
+            <button type="reset" class="mdui-btn mdui-btn-raised mdui-ripple">重置</button>
+          </form>
+        </div>
+        {/foreach}
+      </div>
+    </div>
+  </main>
+</div>
+{/block}
+{block name="js"}
+<script>
+  $(function () {
+
+    var currentStrategy = function () {
+      $('.current-strategy .mdui-chip-title').text('当前使用储存策略：' + $('#tab a.mdui-tab-active').text());
+      $('.current-strategy').is(":hidden") && $('.current-strategy').css('display', 'inline-block');
+    };
+
+    currentStrategy();
+
+    $('form').submit(function (e) {
+      e.preventDefault();
+      app.request(this.action, $(this).serialize(), function () {
+        currentStrategy();
+      })
+    });
+  });
+</script>
+{/block}
