@@ -1,0 +1,23 @@
+build:
+    environment:
+        php:
+            version: 5.5
+    dependencies:
+        before:
+            - composer install
+    tests:
+        override:
+            -
+                command: phpunit
+                coverage:
+                    file: coverage.clover
+                    format: clover
+filter:
+    paths:
+        - 'src/*'
+        - 'tests/*'
+
+tools:
+    php_code_sniffer:
+        config:
+            standard: PSR2

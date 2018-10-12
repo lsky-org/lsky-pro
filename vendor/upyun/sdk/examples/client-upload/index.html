@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link rel="stylesheet" href="normalize.css">
+    <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js" type="text/javascript"></script>
+    <style>
+        form {
+            margin: 30px 0;
+        }
+        .submit {
+            display: inline-block;
+            width: 100px;
+            background: #02a3c6;
+            border: none;
+            color: #fff;
+            line-height: 40px;
+            text-align: center;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<form action="http://v0.api.upyun.com/sdkimg" id="demoForm" method="POST" enctype="multipart/form-data">
+    <fieldset>
+        <legend>Client Upload Demo</legend>
+        <input name="file" type="file">
+        <input type="button" value="submit" class="submit" id="upload">
+    </fieldset>
+</form>
+
+<script>
+    // 文件保存的路径
+    var save_path = '/test/filename.txt';
+    $('#upload').on('click', function() {
+        // 获取 policy 和 secret
+        $.getJSON('http://localhost:9000/policy.php?save_path=' + save_path, function (data) {
+            var uploadData = new FormData($('#demoForm')[0]);
+            uploadData.append('policy', data.policy);
+            uploadData.append('authorization', data.authorization);
+            $.ajax({
+                url: 'http://v0.api.upyun.com/sdkimg',
+                type: 'POST',
+                data: uploadData,
+                cache: false,
+                processData: false,
+                contentType: false,
+            }).done(function(data, textStatus) {
+                alert('upload success');
+            }).fail(function(res, textStatus, error) {
+                try {
+                    var body = JSON.parse(res.responseText);
+                    alert('error: ' + body.message);
+                } catch(e) {
+                    console.error(e);
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>
