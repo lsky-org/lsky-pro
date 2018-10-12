@@ -6,10 +6,6 @@
 
 # Lsky Pro - Your photo album on the cloud.
 
-简介
----
-Lsky Pro，为个人站长、开发者、写博文爱好者开发的图床程序。同时可用作网络云相册。
-
 主要特性
 ---
 - 支持第三方云储存，支持本地、阿里云OSS、腾讯云COS、七牛云、又拍云。
