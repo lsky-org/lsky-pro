@@ -1,8 +1,6 @@
-<p align="center">
-    <a href="./public/static/app/images/logo.png" target="_blank">
-        <img width="350" src="./public/static/app/images/logo.png">
-    </a>
-</p>
+
+
+![logo.png](./public/static/app/images/logo.png)
 
 #### Lsky Pro - Your photo album on the cloud.
 
