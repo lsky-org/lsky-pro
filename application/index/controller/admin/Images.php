@@ -46,7 +46,7 @@ class Images extends Base
             ]
         ])->each(function ($item) {
             $item->username = Users::where('id', $item->user_id)->value('username');
-            $item->strategy = $this->strategyList[$item->strategy]['name'];
+            $item->strategyStr = $this->strategyList[$item->strategy]['name'];
             return $item;
         });
         $this->assign([
