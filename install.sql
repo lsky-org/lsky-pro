@@ -20,7 +20,8 @@ SET time_zone = "+00:00";
 -- 表的结构 `lsky_config`
 --
 
-CREATE TABLE `lsky_config` (
+DROP TABLE IF EXISTS `lsky_config`;
+CREATE TABLE IF NOT EXISTS `lsky_config` (
   `id` smallint(6) UNSIGNED NOT NULL,
   `key` varchar(32) DEFAULT NULL COMMENT 'key',
   `type` varchar(32) NOT NULL DEFAULT 'text' COMMENT 'text|bool|textarea|select',
@@ -87,7 +88,8 @@ INSERT INTO `lsky_config` (`id`, `key`, `type`, `input_type`, `name`, `title`, `
 -- 表的结构 `lsky_images`
 --
 
-CREATE TABLE `lsky_images` (
+DROP TABLE IF EXISTS `lsky_images`;
+CREATE TABLE IF NOT EXISTS `lsky_images` (
   `id` int(11) UNSIGNED NOT NULL COMMENT 'ID',
   `user_id` int(11) NOT NULL DEFAULT 0 COMMENT '用户ID，为0表示游客上传',
   `strategy` varchar(32) NOT NULL DEFAULT 'local' COMMENT '储存策略，默认本地',
@@ -107,7 +109,8 @@ CREATE TABLE `lsky_images` (
 -- 表的结构 `lsky_users`
 --
 
-CREATE TABLE `lsky_users` (
+DROP TABLE IF EXISTS `lsky_users`;
+CREATE TABLE IF NOT EXISTS `lsky_users` (
   `id` int(11) UNSIGNED NOT NULL,
   `username` varchar(32) NOT NULL COMMENT '用户名',
   `nickname` varchar(32) DEFAULT NULL COMMENT '昵称',
