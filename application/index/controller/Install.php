@@ -19,11 +19,11 @@ class Install extends Controller
 {
     public function index($stop = 1)
     {
-        // TODO 检测是否已安装
 
         $rootPath = Env::get('root_path');
         $configPath = Env::get('config_path');
 
+        // 检测是否已安装
         if (file_exists($rootPath . 'install.lock') && !Session::has('install_success')) {
             exit('你已安装成功，请勿重复安装！');
         }
@@ -31,16 +31,18 @@ class Install extends Controller
         $phpVerGt56 = PHP_VERSION >= 5.6;
         $isCurl = function_exists('curl_init');
         $isZip = function_exists('zip_open');
+        $isFinfo = function_exists('finfo_open');
         $isMysqli = class_exists('mysqli');
 
         switch ($stop) {
             case 1:
                 // 运行环境检测
-                $testing = $phpVerGt56 && $isCurl && $isZip && $isMysqli;
+                $testing = $phpVerGt56 && $isCurl && $isFinfo && $isZip && $isMysqli;
                 $this->assign([
                     'phpVerGt56' => $phpVerGt56,
                     'isCurl' => $isCurl,
                     'isZip' => $isZip,
+                    'isFinfo' => $isFinfo,
                     'isMysqli' => $isMysqli,
                     'testing' => $testing
                 ]);

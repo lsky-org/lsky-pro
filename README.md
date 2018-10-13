@@ -22,6 +22,7 @@
 ---
 * PHP版本 &ge; 5.6
 * Mysqli
+* Finfo拓展
 * Curl拓展
 * Zip拓展
 * Rewrite
