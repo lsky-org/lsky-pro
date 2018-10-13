@@ -22,7 +22,7 @@
 ---
 * PHP版本 &ge; 5.6
 * mysqli支持
-* fileinfo
+* fileinfo拓展
 * curl拓展
 * zip拓展
 * rewrite
