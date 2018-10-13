@@ -21,11 +21,11 @@
 安装需求
 ---
 * PHP版本 &ge; 5.6
-* Mysqli
-* Finfo拓展
-* Curl拓展
-* Zip拓展
-* Rewrite
+* mysqli支持
+* fileinfo
+* curl拓展
+* zip拓展
+* rewrite
 
 安装教程
 ---
@@ -33,13 +33,13 @@
 2. 设置运行目录为 public。
 3. 配置Rewrite规则：
     ##### Nginx：
-    <pre>
+    ```
     location / {
         if (!-e $request_filename) {
         	rewrite ^(.*)$ /index.php?s=$1 last; break;
-    	}
+        }
     }
-    </pre>
+    ```
 
     ##### Apache:
     Apache直接使用.htaccess即可
