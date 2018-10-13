@@ -65,8 +65,8 @@ class Install extends Controller
                         if (!$mysqli->multi_query($sqlFile)) {
                             throw new Exception('数据写入失败');
                         }
-                        $dataBasePath = $configPath . 'database.php';
-                        $dataBaseFile = file_get_contents($dataBasePath);
+                        $dbPath = $configPath . 'db.php';
+                        $dataBaseFile = file_get_contents($dbPath);
                         $dataBaseFile = str_replace([
                             '{hostname}',
                             '{database}',
@@ -81,7 +81,7 @@ class Install extends Controller
                             $hostport,
                         ], $dataBaseFile);
 
-                        file_put_contents($dataBasePath, $dataBaseFile);
+                        file_put_contents($dbPath, $dataBaseFile);
 
                     } catch (Exception $e) {
                         return $this->error($e->getMessage());
