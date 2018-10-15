@@ -7,8 +7,8 @@
 # Lsky Pro - Your photo album on the cloud.
 
 
-[![License](https://img.shields.io/badge/license-GPL_V3.0-%230e7fc0.svg?style=flat-square)](https://github.com/wisp-x/lsky-pro/blob/master/LICENSE)
-![PHP](https://img.shields.io/badge/PHP->=5.6-%230e7fc0.svg?style=flat-square)
+[![License](https://img.shields.io/badge/license-GPL_V3.0-yellowgreen.svg?style=flat-square)](https://github.com/wisp-x/lsky-pro/blob/master/LICENSE)
+![PHP](https://img.shields.io/badge/PHP->=5.6-orange.svg?style=flat-square)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/wisp-x/lsky-pro.svg?style=flat-square)
 
 
