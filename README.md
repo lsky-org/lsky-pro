@@ -6,7 +6,7 @@
 
 # Lsky Pro - Your photo album on the cloud.
 
-注意：当前为开发版，后期无法平滑升级至正式版，请不要投入到生产环境中使用！
+> 注意：当前为开发版，master分支不定期更新，后期无法平滑升级至正式版，请不要投入到生产环境中使用！
 
 ![homepage.png](./public/static/app/images/demo/1.png)
 ![homepage.png](./public/static/app/images/demo/2.png)
