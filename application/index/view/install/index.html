@@ -32,7 +32,7 @@
 </style>
 <div class="mdui-container">
   <main class="mdui-shadow-2">
-    {switch stop}
+    {switch step}
 
     {case 1}
     <h4>- 运行环境检测</h4>
@@ -103,7 +103,7 @@
     {if (!$testing) }
     <a href="javascript:void(0)" class="mdui-btn mdui-btn-block mdui-m-t-1 mdui-color-teal mdui-ripple" disabled>检测不通过</a>
     {else/}
-    <a href="{:url('install/index', ['stop' => 2])}" class="mdui-btn mdui-btn-block mdui-m-t-1 mdui-color-teal mdui-ripple">下一步</a>
+    <a href="{:url('install/index', ['step' => 2])}" class="mdui-btn mdui-btn-block mdui-m-t-1 mdui-color-teal mdui-ripple">下一步</a>
     {/if}
     {/case}
 
@@ -180,7 +180,7 @@
     $('#configure-mysql-form').submit(function (e) {
       e.preventDefault();
       $.ajax({
-        url: "{:url('install/index', ['stop' => 2])}",
+        url: "{:url('install/index', ['step' => 2])}",
         data: $(this).serialize(),
         type: 'POST',
         dataType: 'JSON',
@@ -188,7 +188,7 @@
         },
         success: function (response) {
           if (response.code) {
-            location.href = "{:url('install/index',['stop' => 3])}";
+            location.href = "{:url('install/index',['step' => 3])}";
           } else {
             mdui.snackbar({
               message: response.msg,
@@ -206,7 +206,7 @@
     $('#configure-admin-form').submit(function (e) {
       e.preventDefault();
       $.ajax({
-        url: "{:url('install/index', ['stop' => 3])}",
+        url: "{:url('install/index', ['step' => 3])}",
         data: $(this).serialize(),
         type: 'POST',
         dataType: 'JSON',
@@ -214,7 +214,7 @@
         },
         success: function (response) {
           if (response.code) {
-            location.href = "{:url('install/index', ['stop' => 4])}";
+            location.href = "{:url('install/index', ['step' => 4])}";
           } else {
             mdui.snackbar({
               message: response.msg,

@@ -17,7 +17,7 @@ use think\facade\Session;
 
 class Install extends Controller
 {
-    public function index($stop = 1)
+    public function index($step = 1)
     {
 
         $rootPath = Env::get('root_path');
@@ -34,7 +34,7 @@ class Install extends Controller
         $isFileInfo = function_exists('finfo_open');
         $isMysqli = class_exists('mysqli');
 
-        switch ($stop) {
+        switch ($step) {
             case 1:
                 // 运行环境检测
                 $testing = $phpVerGt56 && $isCurl && $isFileInfo && $isZip && $isMysqli;
@@ -116,7 +116,7 @@ class Install extends Controller
         }
 
         $this->assign([
-            'stop' => $stop
+            'step' => $step
         ]);
         return $this->fetch();
     }
