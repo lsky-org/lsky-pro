@@ -3,7 +3,7 @@
  * User: Wisp X
  * Date: 2018/9/29
  * Time: 下午2:17
- * Link: http://gitee.com/wispx
+ * Link: https://github.com/wisp-x
  */
 
 namespace strategy;

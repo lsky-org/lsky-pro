@@ -3,7 +3,7 @@
  * User: Wisp X
  * Date: 2018/10/13
  * Time: 10:18
- * Link: https://gitee.com/wispx
+ * Link: https://github.com/wisp-x
  */
 
 return [

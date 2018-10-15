@@ -3,7 +3,7 @@
  * User: Wisp X
  * Date: 2018/10/12
  * Time: 19:15
- * Link: https://gitee.com/wispx
+ * Link: https://github.com/wisp-x
  */
 
 namespace app\index\controller;

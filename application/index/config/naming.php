@@ -3,7 +3,7 @@
  * User: Wisp X
  * Date: 2018/10/2
  * Time: 13:02
- * Link: https://gitee.com/wispx
+ * Link: https://github.com/wisp-x
  */
 
 // [命名规则配置文件]

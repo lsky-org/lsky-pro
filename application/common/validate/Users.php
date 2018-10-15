@@ -3,7 +3,7 @@
  * User: Wisp X
  * Date: 2018/9/26
  * Time: 下午3:26
- * Link: http://gitee.com/wispx
+ * Link: https://github.com/wisp-x
  */
 
 namespace app\common\validate;
