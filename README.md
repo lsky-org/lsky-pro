@@ -68,4 +68,4 @@ Blog: <a target="_block" href="http://www.wispx.cn">www.wispx.cn</a>
 ---
 <a target="_block" href="https://opensource.org/licenses/GPL-3.0">GPL 3.0</a>
 
-Copyright (c) 2017 Wisp X.
+Copyright (c) 2018 Wisp X.
