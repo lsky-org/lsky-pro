@@ -12,7 +12,7 @@
 [![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/wisp-x/lsky-pro.svg?style=flat-square)](https://github.com/wisp-x/lsky-pro)
 
 
-> 注意：当前为开发版，master分支不定期更新，后期无法平滑升级至正式版，请不要投入到生产环境中使用！
+> 发现bug可发送邮件至邮箱：i@wispx.cn，确认bug后我会及时修复，谢谢！
 
 ![homepage.png](./public/static/app/images/demo/1.png)
 ![homepage.png](./public/static/app/images/demo/2.png)
