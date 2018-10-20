@@ -6,11 +6,14 @@
 
 # Lsky Pro - Your photo album on the cloud.
 
+[官网](https://www.lsky.pro) | [社区](https://forum.lsky.pro)
 
 [![License](https://img.shields.io/badge/license-GPL_V3.0-yellowgreen.svg?style=flat-square)](https://github.com/wisp-x/lsky-pro/blob/master/LICENSE)
 [![PHP](https://img.shields.io/badge/PHP->=5.6-orange.svg?style=flat-square)](http://php.net)
 [![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/wisp-x/lsky-pro.svg?style=flat-square)](https://github.com/wisp-x/lsky-pro)
 
+
+> 注意：master分支为开发版，不定时更新，下载正式版程序请点击[这里](https://github.com/wisp-x/lsky-pro/releases)
 
 > 发现bug可发送邮件至邮箱：i@wispx.cn，确认bug后我会及时修复，谢谢！
 
