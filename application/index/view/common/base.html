@@ -10,6 +10,7 @@
   <meta name="description" content="{$config.site_description}"/>
   <title>{block name="title"}Lsky Pro{/block}</title>
   {block name="css"}{/block}
+  <link rel="shortcut icon" href="favicon.ico">
   <link rel="stylesheet" href="/static/app/iconfont/iconfont.css">
   <link rel="stylesheet" href="/static/mdui/0.4.1/css/mdui.min.css">
   <link rel="stylesheet" href="/static/app/css/app.css">
@@ -120,7 +121,9 @@
 </div>
 <footer>
   <div class="mdui-container">
-    Copyright &copy; 2018 <a href="https://www.wispx.cn">Wisp X</a>. All rights reserved. 请勿上传违反中国大陆和香港法律的图片，违者后果自负。
+    Copyright &copy; 2018 <a href="https://www.wispx.cn">Wisp X</a>. All rights reserved.
+    {if $config.icp_number}<a href="http://www.miitbeian.gov.cn" target="_blank">{$config.icp_number}</a>.{/if}
+    请勿上传违反中国大陆和香港法律的图片，违者后果自负。
   </div>
 </footer>
 {/block}
