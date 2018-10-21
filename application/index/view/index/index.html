@@ -3,8 +3,8 @@
 {block name="title"}{$config.site_name}{/block}
 
 {block name="css"}
-  <link href="/static/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-  <link href="/static/bootstrap-fileinput/4.5.1/css/fileinput.min.css" rel="stylesheet">
+<link href="/static/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+<link href="/static/bootstrap-fileinput/4.5.1/css/fileinput.min.css" rel="stylesheet">
 {/block}
 
 {block name="main"}
@@ -35,20 +35,31 @@
       </div>
     </div>
     {else /}
-      <div class="not-logged-in jumbotron">
-        <h2>请登录后体验</h2>
-        <a href="{:url('auth/login')}" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-cyan mdui-text-color-white">登录</a>
-        <a href="{:url('auth/register')}" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-green mdui-text-color-white">注册</a>
-      </div>
+    <div class="not-logged-in jumbotron">
+      <h2>请登录后体验</h2>
+      <a href="{:url('auth/login')}" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-cyan mdui-text-color-white">登录</a>
+      <a href="{:url('auth/register')}" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-green mdui-text-color-white">注册</a>
+    </div>
     {/if}
   </main>
 </div>
 {/block}
 {block name="js"}
+<script src="/static/clipboard.js/2.0.1/clipboard.min.js"></script>
 <script src="/static/bootstrap-fileinput/4.5.1/js/fileinput.min.js"></script>
 <script src="/static/bootstrap-fileinput/4.5.1/js/locales/zh.js"></script>
 <script src="/static/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script>
+  var clipboard = new ClipboardJS('.copy');
+
+  clipboard.on('success', function(e) {
+    app.msg(true, '复制成功');
+  });
+
+  clipboard.on('error', function(e) {
+    app.msg(false, '复制失败');
+  });
+
   $("#image").fileinput({
     uploadUrl: "{:url('api/upload')}",
     language: "zh",
@@ -64,11 +75,11 @@
   }).on("fileuploaded", function(event, data, previewId, index) {
     var form = data.form, files = data.files, extra = data.extra, response = data.response, reader = data.reader;
     if(200 === response.code) {
-      $("#code-url ul").prepend("<li>" + response.data.url + "</li>");
-      $("#code-html ul").prepend("<li>&lt;img src=\"" + response.data.url + "\" alt=\"" + response.data.name + "\" title=\"" + response.data.name + "\" /&gt;</li>");
-      $("#code-bbcode ul").prepend("<li>[img]" + response.data.url + "[/img]</li>");
-      $("#code-markdown ul").prepend("<li>![" + response.data.name + "](" + response.data.url + ")</li>");
-      $("#code-markdown-with-link ul").prepend("<li>[![" + response.data.name + "](" + response.data.url + ")](" + response.data.url + ")</li>");
+      $("#code-url ul").prepend("<li>" + response.data.url + "<i data-clipboard-text=\"" + response.data.url + "\" class=\"copy iconfont icon-copy\"></i></li>");
+      $("#code-html ul").prepend("<li>&lt;img src=\"" + response.data.url + "\" alt=\"" + response.data.name + "\" title=\"" + response.data.name + "\" /&gt;<i data-clipboard-text=\"" + response.data.url + "\" class=\"copy iconfont icon-copy\"></i></li>");
+      $("#code-bbcode ul").prepend("<li>[img]" + response.data.url + "[/img]<i data-clipboard-text=\"" + response.data.url + "\" class=\"copy iconfont icon-copy\"></i></li>");
+      $("#code-markdown ul").prepend("<li>![" + response.data.name + "](" + response.data.url + ")<i data-clipboard-text=\"" + response.data.url + "\" class=\"copy iconfont icon-copy\"></i></li>");
+      $("#code-markdown-with-link ul").prepend("<li>[![" + response.data.name + "](" + response.data.url + ")](" + response.data.url + ")<i data-clipboard-text=\"" + response.data.url + "\" class=\"copy iconfont icon-copy\"></i></li>");
       $(".success-info").css("width", "inherit");
       if (response.data.quota && response.data.use_quota) {
         $('.quota-container progress').attr('max', response.data.quota);

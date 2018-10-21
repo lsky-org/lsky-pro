@@ -112,6 +112,7 @@ main .upload-container .success-info ul {
   list-style: none;
 }
 main .upload-container .success-info ul li {
+  position: relative;
   margin-top: 0.5rem;
   padding: 1rem;
   border: 1px solid #dadada;
@@ -123,6 +124,18 @@ main .upload-container .success-info ul li {
   word-wrap: break-word;
   border-radius: 0;
   font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+main .upload-container .success-info ul li i.icon-copy {
+  display: none;
+}
+main .upload-container .success-info ul li:hover i.icon-copy {
+  display: block;
+  position: absolute;
+  top: 4px;
+  font-size: 25px;
+  right: 10px;
+  color: #00b0ff;
+  cursor: pointer;
 }
 main .system-container .mdui-textfield-label {
   pointer-events: inherit;

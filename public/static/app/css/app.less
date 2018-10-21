@@ -83,6 +83,7 @@ main {
       ul {
         list-style: none;
         li {
+          position: relative;
           margin-top: 0.5rem;
           padding: 1rem;
           border: 1px solid #dadada;
@@ -94,6 +95,20 @@ main {
           word-wrap: break-word;
           border-radius: 0;
           font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+          i.icon-copy {
+            display: none;
+          }
+          &:hover {
+            i.icon-copy {
+              display: block;
+              position: absolute;
+              top: 4px;
+              font-size: 25px;
+              right: 10px;
+              color: #00b0ff;
+              cursor: pointer;
+            }
+          }
         }
       }
     }
