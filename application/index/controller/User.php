@@ -16,7 +16,7 @@ use think\Exception;
 
 class User extends Base
 {
-    public function images($keyword = '', $limit = 30)
+    public function images($keyword = '', $limit = 60)
     {
         if ($this->request->isPost()) {
             try {
@@ -30,7 +30,7 @@ class User extends Base
                     return $item;
                 });
             } catch (Exception $e) {
-                exit(dump($e->getMessage()));
+                return $this->error($e->getMessage());
             }
             return $this->success('success', null, $images);
         }
