@@ -278,13 +278,14 @@ main .mdui-textfield .captcha {
   box-shadow: 0 2px 15px 0 rgba(0, 0, 0, 0.13);
   border: none;
   border-radius: 0;
-  padding: 7px 12px;
+  height: 40px;
+  padding: 10px 18px;
 }
 .file-input .file-caption-main .form-control:focus {
   z-index: 0;
 }
 .file-input .file-caption-main .btn {
-  padding: 7px 12px;
+  padding: 10px 18px;
   border: 0;
 }
 .file-input .file-caption-main .btn:first-child {
