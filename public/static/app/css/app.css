@@ -486,7 +486,7 @@ footer {
 }
 @media (max-width: 768px) {
   body {
-    margin-bottom: 90px;
+    margin-bottom: 120px;
   }
   .krajee-default.file-preview-frame {
     width: 95%;
