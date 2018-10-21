@@ -42,7 +42,7 @@ INSERT INTO `lsky_config` (`id`, `key`, `type`, `input_type`, `name`, `title`, `
 (2, 'basics', 'text', 'text', 'site_name', '网站标题', NULL, 'Lsky Pro', ''),
 (3, 'basics', 'text', 'text', 'site_keywords', '网站关键字', NULL, 'Lsky Pro', ''),
 (4, 'basics', 'text', 'text', 'site_description', '网站描述', NULL, 'Lsky Pro', ''),
-(5, 'basics', 'text', 'text', 'icp_number', '备案号', NULL, '皖ICP备16011445号', ''),
+(5, 'basics', 'text', 'text', 'icp_number', '备案号', NULL, '', ''),
 (6, 'upload', 'bool', 'checkbox', 'allowed_tourist_upload', '允许游客上传', '是否允许游客上传', '1', ''),
 (7, 'upload', 'text', 'text', 'upload_max_size', '最大上传大小', '单位：b，默认5242880：5M', '5242880', ''),
 (8, 'upload', 'text', 'number', 'upload_single_num', '单次同时上传数量', NULL, '10', ''),
