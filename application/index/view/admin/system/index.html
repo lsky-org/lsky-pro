@@ -36,8 +36,7 @@
               {case select}
               <select name="{$val.name}" class="mdui-select">
                 {foreach $val.extend as $k => $v}
-                <option value="{$k}" {if $k eq $val.value}selected{
-                /if}>{$v}</option>
+                <option value="{$k}" {if $k eq $val.value}selected{/if}>{$v}</option>
                 {/foreach}
               </select>
               {/case}
