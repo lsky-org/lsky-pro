@@ -67,6 +67,8 @@
           }, {
             confirmText: '确定'
           })
+        } else {
+          app.msg(false, response.msg);
         }
       },
       error: function () {
