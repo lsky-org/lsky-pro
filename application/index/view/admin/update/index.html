@@ -68,7 +68,21 @@
             confirmText: '确定'
           })
         } else {
-          app.msg(false, response.msg);
+          mdui.dialog({
+            title: '发生异常',
+            content: response.msg,
+            buttons: [
+              {
+                text: '取消'
+              },
+              {
+                text: '刷新',
+                onClick: function(inst) {
+                  history.go(0)
+                }
+              }
+            ]
+          });
         }
       },
       error: function () {
