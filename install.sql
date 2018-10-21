@@ -79,7 +79,7 @@ INSERT INTO `lsky_config` (`id`, `key`, `type`, `input_type`, `name`, `title`, `
 (38, 'upyun', 'text', 'text', 'upyun_operator_name', 'OperatorName', '操作员账号', '', ''),
 (39, 'upyun', 'text', 'password', 'upyun_operator_pwd', 'OperatorPwd', '操作员密码', '', ''),
 (40, 'upyun', 'text', 'text', 'upyun_service_name', 'ServiceName', '云储存服务名称', '', ''),
-(41, '', 'text', 'text', 'system_version', '系统版本', NULL, '1.0', '');
+(41, '', 'text', 'text', 'system_version', '系统版本', NULL, '1.0.1', '');
 
 
 -- --------------------------------------------------------
