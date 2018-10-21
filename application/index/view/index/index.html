@@ -14,10 +14,10 @@
     <div class="upload-container">
       <div class="title">
         <h1>Image Upload</h1>
-        <p>最大可上传 {:round($config.upload_max_size / 1024 / 1024)} MB的图片，单次同时可上传 {$config.upload_single_num} 张。</p>
+        <p>最大可上传 {:round($config.upload_max_size / 1024 / 1024)} MB的图片，单次同时可选择 {$config.upload_single_num} 张。</p>
       </div>
       <form action="" method="post" enctype="multipart/form-data">
-        <input id="image" style="display: none;" type="file" multiple data-overwrite-initial="false" data-min-file-count="1" data-max-file-count="10" name="image" accept="image/*">
+        <input id="image" style="display: none;" type="file" multiple name="image" accept="image/*">
       </form>
       <div class="success-info">
         <div class="mdui-tab mdui-tab-scrollable" mdui-tab>
