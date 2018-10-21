@@ -21,7 +21,7 @@ use think\facade\Env;
  */
 class Update extends Base
 {
-    const VERSION_API = 'https://lsky.wispx.cn/version.php';
+    const VERSION_API = 'https://www.lsky.pro/version.php';
 
     private $record = [];
 
