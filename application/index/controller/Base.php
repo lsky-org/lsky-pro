@@ -105,11 +105,12 @@ class Base extends Controller
         $mail = new PHPMailer();
         try {
             // $mail->SMTPDebug = 2;
-            if ('smtp' === $this->config['mail_send_mode']) {
+            /*if ('smtp' === $this->config['mail_send_mode']) {
                 $mail->isSMTP();
             } else {
                 $mail->isMail();
-            }
+            }*/
+            $mail->isSMTP();
             $mail->Host = $this->config['mail_smtp_host'];
             $mail->CharSet = 'UTF-8';
             $mail->SMTPAuth = true;

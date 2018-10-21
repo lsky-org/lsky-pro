@@ -22,8 +22,7 @@
               <label class="mdui-textfield-label">{$val.title}{$val.tip ? '(' . $val.tip . ')' : ''}</label>
               {switch $val.type}
               {case text}
-              <input class="mdui-textfield-input" type="{$val.input_type}" name="{$val.name}" value="{$val.value}"
-                     autocomplete="off" placeholder="{$val.title}"/>
+              <input class="mdui-textfield-input" type="{$val.input_type}" name="{$val.name}" value="{$val.value}" autocomplete="off" placeholder="{$val.title}"/>
               {/case}
               {case textarea}
               <textarea class="mdui-textfield-input" name="{$val.name}" autocomplete="off" placeholder="{$val.title}">{$val.value}</textarea>
@@ -49,9 +48,7 @@
             <button type="reset" class="mdui-btn mdui-btn-raised mdui-ripple">重置</button>
             {if 'mail' eq $key}
             <!-- 测试邮件发送 -->
-            <button type="button" id="test-send-mail"
-                    class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-cyan-600 mdui-text-color-white">测试邮件发送
-            </button>
+            <button type="button" id="test-send-mail" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-cyan-600 mdui-text-color-white">测试邮件发送</button>
             {/if}
           </form>
         </div>
