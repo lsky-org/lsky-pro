@@ -60,9 +60,9 @@
 
 联系我
 ---
-QQ：1591788658<br>
-Email: 1591788658@qq.com<br>
-Blog: <a target="_block" href="http://www.wispx.cn">www.wispx.cn</a>
+- QQ：1591788658
+- Email: 1591788658@qq.com
+- Blog：[http://www.wispx.cn](http://www.wispx.cn)
 
 鸣谢
 ---
@@ -75,6 +75,6 @@ Blog: <a target="_block" href="http://www.wispx.cn">www.wispx.cn</a>
 
 开源许可
 ---
-<a target="_block" href="https://opensource.org/licenses/GPL-3.0">GPL 3.0</a>
+[GPL 3.0](https://opensource.org/licenses/GPL-3.0)
 
 Copyright (c) 2018 Wisp X.
