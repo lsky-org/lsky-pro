@@ -35,6 +35,7 @@
           <th>路径</th>
           <th>大小</th>
           <th>类型</th>
+          <th>上传IP</th>
           <th>上传时间</th>
           <th>操作</th>
         </tr>
@@ -47,6 +48,7 @@
           <td>{$value.pathname}</td>
           <td class="mdui-text-color-light-blue">{$value.size|format_size}</td>
           <td>{$value.mime}</td>
+          <td>{$value.ip}</td>
           <td>{$value.create_time}</td>
           <td>
             <img class="none" data-original="{$value.url}" src="{$value.url}">

@@ -81,7 +81,6 @@ INSERT INTO `lsky_config` (`id`, `key`, `type`, `input_type`, `name`, `title`, `
 (40, 'upyun', 'text', 'text', 'upyun_service_name', 'ServiceName', '云储存服务名称', '', ''),
 (41, '', 'text', 'text', 'system_version', '系统版本', NULL, '1.0', '');
 
-
 -- --------------------------------------------------------
 
 --
@@ -100,6 +99,7 @@ CREATE TABLE IF NOT EXISTS `lsky_images` (
   `mime` varchar(32) NOT NULL COMMENT '文件MIME类型',
   `sha1` varchar(100) NOT NULL COMMENT 'hash sha1',
   `md5` varchar(32) NOT NULL COMMENT 'hash md5',
+  `ip` varchar(128) DEFAULT NULL COMMENT '上传者IP',
   `create_time` int(11) NOT NULL COMMENT '创建时间'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='图片表';
 

@@ -14,6 +14,8 @@ class Images extends Model
 {
     protected $updateTime = false;
 
+    protected $insert = ['ip'];
+
     public function getUrlAttr($url, $data)
     {
         // 图片链接
@@ -23,5 +25,10 @@ class Images extends Model
         ])->value('value');
         $domain = $cdnDoamin ? $cdnDoamin : request()->domain();
         return make_url($domain, $data['pathname']);
+    }
+
+    public function setIpAttr()
+    {
+        return request()->ip();
     }
 }
