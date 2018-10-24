@@ -35,6 +35,38 @@ function format_size($size)
 }
 
 /**
+ * 格式化友好时间戳
+ *
+ * @param $unixTime
+ * @return false|string
+ */
+function format_time($unixTime)
+{
+    $showTime = date('Y', $unixTime) . "年" . date('n', $unixTime) . "月" . date('j', $unixTime) . "日";
+    if (date('Y', $unixTime) == date('Y')) {
+        $showTime = date('n', $unixTime) . "月" . date('j', $unixTime) . "日 " . date('H:i', $unixTime);
+        if (date('n.j', $unixTime) == date('n.j')) {
+            $timeDifference = time() - $unixTime + 1;
+            if ($timeDifference < 30) {
+                return "刚刚";
+            }
+            if ($timeDifference >= 30 && $timeDifference < 60) {
+                return $timeDifference . "秒前";
+            }
+            if ($timeDifference >= 60 && $timeDifference < 3600) {
+                return floor($timeDifference / 60) . "分钟前";
+            }
+            return date('H:i', $unixTime);
+        }
+        if (date('n.j', ($unixTime + 86400)) == date('n.j')) {
+            return "昨天 " . date('H:i', $unixTime);
+        }
+    }
+
+    return $showTime;
+}
+
+/**
  * 过滤逗号(去除字符串两边的逗号，并将中文逗号转换成英文逗号)
  *
  * @param $str  字符串

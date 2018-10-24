@@ -31,4 +31,9 @@ class Images extends Model
     {
         return request()->ip();
     }
+
+    public function getDateAttr($date, $data)
+    {
+        return format_time($data['create_time']);
+    }
 }
