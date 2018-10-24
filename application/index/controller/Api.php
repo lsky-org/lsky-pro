@@ -43,7 +43,7 @@ class Api extends Base
                 // 获取当前驱动实例
                 $strategy = $this->getStrategyInstance();
 
-                $pathname = $this->makePathname($image->getInfo('name'));
+                $pathname = strtolower($this->makePathname($image->getInfo('name')));
                 if (!$strategy->create($pathname, $image->getPathname())) {
                     if (Config::get('app.app_debug')) {
                         throw new Exception($strategy->getError(), 500);
