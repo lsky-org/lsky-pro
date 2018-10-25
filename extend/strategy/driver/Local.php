@@ -77,7 +77,7 @@ class Local implements Driver
      */
     public function delete($pathname)
     {
-        $delete = unlink(self::ROOT_PATH . ltrim($pathname, DIRECTORY_SEPARATOR));
+        $delete = @unlink(self::ROOT_PATH . ltrim($pathname, DIRECTORY_SEPARATOR));
         if (!$delete) {
             $this->error = '文件删除失败';
         }

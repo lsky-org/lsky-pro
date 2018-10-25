@@ -116,14 +116,14 @@ class Cos implements Driver
     public function deletes(array $list)
     {
         try {
+            $objects = [];
             foreach ($list as $value) {
-                if (is_string($value)) {
-                    $this->cos->deleteObject([
-                        'Bucket' => $this->options['cos_bucket'],
-                        'Key' => $value,
-                    ]);
-                }
+                $objects[] = ['Key' => $value ];
             }
+            $this->cos->deleteObjects([
+                'Bucket' => $this->options['cos_bucket'],
+                'Objects' => $objects,
+            ]);
         } catch (\Exception $e) {
             $this->error = $e->getMessage();
             return false;

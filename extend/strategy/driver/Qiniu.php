@@ -122,15 +122,12 @@ class Qiniu implements Driver
      */
     public function deletes(array $list)
     {
-        foreach ($list as $value) {
-            if (is_string($value)) {
-                $err = $this->bucketMgr->delete($this->options['qiniu_bucket'], $value);
-                if ($err) {
-                    $this->error = $err;
-                }
-            }
+        $ops = $this->bucketMgr->buildBatchDelete($this->options['qiniu_bucket'], $list);
+        list($ret, $err) = $this->bucketMgr->batch($ops);
+        if ($err) {
+            $this->error = $err;
+            return false;
         }
-
         return true;
     }
 

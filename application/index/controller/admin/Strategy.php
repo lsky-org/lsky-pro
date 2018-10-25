@@ -37,7 +37,7 @@ class Strategy extends Base
             try {
                 $data = $this->request->post();
                 foreach ($data as $key => $value) {
-                    Config::where('name', $key)->setField('value', $value);
+                    Config::where('name', $key)->setField('value', trim($value));
                 }
                 Db::commit();
             } catch (Exception $e) {

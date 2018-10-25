@@ -91,7 +91,15 @@ class Images extends Base
                     }
 
                     foreach ($deletes as $key => $val) {
-                        $strategy[$key]->deletes($val);
+                        if (1 === count($val)) {
+                            if (!$strategy[$key]->delete(isset($val[0]) ? $val[0] : null)) {
+                                throw new Exception('删除失败');
+                            }
+                        } else {
+                            if (!$strategy[$key]->deletes($val)) {
+                                throw new Exception('批量删除失败');
+                            }
+                        }
                     }
                 }
                 Db::commit();

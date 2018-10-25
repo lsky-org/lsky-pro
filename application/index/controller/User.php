@@ -25,7 +25,7 @@ class User extends Base
                     $model = $model->where('pathname', 'like', "%{$keyword}%");
                 }
                 $images = $model->paginate($limit)->each(function ($item) {
-                   $item->url = $item->url;
+                    $item->url = $item->url;
                     // TODO 生成缩略图
                     return $item;
                 });
@@ -66,11 +66,19 @@ class User extends Base
                     $strategyAll = array_keys(Config::pull('strategy'));
                     foreach ($strategyAll as $value) {
                         // 获取储存策略驱动
-                         $strategy[$value] = $this->getStrategyInstance($value);
+                        $strategy[$value] = $this->getStrategyInstance($value);
                     }
 
                     foreach ($deletes as $key => $val) {
-                        $strategy[$key]->deletes($val);
+                        if (1 === count($val)) {
+                            if (!$strategy[$key]->delete(isset($val[0]) ? $val[0] : null)) {
+                                throw new Exception('删除失败');
+                            }
+                        } else {
+                            if (!$strategy[$key]->deletes($val)) {
+                                throw new Exception('批量删除失败');
+                            }
+                        }
                     }
                 }
                 Db::commit();
