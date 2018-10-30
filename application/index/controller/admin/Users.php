@@ -90,6 +90,7 @@ class Users extends Base
             if (!$user = UserModel::get($id)) {
                 return $this->error('数据获取失败');
             }
+            $user->use_quota = $user->use_quota;
             unset($user->password);
             return $this->success('成功', null, $user);
         }
