@@ -17,7 +17,7 @@ class Users extends Model
 {
     use SoftDelete;
 
-    protected $insert = ['reg_ip'];
+    protected $insert = ['reg_ip', 'quota'];
 
     public function setPassWordAttr($password)
     {
