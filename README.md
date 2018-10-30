@@ -13,7 +13,7 @@
 [![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/wisp-x/lsky-pro.svg?style=flat-square)](https://github.com/wisp-x/lsky-pro)
 
 
-> 注意：2018-10-21 19:00前下载安装的为开发版，master分支为开发版，不定时更新，下载正式版程序请点击[这里](https://github.com/wisp-x/lsky-pro/releases)
+> 注意：2018-10-30 17:20分钟前安装的用户请重新下载程序，复制application目录覆盖到安装根目录(少量Bug修复)；master分支为开发版，不定时更新，下载正式版程序请点击[这里](https://github.com/wisp-x/lsky-pro/releases)
 
 > 发现bug可发送邮件至邮箱：i@wispx.cn，确认bug后我会及时修复，谢谢！
 
