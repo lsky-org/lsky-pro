@@ -6,14 +6,13 @@
 
 # Lsky Pro - Your photo album on the cloud.
 
-[官网](https://www.lsky.pro) | [社区](https://forum.lsky.pro)
+[官网](https://www.lsky.pro)
 
 [![License](https://img.shields.io/badge/license-GPL_V3.0-yellowgreen.svg?style=flat-square)](https://github.com/wisp-x/lsky-pro/blob/master/LICENSE)
 [![PHP](https://img.shields.io/badge/PHP->=5.6-orange.svg?style=flat-square)](http://php.net)
 [![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/wisp-x/lsky-pro.svg?style=flat-square)](https://github.com/wisp-x/lsky-pro)
 
-
-> 注意：2018-10-30 17:20分钟前安装的用户请重新下载程序，复制application目录覆盖到安装根目录(少量Bug修复)；master分支为开发版，不定时更新，下载正式版程序请点击[这里](https://github.com/wisp-x/lsky-pro/releases)
+> master分支为开发版，不定时更新，下载正式版程序请点击[这里](https://github.com/wisp-x/lsky-pro/releases)
 
 > 发现bug可发送邮件至邮箱：i@wispx.cn，确认bug后我会及时修复，谢谢！
 
@@ -28,10 +27,11 @@
 - 强大的图片预览功能，支持响应式。
 - 支持全局配置用户初始剩余储存空间、支持单个设置用户剩余储存空间。
 - 支持一键复制图片外链、二维码扫描链接。
+- 支持设置上传文件、文件夹路径命名规则
 
 安装需求
 ---
-* PHP版本 &ge; 5.6
+* PHP版本 &ge; 5.6(建议使用PHP7+)
 * mysqli支持
 * fileinfo拓展
 * curl拓展
@@ -58,11 +58,39 @@
 4. 访问首页，未安装自动跳转至安装页面，根据页面提示安装即可。
 5. 安装完成以后请设置runtime目录0755权限，如果你使用本地存储，public 目录也需要设置为0755权限
 
+如何修改网站运行目录？
+---
+默认程序的入口文件在 ```public``` 目录下，所以需要把public目录设置为网站运行目录，这样做是为了：
+> 入口文件位置的设计是为了让应用部署更安全，```public``` 目录为web可访问目录，其他的文件都可以放到非WEB访问目录下面。
+
+而你如果安装时没有设置，使用 ```http://域名/public``` 的方式来访问站点，会导致css和js等静态资源无法获取。  
+如果你 无法 或 不会 设置运行目录，可以将public目录下的所有文件和文件夹包括.htaccess文件移动到根目录
+(和 ```application``` 文件夹同级)即可，尽管我们不推荐你这么做，这样会导致应用程序核心文件暴露在外。
+
+移动文件以后，打开根目录 ```index.php``` 文件，修改如下：
+```php
+<?php
+
+// [ 应用入口文件 ]
+namespace think;
+
+// 根目录常量配置(和本文件同级)
+define('ROOT_PATH', __DIR__ . DIRECTORY_SEPARATOR);
+
+// 加载基础文件
+require __DIR__ . '/thinkphp/base.php';
+
+ // 执行应用并响应
+Container::get('app')->bind('index')->run()->send();
+ ```
+
+注意：请不要使用记事本打开修改，修改完成后保存即可。
+
 联系我
 ---
 - QQ：1591788658
 - Email: 1591788658@qq.com
-- Blog：[http://www.wispx.cn](http://www.wispx.cn)
+- Blog：[https://www.wispx.cn](https://www.wispx.cn)
 
 鸣谢
 ---
