@@ -24,7 +24,7 @@ return [
     // 独立日志级别
     'apart_level' => [],
     // 最大日志文件数量
-    'max_files'   => 0,
+    'max_files'   => 30,
     // 是否关闭日志写入
     'close'       => false,
 ];
