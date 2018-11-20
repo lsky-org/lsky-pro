@@ -14,6 +14,7 @@ use think\Controller;
 use think\Exception;
 use think\facade\Config;
 use think\facade\Session;
+use think\facade\Env;
 
 class Base extends Controller
 {
@@ -37,7 +38,7 @@ class Base extends Controller
         parent::initialize();
 
         // 检测程序是否已安装
-        if (!file_exists(\think\facade\Env::get('root_path') . 'install.lock')) {
+        if (!file_exists(Env::get('config_path') . 'db.php')) {
             return $this->redirect(url('/install'));
         }
 

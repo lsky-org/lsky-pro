@@ -10,6 +10,7 @@ namespace app\index\controller;
 
 use app\common\model\Users;
 use think\Controller;
+use think\Db;
 use think\Exception;
 use think\facade\Cookie;
 use think\facade\Env;
@@ -19,12 +20,11 @@ class Install extends Controller
 {
     public function index($step = 1)
     {
-
         $rootPath = Env::get('root_path');
         $configPath = Env::get('config_path');
 
         // 检测是否已安装
-        if (file_exists($rootPath . 'install.lock') && !Session::has('install_success')) {
+        if (file_exists($configPath . 'db.php') && !Session::has('install_success')) {
             exit('你已安装成功，请勿重复安装！');
         }
 
@@ -67,6 +67,39 @@ class Install extends Controller
                         if (!$mysqli->multi_query($sqlFile)) {
                             throw new Exception('数据写入失败');
                         }
+                        Session::set('db', [
+                            'hostname' => $hostname,
+                            'database' => $database,
+                            'username' => $username,
+                            'password' => $password,
+                            'hostport' => $hostport,
+                        ]);
+                    } catch (Exception $e) {
+                        return $this->error($e->getMessage());
+                    }
+                    return $this->success('数据写入成功');
+                }
+                break;
+            case 3:
+                // 设置管理员账号密码
+                if ($this->request->isPost()) {
+                    try {
+                        $data = $this->request->post();
+                        $data['is_admin'] = 1;
+                        $data['quota'] = 1073741824;
+                        $data['update_time'] = time();
+                        $data['create_time'] = time();
+                        if ($data['password'] != $data['password_confirm']) {
+                            throw new Exception('两次输入的密码不一致！');
+                        }
+                        $data['password'] = md5($data['password']);
+                        $data['reg_ip'] = request()->ip();
+                        $dbConfig = Session::get('db');
+                        $hostname = $dbConfig['hostname'];
+                        $database = $dbConfig['database'];
+                        $username = $dbConfig['username'];
+                        $password = $dbConfig['password'];
+                        $hostport = $dbConfig['hostport'];
                         $dbPath = $configPath . 'db.php';
                         $str = <<<EOT
 <?php
@@ -97,27 +130,20 @@ EOT;
                             fwrite($fp, $str);
                             fclose($fp);
                         }
-
+                        $db = Db::connect(array_merge($dbConfig, [
+                            // 数据库类型
+                            'type'        => 'mysql',
+                            // 数据库连接参数
+                            'params'      => [],
+                            // 数据库编码默认采用utf8
+                            'charset'     => 'utf8mb4',
+                            // 数据库表前缀
+                            'prefix'      => 'lsky_',
+                        ]));
+                        unset($data['password_confirm']);
+                        $db->name('users')->insert($data);
                     } catch (Exception $e) {
-                        return $this->error($e->getMessage());
-                    }
-                    return $this->success('数据写入成功');
-                }
-                break;
-            case 3:
-                // 设置管理员账号密码
-                if ($this->request->isPost()) {
-                    try {
-                        $data = $this->request->post();
-                        $validate = $this->validate($data, 'Users.Install');
-                        if (true !== $validate) {
-                            throw new Exception($validate);
-                        }
-                        $data['is_admin'] = 1;
-                        $data['quota'] = 1073741824;
-                        Users::create($data);
-                        fopen($rootPath . 'install.lock', 'w');
-                    } catch (Exception $e) {
+                        @unlink($configPath . 'db.php');
                         return $this->error($e->getMessage());
                     }
                     Session::flash('install_success', true);
