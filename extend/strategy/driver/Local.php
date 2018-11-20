@@ -9,6 +9,7 @@
 namespace strategy\driver;
 
 use strategy\Driver;
+use think\facade\Env;
 
 /**
  * 本地储存驱动
@@ -21,7 +22,7 @@ class Local implements Driver
     /**
      * 根目录路径(结尾加斜杠)
      */
-    const ROOT_PATH = ROOT_PATH;
+    protected $rootPath = null;
 
     /**
      * 当前储存策略参数
@@ -44,6 +45,7 @@ class Local implements Driver
      */
     public function __construct($options = [])
     {
+        $this->rootPath = Env::get('root_path');
         $this->options = $options;
     }
 
@@ -57,7 +59,7 @@ class Local implements Driver
      */
     public function create($pathname, $file)
     {
-        $path = self::ROOT_PATH . dirname($pathname) . DIRECTORY_SEPARATOR;
+        $path = $this->rootPath . dirname($pathname) . DIRECTORY_SEPARATOR;
         if (true === $this->checkPath($path)) {
             if (move_uploaded_file($file, $pathname)) {
                 return true;
@@ -77,7 +79,7 @@ class Local implements Driver
      */
     public function delete($pathname)
     {
-        $delete = @unlink(self::ROOT_PATH . ltrim($pathname, DIRECTORY_SEPARATOR));
+        $delete = @unlink($this->rootPath . ltrim($pathname, DIRECTORY_SEPARATOR));
         if (!$delete) {
             $this->error = '文件删除失败';
         }
@@ -95,7 +97,7 @@ class Local implements Driver
     {
         foreach ($list as $value) {
             if (is_string($value)) {
-                @unlink(self::ROOT_PATH . ltrim($value, DIRECTORY_SEPARATOR));
+                @unlink($this->rootPath . ltrim($value, DIRECTORY_SEPARATOR));
             }
         }
 

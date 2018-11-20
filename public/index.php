@@ -12,9 +12,6 @@
 // [ 应用入口文件 ]
 namespace think;
 
-// 根目录常量配置(和本文件同级)
-define('ROOT_PATH', __DIR__ . DIRECTORY_SEPARATOR);
-
 // 加载基础文件
 require __DIR__ . '/../thinkphp/base.php';
 

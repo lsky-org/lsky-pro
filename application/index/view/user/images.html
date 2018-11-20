@@ -166,9 +166,6 @@
     // 监听复制操作
     var clipboard = new ClipboardJS('.copy-url');
     clipboard.on('success', function(e) {
-      /*console.info('Action:', e.action);
-      console.info('Text:', e.text);
-      console.info('Trigger:', e.trigger);*/
       app.msg(true, '复制成功！');
       e.clearSelection();
     });

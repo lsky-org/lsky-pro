@@ -74,9 +74,6 @@
 // [ 应用入口文件 ]
 namespace think;
 
-// 根目录常量配置(和本文件同级)
-define('ROOT_PATH', __DIR__ . DIRECTORY_SEPARATOR);
-
 // 加载基础文件
 require __DIR__ . '/thinkphp/base.php';
 
@@ -88,7 +85,7 @@ Container::get('app')->bind('index')->run()->send();
 
 如何更新到最新版？
 ---
-[下载](https://github.com/wisp-x/lsky-pro/releases)最新版程序，解压后覆盖到根目录即可。  
+[下载](https://github.com/wisp-x/lsky-pro/releases)最新版程序，解压后覆盖到根目录即可(若怕出问题可覆盖前备份文件)。  
 注：请不要删除原程序文件，因为你的安装后会生成的数据库配置文件存在config目录下。
 
 联系我
