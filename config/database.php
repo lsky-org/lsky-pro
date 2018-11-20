@@ -12,8 +12,18 @@
 $database = [
     // 数据库类型
     'type'            => 'mysql',
-    // 连接dsn
+    // 数据库连接DSN配置
     'dsn'             => '',
+    // 服务器地址
+    'hostname'        => '127.0.0.1',
+    // 数据库名
+    'database'        => '',
+    // 数据库用户名
+    'username'        => 'root',
+    // 数据库密码
+    'password'        => '',
+    // 数据库连接端口
+    'hostport'        => '',
     // 数据库连接参数
     'params'          => [],
     // 数据库编码默认采用utf8
@@ -52,4 +62,9 @@ $database = [
     'break_match_str' => [],
 ];
 
-return array_merge($database, require(\think\facade\Env::get('config_path') . 'db.php'));
+$pathname = Env::get('config_path') . 'db.php';
+if (file_exists($pathname)) {
+    return array_merge($database, require $pathname);
+} else {
+    return $database;
+}

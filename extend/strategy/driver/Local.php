@@ -45,7 +45,7 @@ class Local implements Driver
      */
     public function __construct($options = [])
     {
-        $this->rootPath = Env::get('root_path');
+        $this->rootPath = Env::get('root_path') . 'public' . DIRECTORY_SEPARATOR;
         $this->options = $options;
     }
 
