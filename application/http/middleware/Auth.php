@@ -27,10 +27,6 @@ class Auth
             if (!Session::has('uid') || !Session::has('token')) {
                 return redirect(url('auth/login'));
             }
-            /*if (!Users::get(['id' => Session::get('uid'), 'token' => Session::get('token')])) {
-                Session::delete(['uid', 'token']);
-                return redirect(url('auth/login'));
-            }*/
         }
 
         return $next($request);

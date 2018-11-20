@@ -68,22 +68,35 @@ class Install extends Controller
                             throw new Exception('数据写入失败');
                         }
                         $dbPath = $configPath . 'db.php';
-                        $dataBaseFile = file_get_contents($dbPath);
-                        $dataBaseFile = str_replace([
-                            '{hostname}',
-                            '{database}',
-                            '{username}',
-                            '{password}',
-                            '{hostport}',
-                        ], [
-                            $hostname,
-                            $database,
-                            $username,
-                            $password,
-                            $hostport,
-                        ], $dataBaseFile);
+                        $str = <<<EOT
+<?php
+/**
+ * User: Wisp X
+ * Date: 2018/10/13
+ * Time: 10:18
+ * Link: https://github.com/wisp-x
+ */
 
-                        file_put_contents($dbPath, $dataBaseFile);
+return [
+    // 服务器地址
+    'hostname'        => '$hostname',
+    // 数据库名
+    'database'        => '$database',
+    // 用户名
+    'username'        => '$username',
+    // 密码
+    'password'        => '$password',
+    // 端口
+    'hostport'        => '$hostport',
+];
+EOT;
+                        if (file_exists($dbPath)) {
+                            @file_put_contents($dbPath, $str);
+                        } else {
+                            $fp = fopen($dbPath, "w+");
+                            fwrite($fp, $str);
+                            fclose($fp);
+                        }
 
                     } catch (Exception $e) {
                         return $this->error($e->getMessage());

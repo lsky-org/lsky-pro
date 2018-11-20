@@ -86,6 +86,11 @@ Container::get('app')->bind('index')->run()->send();
 
 注意：请不要使用记事本打开修改，修改完成后保存即可。
 
+如何更新到最新版？
+---
+[下载](https://github.com/wisp-x/lsky-pro/releases)最新版程序，解压后覆盖到根目录即可。  
+注：请不要删除原程序文件，因为你的安装后会生成的数据库配置文件存在config目录下。
+
 联系我
 ---
 - QQ：1591788658
