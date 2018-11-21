@@ -14,7 +14,7 @@
 
 > master分支为开发版，不定时更新，下载正式版程序请点击[这里](https://github.com/wisp-x/lsky-pro/releases)
 
-> 发现bug可发送邮件至邮箱：i@wispx.cn，确认bug后我会及时修复，谢谢！
+> 发现bug可发送邮件至邮箱：i@wispx.cn，或提交[issues](https://github.com/wisp-x/lsky-pro/issues)，确认bug后我会及时修复，谢谢！
 
 ![homepage.png](./public/static/app/images/demo/1.png)
 ![homepage.png](./public/static/app/images/demo/2.png)
