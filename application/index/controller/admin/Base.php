@@ -12,7 +12,7 @@ use app\index\controller\Base as AdminBase;
 
 class Base extends AdminBase
 {
-    public function initialize()
+    protected function initialize()
     {
         parent::initialize();
         if (!$this->user) {

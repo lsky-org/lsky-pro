@@ -33,7 +33,7 @@ class Base extends Controller
      */
     protected $currentStrategyConfig = null;
 
-    public function initialize()
+    protected function initialize()
     {
         parent::initialize();
 
@@ -72,7 +72,7 @@ class Base extends Controller
      * @param $strategy
      * @return array
      */
-    public function getStrategyConfig($strategy)
+    protected function getStrategyConfig($strategy)
     {
         $strategyConfig = [];
         foreach ($this->configs as $value) {
@@ -90,7 +90,7 @@ class Base extends Controller
      * @param null $strategy
      * @return mixed
      */
-    public function getStrategyInstance($strategy = null)
+    protected function getStrategyInstance($strategy = null)
     {
         $currentStrategy = $strategy ? $strategy : strtolower($this->config['storage_strategy']);
         // 驱动
@@ -101,7 +101,7 @@ class Base extends Controller
         return new $driver($strategyConfig);
     }
 
-    public function sendMail($email, $subject, $body)
+    protected function sendMail($email, $subject, $body)
     {
         $mail = new PHPMailer();
         try {
