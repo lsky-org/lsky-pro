@@ -56,7 +56,7 @@ class Install extends Controller
                     $password = $this->request->post('password');
                     $hostport = $this->request->post('hostport');
                     try {
-                        if (!$sqlFile = file_get_contents($rootPath . 'install.sql')) {
+                        if (!$sqlFile = @file_get_contents($rootPath . 'install.sql')) {
                             throw new Exception('安装文件不存在');
                         }
                         $mysqli = new \mysqli($hostname, $username,  $password, $database,  $hostport);
