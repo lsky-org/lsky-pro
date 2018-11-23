@@ -64,6 +64,7 @@ class Install extends Controller
                             $mysqli->close();
                             throw new Exception($mysqli->connect_error);
                         }
+                        $mysqli->query("SET NAMES utf8");
                         if (!$mysqli->multi_query($sqlFile)) {
                             throw new Exception('数据写入失败');
                         }
