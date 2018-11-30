@@ -122,6 +122,9 @@ class Users extends Base
             if (!$user = UserModel::get($id)) {
                 return $this->error('数据获取失败');
             }
+            if ($user->id === $this->user->id) {
+                return $this->error('不可修改自己的状态');
+            }
             if (!$user->where('id', $id)->setField('state', $state)) {
                 return $this->error('状态修改失败');
             }

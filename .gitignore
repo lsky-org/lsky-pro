@@ -5,6 +5,7 @@
 .idea
 
 runtime
+/config/db.php
 
 # Icon must end with two \r
 Icon
