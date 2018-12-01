@@ -127,8 +127,8 @@ var app = {
     $.ajax({
       url: 'https://api.github.com/repos/wisp-x/lsky-pro/releases/latest',
       success: function (response) {
-        var thatVer = parseFloat(ver);
-        var newVer = parseFloat(response.name.replace(/[^\d.]/g, ''));
+        var thatVer = parseInt(ver.replace(/[^\d]/g, ''));
+        var newVer = parseInt(response.name.replace(/[^\d]/g, ''));
         if (thatVer < newVer) {
           if (!app.cookie.has('no_update') || auto) {
             mdui.dialog({
@@ -142,13 +142,13 @@ var app = {
                 },
                 {
                   text: '不再提示',
-                  onClick: function(inst) {
+                  onClick: function() {
                     app.cookie.set('no_update', true, 30, '/');
                   }
                 },
                 {
                   text: '前往更新',
-                  onClick: function(inst) {
+                  onClick: function() {
                     return open(response.html_url);
                   }
                 }
