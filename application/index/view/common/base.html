@@ -26,6 +26,10 @@
     <a href="{:url('/')}" class="mdui-typo-headline">{$config.site_name}</a>
     <div class="mdui-toolbar-spacer"></div>
     {if $user}
+      <!-- Update -->
+      {if $user.is_admin}
+      <span id="update" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">&#xe923;</i></span>
+      {/if}
     <!-- User -->
     <a href="javascript:void(0)" mdui-menu="{target: '#user'}" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">&#xe853;</i></a>
     <ul class="mdui-menu" id="user">
@@ -128,9 +132,11 @@
 {/block}
 <script src="/static/jquery/3.3.1/jquery.min.js"></script>
 <script src="/static/mdui/0.4.1/js/mdui.min.js"></script>
+<script src="/static/marked/0.5.1/marked.js"></script>
 <script src="/static/app/js/app.js"></script>
 {block name="js"}{/block}
 <script>
+  var thatVer = '{$config.system_version}';
   $(function () {
     var toTop = $("#to-top"), toTopHide = function () {
       if ($(window).scrollTop() > 50) {
@@ -155,7 +161,16 @@
         app.cookie.set('menu', $('body').hasClass('mdui-drawer-body-left') ? 'open' : 'close', 10, '/');
       }
     });
+
+    $('#update').click(function () {
+      app.update(thatVer, true);
+    });
   });
 </script>
+{if $user and $user.is_admin and !cookie('?no_update')}
+<script>
+  app.update(thatVer, false);
+</script>
+{/if}
 </body>
 </html>

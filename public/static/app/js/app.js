@@ -101,8 +101,16 @@ var app = {
      */
     delete: function (key) {
       var date = new Date();
-      date.setTime(date.getTime() - 10000);
-      document.cookie = key + "=v; expires =" + date.toGMTString();
+      date.setTime(date.getTime() - 1);
+      document.cookie = key + "=; expires=" + date.toGMTString() + ";path=/";
+    },
+    /**
+     * Has
+     * @param key
+     * @returns {boolean}
+     */
+    has: function (key) {
+      return app.cookie.get(key) ? true : false;
     }
   },
   /**
@@ -114,5 +122,44 @@ var app = {
     if (bytes === 0) return '0 B';
     var k = 1024, sizes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'], i = Math.floor(Math.log(bytes) / Math.log(k));
     return (bytes / Math.pow(k, i)).toFixed(2) + ' ' + sizes[i];
+  },
+  update: function (ver, auto) {
+    $.ajax({
+      url: 'https://api.github.com/repos/wisp-x/lsky-pro/releases/latest',
+        success: function (response) {
+          var thatVer = parseFloat(ver);
+          var newVer = parseFloat(response.name.replace(/[^\d.]/g, ''));
+          if (thatVer < newVer) {
+            if (!app.cookie.has('no_update') || auto) {
+              mdui.dialog({
+                title: '检测到新版本[' + response.name + ']',
+                content: '<div class="mdui-p-l-3 mdui-p-r-3">' + marked(response.body) + '</div>',
+                modal: true,
+                history: false,
+                buttons: [
+                  {
+                    text: '忽略'
+                  },
+                  {
+                    text: '不再提示',
+                    onClick: function(inst) {
+                      app.cookie.set('no_update', true, 30, '/');
+                    }
+                  },
+                  {
+                    text: '前往更新',
+                    onClick: function(inst) {
+                      return open(response.html_url);
+                    }
+                  }
+                 ]
+              });
+            }
+          } else {
+            auto && app.msg(true, '已经是最新版本');
+          }
+          auto && app.cookie.delete('no_update');
+        }
+    });
   }
 };
