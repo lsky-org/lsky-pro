@@ -150,6 +150,9 @@ EOT;
                     Session::flash('install_success', true);
                     // 删除sql文件
                     @unlink($rootPath . 'install.sql');
+                    if (file_exists($rootPath . 'update.sql')) {
+                        @unlink($rootPath . 'update.sql');
+                    }
                     // 删除session
                     Session::delete('db');
                     return $this->success('设置成功');
