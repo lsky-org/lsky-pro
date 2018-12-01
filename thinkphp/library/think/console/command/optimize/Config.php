@@ -19,9 +19,6 @@ use think\facade\App;
 
 class Config extends Command
 {
-    /** @var  Output */
-    protected $output;
-
     protected function configure()
     {
         $this->setName('optimize:config')

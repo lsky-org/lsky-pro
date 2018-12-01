@@ -111,6 +111,15 @@ class Middleware
     }
 
     /**
+     * 清除中间件
+     * @access public
+     */
+    public function clear()
+    {
+        $this->queue = [];
+    }
+
+    /**
      * 中间件调度
      * @access public
      * @param  Request  $request
@@ -186,4 +195,11 @@ class Middleware
         };
     }
 
+    public function __debugInfo()
+    {
+        $data = get_object_vars($this);
+        unset($data['app']);
+
+        return $data;
+    }
 }

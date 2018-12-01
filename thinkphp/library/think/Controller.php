@@ -67,23 +67,6 @@ class Controller
         // 控制器初始化
         $this->initialize();
 
-        // 控制器中间件
-        if ($this->middleware) {
-            foreach ($this->middleware as $key => $val) {
-                if (!is_int($key)) {
-                    if (isset($val['only']) && !in_array($this->request->action(), $val['only'])) {
-                        continue;
-                    } elseif (isset($val['except']) && in_array($this->request->action(), $val['except'])) {
-                        continue;
-                    } else {
-                        $val = $key;
-                    }
-                }
-
-                $this->app['middleware']->controller($val);
-            }
-        }
-
         // 前置操作方法 即将废弃
         foreach ((array) $this->beforeActionList as $method => $options) {
             is_numeric($method) ?
@@ -95,6 +78,36 @@ class Controller
     // 初始化
     protected function initialize()
     {}
+
+    // 注册控制器中间件
+    public function registerMiddleware()
+    {
+        foreach ($this->middleware as $key => $val) {
+            if (!is_int($key)) {
+                $only = $except = null;
+
+                if (isset($val['only'])) {
+                    $only = array_map(function ($item) {
+                        return strtolower($item);
+                    }, $val['only']);
+                } elseif (isset($val['except'])) {
+                    $except = array_map(function ($item) {
+                        return strtolower($item);
+                    }, $val['except']);
+                }
+
+                if (isset($only) && !in_array($this->request->action(), $only)) {
+                    continue;
+                } elseif (isset($except) && in_array($this->request->action(), $except)) {
+                    continue;
+                } else {
+                    $val = $key;
+                }
+            }
+
+            $this->app['middleware']->controller($val);
+        }
+    }
 
     /**
      * 前置操作
@@ -108,14 +121,24 @@ class Controller
             if (is_string($options['only'])) {
                 $options['only'] = explode(',', $options['only']);
             }
-            if (!in_array($this->request->action(), $options['only'])) {
+
+            $only = array_map(function ($val) {
+                return strtolower($val);
+            }, $options['only']);
+
+            if (!in_array($this->request->action(), $only)) {
                 return;
             }
         } elseif (isset($options['except'])) {
             if (is_string($options['except'])) {
                 $options['except'] = explode(',', $options['except']);
             }
-            if (in_array($this->request->action(), $options['except'])) {
+
+            $except = array_map(function ($val) {
+                return strtolower($val);
+            }, $options['except']);
+
+            if (in_array($this->request->action(), $except)) {
                 return;
             }
         }
@@ -250,5 +273,13 @@ class Controller
         }
 
         return true;
+    }
+
+    public function __debugInfo()
+    {
+        $data = get_object_vars($this);
+        unset($data['app'], $data['request']);
+
+        return $data;
     }
 }

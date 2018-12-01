@@ -128,6 +128,8 @@ return [
         'route_check_cache'      => false,
         // 路由缓存的Key自定义设置（闭包），默认为当前URL和请求类型的md5
         'route_check_cache_key'  => '',
+        // 路由缓存的设置
+        'route_cache_option'     => [],
 
         // +----------------------------------------------------------------------
         // | 异常及错误设置
@@ -312,9 +314,10 @@ return [
 
     //控制台配置
     'console'    => [
-        'name'    => 'Think Console',
-        'version' => '0.1',
-        'user'    => null,
+        'name'      => 'Think Console',
+        'version'   => '0.1',
+        'user'      => null,
+        'auto_path' => '',
     ],
 
     // 中间件配置

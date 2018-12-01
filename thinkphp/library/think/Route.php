@@ -114,6 +114,12 @@ class Route
     protected $lazy = true;
 
     /**
+     * 路由是否测试模式
+     * @var bool
+     */
+    protected $isTest;
+
+    /**
      * （分组）路由规则是否合并解析
      * @var bool
      */
@@ -189,6 +195,27 @@ class Route
     {
         $this->lazy = $lazy;
         return $this;
+    }
+
+    /**
+     * 设置路由为测试模式
+     * @access public
+     * @param  bool     $test   路由是否测试模式
+     * @return void
+     */
+    public function setTestMode($test)
+    {
+        $this->isTest = $test;
+    }
+
+    /**
+     * 检查路由是否为测试模式
+     * @access public
+     * @return bool
+     */
+    public function isTest()
+    {
+        return $this->isTest;
     }
 
     /**
@@ -299,7 +326,7 @@ class Route
         // 支持多个域名使用相同路由规则
         $domainName = is_array($name) ? array_shift($name) : $name;
 
-        if ('*' != $domainName && !strpos($domainName, '.')) {
+        if ('*' != $domainName && false === strpos($domainName, '.')) {
             $domainName .= '.' . $this->request->rootDomain();
         }
 
@@ -317,7 +344,7 @@ class Route
         if (is_array($name) && !empty($name)) {
             $root = $this->request->rootDomain();
             foreach ($name as $item) {
-                if (!strpos($item, '.')) {
+                if (false === strpos($item, '.')) {
                     $item .= '.' . $root;
                 }
 
@@ -367,7 +394,7 @@ class Route
             $domain = $this->domain;
         } elseif (true === $domain) {
             return $this->bind;
-        } elseif (!strpos($domain, '.')) {
+        } elseif (false === strpos($domain, '.')) {
             $domain .= '.' . $this->request->rootDomain();
         }
 
@@ -397,9 +424,9 @@ class Route
      * @param  string    $domain 域名
      * @return mixed
      */
-    public function getName($name = null, $domain = null)
+    public function getName($name = null, $domain = null, $method = '*')
     {
-        return $this->app['rule_name']->get($name, $domain);
+        return $this->app['rule_name']->get($name, $domain, $method);
     }
 
     /**
@@ -466,7 +493,9 @@ class Route
 
         // 检查路由别名
         if (isset($rules['__alias__'])) {
-            $this->alias($rules['__alias__']);
+            foreach ($rules['__alias__'] as $key => $val) {
+                $this->alias($key, $val);
+            }
             unset($rules['__alias__']);
         }
 
@@ -929,6 +958,17 @@ class Route
     }
 
     /**
+     * 清空路由规则
+     * @access public
+     * @return void
+     */
+    public function clear()
+    {
+        $this->app['rule_name']->clear();
+        $this->group->clear();
+    }
+
+    /**
      * 设置全局的路由分组参数
      * @access public
      * @param  string    $method     方法名
@@ -938,5 +978,13 @@ class Route
     public function __call($method, $args)
     {
         return call_user_func_array([$this->group, $method], $args);
+    }
+
+    public function __debugInfo()
+    {
+        $data = get_object_vars($this);
+        unset($data['app'], $data['request']);
+
+        return $data;
     }
 }

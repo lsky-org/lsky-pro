@@ -11,6 +11,8 @@
 
 namespace think\model\concern;
 
+use DateTime;
+
 /**
  * 自动时间戳
  */
@@ -43,20 +45,31 @@ trait TimeStamp
     /**
      * 时间日期字段格式化处理
      * @access protected
-     * @param  mixed $time      时间日期表达式
      * @param  mixed $format    日期格式
+     * @param  mixed $time      时间日期表达式
      * @param  bool  $timestamp 是否进行时间戳转换
      * @return mixed
      */
-    protected function formatDateTime($time, $format, $timestamp = false)
+    protected function formatDateTime($format, $time = 'now', $timestamp = false)
     {
-        if (false !== strpos($format, '\\')) {
-            $time = new $format($time);
-        } elseif (!$timestamp && false !== $format) {
-            $time = date($format, $time);
+        if (empty($time)) {
+            return;
         }
 
-        return $time;
+        if (false === $format) {
+            return $time;
+        } elseif (false !== strpos($format, '\\')) {
+            return new $format($time);
+        }
+
+        if ($timestamp) {
+            $dateTime = new DateTime();
+            $dateTime->setTimestamp($time);
+        } else {
+            $dateTime = new DateTime($time);
+        }
+
+        return $dateTime->format($format);
     }
 
     /**

@@ -17,18 +17,6 @@ use think\Model;
 class Collection extends BaseCollection
 {
     /**
-     * 返回数组中指定的一列
-     * @access public
-     * @param  string        $column_key
-     * @param  string|null   $index_key
-     * @return array
-     */
-    public function column($column_key, $index_key = null)
-    {
-        return array_column($this->toArray(), $column_key, $index_key);
-    }
-
-    /**
      * 延迟预载入关联查询
      * @access public
      * @param  mixed $relation 关联
@@ -93,4 +81,20 @@ class Collection extends BaseCollection
         return $this;
     }
 
+    /**
+     * 设置数据字段获取器
+     * @access public
+     * @param  string|array $name       字段名
+     * @param  callable     $callback   闭包获取器
+     * @return $this
+     */
+    public function withAttr($name, $callback = null)
+    {
+        $this->each(function ($model) use ($name, $callback) {
+            /** @var Model $model */
+            $model && $model->withAttribute($name, $callback);
+        });
+
+        return $this;
+    }
 }

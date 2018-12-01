@@ -75,6 +75,11 @@ class AliasRule extends Domain
             $this->mergeGroupOptions();
         }
 
+        if (isset($this->option['ext'])) {
+            // 路由ext参数 优先于系统配置的URL伪静态后缀参数
+            $bind = preg_replace('/\.(' . $request->ext() . ')$/i', '', $bind);
+        }
+
         $this->parseBindAppendParam($this->route);
 
         if (0 === strpos($this->route, '\\')) {

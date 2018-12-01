@@ -187,14 +187,12 @@ class Hook
      */
     protected function execTag($class, $tag = '', $params = null)
     {
-        $this->app->isDebug() && $this->app['debug']->remark('behavior_start', 'time');
-
         $method = Loader::parseName($tag, 1, false);
 
         if ($class instanceof \Closure) {
             $call  = $class;
             $class = 'Closure';
-        } elseif (strpos($class, '::')) {
+        } elseif (is_array($class) || strpos($class, '::')) {
             $call = $class;
         } else {
             $obj = Container::get($class);
@@ -209,13 +207,14 @@ class Hook
 
         $result = $this->app->invoke($call, [$params]);
 
-        if ($this->app->isDebug()) {
-            $debug = $this->app['debug'];
-            $debug->remark('behavior_end', 'time');
-            $this->app->log('[ BEHAVIOR ] Run ' . $class . ' @' . $tag . ' [ RunTime:' . $debug->getRangeTime('behavior_start', 'behavior_end') . 's ]');
-        }
-
         return $result;
     }
 
+    public function __debugInfo()
+    {
+        $data = get_object_vars($this);
+        unset($data['app']);
+
+        return $data;
+    }
 }

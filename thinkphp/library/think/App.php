@@ -20,7 +20,7 @@ use think\route\Dispatch;
  */
 class App extends Container
 {
-    const VERSION = '5.1.19';
+    const VERSION = '5.1.30 LTS';
 
     /**
      * 当前模块路径
@@ -126,13 +126,8 @@ class App extends Container
 
     public function __construct($appPath = '')
     {
-        $this->appPath = $appPath ? realpath($appPath) . DIRECTORY_SEPARATOR : $this->getAppPath();
-
-        $this->thinkPath   = dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR;
-        $this->rootPath    = dirname($this->appPath) . DIRECTORY_SEPARATOR;
-        $this->runtimePath = $this->rootPath . 'runtime' . DIRECTORY_SEPARATOR;
-        $this->routePath   = $this->rootPath . 'route' . DIRECTORY_SEPARATOR;
-        $this->configPath  = $this->rootPath . 'config' . DIRECTORY_SEPARATOR;
+        $this->thinkPath = dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR;
+        $this->path($appPath);
     }
 
     /**
@@ -155,7 +150,8 @@ class App extends Container
      */
     public function path($path)
     {
-        $this->appPath = $path;
+        $this->appPath = $path ? realpath($path) . DIRECTORY_SEPARATOR : $this->getAppPath();
+
         return $this;
     }
 
@@ -174,9 +170,16 @@ class App extends Container
         $this->beginTime   = microtime(true);
         $this->beginMem    = memory_get_usage();
 
+        $this->rootPath    = dirname($this->appPath) . DIRECTORY_SEPARATOR;
+        $this->runtimePath = $this->rootPath . 'runtime' . DIRECTORY_SEPARATOR;
+        $this->routePath   = $this->rootPath . 'route' . DIRECTORY_SEPARATOR;
+        $this->configPath  = $this->rootPath . 'config' . DIRECTORY_SEPARATOR;
+
         static::setInstance($this);
 
         $this->instance('app', $this);
+
+        $this->configExt = $this->env->get('config_ext', '.php');
 
         // 加载惯例配置文件
         $this->config->set(include $this->thinkPath . 'convention.php');
@@ -203,8 +206,6 @@ class App extends Container
 
         // 注册应用命名空间
         Loader::addNamespace($this->namespace, $this->appPath);
-
-        $this->configExt = $this->env->get('config_ext', '.php');
 
         // 初始化应用
         $this->init();
@@ -312,7 +313,7 @@ class App extends Container
 
             // 自动读取配置文件
             if (is_dir($path . 'config')) {
-                $dir = $path . 'config';
+                $dir = $path . 'config' . DIRECTORY_SEPARATOR;
             } elseif (is_dir($this->configPath . $module)) {
                 $dir = $this->configPath . $module;
             }
@@ -321,8 +322,7 @@ class App extends Container
 
             foreach ($files as $file) {
                 if ('.' . pathinfo($file, PATHINFO_EXTENSION) === $this->configExt) {
-                    $filename = $dir . DIRECTORY_SEPARATOR . $file;
-                    $this->config->load($filename, pathinfo($file, PATHINFO_FILENAME));
+                    $this->config->load($dir . $file, pathinfo($file, PATHINFO_FILENAME));
                 }
             }
         }
@@ -485,17 +485,23 @@ class App extends Container
         $cache = $this->request->cache($key, $expire, $except, $tag);
 
         if ($cache) {
-            list($key, $expire, $tag) = $cache;
-            if (strtotime($this->request->server('HTTP_IF_MODIFIED_SINCE')) + $expire > $this->request->server('REQUEST_TIME')) {
-                // 读取缓存
-                $response = Response::create()->code(304);
-                throw new HttpResponseException($response);
-            } elseif ($this->cache->has($key)) {
-                list($content, $header) = $this->cache->get($key);
+            $this->setResponseCache($cache);
+        }
+    }
 
-                $response = Response::create($content)->header($header);
-                throw new HttpResponseException($response);
-            }
+    public function setResponseCache($cache)
+    {
+        list($key, $expire, $tag) = $cache;
+
+        if (strtotime($this->request->server('HTTP_IF_MODIFIED_SINCE')) + $expire > $this->request->server('REQUEST_TIME')) {
+            // 读取缓存
+            $response = Response::create()->code(304);
+            throw new HttpResponseException($response);
+        } elseif ($this->cache->has($key)) {
+            list($content, $header) = $this->cache->get($key);
+
+            $response = Response::create($content)->header($header);
+            throw new HttpResponseException($response);
         }
     }
 
@@ -557,7 +563,8 @@ class App extends Container
         if ($this->route->config('route_annotation')) {
             // 自动生成路由定义
             if ($this->appDebug) {
-                $this->build->buildRoute($this->route->config('controller_suffix'));
+                $suffix = $this->route->config('controller_suffix') || $this->route->config('class_suffix');
+                $this->build->buildRoute($suffix);
             }
 
             $filename = $this->runtimePath . 'build_route.php';
@@ -578,10 +585,12 @@ class App extends Container
         // 检测路由缓存
         if (!$this->appDebug && $this->config->get('route_check_cache')) {
             $routeKey = $this->getRouteCacheKey();
-            $option   = $this->config->get('route_cache_option') ?: $this->cache->getConfig();
+            $option   = $this->config->get('route_cache_option');
 
-            if ($this->cache->connect($option)->has($routeKey)) {
+            if ($option && $this->cache->connect($option)->has($routeKey)) {
                 return $this->cache->connect($option)->get($routeKey);
+            } elseif ($this->cache->has($routeKey)) {
+                return $this->cache->get($routeKey);
             }
         }
 
@@ -596,10 +605,11 @@ class App extends Container
 
         if (!empty($routeKey)) {
             try {
-                $this->cache
-                    ->connect($option)
-                    ->tag('route_cache')
-                    ->set($routeKey, $dispatch);
+                if ($option) {
+                    $this->cache->connect($option)->tag('route_cache')->set($routeKey, $dispatch);
+                } else {
+                    $this->cache->tag('route_cache')->set($routeKey, $dispatch);
+                }
             } catch (\Exception $e) {
                 // 存在闭包的时候缓存无效
             }

@@ -1120,6 +1120,24 @@ class Service {
                         ),
                     ),
                 ),
+                'GetBucketNotification' => array(
+                    'httpMethod' => 'GET',
+                    'uri' => '/{Bucket}?notification',
+                    'class' => 'Qcloud\\Cos\\Command',
+                    'responseClass' => 'GetBucketNotificationOutput',
+                    'responseType' => 'model',
+                    'parameters' => array(
+                        'Bucket' => array(
+                            'required' => true,
+                            'type' => 'string',
+                            'location' => 'uri',
+                        ),
+                        'command.expects' => array(
+                            'static' => true,
+                            'default' => 'application/xml',
+                        ),
+                    ),
+                ),
                 'UploadPart' => array(
                     'httpMethod' => 'PUT',
                     'uri' => '/{Bucket}{/Key*}',
@@ -1827,7 +1845,6 @@ class Service {
                                         'type' => 'string',
                                     ),
                                     'Transitions' => array(
-                                        'required' => true,
                                         'type' => 'array',
                                         'location' => 'xml',
                                         'data' => array(
@@ -1999,6 +2016,92 @@ class Service {
                                             ),
                                             'StorageClass' => array(
                                                 'type' => 'string',
+                                            ),
+                                        ),
+                                    ),
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+                /**
+                设置存储桶（Bucket） 的回调设置的方法.
+                 */
+                'PutBucketNotification' => array(
+                    'httpMethod' => 'PUT',
+                    'uri' => '/{Bucket}?notification',
+                    'class' => 'Qcloud\\Cos\\Command',
+                    'responseClass' => 'PutBucketNotificationOutput',
+                    'responseType' => 'model',
+                    'data' => array(
+                        'xmlRoot' => array(
+                            'name' => 'NotificationConfiguration',
+                        ),
+                    ),
+                    'parameters' => array(
+                        'Bucket' => array(
+                            'required' => true,
+                            'type' => 'string',
+                            'location' => 'uri',
+                        ),
+                        'CloudFunctionConfigurations' => array(
+                            'type' => 'array',
+                            'location' => 'xml',
+                            'data' => array(
+                                'xmlFlattened' => true,
+                            ),
+                            'items' => array(
+                                'name' => 'CloudFunctionConfiguration',
+                                'type' => 'object',
+                                'sentAs' => 'CloudFunctionConfiguration',
+                                'properties' => array(
+                                    'Id' => array(
+                                        'type' => 'string',
+                                    ),
+                                    'CloudFunction' => array(
+                                        'required' => true,
+                                        'type' => 'string',
+                                        'sentAs' => 'CloudFunction',
+                                    ),
+                                    'Events' => array(
+                                        'required' => true,
+                                        'type' => 'array',
+                                        'data' => array(
+                                            'xmlFlattened' => true,
+                                        ),
+                                        'items' => array(
+                                            'name' => 'Event',
+                                            'type' => 'string',
+                                            'sentAs' => 'Event',
+                                        ),
+                                    ),
+                                    'Filter' => array(
+                                        'type' => 'object',
+                                        'properties' => array(
+                                            'Key' => array(
+                                                'type' => 'object',
+                                                'sentAs' => 'Key',
+                                                'properties' => array(
+                                                    'FilterRules' => array(
+                                                        'type' => 'array',
+                                                        'data' => array(
+                                                            'xmlFlattened' => true,
+                                                        ),
+                                                        'items' => array(
+                                                            'name' => 'FilterRule',
+                                                            'type' => 'object',
+                                                            'sentAs' => 'FilterRule',
+                                                            'properties' => array(
+                                                                'Name' => array(
+                                                                    'type' => 'string',
+                                                                ),
+                                                                'Value' => array(
+                                                                    'type' => 'string',
+                                                                ),
+                                                            ),
+                                                        ),
+                                                    ),
+                                                ),
                                             ),
                                         ),
                                     ),
@@ -3543,6 +3646,16 @@ class Service {
                         ),
                     ),
                 ),
+                'PutBucketNotificationOutput' => array(
+                    'type' => 'object',
+                    'additionalProperties' => true,
+                    'properties' => array(
+                        'RequestId' => array(
+                            'location' => 'header',
+                            'sentAs' => 'x-cos-request-id',
+                        ),
+                    ),
+                ),
                 'RestoreObjectOutput' => array(
                     'type' => 'object',
                     'additionalProperties' => true,
@@ -4135,6 +4248,81 @@ class Service {
                             'sentAs' => 'x-cos-request-id',
                         ),
                     ),
-                ),));
+                ),
+                'GetBucketNotificationOutput' => array(
+                    'type' => 'object',
+                    'additionalProperties' => true,
+                    'properties' => array(
+                        'CloudFunctionConfigurations' => array(
+                            'type' => 'array',
+                            'location' => 'xml',
+                            'sentAs' => 'CloudFunctionConfiguration',
+                            'data' => array(
+                                'xmlFlattened' => true,
+                            ),
+                            'items' => array(
+                                'name' => 'CloudFunctionConfiguration',
+                                'type' => 'object',
+                                'sentAs' => 'CloudFunctionConfiguration',
+                                'properties' => array(
+                                    'Id' => array(
+                                        'type' => 'string',
+                                    ),
+                                    'CloudFunction' => array(
+                                        'type' => 'string',
+                                        'sentAs' => 'CloudFunction',
+                                    ),
+                                    'Events' => array(
+                                        'type' => 'array',
+                                        'sentAs' => 'Event',
+                                        'data' => array(
+                                            'xmlFlattened' => true,
+                                        ),
+                                        'items' => array(
+                                            'name' => 'Event',
+                                            'type' => 'string',
+                                            'sentAs' => 'Event',
+                                        ),
+                                    ),
+                                    'Filter' => array(
+                                        'type' => 'object',
+                                        'properties' => array(
+                                            'Key' => array(
+                                                'type' => 'object',
+                                                'sentAs' => 'Key',
+                                                'properties' => array(
+                                                    'FilterRules' => array(
+                                                        'type' => 'array',
+                                                        'sentAs' => 'FilterRule',
+                                                        'data' => array(
+                                                            'xmlFlattened' => true,
+                                                        ),
+                                                        'items' => array(
+                                                            'name' => 'FilterRule',
+                                                            'type' => 'object',
+                                                            'sentAs' => 'FilterRule',
+                                                            'properties' => array(
+                                                                'Name' => array(
+                                                                    'type' => 'string',
+                                                                ),
+                                                                'Value' => array(
+                                                                    'type' => 'string',
+                                                                ),
+                                                            ),
+                                                        ),
+                                                    ),
+                                                ),
+                                            ),
+                                        ),
+                                    ),
+                                ),
+                            ),
+                        ),
+                        'RequestId' => array(
+                            'location' => 'header',
+                            'sentAs' => 'x-cos-request-id',
+                        ),
+                    ),
+                )));
     }
 }

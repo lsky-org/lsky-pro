@@ -52,6 +52,32 @@ final class Zone
         return $Zone_z0;
     }
 
+    //华东机房内网上传
+    public static function zoneZ0()
+    {
+        $Zone_z01 = new Zone(
+            array("free-qvm-z0-xs.qiniup.com"),
+            'rs.qbox.me',
+            'rsf.qbox.me',
+            'api.qiniu.com',
+            'iovip.qbox.me'
+        );
+        return $Zone_z01;
+    }
+
+    //华北机房内网上传
+    public static function zoneZ1()
+    {
+        $Zone_z12 = new Zone(
+            array("free-qvm-z1-zz.qiniup.com"),
+            "rs-z1.qbox.me",
+            "rsf-z1.qbox.me",
+            "api-z1.qiniu.com",
+            "iovip-z1.qbox.me"
+        );
+        return $Zone_z12;
+    }
+
     //华北机房
     public static function zone1()
     {

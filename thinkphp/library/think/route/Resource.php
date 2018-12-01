@@ -53,19 +53,24 @@ class Resource extends RuleGroup
             $this->domain = $this->parent->getDomain();
             $this->parent->addRuleItem($this);
         }
+
+        if ($router->isTest()) {
+            $this->buildResourceRule();
+        }
     }
 
     /**
      * 生成资源路由规则
      * @access protected
-     * @param  string    $rule       路由规则
-     * @param  array     $option     路由参数
      * @return void
      */
-    protected function buildResourceRule($rule, $option = [])
+    protected function buildResourceRule()
     {
         $origin = $this->router->getGroup();
         $this->router->setGroup($this);
+
+        $rule   = $this->resource;
+        $option = $this->option;
 
         if (strpos($rule, '.')) {
             // 注册嵌套资源路由

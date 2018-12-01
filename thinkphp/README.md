@@ -1,11 +1,13 @@
-![](http://www.thinkphp.cn/Uploads/editor/2016-06-23/576b4732a6e04.png) 
+![](https://box.kancloud.cn/5a0aaa69a5ff42657b5c4715f3d49221) 
 
-ThinkPHP 5.1 —— 12载初心，你值得信赖的PHP框架
+ThinkPHP 5.1（LTS） —— 12载初心，你值得信赖的PHP框架
 ===============
 
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/top-think/framework/badges/quality-score.png?b=5.1)](https://scrutinizer-ci.com/g/top-think/framework/?branch=5.1)
 [![Build Status](https://travis-ci.org/top-think/framework.svg?branch=master)](https://travis-ci.org/top-think/framework)
 [![Total Downloads](https://poser.pugx.org/topthink/framework/downloads)](https://packagist.org/packages/topthink/framework)
 [![Latest Stable Version](https://poser.pugx.org/topthink/framework/v/stable)](https://packagist.org/packages/topthink/framework)
+[![PHP Version](https://img.shields.io/badge/php-%3E%3D5.6-8892BF.svg)](http://www.php.net/)
 [![License](https://poser.pugx.org/topthink/framework/license)](https://packagist.org/packages/topthink/framework)
 
 ThinkPHP5.1对底层架构做了进一步的改进，减少依赖，其主要特性包括：
@@ -25,6 +27,8 @@ ThinkPHP5.1对底层架构做了进一步的改进，减少依赖，其主要特
  + 中间件支持（`V5.1.6+`）
  + 支持`Swoole`/`Workerman`运行（`V5.1.18+`）
 
+官方已经正式宣布`5.1.27`版本为LTS版本。
+
 ### 废除的功能：
 
  + 聚合模型
@@ -32,6 +36,7 @@ ThinkPHP5.1对底层架构做了进一步的改进，减少依赖，其主要特
  + 模型自动验证
 
 > ThinkPHP5.1的运行环境要求PHP5.6+。
+
 
 ## 安装
 
@@ -67,7 +72,7 @@ composer update topthink/framework
 
 ## 命名规范
 
-`ThinkPHP5`遵循PSR-2命名规范和PSR-4自动加载规范。
+`ThinkPHP5.1`遵循PSR-2命名规范和PSR-4自动加载规范。
 
 ## 参与开发
 

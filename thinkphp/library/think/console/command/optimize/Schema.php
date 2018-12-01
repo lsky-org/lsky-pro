@@ -19,9 +19,6 @@ use think\facade\App;
 
 class Schema extends Command
 {
-    /** @var  Output */
-    protected $output;
-
     protected function configure()
     {
         $this->setName('optimize:schema')
@@ -56,7 +53,7 @@ class Schema extends Command
             return;
         } elseif ($input->hasOption('table')) {
             $table = $input->getOption('table');
-            if (!strpos($table, '.')) {
+            if (false === strpos($table, '.')) {
                 $dbName = Db::getConfig('database');
             }
 

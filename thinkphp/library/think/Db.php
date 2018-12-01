@@ -16,7 +16,6 @@ use think\db\Connection;
 /**
  * Class Db
  * @package think
- * @method \think\db\Query connect(array $config =[], mixed $name = false) static 连接/切换数据库连接
  * @method \think\db\Query master() static 从主服务器读取数据
  * @method \think\db\Query readMaster(bool $all = false) static 后续从主服务器读取数据
  * @method \think\db\Query table(string $table) static 指定数据表（含前缀）
@@ -35,6 +34,7 @@ use think\db\Connection;
  * @method \think\db\Query order(mixed $field, string $order = null) static 查询ORDER
  * @method \think\db\Query orderRaw(string $field, array $bind = []) static 查询ORDER
  * @method \think\db\Query cache(mixed $key = null , integer $expire = null) static 设置查询缓存
+ * @method \think\db\Query withAttr(string $name,callable $callback = null) static 使用获取器获取数据
  * @method mixed value(string $field) static 获取某个字段的值
  * @method array column(string $field, string $key = '') static 获取某个列的值
  * @method mixed find(mixed $data = null) static 查询单个记录
@@ -55,7 +55,6 @@ use think\db\Connection;
  * @method void rollback() static 事务回滚
  * @method boolean batchQuery(array $sqlArray) static 批处理执行SQL语句
  * @method string getLastInsID(string $sequence = null) static 获取最近插入的ID
- * @method mixed getConfig(string $name = '') static 获取数据库的配置参数
  */
 class Db
 {

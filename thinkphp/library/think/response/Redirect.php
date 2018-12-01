@@ -99,15 +99,18 @@ class Redirect extends Response
     /**
      * 跳转到上次记住的url
      * @access public
+     * @param  string  $url 闪存数据不存在时的跳转地址
      * @return $this
      */
-    public function restore()
+    public function restore($url = null)
     {
         $session = $this->app['session'];
 
         if ($session->has('redirect_url')) {
             $this->data = $session->get('redirect_url');
             $session->delete('redirect_url');
+        } elseif ($url) {
+            $this->data = $url;
         }
 
         return $this;

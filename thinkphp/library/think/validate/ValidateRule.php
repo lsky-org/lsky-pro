@@ -36,25 +36,25 @@ namespace think\validate;
  * @method ValidateRule regex(mixed $rule, string $msg = '') static 使用正则验证数据
  * @method ValidateRule token(mixed $rule='__token__', string $msg = '') static 验证表单令牌
  * @method ValidateRule is(mixed $rule, string $msg = '') static 验证字段值是否为有效格式
- * @method ValidateRule isRequire(mixed $rule, string $msg = '') static 验证字段必须
- * @method ValidateRule isNumber(mixed $rule, string $msg = '') static 验证字段值是否为数字
- * @method ValidateRule isArray(mixed $rule, string $msg = '') static 验证字段值是否为数组
- * @method ValidateRule isInteger(mixed $rule, string $msg = '') static 验证字段值是否为整形
- * @method ValidateRule isFloat(mixed $rule, string $msg = '') static 验证字段值是否为浮点数
- * @method ValidateRule isMobile(mixed $rule, string $msg = '') static 验证字段值是否为手机
- * @method ValidateRule isIdCard(mixed $rule, string $msg = '') static 验证字段值是否为身份证号码
- * @method ValidateRule isChs(mixed $rule, string $msg = '') static 验证字段值是否为中文
- * @method ValidateRule isChsDash(mixed $rule, string $msg = '') static 验证字段值是否为中文字母及下划线
- * @method ValidateRule isChsAlpha(mixed $rule, string $msg = '') static 验证字段值是否为中文和字母
- * @method ValidateRule isChsAlphaNum(mixed $rule, string $msg = '') static 验证字段值是否为中文字母和数字
- * @method ValidateRule isDate(mixed $rule, string $msg = '') static 验证字段值是否为有效格式
- * @method ValidateRule isBool(mixed $rule, string $msg = '') static 验证字段值是否为布尔值
- * @method ValidateRule isAlpha(mixed $rule, string $msg = '') static 验证字段值是否为字母
- * @method ValidateRule isAlphaDash(mixed $rule, string $msg = '') static 验证字段值是否为字母和下划线
- * @method ValidateRule isAlphaNum(mixed $rule, string $msg = '') static 验证字段值是否为字母和数字
- * @method ValidateRule isAccepted(mixed $rule, string $msg = '') static 验证字段值是否为yes, on, 或是 1
- * @method ValidateRule isEmail(mixed $rule, string $msg = '') static 验证字段值是否为有效邮箱格式
- * @method ValidateRule isUrl(mixed $rule, string $msg = '') static 验证字段值是否为有效URL地址
+ * @method ValidateRule isRequire(mixed $rule = null, string $msg = '') static 验证字段必须
+ * @method ValidateRule isNumber(mixed $rule = null, string $msg = '') static 验证字段值是否为数字
+ * @method ValidateRule isArray(mixed $rule = null, string $msg = '') static 验证字段值是否为数组
+ * @method ValidateRule isInteger(mixed $rule = null, string $msg = '') static 验证字段值是否为整形
+ * @method ValidateRule isFloat(mixed $rule = null, string $msg = '') static 验证字段值是否为浮点数
+ * @method ValidateRule isMobile(mixed $rule = null, string $msg = '') static 验证字段值是否为手机
+ * @method ValidateRule isIdCard(mixed $rule = null, string $msg = '') static 验证字段值是否为身份证号码
+ * @method ValidateRule isChs(mixed $rule = null, string $msg = '') static 验证字段值是否为中文
+ * @method ValidateRule isChsDash(mixed $rule = null, string $msg = '') static 验证字段值是否为中文字母及下划线
+ * @method ValidateRule isChsAlpha(mixed $rule = null, string $msg = '') static 验证字段值是否为中文和字母
+ * @method ValidateRule isChsAlphaNum(mixed $rule = null, string $msg = '') static 验证字段值是否为中文字母和数字
+ * @method ValidateRule isDate(mixed $rule = null, string $msg = '') static 验证字段值是否为有效格式
+ * @method ValidateRule isBool(mixed $rule = null, string $msg = '') static 验证字段值是否为布尔值
+ * @method ValidateRule isAlpha(mixed $rule = null, string $msg = '') static 验证字段值是否为字母
+ * @method ValidateRule isAlphaDash(mixed $rule = null, string $msg = '') static 验证字段值是否为字母和下划线
+ * @method ValidateRule isAlphaNum(mixed $rule = null, string $msg = '') static 验证字段值是否为字母和数字
+ * @method ValidateRule isAccepted(mixed $rule = null, string $msg = '') static 验证字段值是否为yes, on, 或是 1
+ * @method ValidateRule isEmail(mixed $rule = null, string $msg = '') static 验证字段值是否为有效邮箱格式
+ * @method ValidateRule isUrl(mixed $rule = null, string $msg = '') static 验证字段值是否为有效URL地址
  * @method ValidateRule activeUrl(mixed $rule, string $msg = '') static 验证是否为合格的域名或者IP
  * @method ValidateRule ip(mixed $rule, string $msg = '') static 验证是否有效IP
  * @method ValidateRule fileExt(mixed $rule, string $msg = '') static 验证文件后缀
@@ -69,7 +69,7 @@ namespace think\validate;
  * @method ValidateRule requireIf(mixed $rule, string $msg = '') static 验证某个字段等于某个值的时候必须
  * @method ValidateRule requireCallback(mixed $rule, string $msg = '') static 通过回调方法验证某个字段是否必须
  * @method ValidateRule requireWith(mixed $rule, string $msg = '') static 验证某个字段有值的情况下必须
- * @method ValidateRule must(mixed $rule=null, string $msg = '') static 必须验证
+ * @method ValidateRule must(mixed $rule = null, string $msg = '') static 必须验证
  */
 class ValidateRule
 {

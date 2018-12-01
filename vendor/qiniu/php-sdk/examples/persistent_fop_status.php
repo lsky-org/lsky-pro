@@ -3,10 +3,16 @@ require_once __DIR__ . '/../autoload.php';
 
 use Qiniu\Processing\PersistentFop;
 
+$pfop = new Qiniu\Processing\PersistentFop(null, null);
+
 // 触发持久化处理后返回的 Id
-$persistentId = 'z0.564d5f977823de48a85ece59';
+$persistentId = 'z1.5b8a48e5856db843bc24cfc3';
 
 // 通过persistentId查询该 触发持久化处理的状态
-$status = PersistentFop::status($persistentId);
+list($ret, $err) = $pfop->status($persistentId);
 
-var_dump($status);
+if ($err) {
+    print_r($err);
+} else {
+    print_r($ret);
+}

@@ -70,18 +70,6 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
     }
 
     /**
-     * 比较数组，返回差集
-     *
-     * @access public
-     * @param  mixed $items
-     * @return static
-     */
-    public function diff($items)
-    {
-        return new static(array_diff($this->items, $this->convertToArray($items)));
-    }
-
-    /**
      * 交换数组中的键和值
      *
      * @access public
@@ -93,26 +81,107 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
     }
 
     /**
+     * 按指定键整理数据
+     *
+     * @access public
+     * @param  mixed    $items      数据
+     * @param  string   $indexKey   键名
+     * @return array
+     */
+    public function dictionary($items = null, &$indexKey = null)
+    {
+        if ($items instanceof self || $items instanceof Paginator) {
+            $items = $items->all();
+        }
+
+        $items = is_null($items) ? $this->items : $items;
+
+        if ($items && empty($indexKey)) {
+            $indexKey = is_array($items[0]) ? 'id' : $items[0]->getPk();
+        }
+
+        if (isset($indexKey) && is_string($indexKey)) {
+            return array_column($items, null, $indexKey);
+        }
+
+        return $items;
+    }
+
+    /**
+     * 比较数组，返回差集
+     *
+     * @access public
+     * @param  mixed    $items      数据
+     * @param  string   $indexKey   指定比较的键名
+     * @return static
+     */
+    public function diff($items, $indexKey = null)
+    {
+        if ($this->isEmpty() || is_scalar($this->items[0])) {
+            return new static(array_diff($this->items, $this->convertToArray($items)));
+        }
+
+        $diff       = [];
+        $dictionary = $this->dictionary($items, $indexKey);
+
+        if (is_string($indexKey)) {
+            foreach ($this->items as $item) {
+                if (!isset($dictionary[$item[$indexKey]])) {
+                    $diff[] = $item;
+                }
+            }
+        }
+
+        return new static($diff);
+    }
+
+    /**
      * 比较数组，返回交集
      *
      * @access public
-     * @param  mixed $items
+     * @param  mixed    $items      数据
+     * @param  string   $indexKey   指定比较的键名
      * @return static
      */
-    public function intersect($items)
+    public function intersect($items, $indexKey = null)
     {
-        return new static(array_intersect($this->items, $this->convertToArray($items)));
+        if ($this->isEmpty() || is_scalar($this->items[0])) {
+            return new static(array_diff($this->items, $this->convertToArray($items)));
+        }
+
+        $intersect  = [];
+        $dictionary = $this->dictionary($items, $indexKey);
+
+        if (is_string($indexKey)) {
+            foreach ($this->items as $item) {
+                if (isset($dictionary[$item[$indexKey]])) {
+                    $intersect[] = $item;
+                }
+            }
+        }
+
+        return new static($intersect);
     }
 
     /**
      * 返回数组中所有的键名
      *
      * @access public
-     * @return static
+     * @return array
      */
     public function keys()
     {
-        return new static(array_keys($this->items));
+        $current = current($this->items);
+
+        if (is_scalar($current)) {
+            $array = $this->items;
+        } elseif (is_array($current)) {
+            $array = $current;
+        } else {
+            $array = $current->toArray();
+        }
+
+        return array_keys($array);
     }
 
     /**
@@ -235,6 +304,17 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
     }
 
     /**
+     * 用回调函数处理数组中的元素
+     * @access public
+     * @param  callable|null $callback
+     * @return static
+     */
+    public function map(callable $callback)
+    {
+        return new static(array_map($callback, $this->items));
+    }
+
+    /**
      * 用回调函数过滤数组中的元素
      * @access public
      * @param  callable|null $callback
@@ -247,6 +327,68 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
         }
 
         return new static(array_filter($this->items));
+    }
+
+    /**
+     * 根据字段条件过滤数组中的元素
+     * @access public
+     * @param  string   $field 字段名
+     * @param  mixed    $operator 操作符
+     * @param  mixed    $value 数据
+     * @return static
+     */
+    public function where($field, $operator, $value = null)
+    {
+        if (is_null($value)) {
+            $value    = $operator;
+            $operator = '=';
+        }
+
+        return $this->filter(function ($data) use ($field, $operator, $value) {
+            if (strpos($field, '.')) {
+                list($field, $relation) = explode('.', $field);
+
+                $result = isset($data[$field][$relation]) ? $data[$field][$relation] : null;
+            } else {
+                $result = isset($data[$field]) ? $data[$field] : null;
+            }
+
+            switch ($operator) {
+                case '===':
+                    return $result === $value;
+                case '!==':
+                    return $result !== $value;
+                case '!=':
+                case '<>':
+                    return $result != $value;
+                case '>':
+                    return $result > $value;
+                case '>=':
+                    return $result >= $value;
+                case '<':
+                    return $result < $value;
+                case '<=':
+                    return $result <= $value;
+                case 'like':
+                    return is_string($result) && false !== strpos($result, $value);
+                case 'not like':
+                    return is_string($result) && false === strpos($result, $value);
+                case 'in':
+                    return is_scalar($result) && in_array($result, $value, true);
+                case 'not in':
+                    return is_scalar($result) && !in_array($result, $value, true);
+                case 'between':
+                    list($min, $max) = is_string($value) ? explode(',', $value) : $value;
+                    return is_scalar($result) && $result >= $min && $result <= $max;
+                case 'not between':
+                    list($min, $max) = is_string($value) ? explode(',', $value) : $value;
+                    return is_scalar($result) && $result > $max || $result < $min;
+                case '==':
+                case '=':
+                default:
+                    return $result == $value;
+            }
+        });
     }
 
     /**
@@ -280,6 +422,28 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
         uasort($items, $callback);
 
         return new static($items);
+    }
+
+    /**
+     * 指定字段排序
+     * @access public
+     * @param  string       $field 排序字段
+     * @param  string       $order 排序
+     * @param  bool         $intSort 是否为数字排序
+     * @return $this
+     */
+    public function order($field, $order = null, $intSort = true)
+    {
+        return $this->sort(function ($a, $b) use ($field, $order, $intSort) {
+            $fieldA = isset($a[$field]) ? $a[$field] : null;
+            $fieldB = isset($b[$field]) ? $b[$field] : null;
+
+            if ($intSort) {
+                return 'desc' == strtolower($order) ? $fieldB >= $fieldA : $fieldA >= $fieldB;
+            } else {
+                return 'desc' == strtolower($order) ? strcmp($fieldB, $fieldA) : strcmp($fieldA, $fieldB);
+            }
+        });
     }
 
     /**

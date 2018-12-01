@@ -11,9 +11,9 @@
 
 namespace Symfony\Component\EventDispatcher\Debug;
 
-use Symfony\Component\Stopwatch\Stopwatch;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Stopwatch\Stopwatch;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
@@ -58,7 +58,7 @@ class WrappedListener
 
         $e = $this->stopwatch->start($this->name, 'event_listener');
 
-        call_user_func($this->listener, $event, $eventName, $this->dispatcher ?: $dispatcher);
+        \call_user_func($this->listener, $event, $eventName, $this->dispatcher ?: $dispatcher);
 
         if ($e->isStarted()) {
             $e->stop();

@@ -133,8 +133,9 @@ final class UploadManager
         }
         $ret = array();
         foreach ($params as $k => $v) {
-            $pos = strpos($k, 'x:');
-            if ($pos === 0 && !empty($v)) {
+            $pos1 = strpos($k, 'x:');
+            $pos2 = strpos($k, 'x-qn-meta-');
+            if (($pos1 === 0 || $pos2 === 0) && !empty($v)) {
                 $ret[$k] = $v;
             }
         }

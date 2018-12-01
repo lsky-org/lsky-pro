@@ -161,7 +161,7 @@ class Lang
         $range = $range ?: $this->range;
 
         // 空参数返回所有定义
-        if (empty($name)) {
+        if (is_null($name)) {
             return $this->lang[$range];
         }
 

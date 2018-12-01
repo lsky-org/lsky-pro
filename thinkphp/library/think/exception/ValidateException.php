@@ -15,10 +15,11 @@ class ValidateException extends \RuntimeException
 {
     protected $error;
 
-    public function __construct($error)
+    public function __construct($error, $code = 0)
     {
         $this->error   = $error;
         $this->message = is_array($error) ? implode("\n\r", $error) : $error;
+        $this->code    = $code;
     }
 
     /**

@@ -129,6 +129,17 @@ class File
      */
     protected function getMasterLogFile()
     {
+        if ($this->config['max_files']) {
+            $files = glob($this->config['path'] . '*.log');
+
+            try {
+                if (count($files) > $this->config['max_files']) {
+                    unlink($files[0]);
+                }
+            } catch (\Exception $e) {
+            }
+        }
+
         if ($this->config['single']) {
             $name = is_string($this->config['single']) ? $this->config['single'] : 'single';
 
@@ -138,14 +149,6 @@ class File
 
             if ($this->config['max_files']) {
                 $filename = date('Ymd') . $cli . '.log';
-                $files    = glob($this->config['path'] . '*.log');
-
-                try {
-                    if (count($files) > $this->config['max_files']) {
-                        unlink($files[0]);
-                    }
-                } catch (\Exception $e) {
-                }
             } else {
                 $filename = date('Ym') . DIRECTORY_SEPARATOR . date('d') . $cli . '.log';
             }

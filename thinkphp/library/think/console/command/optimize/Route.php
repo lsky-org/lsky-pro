@@ -17,9 +17,6 @@ use think\Container;
 
 class Route extends Command
 {
-    /** @var  Output */
-    protected $output;
-
     protected function configure()
     {
         $this->setName('optimize:route')
@@ -39,7 +36,7 @@ class Route extends Command
     protected function buildRouteCache()
     {
         Container::get('route')->setName([]);
-        Container::get('route')->lazy(false);
+        Container::get('route')->setTestMode(true);
         // 路由检测
         $path = Container::get('app')->getRoutePath();
 
@@ -57,7 +54,8 @@ class Route extends Command
         }
 
         if (Container::get('config')->get('route_annotation')) {
-            include Container::get('build')->buildRoute();
+            $suffix = Container::get('config')->get('controller_suffix') || Container::get('config')->get('class_suffix');
+            include Container::get('build')->buildRoute($suffix);
         }
 
         $content = '<?php ' . PHP_EOL . 'return ';

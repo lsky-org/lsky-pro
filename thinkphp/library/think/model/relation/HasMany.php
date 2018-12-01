@@ -152,22 +152,27 @@ class HasMany extends Relation
      * @param  \Closure $closure 闭包
      * @param  string   $aggregate 聚合查询方法
      * @param  string   $field 字段
+     * @param  string   $name 统计字段别名
      * @return integer
      */
-    public function relationCount($result, $closure, $aggregate = 'count', $field = '*')
+    public function relationCount($result, $closure, $aggregate = 'count', $field = '*', &$name = '')
     {
         $localKey = $this->localKey;
-        $count    = 0;
 
-        if (isset($result->$localKey)) {
-            if ($closure) {
-                $closure($this->query);
-            }
-
-            $count = $this->query->where($this->foreignKey, '=', $result->$localKey)->$aggregate($field);
+        if (!isset($result->$localKey)) {
+            return 0;
         }
 
-        return $count;
+        if ($closure) {
+            $return = $closure($this->query);
+            if ($return && is_string($return)) {
+                $name = $return;
+            }
+        }
+
+        return $this->query
+            ->where($this->foreignKey, '=', $result->$localKey)
+            ->$aggregate($field);
     }
 
     /**
@@ -176,16 +181,21 @@ class HasMany extends Relation
      * @param  \Closure $closure 闭包
      * @param  string   $aggregate 聚合查询方法
      * @param  string   $field 字段
+     * @param  string   $aggregateAlias 聚合字段别名
      * @return string
      */
-    public function getRelationCountQuery($closure, $aggregate = 'count', $field = '*')
+    public function getRelationCountQuery($closure, $aggregate = 'count', $field = '*', &$aggregateAlias = '')
     {
         if ($closure) {
-            $closure($this->query);
+            $return = $closure($this->query);
+
+            if ($return && is_string($return)) {
+                $aggregateAlias = $return;
+            }
         }
 
         return $this->query
-            ->whereExp($this->foreignKey, '=' . $this->parent->getTable() . '.' . $this->parent->getPk())
+            ->whereExp($this->foreignKey, '=' . $this->parent->getTable() . '.' . $this->localKey)
             ->fetchSql()
             ->$aggregate($field);
     }

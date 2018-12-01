@@ -69,6 +69,61 @@ class HasOne extends OneToOne
     }
 
     /**
+     * 创建关联统计子查询
+     * @access public
+     * @param  \Closure $closure 闭包
+     * @param  string   $aggregate 聚合查询方法
+     * @param  string   $field 字段
+     * @param  string   $aggregateAlias 聚合字段别名
+     * @return string
+     */
+    public function getRelationCountQuery($closure, $aggregate = 'count', $field = '*', &$aggregateAlias = '')
+    {
+        if ($closure) {
+            $return = $closure($this->query);
+
+            if ($return && is_string($return)) {
+                $aggregateAlias = $return;
+            }
+        }
+
+        return $this->query
+            ->whereExp($this->foreignKey, '=' . $this->parent->getTable() . '.' . $this->localKey)
+            ->fetchSql()
+            ->$aggregate($field);
+    }
+
+    /**
+     * 关联统计
+     * @access public
+     * @param  Model    $result  数据对象
+     * @param  \Closure $closure 闭包
+     * @param  string   $aggregate 聚合查询方法
+     * @param  string   $field 字段
+     * @param  string   $name 统计字段别名
+     * @return integer
+     */
+    public function relationCount($result, $closure, $aggregate = 'count', $field = '*', &$name = '')
+    {
+        $localKey = $this->localKey;
+
+        if (!isset($result->$localKey)) {
+            return 0;
+        }
+
+        if ($closure) {
+            $return = $closure($this->query);
+            if ($return && is_string($return)) {
+                $name = $return;
+            }
+        }
+
+        return $this->query
+            ->where($this->foreignKey, '=', $result->$localKey)
+            ->$aggregate($field);
+    }
+
+    /**
      * 根据关联条件查询当前模型
      * @access public
      * @param  string  $operator 比较操作符

@@ -19,7 +19,6 @@ use think\console\Output;
 
 class Help extends Command
 {
-
     private $command;
 
     /**

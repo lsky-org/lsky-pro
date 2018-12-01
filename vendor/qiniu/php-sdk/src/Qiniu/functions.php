@@ -255,7 +255,7 @@ if (!defined('QINIU_FUNCTIONS_VERSION')) {
             return array(null, null, "invalid uptoken");
         }
         $accessKey = $items[0];
-        $putPolicy = json_decode(base64_decode($items[2]));
+        $putPolicy = json_decode(base64_urlSafeDecode($items[2]));
         $scope = $putPolicy->scope;
         $scopeItems = explode(':', $scope);
         $bucket = $scopeItems[0];

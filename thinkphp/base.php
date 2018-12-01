@@ -28,28 +28,6 @@ if (interface_exists('Psr\Log\LoggerInterface')) {
     {}
 }
 
-// 注册核心类的静态代理
-Facade::bind([
-    facade\App::class        => App::class,
-    facade\Build::class      => Build::class,
-    facade\Cache::class      => Cache::class,
-    facade\Config::class     => Config::class,
-    facade\Cookie::class     => Cookie::class,
-    facade\Debug::class      => Debug::class,
-    facade\Env::class        => Env::class,
-    facade\Hook::class       => Hook::class,
-    facade\Lang::class       => Lang::class,
-    facade\Log::class        => Log::class,
-    facade\Middleware::class => Middleware::class,
-    facade\Request::class    => Request::class,
-    facade\Response::class   => Response::class,
-    facade\Route::class      => Route::class,
-    facade\Session::class    => Session::class,
-    facade\Url::class        => Url::class,
-    facade\Validate::class   => Validate::class,
-    facade\View::class       => View::class,
-]);
-
 // 注册类库别名
 Loader::addClassAlias([
     'App'      => facade\App::class,

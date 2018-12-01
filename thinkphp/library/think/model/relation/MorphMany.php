@@ -186,27 +186,31 @@ class MorphMany extends Relation
      * @param  \Closure $closure 闭包
      * @param  string   $aggregate 聚合查询方法
      * @param  string   $field 字段
+     * @param  string   $name 统计字段别名
      * @return integer
      */
-    public function relationCount($result, $closure, $aggregate = 'count', $field = '*')
+    public function relationCount($result, $closure, $aggregate = 'count', $field = '*', &$name = '')
     {
-        $pk    = $result->getPk();
-        $count = 0;
+        $pk = $result->getPk();
 
-        if (isset($result->$pk)) {
-            if ($closure) {
-                $closur($this->query);
-            }
-
-            $count = $this->query
-                ->where([
-                    [$this->morphKey, '=', $result->$pk],
-                    [$this->morphType, '=', $this->type],
-                ])
-                ->$aggregate($field);
+        if (!isset($result->$pk)) {
+            return 0;
         }
 
-        return $count;
+        if ($closure) {
+            $return = $closure($this->query);
+
+            if ($return && is_string($return)) {
+                $name = $return;
+            }
+        }
+
+        return $this->query
+            ->where([
+                [$this->morphKey, '=', $result->$pk],
+                [$this->morphType, '=', $this->type],
+            ])
+            ->$aggregate($field);
     }
 
     /**
@@ -215,12 +219,17 @@ class MorphMany extends Relation
      * @param  \Closure $closure 闭包
      * @param  string   $aggregate 聚合查询方法
      * @param  string   $field 字段
+     * @param  string   $aggregateAlias 聚合字段别名
      * @return string
      */
-    public function getRelationCountQuery($closure, $aggregate = 'count', $field = '*')
+    public function getRelationCountQuery($closure, $aggregate = 'count', $field = '*', &$aggregateAlias = '')
     {
         if ($closure) {
-            $closure($this->query);
+            $return = $closure($this->query);
+
+            if ($return && is_string($return)) {
+                $aggregateAlias = $return;
+            }
         }
 
         return $this->query

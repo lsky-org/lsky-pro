@@ -190,22 +190,28 @@ class Build
     public function buildRoute($suffix = false, $layer = '')
     {
         $namespace = $this->app->getNameSpace();
-        $modules   = glob($this->basePath . '*', GLOB_ONLYDIR);
         $content   = '<?php ' . PHP_EOL . '//根据 Annotation 自动生成的路由规则';
 
         if (!$layer) {
             $layer = $this->app->config('app.url_controller_layer');
         }
 
-        foreach ($modules as $module) {
-            $module = basename($module);
+        if ($this->app->config('app.app_multi_module')) {
+            $modules = glob($this->basePath . '*', GLOB_ONLYDIR);
 
-            if (in_array($module, $this->app->config('app.deny_module_list'))) {
-                continue;
+            foreach ($modules as $module) {
+                $module = basename($module);
+
+                if (in_array($module, $this->app->config('app.deny_module_list'))) {
+                    continue;
+                }
+
+                $path = $this->basePath . $module . DIRECTORY_SEPARATOR . $layer . DIRECTORY_SEPARATOR;
+                $content .= $this->buildDirRoute($path, $namespace, $module, $suffix, $layer);
             }
-
-            $path = $this->basePath . $module . DIRECTORY_SEPARATOR . $layer . DIRECTORY_SEPARATOR;
-            $content .= $this->buildDirRoute($path, $namespace, $module, $suffix, $layer);
+        } else {
+            $path = $this->basePath . $layer . DIRECTORY_SEPARATOR;
+            $content .= $this->buildDirRoute($path, $namespace, '', $suffix, $layer);
         }
 
         $filename = $this->app->getRuntimePath() . 'build_route.php';
@@ -232,17 +238,19 @@ class Build
         foreach ($controllers as $controller) {
             $controller = basename($controller, '.php');
 
-            if ($suffix) {
-                // 控制器后缀
-                $controller = substr($controller, 0, -10);
-            }
-
-            $class = new \ReflectionClass($namespace . '\\' . $module . '\\' . $layer . '\\' . $controller);
+            $class = new \ReflectionClass($namespace . '\\' . ($module ? $module . '\\' : '') . $layer . '\\' . $controller);
 
             if (strpos($layer, '\\')) {
                 // 多级控制器
                 $level      = str_replace(DIRECTORY_SEPARATOR, '.', substr($layer, 11));
                 $controller = $level . '.' . $controller;
+                $length     = strlen(strstr($layer, '\\', true));
+            } else {
+                $length = strlen($layer);
+            }
+
+            if ($suffix) {
+                $controller = substr($controller, 0, -$length);
             }
 
             $content .= $this->getControllerRoute($class, $module, $controller);
@@ -272,12 +280,12 @@ class Build
 
         if (false !== strpos($comment, '@route(')) {
             $comment = $this->parseRouteComment($comment);
-            $route   = $module . '/' . $controller;
+            $route   = ($module ? $module . '/' : '') . $controller;
             $comment = preg_replace('/route\(\s?([\'\"][\-\_\/\:\<\>\?\$\[\]\w]+[\'\"])\s?\)/is', 'Route::resource(\1,\'' . $route . '\')', $comment);
             $content .= PHP_EOL . $comment;
         } elseif (false !== strpos($comment, '@alias(')) {
             $comment = $this->parseRouteComment($comment, '@alias(');
-            $route   = $module . '/' . $controller;
+            $route   = ($module ? $module . '/' : '') . $controller;
             $comment = preg_replace('/alias\(\s?([\'\"][\-\_\/\w]+[\'\"])\s?\)/is', 'Route::alias(\1,\'' . $route . '\')', $comment);
             $content .= PHP_EOL . $comment;
         }
@@ -342,7 +350,7 @@ class Build
                 $action = substr($action, 0, -strlen($suffix));
             }
 
-            $route   = $module . '/' . $controller . '/' . $action;
+            $route   = ($module ? $module . '/' : '') . $controller . '/' . $action;
             $comment = preg_replace('/route\s?\(\s?([\'\"][\-\_\/\:\<\>\?\$\[\]\w]+[\'\"])\s?\,?\s?[\'\"]?(\w+?)[\'\"]?\s?\)/is', 'Route::\2(\1,\'' . $route . '\')', $comment);
             $comment = preg_replace('/route\s?\(\s?([\'\"][\-\_\/\:\<\>\?\$\[\]\w]+[\'\"])\s?\)/is', 'Route::rule(\1,\'' . $route . '\')', $comment);
 

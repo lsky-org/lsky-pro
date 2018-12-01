@@ -17,6 +17,8 @@ use think\Route;
 
 class RuleItem extends Rule
 {
+    protected $hasSetRule;
+
     /**
      * 架构函数
      * @access public
@@ -128,7 +130,11 @@ class RuleItem extends Rule
             $value = [$this->rule, $vars, $this->parent->getDomain(), $suffix, $this->method];
 
             Container::get('rule_name')->set($name, $value, $first);
+        }
+
+        if (!$this->hasSetRule) {
             Container::get('rule_name')->setRule($this->rule, $this);
+            $this->hasSetRule = true;
         }
     }
 
@@ -156,11 +162,6 @@ class RuleItem extends Rule
         // 合并分组参数
         $option = $this->mergeGroupOptions();
 
-        // 检查前置行为
-        if (isset($option['before']) && false === $this->checkBefore($option['before'])) {
-            return false;
-        }
-
         $url = $this->urlSuffixCheck($request, $url, $option);
 
         if (is_null($match)) {
@@ -168,6 +169,11 @@ class RuleItem extends Rule
         }
 
         if (false !== $match) {
+            // 检查前置行为
+            if (isset($option['before']) && false === $this->checkBefore($option['before'])) {
+                return false;
+            }
+
             return $this->parseRule($request, $this->rule, $this->route, $url, $option, $match);
         }
 

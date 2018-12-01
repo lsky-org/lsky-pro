@@ -23,6 +23,10 @@ class Command extends OperationCommand {
     {
         return $this->client->createPresignedUrl($this->prepare(), $expires);
     }
+    public function createAuthorization($expires)
+    {
+        return $this->client->createAuthorization($this->prepare(), $expires);
+    }
 
     protected function process() {
         parent::process();

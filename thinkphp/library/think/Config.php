@@ -11,19 +11,70 @@
 
 namespace think;
 
+use Yaconf;
+
 class Config implements \ArrayAccess
 {
     /**
      * 配置参数
      * @var array
      */
-    private $config = [];
+    protected $config = [];
 
     /**
      * 配置前缀
      * @var string
      */
-    private $prefix = 'app';
+    protected $prefix = 'app';
+
+    /**
+     * 配置文件目录
+     * @var string
+     */
+    protected $path;
+
+    /**
+     * 配置文件后缀
+     * @var string
+     */
+    protected $ext;
+
+    /**
+     * 是否支持Yaconf
+     * @var bool
+     */
+    protected $yaconf;
+
+    /**
+     * 构造方法
+     * @access public
+     */
+    public function __construct($path = '', $ext = '.php')
+    {
+        $this->path   = $path;
+        $this->ext    = $ext;
+        $this->yaconf = class_exists('Yaconf');
+    }
+
+    public static function __make(App $app)
+    {
+        $path = $app->getConfigPath();
+        $ext  = $app->getConfigExt();
+        return new static($path, $ext);
+    }
+
+    /**
+     * 设置开启Yaconf
+     * @access public
+     * @param  bool|string    $yaconf  是否使用Yaconf
+     * @return void
+     */
+    public function setYaconf($yaconf)
+    {
+        if ($this->yaconf) {
+            $this->yaconf = $yaconf;
+        }
+    }
 
     /**
      * 设置配置参数默认前缀
@@ -65,18 +116,67 @@ class Config implements \ArrayAccess
     public function load($file, $name = '')
     {
         if (is_file($file)) {
-            $name = strtolower($name);
-            $type = pathinfo($file, PATHINFO_EXTENSION);
+            $filename = $file;
+        } elseif (is_file($this->path . $file . $this->ext)) {
+            $filename = $this->path . $file . $this->ext;
+        }
 
-            if ('php' == $type) {
-                return $this->set(include $file, $name);
-            } elseif ('yaml' == $type && function_exists('yaml_parse_file')) {
-                return $this->set(yaml_parse_file($file), $name);
-            }
-            return $this->parse($file, $type, $name);
+        if (isset($filename)) {
+            return $this->loadFile($filename, $name);
+        } elseif ($this->yaconf && Yaconf::has($file)) {
+            return $this->set(Yaconf::get($file), $name);
         }
 
         return $this->config;
+    }
+
+    /**
+     * 获取实际的yaconf配置参数
+     * @access protected
+     * @param  string    $name 配置参数名
+     * @return string
+     */
+    protected function getYaconfName($name)
+    {
+        if ($this->yaconf && is_string($this->yaconf)) {
+            return $this->yaconf . '.' . $name;
+        }
+
+        return $name;
+    }
+
+    /**
+     * 获取yaconf配置
+     * @access public
+     * @param  string    $name 配置参数名
+     * @param  mixed     $default   默认值
+     * @return mixed
+     */
+    public function yaconf($name, $default = null)
+    {
+        if ($this->yaconf) {
+            $yaconfName = $this->getYaconfName($name);
+
+            if (Yaconf::has($yaconfName)) {
+                return Yaconf::get($yaconfName);
+            }
+        }
+
+        return $default;
+    }
+
+    protected function loadFile($file, $name)
+    {
+        $name = strtolower($name);
+        $type = pathinfo($file, PATHINFO_EXTENSION);
+
+        if ('php' == $type) {
+            return $this->set(include $file, $name);
+        } elseif ('yaml' == $type && function_exists('yaml_parse_file')) {
+            return $this->set(yaml_parse_file($file), $name);
+        }
+
+        return $this->parse($file, $type, $name);
     }
 
     /**
@@ -87,11 +187,11 @@ class Config implements \ArrayAccess
      */
     public function has($name)
     {
-        if (!strpos($name, '.')) {
+        if (false === strpos($name, '.')) {
             $name = $this->prefix . '.' . $name;
         }
 
-        return !is_null($this->get($name)) ? true : false;
+        return !is_null($this->get($name));
     }
 
     /**
@@ -103,6 +203,15 @@ class Config implements \ArrayAccess
     public function pull($name)
     {
         $name = strtolower($name);
+
+        if ($this->yaconf) {
+            $yaconfName = $this->getYaconfName($name);
+
+            if (Yaconf::has($yaconfName)) {
+                $config = Yaconf::get($yaconfName);
+                return isset($this->config[$name]) ? array_merge($this->config[$name], $config) : $config;
+            }
+        }
 
         return isset($this->config[$name]) ? $this->config[$name] : [];
     }
@@ -116,15 +225,25 @@ class Config implements \ArrayAccess
      */
     public function get($name = null, $default = null)
     {
+        if ($name && false === strpos($name, '.')) {
+            $name = $this->prefix . '.' . $name;
+        }
+
         // 无参数时获取所有
         if (empty($name)) {
             return $this->config;
         }
 
-        if (!strpos($name, '.')) {
-            $name = $this->prefix . '.' . $name;
-        } elseif ('.' == substr($name, -1)) {
+        if ('.' == substr($name, -1)) {
             return $this->pull(substr($name, 0, -1));
+        }
+
+        if ($this->yaconf) {
+            $yaconfName = $this->getYaconfName($name);
+
+            if (Yaconf::has($yaconfName)) {
+                return Yaconf::get($yaconfName);
+            }
         }
 
         $name    = explode('.', $name);
@@ -153,7 +272,7 @@ class Config implements \ArrayAccess
     public function set($name, $value = null)
     {
         if (is_string($name)) {
-            if (!strpos($name, '.')) {
+            if (false === strpos($name, '.')) {
                 $name = $this->prefix . '.' . $name;
             }
 
@@ -195,7 +314,7 @@ class Config implements \ArrayAccess
      */
     public function remove($name)
     {
-        if (!strpos($name, '.')) {
+        if (false === strpos($name, '.')) {
             $name = $this->prefix . '.' . $name;
         }
 

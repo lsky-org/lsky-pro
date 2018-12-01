@@ -69,6 +69,62 @@ class BelongsTo extends OneToOne
     }
 
     /**
+     * 创建关联统计子查询
+     * @access public
+     * @param  \Closure $closure 闭包
+     * @param  string   $aggregate 聚合查询方法
+     * @param  string   $field 字段
+     * @param  string   $aggregateAlias 聚合字段别名
+     * @return string
+     */
+    public function getRelationCountQuery($closure, $aggregate = 'count', $field = '*', &$aggregateAlias = '')
+    {
+        if ($closure) {
+            $return = $closure($this->query);
+
+            if ($return && is_string($return)) {
+                $aggregateAlias = $return;
+            }
+        }
+
+        return $this->query
+            ->whereExp($this->localKey, '=' . $this->parent->getTable() . '.' . $this->foreignKey)
+            ->fetchSql()
+            ->$aggregate($field);
+    }
+
+    /**
+     * 关联统计
+     * @access public
+     * @param  Model    $result  数据对象
+     * @param  \Closure $closure 闭包
+     * @param  string   $aggregate 聚合查询方法
+     * @param  string   $field 字段
+     * @param  string   $name 统计字段别名
+     * @return integer
+     */
+    public function relationCount($result, $closure, $aggregate = 'count', $field = '*', &$name = '')
+    {
+        $foreignKey = $this->foreignKey;
+
+        if (!isset($result->$foreignKey)) {
+            return 0;
+        }
+
+        if ($closure) {
+            $return = $closure($this->query);
+
+            if ($return && is_string($return)) {
+                $name = $return;
+            }
+        }
+
+        return $this->query
+            ->where($this->localKey, '=', $result->$foreignKey)
+            ->$aggregate($field);
+    }
+
+    /**
      * 根据关联条件查询当前模型
      * @access public
      * @param  string  $operator 比较操作符
@@ -79,7 +135,19 @@ class BelongsTo extends OneToOne
      */
     public function has($operator = '>=', $count = 1, $id = '*', $joinType = 'INNER')
     {
-        return $this->parent;
+        $table      = $this->query->getTable();
+        $model      = basename(str_replace('\\', '/', get_class($this->parent)));
+        $relation   = basename(str_replace('\\', '/', $this->model));
+        $localKey   = $this->localKey;
+        $foreignKey = $this->foreignKey;
+
+        return $this->parent->db()
+            ->alias($model)
+            ->whereExists(function ($query) use ($table, $model, $relation, $localKey, $foreignKey) {
+                $query->table([$table => $relation])
+                    ->field($relation . '.' . $localKey)
+                    ->whereExp($model . '.' . $foreignKey, '=' . $relation . '.' . $localKey);
+            });
     }
 
     /**
@@ -208,10 +276,7 @@ class BelongsTo extends OneToOne
      */
     public function associate($model)
     {
-        $foreignKey = $this->foreignKey;
-        $pk         = $model->getPk();
-
-        $this->parent->setAttr($foreignKey, $model->$pk);
+        $this->parent->setAttr($this->foreignKey, $model->getKey());
         $this->parent->save();
 
         return $this->parent->setRelation($this->relation, $model);
@@ -224,9 +289,7 @@ class BelongsTo extends OneToOne
      */
     public function dissociate()
     {
-        $foreignKey = $this->foreignKey;
-
-        $this->parent->setAttr($foreignKey, null);
+        $this->parent->setAttr($this->foreignKey, null);
         $this->parent->save();
 
         return $this->parent->setRelation($this->relation, null);

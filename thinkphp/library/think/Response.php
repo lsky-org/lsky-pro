@@ -323,12 +323,25 @@ class Response
     /**
      * 页面缓存控制
      * @access public
-     * @param  string $cache 状态码
+     * @param  string $cache 缓存设置
      * @return $this
      */
     public function cacheControl($cache)
     {
         $this->header['Cache-control'] = $cache;
+
+        return $this;
+    }
+
+    /**
+     * 设置页面不做任何缓存
+     * @access public
+     * @return $this
+     */
+    public function noCache()
+    {
+        $this->header['Cache-Control'] = 'no-store, no-cache, must-revalidate, post-check=0, pre-check=0';
+        $this->header['Pragma']        = 'no-cache';
 
         return $this;
     }
@@ -404,5 +417,13 @@ class Response
     public function getCode()
     {
         return $this->code;
+    }
+
+    public function __debugInfo()
+    {
+        $data = get_object_vars($this);
+        unset($data['app']);
+
+        return $data;
     }
 }

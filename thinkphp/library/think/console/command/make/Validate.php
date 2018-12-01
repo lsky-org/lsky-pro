@@ -15,7 +15,6 @@ use think\console\command\Make;
 
 class Validate extends Make
 {
-
     protected $type = "Validate";
 
     protected function configure()

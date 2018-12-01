@@ -42,7 +42,7 @@ class RuleName
      */
     public function setRule($rule, $route)
     {
-        $this->rule[$route->getDomain()][$rule][$route->getRoute()] = $route;
+        $this->rule[$route->getDomain()][$rule][$route->getMethod()] = $route;
     }
 
     /**
@@ -70,7 +70,7 @@ class RuleName
         foreach ($this->rule as $ruleDomain => $rules) {
             foreach ($rules as $rule => $items) {
                 foreach ($items as $item) {
-                    $val = [];
+                    $val['domain'] = $ruleDomain;
 
                     foreach (['method', 'rule', 'name', 'route', 'pattern', 'option'] as $param) {
                         $call        = 'get' . $param;
@@ -107,13 +107,14 @@ class RuleName
      * @param  string   $domain   域名
      * @return array|null
      */
-    public function get($name = null, $domain = null)
+    public function get($name = null, $domain = null, $method = '*')
     {
         if (is_null($name)) {
             return $this->item;
         }
 
         $name = strtolower($name);
+        $method = strtolower($method);
 
         if (isset($this->item[$name])) {
             if (is_null($domain)) {
@@ -121,7 +122,7 @@ class RuleName
             } else {
                 $result = [];
                 foreach ($this->item[$name] as $item) {
-                    if ($item[2] == $domain) {
+                    if ($item[2] == $domain && ('*' == $item[4] || $method == $item[4])) {
                         $result[] = $item;
                     }
                 }
@@ -133,4 +134,14 @@ class RuleName
         return $result;
     }
 
+    /**
+     * 清空路由规则
+     * @access public
+     * @return void
+     */
+    public function clear()
+    {
+        $this->item = [];
+        $this->rule = [];
+    }
 }

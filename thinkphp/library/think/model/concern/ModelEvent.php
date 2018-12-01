@@ -80,6 +80,8 @@ trait ModelEvent
      */
     public static function observe($class)
     {
+        self::flushEvent();
+
         foreach (static::$observe as $event) {
             $eventFuncName = Loader::parseName($event, 1, false);
 

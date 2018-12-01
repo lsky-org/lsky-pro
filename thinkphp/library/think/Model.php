@@ -18,6 +18,7 @@ use think\db\Query;
  * Class Model
  * @package think
  * @mixin Query
+ * @method \think\Model withAttr(array $name,\Closure $closure) 动态定义获取器
  */
 abstract class Model implements \JsonSerializable, \ArrayAccess
 {
@@ -122,6 +123,12 @@ abstract class Model implements \JsonSerializable, \ArrayAccess
      * @var mixed
      */
     protected $defaultSoftDelete;
+
+    /**
+     * 全局查询范围
+     * @var array
+     */
+    protected $globalScope = [];
 
     /**
      * 架构函数
@@ -271,7 +278,7 @@ abstract class Model implements \JsonSerializable, \ArrayAccess
     /**
      * 获取当前模型的数据库查询对象
      * @access public
-     * @param  bool $useBaseQuery 是否调用全局查询范围
+     * @param  bool|array $useBaseQuery 是否调用全局查询范围（或者指定查询范围名称）
      * @return Query
      */
     public function db($useBaseQuery = true)
@@ -288,8 +295,14 @@ abstract class Model implements \JsonSerializable, \ArrayAccess
         }
 
         // 全局作用域
-        if ($useBaseQuery && method_exists($this, 'base')) {
+        if (true === $useBaseQuery && method_exists($this, 'base')) {
             call_user_func_array([$this, 'base'], [ & $query]);
+        }
+
+        $globalScope = is_array($useBaseQuery) && $useBaseQuery ? $useBaseQuery : $this->globalScope;
+
+        if ($globalScope && false !== $useBaseQuery) {
+            $query->scope($globalScope);
         }
 
         // 返回当前模型的数据库查询对象
@@ -426,6 +439,7 @@ abstract class Model implements \JsonSerializable, \ArrayAccess
 
         // 重新记录原始数据
         $this->origin = $this->data;
+        $this->set    = [];
 
         return true;
     }
@@ -820,7 +834,7 @@ abstract class Model implements \JsonSerializable, \ArrayAccess
 
         try {
             // 删除当前模型数据
-            $result = $db->where($where)->delete();
+            $db->where($where)->delete();
 
             // 关联删除
             if (!empty($this->relationWrite)) {
@@ -893,93 +907,6 @@ abstract class Model implements \JsonSerializable, \ArrayAccess
         $model->isUpdate(true)->save($data, $where);
 
         return $model;
-    }
-
-    /**
-     * 查找单条记录
-     * @access public
-     * @param  mixed     $data  主键值或者查询条件（闭包）
-     * @param  mixed     $with  关联预查询
-     * @param  bool      $cache 是否缓存
-     * @param  bool      $failException 是否抛出异常
-     * @return static|null
-     * @throws exception\DbException
-     */
-    public static function get($data, $with = [], $cache = false, $failException = false)
-    {
-        if (is_null($data)) {
-            return;
-        }
-
-        if (true === $with || is_int($with)) {
-            $cache = $with;
-            $with  = [];
-        }
-
-        $query = static::parseQuery($data, $with, $cache);
-
-        return $query->failException($failException)->find($data);
-    }
-
-    /**
-     * 查找单条记录 如果不存在直接抛出异常
-     * @access public
-     * @param  mixed     $data  主键值或者查询条件（闭包）
-     * @param  mixed     $with  关联预查询
-     * @param  bool      $cache 是否缓存
-     * @return static|null
-     * @throws exception\DbException
-     */
-    public static function getOrFail($data, $with = [], $cache = false)
-    {
-        return self::get($data, $with, $cache, true);
-    }
-
-    /**
-     * 查找所有记录
-     * @access public
-     * @param  mixed        $data  主键列表或者查询条件（闭包）
-     * @param  array|string $with  关联预查询
-     * @param  bool         $cache 是否缓存
-     * @return static[]|false
-     * @throws exception\DbException
-     */
-    public static function all($data = null, $with = [], $cache = false)
-    {
-        if (true === $with || is_int($with)) {
-            $cache = $with;
-            $with  = [];
-        }
-
-        $query = static::parseQuery($data, $with, $cache);
-
-        return $query->select($data);
-    }
-
-    /**
-     * 分析查询表达式
-     * @access public
-     * @param  mixed  $data  主键列表或者查询条件（闭包）
-     * @param  string $with  关联预查询
-     * @param  bool   $cache 是否缓存
-     * @return Query
-     */
-    protected static function parseQuery(&$data, $with, $cache)
-    {
-        $result = self::with($with)->cache($cache);
-
-        if (is_array($data) && key($data) !== 0) {
-            $result = $result->where($data);
-            $data   = null;
-        } elseif ($data instanceof \Closure) {
-            $data($result);
-            $data = null;
-        } elseif ($data instanceof Query) {
-            $result = $data->with($with)->cache($cache);
-            $data   = null;
-        }
-
-        return $result;
     }
 
     /**
@@ -1116,7 +1043,7 @@ abstract class Model implements \JsonSerializable, \ArrayAccess
     /**
      * 设置是否使用全局查询范围
      * @access public
-     * @param  bool $use 是否启用全局查询范围
+     * @param  bool|array $use 是否启用全局查询范围（或者用数组指定查询范围名称）
      * @return Query
      */
     public static function useGlobalScope($use)
@@ -1128,6 +1055,10 @@ abstract class Model implements \JsonSerializable, \ArrayAccess
 
     public function __call($method, $args)
     {
+        if ('withattr' == strtolower($method)) {
+            return call_user_func_array([$this, 'withAttribute'], $args);
+        }
+
         return call_user_func_array([$this->db(), $method], $args);
     }
 

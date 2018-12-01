@@ -12,7 +12,7 @@ use Qcloud\Cos\Signature;
 use Qcloud\Cos\TokenListener;
 
 class Client extends GSClient {
-    const VERSION = '1.2.3';
+    const VERSION = '1.3.0';
 
     private $region;       // string: region.
     private $credentials;
@@ -24,23 +24,20 @@ class Client extends GSClient {
     private $signature;
 
     public function __construct($config) {
-        $this->region = isset($config['region']) ? $config['region'] : '';
+        $this->region = $config['region'];
         $regionmap = array('cn-east'=>'ap-shanghai',
-                        'cn-sorth'=>'ap-guangzhou',
-                        'cn-north'=>'ap-beijing-1',
-                        'cn-south-2'=>'ap-guangzhou-2',
-                        'cn-southwest'=>'ap-chengdu',
-                        'sg'=>'ap-singapore',
-                        'tj'=>'ap-beijing-1',
-                        'bj'=>'ap-beijing',
-                        'sh'=>'ap-shanghai',
-                        'gz'=>'ap-guangzhou',
-                        'cd'=>'ap-chengdu',
-                        'sgp'=>'ap-singapore',);
-        if (array_key_exists($this->region,$regionmap))
-        {
-            $this->region = $regionmap[$this->region];
-        }
+            'cn-sorth'=>'ap-guangzhou',
+            'cn-north'=>'ap-beijing-1',
+            'cn-south-2'=>'ap-guangzhou-2',
+            'cn-southwest'=>'ap-chengdu',
+            'sg'=>'ap-singapore',
+            'tj'=>'ap-beijing-1',
+            'bj'=>'ap-beijing',
+            'sh'=>'ap-shanghai',
+            'gz'=>'ap-guangzhou',
+            'cd'=>'ap-chengdu',
+            'sgp'=>'ap-singapore',);
+        $this->region =  isset($regionmap[$this->region]) ? $regionmap[$this->region] : $this->region;
         $this->credentials = $config['credentials'];
         $this->appId = isset($config['credentials']['appId']) ? $config['credentials']['appId'] : null;
         $this->secretId = $config['credentials']['secretId'];
@@ -50,13 +47,13 @@ class Client extends GSClient {
         $this->connect_timeout = isset($config['connect_timeout']) ? $config['connect_timeout'] : 3600;
         $this->signature = new signature($this->secretId, $this->secretKey);
         parent::__construct(
-                'http://cos.' . $this->region . '.myqcloud.com/',    // base url
-                array('request.options' => array('timeout' => $this->timeout, 'connect_timeout' => $this->connect_timeout),
-                    )); // show curl verbose or not
+            'http://cos.' . $this->region . '.myqcloud.com/',    // base url
+            array('request.options' => array('timeout' => $this->timeout, 'connect_timeout' => $this->connect_timeout),
+            )); // show curl verbose or not
 
         $desc = ServiceDescription::factory(Service::getService());
         $this->setDescription($desc);
-        $this->setUserAgent('cos-php-sdk-v5./' . Client::VERSION, true);
+        $this->setUserAgent('cos-php-sdk-v5.' . Client::VERSION, true);
 
         $this->addSubscriber(new ExceptionListener());
         $this->addSubscriber(new Md5Listener($this->signature));
@@ -67,12 +64,48 @@ class Client extends GSClient {
         // Allow for specifying bodies with file paths and file handles
         $this->addSubscriber(new UploadBodyListener(array('PutObject', 'UploadPart')));
     }
-
+    public function set_config($config) {
+        $this->region = $config['region'];
+        $regionmap = array('cn-east'=>'ap-shanghai',
+            'cn-sorth'=>'ap-guangzhou',
+            'cn-north'=>'ap-beijing-1',
+            'cn-south-2'=>'ap-guangzhou-2',
+            'cn-southwest'=>'ap-chengdu',
+            'sg'=>'ap-singapore',
+            'tj'=>'ap-beijing-1',
+            'bj'=>'ap-beijing',
+            'sh'=>'ap-shanghai',
+            'gz'=>'ap-guangzhou',
+            'cd'=>'ap-chengdu',
+            'sgp'=>'ap-singapore',);
+        $this->region =  isset($regionmap[$this->region]) ? $regionmap[$this->region] : $this->region;
+        $this->credentials = $config['credentials'];
+        $this->appId = isset($config['credentials']['appId']) ? $config['credentials']['appId'] : null;
+        $this->secretId = $config['credentials']['secretId'];
+        $this->secretKey = $config['credentials']['secretKey'];
+        $this->token = isset($config['credentials']['token']) ? $config['credentials']['token'] : null;
+        $this->timeout = isset($config['timeout']) ? $config['timeout'] : 3600;
+        $this->connect_timeout = isset($config['connect_timeout']) ? $config['connect_timeout'] : 3600;
+        $this->signature = new signature($this->secretId, $this->secretKey);
+        parent::__construct(
+            'http://cos.' . $this->region . '.myqcloud.com/',    // base url
+            array('request.options' => array('timeout' => $this->timeout, 'connect_timeout' => $this->connect_timeout),
+            )); // show curl verbose or not
+    }
     public function __destruct() {
     }
 
     public function __call($method, $args) {
         return parent::__call(ucfirst($method), $args);
+    }
+    public function createAuthorization(RequestInterface $request, $expires)
+    {
+        if ($request->getClient() !== $this) {
+            throw new InvalidArgumentException('The request object must be associated with the client. Use the '
+                . '$client->get(), $client->head(), $client->post(), $client->put(), etc. methods when passing in a '
+                . 'request object');
+        }
+        return $this->signature->createAuthorization($request, $expires);
     }
     public function createPresignedUrl(RequestInterface $request, $expires)
     {
@@ -142,21 +175,21 @@ class Client extends GSClient {
 
     public function Copy($bucket, $key, $copysource, $options = array()) {
 
-    $options = Collection::fromConfig(array_change_key_case($options), array(
-        'min_part_size' => Copy::MIN_PART_SIZE,
-        'params'        => $options));
+        $options = Collection::fromConfig(array_change_key_case($options), array(
+            'min_part_size' => Copy::MIN_PART_SIZE,
+            'params'        => $options));
         $sourcelistdot  =  explode('.',$copysource);
         $sourcelistline = explode('-',$sourcelistdot[0]);
-        $sourcebucket = $sourcelistline[0];
-        $sourceappid = $sourcelistline[1];
+        $sourceappid = array_pop($sourcelistline);
+        $sourcebucket = implode('-', $sourcelistline);
         $sourceregion = $sourcelistdot[2];
         $sourcekey = substr(strstr($copysource,'/'),1);
         $sourceversion = "";
         $cosClient = new Client(array('region' => $sourceregion,
-        'credentials'=> array(
-            'appId' => $sourceappid,
-            'secretId'    => $this->secretId,
-            'secretKey' => $this->secretKey)));
+            'credentials'=> array(
+                'appId' => $sourceappid,
+                'secretId'    => $this->secretId,
+                'secretKey' => $this->secretKey)));
         if (!key_exists('VersionId',$options['params'])) {
             $sourceversion = "";
         }
@@ -164,23 +197,23 @@ class Client extends GSClient {
             $sourceversion = $options['params']['VersionId'];
         }
         $rt = $cosClient->headObject(array('Bucket'=>$sourcebucket,
-                            'Key'=>$sourcekey,
-                            'VersionId'=>$sourceversion));
-    $contentlength =$rt['ContentLength'];
+            'Key'=>$sourcekey,
+            'VersionId'=>$sourceversion));
+        $contentlength =$rt['ContentLength'];
 
-    if ($contentlength < $options['min_part_size']) {
-        return $this->copyObject(array(
+        if ($contentlength < $options['min_part_size']) {
+            return $this->copyObject(array(
+                    'Bucket' => $bucket,
+                    'Key'    => $key,
+                    'CopySource'   => $copysource."?versionId=".$sourceversion,
+                ) + $options['params']);
+        }
+        $copy = new Copy($this, $contentlength, $copysource."?versionId=".$sourceversion, $options['min_part_size'], array(
                 'Bucket' => $bucket,
-                'Key'    => $key,
-                'CopySource'   => $copysource."?versionId=".$sourceversion,
+                'Key'    => $key
             ) + $options['params']);
-    }
-    $copy = new Copy($this, $contentlength, $copysource."?versionId=".$sourceversion, $options['min_part_size'], array(
-            'Bucket' => $bucket,
-            'Key'    => $key
-        ) + $options['params']);
 
-        return $copy->performUploading();
+        return $copy->copy();
     }
 
     /**

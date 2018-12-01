@@ -197,8 +197,7 @@ class Session
         }
 
         if ($isDoStart) {
-            session_start();
-            $this->init = true;
+            $this->start();
         } else {
             $this->init = false;
         }
@@ -219,7 +218,7 @@ class Session
 
         if (false === $this->init) {
             if (PHP_SESSION_ACTIVE != session_status()) {
-                session_start();
+                $this->start();
             }
             $this->init = true;
         }

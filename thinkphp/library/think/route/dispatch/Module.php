@@ -12,6 +12,7 @@
 namespace think\route\dispatch;
 
 use ReflectionMethod;
+use think\Controller;
 use think\exception\ClassNotFoundException;
 use think\exception\HttpException;
 use think\Loader;
@@ -91,6 +92,10 @@ class Module extends Dispatch
                 $this->rule->getConfig('url_controller_layer'),
                 $this->rule->getConfig('controller_suffix'),
                 $this->rule->getConfig('empty_controller'));
+
+            if ($instance instanceof Controller) {
+                $instance->registerMiddleware();
+            }
         } catch (ClassNotFoundException $e) {
             throw new HttpException(404, 'controller not exists:' . $e->getClass());
         }
@@ -114,6 +119,7 @@ class Module extends Dispatch
                 $vars = $this->rule->getConfig('url_param_type')
                 ? $this->request->route()
                 : $this->request->param();
+                $vars = array_merge($vars, $this->param);
             } elseif (is_callable([$instance, '_empty'])) {
                 // 空操作
                 $call    = [$instance, '_empty'];

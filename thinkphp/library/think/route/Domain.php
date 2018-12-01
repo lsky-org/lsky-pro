@@ -20,8 +20,6 @@ use think\route\dispatch\Module as ModuleDispatch;
 
 class Domain extends RuleGroup
 {
-    protected $bind;
-
     /**
      * 架构函数
      * @access public
@@ -86,9 +84,7 @@ class Domain extends RuleGroup
      */
     public function bind($bind)
     {
-        $this->bind = $bind;
         $this->router->bind($bind, $this->domain);
-
         return $this;
     }
 
@@ -117,8 +113,9 @@ class Domain extends RuleGroup
      */
     private function checkUrlBind($request, $url)
     {
-        if (!empty($this->bind)) {
-            $bind = $this->bind;
+        $bind = $this->router->getBind($this->domain);
+
+        if (!empty($bind)) {
             $this->parseBindAppendParam($bind);
 
             // 记录绑定信息
@@ -163,12 +160,13 @@ class Domain extends RuleGroup
     {
         $array  = explode('|', $url, 2);
         $action = !empty($array[0]) ? $array[0] : $this->router->config('default_action');
+        $param  = [];
 
         if (!empty($array[1])) {
-            $this->parseUrlParams($request, $array[1]);
+            $this->parseUrlParams($request, $array[1], $param);
         }
 
-        return new CallbackDispatch($request, $this, [$class, $action]);
+        return new CallbackDispatch($request, $this, [$class, $action], $param);
     }
 
     /**
@@ -184,12 +182,13 @@ class Domain extends RuleGroup
         $array  = explode('|', $url, 3);
         $class  = !empty($array[0]) ? $array[0] : $this->router->config('default_controller');
         $method = !empty($array[1]) ? $array[1] : $this->router->config('default_action');
+        $param  = [];
 
         if (!empty($array[2])) {
-            $this->parseUrlParams($request, $array[2]);
+            $this->parseUrlParams($request, $array[2], $param);
         }
 
-        return new CallbackDispatch($request, $this, [$namespace . '\\' . Loader::parseName($class, 1), $method]);
+        return new CallbackDispatch($request, $this, [$namespace . '\\' . Loader::parseName($class, 1), $method], $param);
     }
 
     /**
@@ -204,12 +203,13 @@ class Domain extends RuleGroup
     {
         $array  = explode('|', $url, 2);
         $action = !empty($array[0]) ? $array[0] : $this->router->config('default_action');
+        $param  = [];
 
         if (!empty($array[1])) {
-            $this->parseUrlParams($request, $array[1]);
+            $this->parseUrlParams($request, $array[1], $param);
         }
 
-        return new ControllerDispatch($request, $this, $controller . '/' . $action);
+        return new ControllerDispatch($request, $this, $controller . '/' . $action, $param);
     }
 
     /**
@@ -224,12 +224,13 @@ class Domain extends RuleGroup
     {
         $array  = explode('|', $url, 2);
         $action = !empty($array[0]) ? $array[0] : $this->router->config('default_action');
+        $param  = [];
 
         if (!empty($array[1])) {
-            $this->parseUrlParams($request, $array[1]);
+            $this->parseUrlParams($request, $array[1], $param);
         }
 
-        return new ModuleDispatch($request, $this, $controller . '/' . $action);
+        return new ModuleDispatch($request, $this, $controller . '/' . $action, $param);
     }
 
 }

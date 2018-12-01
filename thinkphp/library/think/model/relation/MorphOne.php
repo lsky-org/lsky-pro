@@ -190,7 +190,7 @@ class MorphOne extends Relation
             $closure($this->query);
         }
 
-        $list     = $this->query->where($where)->with($subRelation)->find();
+        $list     = $this->query->where($where)->with($subRelation)->select();
         $morphKey = $this->morphKey;
 
         // 组装模型数据

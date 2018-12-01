@@ -175,6 +175,7 @@ final class CdnManager
         $deadline = time() + $durationInSeconds;
         $expireHex = dechex($deadline);
         $path = isset($parsedUrl['path']) ? $parsedUrl['path'] : '';
+        $path = implode('/', array_map('rawurlencode', explode('/', $path)));
 
         $strToSign = $encryptKey . $path . $expireHex;
         $signStr = md5($strToSign);

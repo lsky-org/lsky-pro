@@ -176,4 +176,8 @@ class Php
         }
     }
 
+    public function __debugInfo()
+    {
+        return ['config' => $this->config];
+    }
 }

@@ -334,9 +334,10 @@ class File extends SplFileObject
      * @param  string           $path    保存路径
      * @param  string|bool      $savename    保存的文件名 默认自动生成
      * @param  boolean          $replace 同名文件是否覆盖
+     * @param  bool             $autoAppendExt     自动补充扩展名
      * @return false|File       false-失败 否则返回File实例
      */
-    public function move($path, $savename = true, $replace = true)
+    public function move($path, $savename = true, $replace = true, $autoAppendExt = true)
     {
         // 文件上传失败，捕获错误代码
         if (!empty($this->info['error'])) {
@@ -357,7 +358,7 @@ class File extends SplFileObject
 
         $path = rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
         // 文件保存命名规则
-        $saveName = $this->buildSaveName($savename);
+        $saveName = $this->buildSaveName($savename, $autoAppendExt);
         $filename = $path . $saveName;
 
         // 检测目录
@@ -391,9 +392,10 @@ class File extends SplFileObject
      * 获取保存文件名
      * @access protected
      * @param  string|bool   $savename    保存的文件名 默认自动生成
+     * @param  bool          $autoAppendExt     自动补充扩展名
      * @return string
      */
-    protected function buildSaveName($savename)
+    protected function buildSaveName($savename, $autoAppendExt = true)
     {
         if (true === $savename) {
             // 自动生成文件名
@@ -403,7 +405,7 @@ class File extends SplFileObject
             $savename = $this->getInfo('name');
         }
 
-        if (!strpos($savename, '.')) {
+        if ($autoAppendExt && false === strpos($savename, '.')) {
             $savename .= '.' . pathinfo($this->getInfo('name'), PATHINFO_EXTENSION);
         }
 

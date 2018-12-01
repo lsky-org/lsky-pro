@@ -205,19 +205,17 @@ class Log implements LoggerInterface
             return false;
         }
 
-        if (empty($this->config['level'])) {
-            // 获取全部日志
-            $log = $this->log;
-            if (!$this->app->isDebug() && isset($log['debug'])) {
-                unset($log['debug']);
+        $log = [];
+
+        foreach ($this->log as $level => $info) {
+            if (!$this->app->isDebug() && 'debug' == $level) {
+                continue;
             }
-        } else {
-            // 记录允许级别
-            $log = [];
-            foreach ($this->config['level'] as $level) {
-                if (isset($this->log[$level])) {
-                    $log[$level] = $this->log[$level];
-                }
+
+            if (empty($this->config['level']) || in_array($level, $this->config['level'])) {
+                $log[$level] = $info;
+
+                $this->app['hook']->listen('log_level', [$level, $info]);
             }
         }
 
@@ -377,5 +375,13 @@ class Log implements LoggerInterface
     public function sql($message, array $context = [])
     {
         $this->log(__FUNCTION__, $message, $context);
+    }
+
+    public function __debugInfo()
+    {
+        $data = get_object_vars($this);
+        unset($data['app']);
+
+        return $data;
     }
 }

@@ -35,19 +35,22 @@ class Console
     private $defaultCommand;
 
     private static $defaultCommands = [
-        "think\\console\\command\\Help",
-        "think\\console\\command\\Lists",
-        "think\\console\\command\\Build",
-        "think\\console\\command\\Clear",
-        "think\\console\\command\\make\\Controller",
-        "think\\console\\command\\make\\Model",
-        "think\\console\\command\\make\\Middleware",
-        "think\\console\\command\\make\\Validate",
-        "think\\console\\command\\optimize\\Autoload",
-        "think\\console\\command\\optimize\\Config",
-        "think\\console\\command\\optimize\\Schema",
-        "think\\console\\command\\optimize\\Route",
-        "think\\console\\command\\RunServer",
+        'help'              => "think\\console\\command\\Help",
+        'list'              => "think\\console\\command\\Lists",
+        'build'             => "think\\console\\command\\Build",
+        'clear'             => "think\\console\\command\\Clear",
+        'make:command'      => "think\\console\\command\\make\\Command",
+        'make:controller'   => "think\\console\\command\\make\\Controller",
+        'make:model'        => "think\\console\\command\\make\\Model",
+        'make:middleware'   => "think\\console\\command\\make\\Middleware",
+        'make:validate'     => "think\\console\\command\\make\\Validate",
+        'optimize:autoload' => "think\\console\\command\\optimize\\Autoload",
+        'optimize:config'   => "think\\console\\command\\optimize\\Config",
+        'optimize:schema'   => "think\\console\\command\\optimize\\Schema",
+        'optimize:route'    => "think\\console\\command\\optimize\\Route",
+        'run'               => "think\\console\\command\\RunServer",
+        'version'           => "think\\console\\command\\Version",
+        'route:list'        => "think\\console\\command\\RouteList",
     ];
 
     /**
@@ -68,10 +71,6 @@ class Console
 
         $this->defaultCommand = 'list';
         $this->definition     = $this->getDefaultInputDefinition();
-
-        foreach ($this->getDefaultCommands() as $command) {
-            $this->add($command);
-        }
     }
 
     /**
@@ -80,6 +79,10 @@ class Console
      */
     public function setUser($user)
     {
+        if (DIRECTORY_SEPARATOR == '\\') {
+            return;
+        }
+
         $user = posix_getpwnam($user);
         if ($user) {
             posix_setuid($user['uid']);
@@ -98,25 +101,13 @@ class Console
         static $console;
 
         if (!$console) {
-            $config = Container::get('config')->pull('console');
-            // 实例化 console
+            $config  = Container::get('config')->pull('console');
             $console = new self($config['name'], $config['version'], $config['user']);
 
-            // 读取指令集
-            $file = Container::get('env')->get('app_path') . 'command.php';
+            $commands = $console->getDefinedCommands($config);
 
-            if (is_file($file)) {
-                $commands = include $file;
-
-                if (is_array($commands)) {
-                    foreach ($commands as $command) {
-                        if (class_exists($command) && is_subclass_of($command, "\\think\\console\\Command")) {
-                            // 注册指令
-                            $console->add(new $command());
-                        }
-                    }
-                }
-            }
+            // 添加指令集
+            $console->addCommands($commands);
         }
 
         if ($run) {
@@ -125,6 +116,46 @@ class Console
         } else {
             return $console;
         }
+    }
+
+    /**
+     * @access public
+     * @param  array $config
+     * @return array
+     */
+    public function getDefinedCommands(array $config = [])
+    {
+        $commands = self::$defaultCommands;
+
+        if (!empty($config['auto_path']) && is_dir($config['auto_path'])) {
+            // 自动加载指令类
+            $files = scandir($config['auto_path']);
+
+            if (count($files) > 2) {
+                $beforeClass = get_declared_classes();
+
+                foreach ($files as $file) {
+                    if (pathinfo($file, PATHINFO_EXTENSION) == 'php') {
+                        include $config['auto_path'] . $file;
+                    }
+                }
+
+                $afterClass = get_declared_classes();
+                $commands   = array_merge($commands, array_diff($afterClass, $beforeClass));
+            }
+        }
+
+        $file = Container::get('env')->get('app_path') . 'command.php';
+
+        if (is_file($file)) {
+            $appCommands = include $file;
+
+            if (is_array($appCommands)) {
+                $commands = array_merge($commands, $appCommands);
+            }
+        }
+
+        return $commands;
     }
 
     /**
@@ -340,9 +371,9 @@ class Console
     }
 
     /**
-     * 注册一个指令
+     * 注册一个指令 （便于动态创建指令）
      * @access public
-     * @param  string $name
+     * @param  string $name     指令名
      * @return Command
      */
     public function register($name)
@@ -351,25 +382,38 @@ class Console
     }
 
     /**
-     * 添加指令
+     * 添加指令集
      * @access public
-     * @param  Command[] $commands
+     * @param  array $commands
      */
     public function addCommands(array $commands)
     {
-        foreach ($commands as $command) {
-            $this->add($command);
+        foreach ($commands as $key => $command) {
+            if (is_subclass_of($command, "\\think\\console\\Command")) {
+                // 注册指令
+                $this->add($command, is_numeric($key) ? '' : $key);
+            }
         }
     }
 
     /**
-     * 添加一个指令
+     * 注册一个指令（对象）
      * @access public
-     * @param  Command $command
-     * @return Command
+     * @param  mixed    $command    指令对象或者指令类名
+     * @param  string   $name       指令名 留空则自动获取
+     * @return mixed
      */
-    public function add(Command $command)
+    public function add($command, $name)
     {
+        if ($name) {
+            $this->commands[$name] = $command;
+            return;
+        }
+
+        if (is_string($command)) {
+            $command = new $command();
+        }
+
         $command->setConsole($this);
 
         if (!$command->isEnabled()) {
@@ -404,6 +448,12 @@ class Console
         }
 
         $command = $this->commands[$name];
+
+        if (is_string($command)) {
+            $command = new $command();
+        }
+
+        $command->setConsole($this);
 
         if ($this->wantHelps) {
             $this->wantHelps = false;
@@ -521,16 +571,6 @@ class Console
             }
 
             throw new \InvalidArgumentException($message);
-        }
-
-        if (count($commands) > 1) {
-            $commandList = $this->commands;
-
-            $commands = array_filter($commands, function ($nameOrAlias) use ($commandList, $commands) {
-                $commandName = $commandList[$nameOrAlias]->getName();
-
-                return $commandName === $nameOrAlias || !in_array($commandName, $commands);
-            });
         }
 
         $exact = in_array($name, $commands, true);
@@ -660,24 +700,6 @@ class Console
         ]);
     }
 
-    /**
-     * 设置默认命令
-     * @access protected
-     * @return Command[] An array of default Command instances
-     */
-    protected function getDefaultCommands()
-    {
-        $defaultCommands = [];
-
-        foreach (self::$defaultCommands as $classname) {
-            if (class_exists($classname) && is_subclass_of($classname, "think\\console\\Command")) {
-                $defaultCommands[] = new $classname();
-            }
-        }
-
-        return $defaultCommands;
-    }
-
     public static function addDefaultCommands(array $classnames)
     {
         self::$defaultCommands = array_merge(self::$defaultCommands, $classnames);
@@ -792,4 +814,11 @@ class Console
         return $namespaces;
     }
 
+    public function __debugInfo()
+    {
+        $data = get_object_vars($this);
+        unset($data['commands'], $data['definition']);
+
+        return $data;
+    }
 }
