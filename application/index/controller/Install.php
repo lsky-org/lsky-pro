@@ -12,7 +12,7 @@ use app\common\model\Users;
 use think\Controller;
 use think\Db;
 use think\Exception;
-use think\facade\Cookie;
+use think\facade\Config;
 use think\facade\Env;
 use think\facade\Session;
 
@@ -159,6 +159,67 @@ EOT;
 
         $this->assign([
             'step' => $step
+        ]);
+        return $this->fetch();
+    }
+
+    public function update($start = 0)
+    {
+        try {
+            $user = false;
+            if (Session::has('uid') && Session::has('token')) {
+                $user = Users::get([
+                    'id' => Session::get('uid'),
+                    'token' => Session::get('token')
+                ]);
+                if (!$user) {
+                    Session::delete(['uid', 'token']);
+                }
+            }
+
+            if (!$user && !$user->is_admin) {
+                $this->redirect(url('/'));
+            }
+
+            $path = Env::get('root_path') . 'update.sql';
+            $file = @file_get_contents($path);
+            if (!$file) {
+                $this->redirect(url('/'));
+            }
+
+            $code = 0;
+            $msg = null;
+            if ($start == 1) {
+                if ($file) {
+                    $config = Config::pull('db');
+                    $mysqli = new \mysqli(
+                        $config['hostname'],
+                        $config['username'],
+                        $config['password'],
+                        $config['database'],
+                        $config['hostport']
+                    );
+                    if ($mysqli->connect_error) {
+                        $mysqli->close();
+                        throw new Exception($mysqli->connect_error);
+                    }
+                    $mysqli->query("SET NAMES utf8");
+                    if (!$mysqli->multi_query($file)) {
+                        throw new Exception('数据写入失败');
+                    }
+                }
+                $code = 1;
+                $msg = '更新成功，返回<a href="/">首页</a>';
+                // 删除sql文件
+                @unlink($path);
+            }
+        } catch (Exception $e) {
+            $code = 0;
+            $msg = $e->getMessage();
+        }
+        $this->assign([
+            'code' => $code,
+            'msg' => $msg
         ]);
         return $this->fetch();
     }

@@ -123,6 +123,11 @@ var app = {
     var k = 1024, sizes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'], i = Math.floor(Math.log(bytes) / Math.log(k));
     return (bytes / Math.pow(k, i)).toFixed(2) + ' ' + sizes[i];
   },
+  /**
+   * Update
+   * @param ver
+   * @param auto
+   */
   update: function (ver, auto) {
     $.ajax({
       url: 'https://api.github.com/repos/wisp-x/lsky-pro/releases/latest',
