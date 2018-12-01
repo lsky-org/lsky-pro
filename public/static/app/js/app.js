@@ -126,40 +126,40 @@ var app = {
   update: function (ver, auto) {
     $.ajax({
       url: 'https://api.github.com/repos/wisp-x/lsky-pro/releases/latest',
-        success: function (response) {
-          var thatVer = parseFloat(ver);
-          var newVer = parseFloat(response.name.replace(/[^\d.]/g, ''));
-          if (thatVer < newVer) {
-            if (!app.cookie.has('no_update') || auto) {
-              mdui.dialog({
-                title: '检测到新版本[' + response.name + ']',
-                content: '<div class="mdui-p-l-3 mdui-p-r-3">' + marked(response.body) + '</div>',
-                modal: true,
-                history: false,
-                buttons: [
-                  {
-                    text: '忽略'
-                  },
-                  {
-                    text: '不再提示',
-                    onClick: function(inst) {
-                      app.cookie.set('no_update', true, 30, '/');
-                    }
-                  },
-                  {
-                    text: '前往更新',
-                    onClick: function(inst) {
-                      return open(response.html_url);
-                    }
+      success: function (response) {
+        var thatVer = parseFloat(ver);
+        var newVer = parseFloat(response.name.replace(/[^\d.]/g, ''));
+        if (thatVer < newVer) {
+          if (!app.cookie.has('no_update') || auto) {
+            mdui.dialog({
+              title: '检测到新版本[' + response.name + ']',
+              content: '<div class="mdui-p-l-3 mdui-p-r-3">' + marked(response.body) + '</div>',
+              modal: true,
+              history: false,
+              buttons: [
+                {
+                   text: '忽略'
+                },
+                {
+                  text: '不再提示',
+                  onClick: function(inst) {
+                    app.cookie.set('no_update', true, 30, '/');
                   }
-                 ]
-              });
-            }
-          } else {
-            auto && app.msg(true, '已经是最新版本');
+                },
+                {
+                  text: '前往更新',
+                  onClick: function(inst) {
+                    return open(response.html_url);
+                  }
+                }
+              ]
+            });
           }
-          auto && app.cookie.delete('no_update');
+        } else {
+          auto && app.msg(true, '已经是最新版本');
         }
+        auto && app.cookie.delete('no_update');
+      }
     });
   }
 };
