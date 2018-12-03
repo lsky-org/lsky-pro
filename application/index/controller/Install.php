@@ -30,18 +30,16 @@ class Install extends Controller
 
         $phpVerGt56 = PHP_VERSION >= 5.6;
         $isCurl = function_exists('curl_init');
-        $isZip = function_exists('zip_open');
         $isFileInfo = function_exists('finfo_open');
         $isMysqli = class_exists('mysqli');
 
         switch ($step) {
             case 1:
                 // 运行环境检测
-                $testing = $phpVerGt56 && $isCurl && $isFileInfo && $isZip && $isMysqli;
+                $testing = $phpVerGt56 && $isCurl && $isFileInfo && $isMysqli;
                 $this->assign([
                     'phpVerGt56' => $phpVerGt56,
                     'isCurl' => $isCurl,
-                    'isZip' => $isZip,
                     'isFileInfo' => $isFileInfo,
                     'isMysqli' => $isMysqli,
                     'testing' => $testing

@@ -35,7 +35,6 @@
 * mysqli支持
 * fileinfo拓展
 * curl拓展
-* zip拓展
 * rewrite
 
 安装教程
