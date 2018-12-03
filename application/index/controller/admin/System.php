@@ -23,7 +23,7 @@ class System extends Base
     public function initialize()
     {
         parent::initialize();
-        $this->assign('configs', parent::getConfigs(['basics', 'upload', 'user', 'mail', 'other']));
+        $this->assign('configs', parent::getConfigs(['basics', 'upload', 'user', 'mail', 'audit', 'other']));
     }
 
     public function index()

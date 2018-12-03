@@ -9,6 +9,7 @@
 namespace app\index\controller;
 
 use app\common\model\Images;
+use GuzzleHttp\Client;
 use think\Db;
 use think\Exception;
 use think\facade\Config;
@@ -21,7 +22,7 @@ class Api extends Base
             Db::startTrans();
             try {
                 if (!$this->config['allowed_tourist_upload'] && !$this->user) {
-                    throw new Exception('管理员关闭了游客上传，请先登录账号', 401);
+                    throw new Exception('管理员关闭了游客上传！', 401);
                 }
 
                 $image = $this->getImage();
@@ -58,6 +59,24 @@ class Api extends Base
                         $domain = $strategyConfig[$cdnDomain];
                     }
                 }
+                $url = make_url($domain, $pathname);
+
+                // 图片鉴黄
+                if (true) {
+                    $client = new Client();
+                    $response = $client->get("https://www.moderatecontent.com/api/v2?key={$this->config['audit_key']}&url={$url}");
+                    if (200 == $response->getStatusCode()) {
+                        $result = json_decode($response->getBody());
+                        if (0 == $result->error_code) {
+                            if ($result->rating_index >= $this->config['audit_index']) {
+                                $strategy->delete($pathname);
+                                throw new Exception('图片' . $image->getInfo('name') . '涉嫌违规，禁止上传！', 0);
+                            }
+                        } else {
+                            throw new Exception($result->error, 0);
+                        }
+                    }
+                }
 
                 if (!Images::create([
                     'user_id' => $this->user ? $this->user->id : 0,
@@ -76,7 +95,7 @@ class Api extends Base
 
                 $data = [
                     'name' => $image->getInfo('name'),
-                    'url' => make_url($domain, $pathname),
+                    'url' => $url,
                 ];
                 if ($this->user) {
                     $data['quota'] = sprintf('%.2f', (float)$this->user->quota);
