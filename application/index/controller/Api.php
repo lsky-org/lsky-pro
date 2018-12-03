@@ -62,7 +62,7 @@ class Api extends Base
                 $url = make_url($domain, $pathname);
 
                 // 图片鉴黄
-                if (true) {
+                if ($this->config['open_audit']) {
                     $client = new Client();
                     $response = $client->get("https://www.moderatecontent.com/api/v2?key={$this->config['audit_key']}&url={$url}");
                     if (200 == $response->getStatusCode()) {
@@ -73,6 +73,7 @@ class Api extends Base
                                 throw new Exception('图片' . $image->getInfo('name') . '涉嫌违规，禁止上传！', 0);
                             }
                         } else {
+                            $strategy->delete($pathname);
                             throw new Exception($result->error, 0);
                         }
                     }
