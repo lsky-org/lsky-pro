@@ -127,7 +127,9 @@ class Base extends Controller
             $mail->isHTML(true);
             $mail->Subject = $subject;
             $mail->Body = $body;
-            $mail->send();
+            if (!$mail->send()) {
+                throw new Exception('Mailer Error: ' . $mail->ErrorInfo);
+            }
         } catch (Exception $e) {
             return $this->error($e->getMessage());
         }
