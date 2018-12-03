@@ -70,7 +70,7 @@ class Api extends Base
                         if (0 == $result->error_code) {
                             if ($result->rating_index >= $this->config['audit_index']) {
                                 $strategy->delete($pathname);
-                                throw new Exception('图片' . $image->getInfo('name') . '涉嫌违规，禁止上传！', 0);
+                                throw new Exception('图片[' . $image->getInfo('name') . ']涉嫌违规，禁止上传！', 0);
                             }
                         } else {
                             $strategy->delete($pathname);
