@@ -213,6 +213,9 @@ EOT;
                 $msg = '更新成功，返回<a href="/">首页</a>';
                 // 删除sql文件
                 @unlink($path);
+                if (file_exists(Env::get('root_path') . 'install.sql')) {
+                    @unlink(Env::get('root_path') . 'install.sql');
+                }
             }
         } catch (Exception $e) {
             $code = 0;
