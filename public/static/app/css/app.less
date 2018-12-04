@@ -49,39 +49,49 @@ main {
   left: 0;
   right: 0;
   margin: 1.7rem 0;
+
   .login-container, .register-container {
     margin-top: 4rem;
     margin-bottom: 4rem;
   }
+
   .not-logged-in {
     margin: 10rem 0;
     text-align: center;
+
     h2 {
       margin-bottom: 2rem;
     }
   }
+
   .upload-container {
     .title {
       margin: 1rem 0;
+
       h1 {
         font-weight: 300;
         font-size: 3rem;
         text-shadow: -5px 5px 0 rgba(0, 0, 0, .1);
       }
+
       p {
         margin-top: 1rem;
         font-size: 1.3rem;
         color: #999;
       }
     }
+
     .success-info {
       margin-top: 1rem;
       width: 0;
+
       .mdui-tab a {
         text-transform: inherit;
       }
+
       ul {
         list-style: none;
+
         li {
           position: relative;
           margin-top: 0.5rem;
@@ -95,9 +105,11 @@ main {
           word-wrap: break-word;
           border-radius: 0;
           font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+
           i.icon-copy {
             display: none;
           }
+
           &:hover {
             i.icon-copy {
               display: block;
@@ -113,12 +125,14 @@ main {
       }
     }
   }
+
   // 系统设置
   .system-container {
     .mdui-textfield-label {
       pointer-events: inherit;
     }
   }
+
   // 我的图片
   .images-container {
     #info {
@@ -126,20 +140,25 @@ main {
         word-break: break-all;
         word-wrap: break-word;
       }
+
       .mdui-btn-group {
         .mdui-btn {
           margin-left: 0;
           min-width: inherit;
         }
       }
+
       img.qrcode {
         text-align: center;
       }
+
       .mdui-dialog-content {
         padding-bottom: 0;
       }
+
       table {
         width: 100%;
+
         tbody {
           tr {
             td {
@@ -152,8 +171,10 @@ main {
         }
       }
     }
+
     .screen-box {
     }
+
     .images-box {
       .item {
         position: relative;
@@ -164,43 +185,52 @@ main {
         transition: all .1s;
         border: 1px solid transparent;
         margin-top: 1rem;
+
         i.iconfont {
           display: none;
           position: absolute;
           cursor: pointer;
           font-size: 19px;
         }
+
         // 选择
         i.icon-choice {
           top: 5px;
           left: 5px;
           color: #cecece;
+
           &:hover {
             color: #999;
           }
         }
+
         // 信息
         i.icon-info {
           top: 5px;
           right: 5px;
           color: #129cff;
         }
+
         &:hover {
           background-color: #ebebeb;
         }
+
         &.choice {
           background: rgba(204, 232, 255, 0.5);
           border: 1px solid rgba(153, 209, 255, 0.57);
+
           i.icon-choice {
             display: block;
             color: #3b8cff;
           }
         }
+
         &:hover, &.choice {
           i.icon-choice, i.icon-info {
             display: block;
           }
         }
+
         .info {
           cursor: pointer;
           height: 90px;
@@ -208,6 +238,7 @@ main {
           display: block;
           text-align: center;
           vertical-align: middle;
+
           img {
             max-height: 100%;
             max-width: 100%;
@@ -216,6 +247,7 @@ main {
             top: 50%;
             transform: translateY(-50%);
           }
+
           &.image {
             img {
               -webkit-box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
@@ -224,6 +256,7 @@ main {
             }
           }
         }
+
         p.name {
           color: #555;
           cursor: default;
@@ -241,30 +274,37 @@ main {
       }
     }
   }
+
   // 系统更新
   .update-container {
     .item {
       margin-top: 1rem;
+
       h4 {
         font-size: 1.1rem;
         margin-bottom: .5rem;
         color: #555;
+
         small {
           color: #777777;
         }
       }
+
       .info {
         margin-left: .8rem;
+
         p {
           color: #777;
           margin-bottom: .3em;
         }
       }
     }
+
     p {
       color: #444;
     }
   }
+
   .mdui-textfield {
     .captcha {
       position: absolute;
@@ -281,26 +321,31 @@ main {
 .file-input {
   @box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.13);
   @form-control-padding: 10px 18px;
+
   .file-preview {
     border-radius: 0;
     border: none;
     box-shadow: @box-shadow;
+
     .fileinput-remove {
       top: 6px;
       right: 6px;
     }
+
     .file-preview-thumbnails {
       .krajee-default.file-preview-frame {
         border: 0;
         box-shadow: @box-shadow;
       }
     }
+
     .kv-fileinput-error {
       ul {
         list-style: none;
       }
     }
   }
+
   .file-caption-main {
     .form-control {
       box-shadow: 0 2px 15px 0 rgba(0, 0, 0, 0.13);
@@ -308,25 +353,31 @@ main {
       border-radius: 0;
       height: 40px;
       padding: @form-control-padding;
+
       &:focus {
         z-index: 0;
       }
     }
+
     .btn {
       padding: @form-control-padding;
       border: 0;
+
       &:first-child {
         border-left: 1px solid #e2e2e2;
       }
+
       &:last-child {
         margin-right: -1px;
       }
     }
+
     .btn-file {
       border-color: #2383eb;
       background-color: #2383eb;
       border-radius: 0;
     }
+
     .input-group-append {
       box-shadow: @box-shadow;
     }
@@ -353,20 +404,24 @@ main {
   word-break: break-all;
   box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.13);
   border-radius: @border-radius;
+
   .panel-header {
     padding: @padding;
   }
+
   .panel-body {
     border-top: 1px solid @border-color;
     border-bottom: 1px solid @border-color;
     padding: @padding;
   }
+
   .panel-body-box {
     border-top: 1px solid @border-color;
     padding: @padding;
     border-bottom-left-radius: @border-radius;
     border-bottom-right-radius: @border-radius;
   }
+
   .panel-footer {
     padding: @padding;
   }
@@ -388,11 +443,13 @@ main {
   right: 0;
   bottom: 0;
   display: none;
+
   .mask {
     position: absolute;
     width: 100%;
     z-index: 9999;
   }
+
   .loading {
     position: absolute;
     top: 5rem;
@@ -417,20 +474,25 @@ main {
     bottom: 2rem;
     text-align: left;
     transform: translateX(-50%);
+
     progress {
       background-color: #f6f6f6;
       display: inline;
       height: .5rem;
     }
+
     progress::-webkit-progress-bar {
       background-color: #e0eaf0;
     }
+
     progress::-webkit-progress-value {
       background-color: #1abc9c;
     }
+
     progress::-moz-progress-bar {
       background-color: #e0eaf0;
     }
+
     progress::-moz-progress-value {
       background-color: #708d9b;
     }
@@ -542,6 +604,7 @@ footer {
 
   .krajee-default.file-preview-frame {
     width: 95%;
+
     .kv-file-content {
       width: 100%;
       height: 100%;
