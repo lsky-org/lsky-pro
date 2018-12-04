@@ -178,7 +178,7 @@ EOT;
                 }
             }
 
-            if (!$user && !$user->is_admin) {
+            if (!$user || !$user->is_admin) {
                 $this->redirect(url('/'));
             }
 

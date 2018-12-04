@@ -10,6 +10,6 @@
 // +----------------------------------------------------------------------
 
 Route::view('compatibility', 'index@tpl/compatibility');
-Route::resource('v1','index/V1');
+Route::resource('v1','index/Api');
 
 return [];
