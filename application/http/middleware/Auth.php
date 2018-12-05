@@ -32,7 +32,7 @@ class Auth
                 }
             }
 
-            if (!Session::has('uid') || !Session::has('token')) {
+            if (!Session::has('uid')) {
                 return redirect(url('auth/login'));
             }
         }

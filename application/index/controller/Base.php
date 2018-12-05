@@ -47,13 +47,10 @@ class Base extends Controller
             $this->config[$value->name] = $value->value;
         }
         $this->configs = $configs;
-        if (Session::has('uid') && Session::has('token')) {
-            $this->user = Users::get([
-                'id' => Session::get('uid'),
-                'token' => Session::get('token')
-            ]);
+        if (Session::has('uid')) {
+            $this->user = Users::get(Session::get('uid'));
             if (!$this->user) {
-                Session::delete(['uid', 'token']);
+                Session::delete('uid');
             }
         }
 
