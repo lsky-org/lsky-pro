@@ -10,6 +10,8 @@
 // +----------------------------------------------------------------------
 
 Route::view('compatibility', 'index@tpl/compatibility');
-Route::resource('api', 'index/Api');
+
+// [RESTFul Api route]
+Route::resource('api.auth', 'index/api/auth');
 
 return [];
