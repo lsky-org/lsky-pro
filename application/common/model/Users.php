@@ -17,7 +17,7 @@ class Users extends Model
 {
     use SoftDelete;
 
-    protected $insert = ['reg_ip', 'quota'];
+    protected $insert = ['reg_ip', 'quota', 'token'];
 
     public function setPassWordAttr($password)
     {
@@ -32,6 +32,11 @@ class Users extends Model
     public function setQuotaAttr()
     {
         return Config::where('name', 'user_initial_quota')->value('value');
+    }
+
+    public function setTokenAttr()
+    {
+        return make_token();
     }
 
     public function getUseQuotaAttr()
@@ -58,11 +63,7 @@ class Users extends Model
             if ($user->password !== md5($password)) {
                 throw new Exception('密码不正确');
             }
-            $token = make_token();
             Session::set('uid', $user->id);
-            Session::set('token', $token);
-            $user->token = $token;
-            $user->save();
         } else {
             throw new Exception('用户不存在');
         }
