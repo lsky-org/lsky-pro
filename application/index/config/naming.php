@@ -11,7 +11,7 @@
 use think\facade\Session;
 
 $time = time();
-$md5 = md5('LSKY PRO'. time());
+$md5 = md5('LSKY PRO' . uniqid() . time());
 $uid = Session::has('uid') ? Session::get('uid') : 0;
 
 return [
