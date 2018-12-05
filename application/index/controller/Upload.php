@@ -22,7 +22,7 @@ class Upload extends Base
             Db::startTrans();
             try {
                 if (!$this->config['allowed_tourist_upload'] && !$this->user) {
-                    throw new Exception('管理员关闭了游客上传！', 401);
+                    throw new Exception('管理员关闭了游客上传！');
                 }
 
                 $image = $this->getImage();
@@ -33,7 +33,7 @@ class Upload extends Base
 
                 if ($this->user) {
                     if (($this->user->use_quota + $size) > $this->user->quota) {
-                        throw new Exception('保存失败！您的储存容量不足，请联系管理员！', 0);
+                        throw new Exception('保存失败！您的储存容量不足，请联系管理员！');
                     }
                 }
 
@@ -47,9 +47,9 @@ class Upload extends Base
                 $pathname = strtolower($this->makePathname($image->getInfo('name')));
                 if (!$strategy->create($pathname, $image->getPathname())) {
                     if (Config::get('app.app_debug')) {
-                        throw new Exception($strategy->getError(), 500);
+                        throw new Exception($strategy->getError());
                     }
-                    throw new Exception('上传失败', 500);
+                    throw new Exception('上传失败');
                 }
 
                 $cdnDomain = $currentStrategy . '_cdn_domain';
@@ -70,11 +70,11 @@ class Upload extends Base
                         if (0 == $result->error_code) {
                             if ($result->rating_index >= $this->config['audit_index']) {
                                 $strategy->delete($pathname);
-                                throw new Exception('图片[' . $image->getInfo('name') . ']涉嫌违规，禁止上传！', 0);
+                                throw new Exception('图片[' . $image->getInfo('name') . ']涉嫌违规，禁止上传！');
                             }
                         } else {
                             $strategy->delete($pathname);
-                            throw new Exception($result->error, 0);
+                            throw new Exception($result->error);
                         }
                     }
                 }
@@ -91,7 +91,7 @@ class Upload extends Base
                     'md5' => $md5
                 ])) {
                     $strategy->delete($pathname);
-                    throw new Exception('图片数据保存失败', 500);
+                    throw new Exception('图片数据保存失败');
                 }
 
                 $data = [
@@ -106,7 +106,7 @@ class Upload extends Base
                 Db::commit();
             } catch (Exception $e) {
                 Db::rollback();
-                return $this->result(null, $e->getCode(), $e->getMessage());
+                return response($e->getMessage(), 500);
             }
 
             return $this->result($data, 200, '上传成功');
