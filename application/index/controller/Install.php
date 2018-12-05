@@ -168,13 +168,10 @@ EOT;
     {
         try {
             $user = false;
-            if (Session::has('uid') && Session::has('token')) {
-                $user = Users::get([
-                    'id' => Session::get('uid'),
-                    'token' => Session::get('token')
-                ]);
+            if (Session::has('uid')) {
+                $user = Users::get(Session::get('uid'));
                 if (!$user) {
-                    Session::delete(['uid', 'token']);
+                    Session::delete('uid');
                 }
             }
 
