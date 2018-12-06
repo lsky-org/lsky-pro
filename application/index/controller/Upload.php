@@ -21,87 +21,8 @@ class Upload extends Base
         if ($this->request->isPost()) {
             Db::startTrans();
             try {
-                if (!$this->config['allowed_tourist_upload'] && !$this->user) {
-                    throw new Exception('管理员关闭了游客上传！');
-                }
 
-                $image = $this->getImage();
-                $size = $image->getSize();
-                $mime = $image->getMime();
-                $sha1 = $image->hash('sha1');
-                $md5 = $image->hash('md5');
-
-                if ($this->user) {
-                    if (($this->user->use_quota + $size) > $this->user->quota) {
-                        throw new Exception('保存失败！您的储存容量不足，请联系管理员！');
-                    }
-                }
-
-                // 当前储存策略
-                $currentStrategy = strtolower($this->config['storage_strategy']);
-                // 获取当前储存策略配置
-                $strategyConfig = $this->currentStrategyConfig;
-                // 获取当前驱动实例
-                $strategy = $this->getStrategyInstance();
-
-                $pathname = strtolower($this->makePathname($image->getInfo('name')));
-                if (!$strategy->create($pathname, $image->getPathname())) {
-                    if (Config::get('app.app_debug')) {
-                        throw new Exception($strategy->getError());
-                    }
-                    throw new Exception('上传失败');
-                }
-
-                $cdnDomain = $currentStrategy . '_cdn_domain';
-                $domain = $this->request->domain();
-                if (array_key_exists($cdnDomain, $strategyConfig)) {
-                    if ($strategyConfig[$cdnDomain]) {
-                        $domain = $strategyConfig[$cdnDomain];
-                    }
-                }
-                $url = make_url($domain, $pathname);
-
-                // 图片鉴黄
-                if ($this->config['open_audit']) {
-                    $client = new Client();
-                    $response = $client->get("https://www.moderatecontent.com/api/v2?key={$this->config['audit_key']}&url={$url}");
-                    if (200 == $response->getStatusCode()) {
-                        $result = json_decode($response->getBody());
-                        if (0 == $result->error_code) {
-                            if ($result->rating_index >= $this->config['audit_index']) {
-                                $strategy->delete($pathname);
-                                throw new Exception('图片[' . $image->getInfo('name') . ']涉嫌违规，禁止上传！');
-                            }
-                        } else {
-                            $strategy->delete($pathname);
-                            throw new Exception($result->error);
-                        }
-                    }
-                }
-
-                if (!Images::create([
-                    'user_id' => $this->user ? $this->user->id : 0,
-                    'strategy' => $currentStrategy,
-                    'path' => dirname($pathname),
-                    'name' => basename($pathname),
-                    'pathname' => $pathname,
-                    'size' => $size,
-                    'mime' => $mime,
-                    'sha1' => $sha1,
-                    'md5' => $md5
-                ])) {
-                    $strategy->delete($pathname);
-                    throw new Exception('图片数据保存失败');
-                }
-
-                $data = [
-                    'name' => $image->getInfo('name'),
-                    'url' => $url,
-                ];
-                if ($this->user) {
-                    $data['quota'] = sprintf('%.2f', (float)$this->user->quota);
-                    $data['use_quota'] = sprintf('%.2f', (float)$this->user->use_quota);
-                }
+                $data = $this->execute();
 
                 Db::commit();
             } catch (Exception $e) {
@@ -114,6 +35,99 @@ class Upload extends Base
     }
 
     /**
+     * 执行上传，成功返回数据，否则直接抛出异常
+     *
+     * @return array
+     * @throws Exception
+     */
+    public function execute()
+    {
+        if (!$this->config['allowed_tourist_upload'] && !$this->user) {
+            throw new Exception('管理员关闭了游客上传！');
+        }
+
+        $image = $this->getImage();
+        $size = $image->getSize();
+        $mime = $image->getMime();
+        $sha1 = $image->hash('sha1');
+        $md5 = $image->hash('md5');
+
+        if ($this->user) {
+            if (($this->user->use_quota + $size) > $this->user->quota) {
+                throw new Exception('保存失败！您的储存容量不足，请联系管理员！');
+            }
+        }
+
+        // 当前储存策略
+        $currentStrategy = strtolower($this->config['storage_strategy']);
+        // 获取当前储存策略配置
+        $strategyConfig = $this->currentStrategyConfig;
+        // 获取当前驱动实例
+        $strategy = $this->getStrategyInstance();
+
+        $pathname = strtolower($this->makePathname($image->getInfo('name')));
+        if (!$strategy->create($pathname, $image->getPathname())) {
+            if (Config::get('app.app_debug')) {
+                throw new Exception($strategy->getError());
+            }
+            throw new Exception('上传失败');
+        }
+
+        $cdnDomain = $currentStrategy . '_cdn_domain';
+        $domain = $this->request->domain();
+        if (array_key_exists($cdnDomain, $strategyConfig)) {
+            if ($strategyConfig[$cdnDomain]) {
+                $domain = $strategyConfig[$cdnDomain];
+            }
+        }
+        $url = make_url($domain, $pathname);
+
+        // 图片鉴黄
+        if ($this->config['open_audit']) {
+            $client = new Client();
+            $response = $client->get("https://www.moderatecontent.com/api/v2?key={$this->config['audit_key']}&url={$url}");
+            if (200 == $response->getStatusCode()) {
+                $result = json_decode($response->getBody());
+                if (0 == $result->error_code) {
+                    if ($result->rating_index >= $this->config['audit_index']) {
+                        $strategy->delete($pathname);
+                        throw new Exception('图片[' . $image->getInfo('name') . ']涉嫌违规，禁止上传！');
+                    }
+                } else {
+                    $strategy->delete($pathname);
+                    throw new Exception($result->error);
+                }
+            }
+        }
+
+        if (!Images::create([
+            'user_id' => $this->user ? $this->user->id : 0,
+            'strategy' => $currentStrategy,
+            'path' => dirname($pathname),
+            'name' => basename($pathname),
+            'pathname' => $pathname,
+            'size' => $size,
+            'mime' => $mime,
+            'sha1' => $sha1,
+            'md5' => $md5
+        ])) {
+            $strategy->delete($pathname);
+            throw new Exception('图片数据保存失败');
+        }
+
+        $data = [
+            'name' => $image->getInfo('name'),
+            'url' => $url,
+        ];
+        if ($this->user) {
+            $data['quota'] = sprintf('%.2f', (float)$this->user->quota);
+            $data['use_quota'] = sprintf('%.2f', (float)$this->user->use_quota);
+        }
+
+        return $data;
+    }
+
+    /**
      * 获取图片资源
      *
      * @return array|null|\think\File
@@ -123,7 +137,7 @@ class Upload extends Base
     {
         $image = $this->request->file('image');
         if (null === $image) {
-            throw new Exception('图片资源获取失败！');
+            throw new Exception('图片资源获取失败');
         }
         if (!is_uploaded_file($image->getPathname())) {
             throw new Exception('file is not uploaded via HTTP POST');
@@ -134,6 +148,7 @@ class Upload extends Base
         ])) {
             throw new Exception($image->getError());
         }
+
         return $image;
     }
 

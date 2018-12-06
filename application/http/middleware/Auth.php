@@ -7,7 +7,7 @@ use think\facade\Session;
 class Auth
 {
     /**
-     * 无需登录可访问的方法
+     * 无需登录可访问的方法(除分层控制器)
      *
      * @var array
      */
@@ -15,7 +15,6 @@ class Auth
         'Index/index',
         'Upload/upload',
         'Auth/*',
-        'Api/*'
     ];
 
     public function handle($request, \Closure $next)

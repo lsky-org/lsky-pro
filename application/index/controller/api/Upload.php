@@ -8,6 +8,9 @@
 
 namespace app\index\controller\api;
 
+use think\Db;
+use think\Exception;
+
 class Upload extends Base
 {
     public function initialize($auth = false)
@@ -21,8 +24,21 @@ class Upload extends Base
         }
     }
 
+    /**
+     * 上传
+     */
     public function index()
     {
+        Db::startTrans();
+        try {
 
+            $data = (new \app\index\controller\Upload)->execute();
+
+            Db::commit();
+        } catch (Exception $e) {
+            Db::rollback();
+            return $this->response($e->getMessage(), 500);
+        }
+        return $this->response('success', 200, $data);
     }
 }

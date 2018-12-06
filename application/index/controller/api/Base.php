@@ -70,12 +70,12 @@ class Base extends Controller
     /**
      * 返回数据给客户端并中断输出
      *
-     * @param       $msg  提示信息
-     * @param int   $code 状态码
-     * @param array $data 数据
+     * @param string $msg  提示信息
+     * @param int    $code 状态码
+     * @param array  $data 数据
      *
      */
-    protected function response($msg, $code = 200, $data = [])
+    protected function response($msg = '', $code = 200, $data = [])
     {
         $response = Response::create([
             'code' => $code,
