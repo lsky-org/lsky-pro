@@ -7,9 +7,8 @@ use think\Exception;
 
 class Token extends Base
 {
-    public function initialize($auth = false)
+    public function initialize()
     {
-        parent::initialize($auth);
     }
 
     /**

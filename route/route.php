@@ -16,7 +16,7 @@ Route::view('compatibility', 'index@tpl/compatibility');
 // [RESTFul Api Route]
 Route::group('api', function () {
     Route::post('upload', 'api/Upload/index');
-    Route::resource('auth', 'api/Auth');
+    Route::post('token', 'api/Token/index');
     Route::resource('user', 'api/User');
 });
 
