@@ -10,6 +10,7 @@ namespace app\index\controller\admin;
 
 use app\common\model\Images as ImagesModel;
 use app\common\model\Users;
+use GuzzleHttp\Client;
 use think\facade\Config;
 use think\Db;
 use think\Exception;
@@ -108,6 +109,22 @@ class Images extends Base
                 return $this->error($e->getMessage());
             }
             return $this->success('删除成功');
+        }
+    }
+
+    public function getIpInfo()
+    {
+        if ($this->request->isPost()) {
+            $ip = $this->request->post('ip');
+            $client = new Client();
+            $response = $client->get('http://ip.taobao.com/service/getIpInfo.php?ip=' . $ip);
+            if ($response->getStatusCode() == 200) {
+                $data = json_decode($response->getBody()->getContents(), true);
+                if (isset($data['code']) && $data['code'] == 0) {
+                    return $this->success('获取成功', null, isset($data['data']) ? $data['data'] : null);
+                }
+            }
+            return $this->error('获取失败');
         }
     }
 }
