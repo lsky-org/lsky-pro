@@ -31,9 +31,9 @@ class Users extends Model
         return request()->ip();
     }
 
-    public function setQuotaAttr()
+    public function setQuotaAttr($quota)
     {
-        return Config::where('name', 'user_initial_quota')->value('value');
+        return $quota ? $quota : Config::where('name', 'user_initial_quota')->value('value');
     }
 
     public function setTokenAttr()

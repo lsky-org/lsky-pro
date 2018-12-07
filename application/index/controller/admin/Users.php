@@ -8,7 +8,7 @@
 
 namespace app\index\controller\admin;
 
-use app\common\model\Users as UserModel;
+use app\common\model\Users as UsersModel;
 use think\Exception;
 
 /**
@@ -21,7 +21,7 @@ class Users extends Base
 {
     public function index($state = '', $keyword = '', $limit = 15)
     {
-        $model = new UserModel();
+        $model = new UsersModel();
         if (!empty($state)) {
             $model = $model->where('state', $state);
         }
@@ -55,7 +55,7 @@ class Users extends Base
                     return $this->error('不能删除自己的账号！');
                 }
             }
-            if (!UserModel::destroy($id)) {
+            if (!UsersModel::destroy($id)) {
                 return $this->error('删除失败');
             }
             return $this->success('删除成功');
@@ -75,7 +75,7 @@ class Users extends Base
                     return $this->error('不能冻结自己的账号！');
                 }
             }
-            $model = new UserModel();
+            $model = new UsersModel();
             if (!$model->where('id', 'in', $id)->update(['state' => 0])) {
                 return $this->error('冻结失败');
             }
@@ -87,10 +87,9 @@ class Users extends Base
     {
         if ($this->request->isPost()) {
             $id = $this->request->post('id');
-            if (!$user = UserModel::get($id)) {
+            if (!$user = UsersModel::get($id)) {
                 return $this->error('数据获取失败');
             }
-            $user->use_quota = $user->use_quota;
             unset($user->password);
             return $this->success('成功', null, $user);
         }
@@ -105,8 +104,10 @@ class Users extends Base
                 if (true !== $validate) {
                     throw new Exception($validate);
                 }
-                if (!$data['password']) unset($data['password']);
-                UserModel::update($data);
+                if (!$data['password']) unset($data['password'], $data['password_confirm']);
+                if (!UsersModel::update($data)) {
+                    throw new Exception('修改失败');
+                }
             } catch (Exception $e) {
                 return $this->error($e->getMessage());
             }
@@ -119,7 +120,7 @@ class Users extends Base
         if ($this->request->isPost()) {
             $id = $this->request->post('id');
             $state = $this->request->post('state');
-            if (!$user = UserModel::get($id)) {
+            if (!$user = UsersModel::get($id)) {
                 return $this->error('数据获取失败');
             }
             if ($user->id === $this->user->id) {
