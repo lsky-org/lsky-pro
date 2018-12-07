@@ -12,7 +12,7 @@ class WebAuth
      * @var array
      */
     private $noNeedLogin = [
-        'Index/index',
+        'Index/*',
         'Upload/upload',
         'Auth/*',
     ];

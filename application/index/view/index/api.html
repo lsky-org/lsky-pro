@@ -1,0 +1,101 @@
+{extend name="common:base" /}
+
+{block name="title"}Upload API Document - {$config.site_name}{/block}
+
+{block name="main"}
+<div class="mdui-container">
+  <main>
+    <h2>1. 获取Token</h2>
+    <div class="mdui-row">
+      <div class="mdui-col-md-6">
+        <div class="mdui-table-fluid mdui-m-t-1">
+          <table class="mdui-table">
+            <thead>
+            <tr>
+              <td>功能</td>
+              <td>接口</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+              <td>请求方式</td>
+              <td>POST</td>
+            </tr>
+            <tr>
+              <td>URL</td>
+              <td>{$domain}/api/token</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <h4 class="mdui-m-t-2 mdui-m-b-1">请求参数</h4>
+    <div class="mdui-table-fluid">
+      <table class="mdui-table">
+        <thead>
+        <tr>
+          <td>参数名称</td>
+          <td>类型</td>
+          <td>是否必须</td>
+          <td>说明</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td>email</td>
+          <td>String</td>
+          <td>是</td>
+          <td>邮箱</td>
+        </tr>
+        <tr>
+          <td>password</td>
+          <td>String</td>
+          <td>是</td>
+          <td>账号密码</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4 class="mdui-m-t-2 mdui-m-b-1">返回数据说明</h4>
+    <div class="mdui-table-fluid">
+      <table class="mdui-table">
+        <thead>
+        <tr>
+          <td>参数名称</td>
+          <td>类型</td>
+          <td>实例值</td>
+          <td>说明</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td>code</td>
+          <td>Number</td>
+          <td>200</td>
+          <td>状态码，成功返回200，失败返回500</td>
+        </tr>
+        <tr>
+          <td>msg</td>
+          <td>String</td>
+          <td>success</td>
+          <td>提示信息</td>
+        </tr>
+        <tr>
+          <td>time</td>
+          <td>Number</td>
+          <td>1544176295</td>
+          <td>响应时间戳</td>
+        </tr>
+        <tr>
+          <td>data</td>
+          <td>array|object</td>
+          <td>{"token": "8961576c9090ef0902c4b89406f8d557"}</td>
+          <td>获取的token数据</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+</div>
+{/block}

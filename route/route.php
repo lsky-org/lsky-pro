@@ -13,11 +13,10 @@ use think\facade\Route;
 
 Route::view('compatibility', 'index@tpl/compatibility');
 
-// [RESTFul Api Route]
+// [Api Route]
 Route::group('api', function () {
-    Route::post('upload', 'api/Upload/index');
     Route::post('token', 'api/Token/index');
-    Route::resource('user', 'api/User');
+    Route::post('upload', 'api/Upload/index');
 });
 
 return [];

@@ -14,4 +14,10 @@ class Index extends Base
     {
         return $this->fetch();
     }
+
+    public function api()
+    {
+        $this->assign('domain', $this->request->domain());
+        return $this->fetch();
+    }
 }

@@ -66,11 +66,12 @@ class Base extends Controller
      * 返回数据给客户端并中断输出
      *
      * @param string $msg  提示信息
-     * @param int    $code 状态码
      * @param null   $data 数据
+     * @param int    $code 状态码
      *
+     * @throws HttpResponseException
      */
-    protected function response($msg = '', $code = 200, $data = null)
+    protected function response($msg = '', $data = null, $code = 200)
     {
         $response = Response::create([
             'code' => $code,
