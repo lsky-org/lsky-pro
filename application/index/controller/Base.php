@@ -18,7 +18,7 @@ use think\facade\Env;
 
 class Base extends Controller
 {
-    protected $middleware = ['auth'];
+    protected $middleware = ['WebAuth'];
 
     protected $user = null;
 

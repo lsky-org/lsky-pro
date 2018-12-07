@@ -1,6 +1,6 @@
 <?php
 
-namespace app\index\controller\api;
+namespace app\api\controller;
 
 use app\common\model\Users;
 use think\Controller;
@@ -20,15 +20,11 @@ class Base extends Controller
     /**
      * 构造方法
      *
-     * @param bool $auth 是否认证
-     *
      * @throws \think\Exception\DbException
      */
-    public function initialize($auth = true)
+    public function initialize()
     {
         parent::initialize();
-
-        $this->token = $this->param('token');
 
         $configs = \app\common\model\Config::all();
         foreach ($configs as $key => &$value) {
@@ -39,31 +35,30 @@ class Base extends Controller
             $this->response('API is not open yet.', 500);
         }
 
+        $this->token = $this->request->header('token');
+        $this->auth($this->token);
+
         $format = $this->param('format');
         if ($format && in_array(strtolower($format), ['json', 'jsonp', 'xml'])) {
             $this->format = $format;
         }
-
-        $auth && $this->auth();
     }
 
     /**
-     * 权限认证
+     * 权限认证，成功设置成员属性user的数据，否则直接返回失败数据
      *
-     * @param null $token
+     * @param $token
      *
      * @throws \think\Exception\DbException
      */
-    protected function auth($token = null)
+    protected function auth($token)
     {
-        $token = $token ? $token : $this->token;
-        if ($token) {
-            $this->user = Users::get(['token' => $token]);
-        } else {
-            return $this->response('Token does not exist.', 500);
+        if (!$token) {
+            $this->response('Token does not exist.', 500);
         }
+        $this->user = Users::get(['token' => $token]);
         if (!$this->user) {
-            return $this->response('Authentication failed', 500);
+            $this->response('Authentication failed', 500);
         }
     }
 
@@ -72,15 +67,16 @@ class Base extends Controller
      *
      * @param string $msg  提示信息
      * @param int    $code 状态码
-     * @param array  $data 数据
+     * @param null   $data 数据
      *
      */
-    protected function response($msg = '', $code = 200, $data = [])
+    protected function response($msg = '', $code = 200, $data = null)
     {
         $response = Response::create([
             'code' => $code,
             'msg' => $msg,
-            'data' => $data
+            'data' => $data,
+            'time' => time()
         ], $this->format, $code);
 
         throw new HttpResponseException($response);

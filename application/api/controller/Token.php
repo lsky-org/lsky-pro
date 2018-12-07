@@ -1,6 +1,6 @@
 <?php
 
-namespace app\index\controller\api;
+namespace app\api\controller;
 
 use app\common\model\Users;
 use think\Exception;

@@ -9,6 +9,7 @@
 namespace app\index\controller;
 
 use app\common\model\Images;
+use app\common\model\Users;
 use GuzzleHttp\Client;
 use think\Db;
 use think\Exception;
@@ -22,7 +23,7 @@ class Upload extends Base
             Db::startTrans();
             try {
 
-                $data = $this->execute();
+                $data = $this->execute($this->user);
 
                 Db::commit();
             } catch (Exception $e) {
@@ -37,12 +38,14 @@ class Upload extends Base
     /**
      * 执行上传，成功返回数据，否则直接抛出异常
      *
+     * @param null|Users $user
+     *
      * @return array
      * @throws Exception
      */
-    public function execute()
+    public function execute($user = null)
     {
-        if (!$this->config['allowed_tourist_upload'] && !$this->user) {
+        if (!$this->config['allowed_tourist_upload'] && !$user) {
             throw new Exception('管理员关闭了游客上传！');
         }
 
@@ -52,8 +55,8 @@ class Upload extends Base
         $sha1 = $image->hash('sha1');
         $md5 = $image->hash('md5');
 
-        if ($this->user) {
-            if (($this->user->use_quota + $size) > $this->user->quota) {
+        if ($user) {
+            if (($user->use_quota + $size) > $user->quota) {
                 throw new Exception('保存失败！您的储存容量不足，请联系管理员！');
             }
         }
@@ -87,7 +90,7 @@ class Upload extends Base
             $client = new Client();
             $response = $client->get("https://www.moderatecontent.com/api/v2?key={$this->config['audit_key']}&url={$url}");
             if (200 == $response->getStatusCode()) {
-                $result = json_decode($response->getBody());
+                $result = json_decode($response->getBody()->getContents());
                 if (0 == $result->error_code) {
                     if ($result->rating_index >= $this->config['audit_index']) {
                         $strategy->delete($pathname);
@@ -101,7 +104,7 @@ class Upload extends Base
         }
 
         if (!Images::create([
-            'user_id' => $this->user ? $this->user->id : 0,
+            'user_id' => $user ? $user->id : 0,
             'strategy' => $currentStrategy,
             'path' => dirname($pathname),
             'name' => basename($pathname),
@@ -120,8 +123,8 @@ class Upload extends Base
             'url' => $url,
         ];
         if ($this->user) {
-            $data['quota'] = sprintf('%.2f', (float)$this->user->quota);
-            $data['use_quota'] = sprintf('%.2f', (float)$this->user->use_quota);
+            $data['quota'] = sprintf('%.2f', (float) $user->quota);
+            $data['use_quota'] = sprintf('%.2f', (float) $user->use_quota);
         }
 
         return $data;

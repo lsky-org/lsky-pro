@@ -6,21 +6,21 @@
  * Link: https://github.com/wisp-x
  */
 
-namespace app\index\controller\api;
+namespace app\api\controller;
 
 use think\Db;
 use think\Exception;
 
 class Upload extends Base
 {
-    public function initialize($auth = false)
+    public function initialize()
     {
-        parent::initialize($auth);
         // 是否允许游客上传
-        if ($this->config['allowed_tourist_upload']) {
-            $this->token && $this->auth($this->token);
+        $token = $this->request->header('token');
+        if (!$this->config['allowed_tourist_upload']) {
+            $token && $this->auth($token);
         } else {
-            $this->auth($this->token);
+            $this->auth($token);
         }
     }
 
@@ -32,7 +32,7 @@ class Upload extends Base
         Db::startTrans();
         try {
 
-            $data = (new \app\index\controller\Upload)->execute();
+            $data = (new \app\index\controller\Upload)->execute($this->user);
 
             Db::commit();
         } catch (Exception $e) {

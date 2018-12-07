@@ -85,7 +85,7 @@ return [
         [
             'name'      => '{uid}',
             'example'   => '1',
-            'explain'   => '用户ID(用户已登录可用，否则为0)',
+            'explain'   => '用户ID(用户从网页端登录可用，否则为0)',
             'value'     => $uid,
         ],
         [
@@ -165,7 +165,7 @@ return [
         [
             'name'      => '{uid}',
             'example'   => '1',
-            'explain'   => '用户ID(用户已登录可用，否则为0)',
+            'explain'   => '用户ID(用户从网页端登录可用，否则为0)',
             'value'     => $uid,
         ],
         [

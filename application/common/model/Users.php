@@ -19,6 +19,8 @@ class Users extends Model
 
     protected $insert = ['reg_ip', 'quota', 'token'];
 
+    protected $append = ['use_quota'];
+
     public function setPassWordAttr($password)
     {
         return md5($password);
@@ -41,7 +43,7 @@ class Users extends Model
 
     public function getUseQuotaAttr()
     {
-        return $this->hasMany('Images', 'user_id', 'id')->sum('size');
+        return sprintf("%.2f", $this->hasMany('Images', 'user_id', 'id')->sum('size'));
     }
 
     public static function login($account, $password)

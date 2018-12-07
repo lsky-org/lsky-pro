@@ -9,9 +9,15 @@
 // | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
 
+use think\facade\Route;
+
 Route::view('compatibility', 'index@tpl/compatibility');
 
-// [RESTFul Api route]
-Route::resource('api.auth', 'index/api/auth');
+// [RESTFul Api Route]
+Route::group('api', function () {
+    Route::post('upload', 'api/Upload/index');
+    Route::resource('auth', 'api/Auth');
+    Route::resource('user', 'api/User');
+});
 
 return [];

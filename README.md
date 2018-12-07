@@ -32,6 +32,7 @@
 安装需求
 ---
 * PHP版本 &ge; 5.6(建议使用PHP7+)
+* mysql版本 &ge; 5.5
 * mysqli支持
 * fileinfo拓展
 * curl拓展
