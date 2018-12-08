@@ -79,13 +79,13 @@ INSERT INTO `lsky_config` (`id`, `key`, `type`, `input_type`, `name`, `title`, `
 (38, 'upyun', 'text', 'text', 'upyun_operator_name', 'OperatorName', '操作员账号', '', ''),
 (39, 'upyun', 'text', 'password', 'upyun_operator_pwd', 'OperatorPwd', '操作员密码', '', ''),
 (40, 'upyun', 'text', 'text', 'upyun_service_name', 'ServiceName', '云储存服务名称', '', ''),
-(41, '', 'text', 'text', 'system_version', '系统版本', NULL, '1.3.0', ''),
+(41, '', 'text', 'text', 'system_version', '系统版本', NULL, '1.3.2', ''),
 
 
 (42, 'audit', 'bool', 'checkbox', 'open_audit', '开启图片鉴黄', '鉴黄接口申请地址：https://www.moderatecontent.com', '0', ''),
 (43, 'audit', 'text', 'text', 'audit_key', 'Key', NULL, '', ''),
 (44, 'audit', 'select', 'text', 'audit_index', '内容评级', '1=所有人，2=少年，3=成人', '3', '{\"1\": \"所有人\", \"2\": \"少年\", \"3\": \"成人\"}'),
-(45, 'other', 'bool', 'checkbox', 'open_api', '开启API', '是否开放接口', '1', '');
+(45, 'other', 'bool', 'checkbox', 'open_api', '开启API', '是否开放接口', '0', '');
 
 -- --------------------------------------------------------
 
@@ -177,4 +177,4 @@ ALTER TABLE `lsky_images`
 -- 使用表AUTO_INCREMENT `lsky_users`
 --
 ALTER TABLE `lsky_users`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
