@@ -559,7 +559,7 @@ class BelongsToMany extends Relation
 
             foreach ($ids as $id) {
                 $pivot[$this->foreignKey] = $id;
-                $this->pivot->insert($pivot, true);
+                $this->pivot->replace()->save($pivot);
                 $result[] = $this->newPivot($pivot, true);
             }
 

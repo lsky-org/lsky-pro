@@ -313,9 +313,9 @@ if (!function_exists('download')) {
      * @param integer $expire 有效期（秒）
      * @return \think\response\Download
      */
-    function download($filename, $name = '', $content = false, $expire = 180)
+    function download($filename, $name = '', $content = false, $expire = 360, $openinBrower = false)
     {
-        return Response::create($filename, 'download')->name($name)->isContent($content)->expire($expire);
+        return Response::create($filename, 'download')->name($name)->isContent($content)->expire($expire)->openinBrower($openinBrower);
     }
 }
 

@@ -56,6 +56,8 @@ class Sqlsrv extends Connection
     public function getFields($tableName)
     {
         list($tableName) = explode(' ', $tableName);
+        $tableNames      = explode('.', $tableName);
+        $tableName       = isset($tableNames[1]) ? $tableNames[1] : $tableNames[0];
 
         $sql = "SELECT   column_name,   data_type,   column_default,   is_nullable
         FROM    information_schema.tables AS t

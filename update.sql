@@ -12,3 +12,6 @@ INSERT INTO `lsky_config` (`id`, `key`, `type`, `input_type`, `name`, `title`, `
 (NULL, 'audit', 'text', 'text', 'audit_key', 'Key', NULL, '', ''),
 (NULL, 'audit', 'select', 'text', 'audit_index', '内容评级', '1=所有人，2=少年，3=成人', '3', '{\"1\": \"所有人\", \"2\": \"少年\", \"3\": \"成人\"}'),
 (NULL, 'other', 'bool', 'checkbox', 'open_api', '开启API', '是否开放接口', '0', '');
+
+-- v1.3.3
+UPDATE `lsky_config` SET `value` = '1.3.3' WHERE `lsky_config`.`name` = 'system_version';

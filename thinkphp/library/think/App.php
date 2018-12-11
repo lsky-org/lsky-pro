@@ -20,7 +20,7 @@ use think\route\Dispatch;
  */
 class App extends Container
 {
-    const VERSION = '5.1.30 LTS';
+    const VERSION = '5.1.31 LTS';
 
     /**
      * 当前模块路径

@@ -594,8 +594,8 @@
     },
     {
         "name": "symfony/event-dispatcher",
-        "version": "v2.8.48",
-        "version_normalized": "2.8.48.0",
+        "version": "v2.8.49",
+        "version_normalized": "2.8.49.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/event-dispatcher.git",
@@ -656,17 +656,17 @@
     },
     {
         "name": "topthink/framework",
-        "version": "v5.1.30",
-        "version_normalized": "5.1.30.0",
+        "version": "v5.1.31",
+        "version_normalized": "5.1.31.0",
         "source": {
             "type": "git",
             "url": "https://github.com/top-think/framework.git",
-            "reference": "4fefa5ed2f9dc8a15fcf7bb271d0d918fb48dacc"
+            "reference": "93339b1a4df5a73e0143db0847a4c5e0b2e46fb0"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/top-think/framework/zipball/4fefa5ed2f9dc8a15fcf7bb271d0d918fb48dacc",
-            "reference": "4fefa5ed2f9dc8a15fcf7bb271d0d918fb48dacc",
+            "url": "https://api.github.com/repos/top-think/framework/zipball/93339b1a4df5a73e0143db0847a4c5e0b2e46fb0",
+            "reference": "93339b1a4df5a73e0143db0847a4c5e0b2e46fb0",
             "shasum": ""
         },
         "require": {
@@ -682,7 +682,7 @@
             "sebastian/phpcpd": "2.*",
             "squizlabs/php_codesniffer": "2.*"
         },
-        "time": "2018-11-30T07:46:23+00:00",
+        "time": "2018-12-09T12:41:21+00:00",
         "type": "think-framework",
         "installation-source": "dist",
         "notification-url": "https://packagist.org/downloads/",

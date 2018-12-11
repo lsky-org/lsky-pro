@@ -298,7 +298,7 @@ class TagLib
      */
     public function parseCondition($condition)
     {
-        if (strpos($condition, ':')) {
+        if (!strpos($condition, '::') && strpos($condition, ':')) {
             $condition = ' ' . substr(strstr($condition, ':'), 1);
         }
 
