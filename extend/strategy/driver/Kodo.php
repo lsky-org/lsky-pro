@@ -20,7 +20,7 @@ use strategy\Driver;
  * Class Qiniu
  * @package strategy\driver
  */
-class Qiniu implements Driver
+class Kodo implements Driver
 {
     /**
      * 当前储存策略参数

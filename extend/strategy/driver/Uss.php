@@ -16,7 +16,7 @@ use strategy\Driver;
  * Class Upyun
  * @package strategy\driver
  */
-class Upyun implements Driver
+class Uss implements Driver
 {
     /**
      * 当前储存策略参数

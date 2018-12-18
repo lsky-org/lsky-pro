@@ -21,12 +21,12 @@ return [
         'name'  => '腾讯云COS',
         'class' => \strategy\driver\Cos::class
     ],
-    'qiniu'     => [
-        'name'  => '七牛云',
-        'class' => \strategy\driver\Qiniu::class
+    'kodo'     => [
+        'name'  => '七牛云KODO',
+        'class' => \strategy\driver\Kodo::class
     ],
-    'upyun'     => [
-        'name'  => '又拍云',
-        'class' => \strategy\driver\Upyun::class
+    'uss'     => [
+        'name'  => '又拍云USS',
+        'class' => \strategy\driver\Uss::class
     ],
 ];
