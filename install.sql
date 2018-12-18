@@ -48,7 +48,7 @@ INSERT INTO `lsky_config` (`id`, `key`, `type`, `input_type`, `name`, `title`, `
 (8, 'upload', 'text', 'number', 'upload_single_num', '单次同时上传数量', NULL, '10', ''),
 (9, 'upload', 'text', 'text', 'upload_allowed_exts', '允许上传的文件后缀', '逗号隔开', 'jpg,jpeg,gif,png,ico', ''),
 (10, 'upload', 'text', 'text', 'path_naming_rule', '文件路径命名规则', '<a href="javascript:void(0)" mdui-dialog="{target: \'#path-var\'}">路径命名变量对照表</a>', '{Y}/{m}/{d}', ''),
-(11, 'upload', 'text', 'text', 'file_naming_rule', '文件路径命名规则', '<a href="javascript:void(0)" mdui-dialog="{target: \'#file-var\'}">文件命名变量对照表</a>', '{uniqid}', ''),
+(11, 'upload', 'text', 'text', 'file_naming_rule', '文件命名规则', '<a href="javascript:void(0)" mdui-dialog="{target: \'#file-var\'}">文件命名变量对照表</a>', '{uniqid}', ''),
 (12, 'user', 'text', 'text', 'user_initial_quota', '用户初始配额容量', '单位：b，默认1073741824：1G，最大18位', '1073741824', ''),
 (13, 'mail', 'select', 'text', 'mail_send_mode', '邮件发送方式', NULL, 'smtp', '{\"smtp\":\"SMTP\"}'),
 (14, 'mail', 'select', 'text', 'mail_smtp_secure', 'SMTP验证方式', NULL, 'none', '{\"none\":\"None\",\"tls\":\"TLS\",\"ssl\":\"SSL\"}'),
