@@ -97,6 +97,7 @@ DROP TABLE IF EXISTS `lsky_images`;
 CREATE TABLE IF NOT EXISTS `lsky_images` (
   `id` int(11) UNSIGNED NOT NULL COMMENT 'ID',
   `user_id` int(11) NOT NULL DEFAULT 0 COMMENT '用户ID，为0表示游客上传',
+  `folder_id` int(11) NOT NULL DEFAULT 0 COMMENT '文件夹ID',
   `strategy` varchar(32) NOT NULL DEFAULT 'local' COMMENT '储存策略，默认本地',
   `path` varchar(500) NOT NULL COMMENT '保存路径',
   `name` varchar(500) NOT NULL COMMENT '保存名称',
@@ -133,6 +134,21 @@ CREATE TABLE IF NOT EXISTS `lsky_users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户表';
 
 --
+-- 表的结构 `lsky_folders`
+--
+
+DROP TABLE IF EXISTS `lsky_folders`;
+CREATE TABLE `lsky_folders` (
+  `id` int(11) NOT NULL COMMENT 'ID',
+  `user_id` int(11) NOT NULL COMMENT '用户ID',
+  `parent_id` int(11) NOT NULL DEFAULT '0' COMMENT '上级文件夹ID',
+  `name` varchar(100) NOT NULL COMMENT '文件夹名称',
+  `delete_time` int(11) DEFAULT NULL COMMENT '删除时间',
+  `update_time` int(11) DEFAULT NULL COMMENT '更新时间',
+  `create_time` int(11) DEFAULT NULL COMMENT '添加时间'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='文件夹表';
+
+--
 -- Indexes for dumped tables
 --
 
@@ -158,6 +174,12 @@ ALTER TABLE `lsky_users`
   ADD UNIQUE KEY `email` (`email`);
 
 --
+-- Indexes for table `lsky_folders`
+--
+ALTER TABLE `lsky_folders`
+ADD PRIMARY KEY (`id`);
+
+--
 -- 在导出的表使用AUTO_INCREMENT
 --
 
@@ -178,3 +200,9 @@ ALTER TABLE `lsky_images`
 --
 ALTER TABLE `lsky_users`
   MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+
+--
+-- 使用表AUTO_INCREMENT `lsky_folders`
+--
+ALTER TABLE `lsky_folders`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID', AUTO_INCREMENT=1;

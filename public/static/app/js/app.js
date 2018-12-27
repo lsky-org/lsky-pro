@@ -14,12 +14,12 @@ var app = {
       data: data,
       dataType: 'json',
       beforeSend: function () {
-        loading.fadeIn(500);
+        loading.fadeIn(200);
       },
       success: success,
       error: error,
       complete: function () {
-        loading.fadeOut(100);
+        loading.fadeOut(50);
       }
     });
   },

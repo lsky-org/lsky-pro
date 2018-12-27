@@ -175,7 +175,11 @@ main {
     .screen-box {
     }
 
-    .images-box {
+    .box {
+      min-height: 10rem;
+    }
+
+    .folders-box, .images-box {
       .item {
         position: relative;
         padding: 2rem .4rem .4rem;
@@ -275,36 +279,6 @@ main {
     }
   }
 
-  // 系统更新
-  .update-container {
-    .item {
-      margin-top: 1rem;
-
-      h4 {
-        font-size: 1.1rem;
-        margin-bottom: .5rem;
-        color: #555;
-
-        small {
-          color: #777777;
-        }
-      }
-
-      .info {
-        margin-left: .8rem;
-
-        p {
-          color: #777;
-          margin-bottom: .3em;
-        }
-      }
-    }
-
-    p {
-      color: #444;
-    }
-  }
-
   .mdui-textfield {
     .captcha {
       position: absolute;
@@ -313,6 +287,43 @@ main {
       bottom: 0;
       width: 140px;
       cursor: pointer;
+    }
+  }
+
+  ul.breadcrumb {
+    display: block;
+    flex-wrap: wrap;
+    padding: .65rem 1rem;
+    margin-bottom: .5rem;
+    list-style: none;
+    background-color: #e9ecef;
+    border-radius: .20rem;
+    font-size: 13px;
+
+    li {
+      display: inline-block;
+
+      & + li {
+        padding-left: .2rem;
+
+        &:before {
+          display: inline-block;
+          padding-right: .2rem;
+          color: #6c757d;
+          content: "/";
+        }
+      }
+
+      a {
+        cursor: pointer;
+      }
+
+      &.active {
+        a {
+          cursor: default;
+          color: #6c757d;
+        }
+      }
     }
   }
 }

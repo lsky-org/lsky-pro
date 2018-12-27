@@ -75,4 +75,9 @@ class Users extends Model
     {
         return $this->hasMany('Images', 'user_id', 'id');
     }
+
+    public function folders()
+    {
+        return $this->hasMany('Folders', 'user_id', 'id');
+    }
 }

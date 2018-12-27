@@ -190,6 +190,14 @@ EOT;
             if ($start == 1) {
                 if ($file) {
                     $config = Config::pull('db');
+
+                    // 替换sql关键字
+                    $file = str_replace([
+                        '{database}'
+                    ], [
+                        $config['database']
+                    ], $file);
+
                     $mysqli = new \mysqli(
                         $config['hostname'],
                         $config['username'],

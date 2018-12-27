@@ -29,3 +29,26 @@ UPDATE `lsky_config` SET `key` = 'kodo', `name` = 'kodo_secret_key' WHERE `lsky_
 UPDATE `lsky_config` SET `key` = 'kodo', `name` = 'kodo_bucket' WHERE `lsky_config`.`name` = 'qiniu_bucket';
 UPDATE `lsky_config` SET `value` = 'kodo' WHERE `lsky_config`.`value` = 'qiniu';
 UPDATE `lsky_config` SET `value` = 'uss' WHERE `lsky_config`.`value` = 'upyun';
+
+-- v1.4.1
+DROP PROCEDURE IF EXISTS schema_change;
+DELIMITER //
+CREATE PROCEDURE schema_change() BEGIN
+DECLARE {database} VARCHAR(100);
+SELECT DATABASE() INTO {database};
+IF NOT EXISTS(SELECT 1 FROM information_schema.columns where table_schema='{database}' and table_name='lsky_images' and COLUMN_NAME='folder_id') THEN
+   ALTER TABLE `lsky_images` ADD `folder_id` INT NOT NULL DEFAULT '0' COMMENT '文件夹ID' AFTER `user_id`;
+END IF;
+END//
+DELIMITER ;
+CALL schema_change();
+
+CREATE TABLE IF NOT EXISTS `lsky_folders` (
+  `id` int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL COMMENT 'ID',
+  `user_id` int(11) NOT NULL COMMENT '用户ID',
+  `parent_id` int(11) NOT NULL DEFAULT '0' COMMENT '上级文件夹ID',
+  `name` varchar(100) NOT NULL COMMENT '文件夹名称',
+  `delete_time` int(11) DEFAULT NULL COMMENT '删除时间',
+  `update_time` int(11) DEFAULT NULL COMMENT '更新时间',
+  `create_time` int(11) DEFAULT NULL COMMENT '添加时间'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='文件夹表';

@@ -161,6 +161,10 @@ main .images-container #info table tbody tr td[align="right"] {
   width: 50px;
   color: #998;
 }
+main .images-container .box {
+  min-height: 10rem;
+}
+main .images-container .folders-box .item,
 main .images-container .images-box .item {
   position: relative;
   padding: 2rem 0.4rem 0.4rem;
@@ -171,42 +175,54 @@ main .images-container .images-box .item {
   border: 1px solid transparent;
   margin-top: 1rem;
 }
+main .images-container .folders-box .item i.iconfont,
 main .images-container .images-box .item i.iconfont {
   display: none;
   position: absolute;
   cursor: pointer;
   font-size: 19px;
 }
+main .images-container .folders-box .item i.icon-choice,
 main .images-container .images-box .item i.icon-choice {
   top: 5px;
   left: 5px;
   color: #cecece;
 }
+main .images-container .folders-box .item i.icon-choice:hover,
 main .images-container .images-box .item i.icon-choice:hover {
   color: #999;
 }
+main .images-container .folders-box .item i.icon-info,
 main .images-container .images-box .item i.icon-info {
   top: 5px;
   right: 5px;
   color: #129cff;
 }
+main .images-container .folders-box .item:hover,
 main .images-container .images-box .item:hover {
   background-color: #ebebeb;
 }
+main .images-container .folders-box .item.choice,
 main .images-container .images-box .item.choice {
   background: rgba(204, 232, 255, 0.5);
   border: 1px solid rgba(153, 209, 255, 0.57);
 }
+main .images-container .folders-box .item.choice i.icon-choice,
 main .images-container .images-box .item.choice i.icon-choice {
   display: block;
   color: #3b8cff;
 }
+main .images-container .folders-box .item:hover i.icon-choice,
 main .images-container .images-box .item:hover i.icon-choice,
+main .images-container .folders-box .item.choice i.icon-choice,
 main .images-container .images-box .item.choice i.icon-choice,
+main .images-container .folders-box .item:hover i.icon-info,
 main .images-container .images-box .item:hover i.icon-info,
+main .images-container .folders-box .item.choice i.icon-info,
 main .images-container .images-box .item.choice i.icon-info {
   display: block;
 }
+main .images-container .folders-box .item .info,
 main .images-container .images-box .item .info {
   cursor: pointer;
   height: 90px;
@@ -215,6 +231,7 @@ main .images-container .images-box .item .info {
   text-align: center;
   vertical-align: middle;
 }
+main .images-container .folders-box .item .info img,
 main .images-container .images-box .item .info img {
   max-height: 100%;
   max-width: 100%;
@@ -223,11 +240,13 @@ main .images-container .images-box .item .info img {
   top: 50%;
   transform: translateY(-50%);
 }
+main .images-container .folders-box .item .info.image img,
 main .images-container .images-box .item .info.image img {
   -webkit-box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
   -moz-box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
   box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
 }
+main .images-container .folders-box .item p.name,
 main .images-container .images-box .item p.name {
   color: #555;
   cursor: default;
@@ -242,27 +261,6 @@ main .images-container .images-box .item p.name {
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
 }
-main .update-container .item {
-  margin-top: 1rem;
-}
-main .update-container .item h4 {
-  font-size: 1.1rem;
-  margin-bottom: 0.5rem;
-  color: #555;
-}
-main .update-container .item h4 small {
-  color: #777777;
-}
-main .update-container .item .info {
-  margin-left: 0.8rem;
-}
-main .update-container .item .info p {
-  color: #777;
-  margin-bottom: 0.3em;
-}
-main .update-container p {
-  color: #444;
-}
 main .mdui-textfield .captcha {
   position: absolute;
   top: 34px;
@@ -270,6 +268,35 @@ main .mdui-textfield .captcha {
   bottom: 0;
   width: 140px;
   cursor: pointer;
+}
+main ul.breadcrumb {
+  display: block;
+  flex-wrap: wrap;
+  padding: 0.65rem 1rem;
+  margin-bottom: 0.5rem;
+  list-style: none;
+  background-color: #e9ecef;
+  border-radius: 0.2rem;
+  font-size: 13px;
+}
+main ul.breadcrumb li {
+  display: inline-block;
+}
+main ul.breadcrumb li + li {
+  padding-left: 0.2rem;
+}
+main ul.breadcrumb li + li:before {
+  display: inline-block;
+  padding-right: 0.2rem;
+  color: #6c757d;
+  content: "/";
+}
+main ul.breadcrumb li a {
+  cursor: pointer;
+}
+main ul.breadcrumb li.active a {
+  cursor: default;
+  color: #6c757d;
 }
 .file-input .file-preview {
   border-radius: 0;

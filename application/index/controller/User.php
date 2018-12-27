@@ -8,6 +8,7 @@
 
 namespace app\index\controller;
 
+use app\common\model\Folders;
 use app\common\model\Images;
 use think\Db;
 use think\facade\Config;
@@ -16,13 +17,17 @@ use think\Exception;
 
 class User extends Base
 {
-    public function images($keyword = '', $limit = 60)
+    public function images($keyword = '', $folderId = 0, $limit = 60)
     {
         if ($this->request->isPost()) {
             try {
                 $model = $this->user->images()->order('create_time', 'desc');
+                $folders = $this->user->folders()->where('parent_id', $folderId)->select();
                 if (!empty($keyword)) {
                     $model = $model->where('pathname', 'like', "%{$keyword}%");
+                }
+                if (is_numeric($folderId)) {
+                    $model = $model->where('folder_id', $folderId);
                 }
                 $images = $model->paginate($limit)->each(function ($item) {
                     $item->url = $item->url;
@@ -32,7 +37,10 @@ class User extends Base
             } catch (Exception $e) {
                 return $this->error($e->getMessage());
             }
-            return $this->success('success', null, $images);
+            return $this->success('success', null, [
+                'images' => $images,
+                'folders'=> $folders
+            ]);
         }
         return $this->fetch();
     }
@@ -87,6 +95,90 @@ class User extends Base
                 return $this->error($e->getMessage());
             }
             return $this->success('删除成功');
+        }
+    }
+
+    public function createFolder()
+    {
+        if ($this->request->isPost()) {
+            try {
+                $parentId = $this->request->post('parent_id');
+                $name = $this->request->post('name');
+                $data = [
+                    'user_id' => $this->user->id,
+                    'parent_id' => $parentId,
+                    'name' => $name
+                ];
+                $validate = $this->validate($data, 'Folders');
+                if (true !== $validate) {
+                    throw new Exception($validate);
+                }
+                Folders::create($data);
+            } catch (Exception $e) {
+                return $this->error($e->getMessage());
+            }
+            return $this->success('创建成功');
+        }
+    }
+
+    public function deleteFolder()
+    {
+        if ($this->request->isPost()) {
+            Db::startTrans();
+            try {
+                $id = $this->request->post('id');
+                $folders = $images = [];
+                $this->getDeleteFoldersAndImages($id, $folders, $images);
+                $folders[] = (int) $id;
+                Folders::destroy($folders, true);
+                Images::destroy($images, true);
+                Db::commit();
+            } catch (Exception $e) {
+                Db::rollback();
+                return $this->error($e->getMessage());
+            }
+            return $this->success('删除成功');
+        }
+    }
+
+    public function renameFolder()
+    {
+        if ($this->request->isPost()) {
+            Db::startTrans();
+            try {
+                $id = $this->request->post('id');
+                $parentId = $this->request->post('parent_id');
+                $name = $this->request->post('name');
+                $data = [
+                    'id' => $id,
+                    'parent_id' => $parentId,
+                    'user_id' => $this->user->id,
+                    'name' => $name
+                ];
+                $validate = $this->validate($data, 'Folders');
+                if (true !== $validate) {
+                    throw new Exception($validate);
+                }
+                Folders::update($data);
+                Db::commit();
+            } catch (Exception $e) {
+                Db::rollback();
+                return $this->error($e->getMessage());
+            }
+            return $this->success('重命名成功');
+        }
+    }
+
+    private function getDeleteFoldersAndImages($folderId, &$folders, &$images)
+    {
+        $folderList = Folders::where('parent_id', $folderId)->column('id');
+        $imagesList = Images::where('folder_id', $folderId)->column('id');
+        if ($imagesList) {
+            $images = array_merge($images, $imagesList);
+        }
+        foreach ($folderList as &$value) {
+            $folders[] = $value;
+            $this->getDeleteFoldersAndImages($value, $folders, $images);
         }
     }
 
