@@ -31,18 +31,6 @@ UPDATE `lsky_config` SET `value` = 'kodo' WHERE `lsky_config`.`value` = 'qiniu';
 UPDATE `lsky_config` SET `value` = 'uss' WHERE `lsky_config`.`value` = 'upyun';
 
 -- v1.4.1
-DROP PROCEDURE IF EXISTS schema_change;
-DELIMITER //
-CREATE PROCEDURE schema_change() BEGIN
-DECLARE {database} VARCHAR(100);
-SELECT DATABASE() INTO {database};
-IF NOT EXISTS(SELECT 1 FROM information_schema.columns where table_schema='{database}' and table_name='lsky_images' and COLUMN_NAME='folder_id') THEN
-   ALTER TABLE `lsky_images` ADD `folder_id` INT NOT NULL DEFAULT '0' COMMENT '文件夹ID' AFTER `user_id`;
-END IF;
-END//
-DELIMITER ;
-CALL schema_change();
-
 CREATE TABLE IF NOT EXISTS `lsky_folders` (
   `id` int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL COMMENT 'ID',
   `user_id` int(11) NOT NULL COMMENT '用户ID',

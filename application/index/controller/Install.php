@@ -205,14 +205,46 @@ EOT;
                         $config['database'],
                         $config['hostport']
                     );
-                    if ($mysqli->connect_error) {
+                    if ($mysqli->connect_errno) {
                         $mysqli->close();
                         throw new Exception($mysqli->connect_error);
                     }
+
+                    $mysqli->autocommit(false);
+                    $mysqli->select_db($config['database']);
                     $mysqli->query("SET NAMES utf8");
+
+                    // 新建表字段
+                    $tableFields = [
+                        'lsky_images' => [
+                            'folder_id' => 'ALTER TABLE `lsky_images` ADD `folder_id` INT NOT NULL DEFAULT \'0\' COMMENT \'文件夹ID\' AFTER `user_id`;'
+                        ]
+                    ];
+
+                    foreach ($tableFields as $table => $fields) {
+                        foreach ($fields as $field => $sql) {
+                            $fetchFields = $mysqli->query("DESCRIBE `{$table}`;");
+                            // 判断字段是否已存在
+                            $flag = true;
+                            foreach ($fetchFields as $fetchField) {
+                                if ($field == $fetchField['Field']) {
+                                    $flag = false;
+                                }
+                            }
+                            if ($flag) {
+                                if (!$mysqli->query($sql)) {
+                                    throw new Exception($mysqli->error);
+                                }
+                            }
+                        }
+                    }
+
                     if (!$mysqli->multi_query($file)) {
                         throw new Exception('数据写入失败');
                     }
+                    $mysqli->commit();
+                    $mysqli->autocommit(true);
+                    $mysqli->close();
                 }
                 $code = 1;
                 $msg = '更新成功，返回<a href="/">首页</a>';
@@ -223,6 +255,7 @@ EOT;
                 }
             }
         } catch (Exception $e) {
+            $mysqli->rollback();
             $code = 0;
             $msg = $e->getMessage();
         }
