@@ -37,7 +37,7 @@ class Uss implements Driver
      *
      * @var null
      */
-    protected $upyun = null;
+    protected $uss = null;
 
     /**
      * Upyun constructor.
@@ -49,11 +49,11 @@ class Uss implements Driver
         $this->options = $options;
         try {
             $serviceConfig = new \Upyun\Config(
-                $this->options['upyun_service_name'],
-                $this->options['upyun_operator_name'],
-                $this->options['upyun_operator_pwd']
+                $this->options['uss_service_name'],
+                $this->options['uss_operator_name'],
+                $this->options['uss_operator_pwd']
             );
-            $this->upyun = new \Upyun\Upyun($serviceConfig);
+            $this->uss = new \Upyun\Upyun($serviceConfig);
         } catch (\Exception $e) {
             $this->error = $e->getMessage();
         }
@@ -70,7 +70,7 @@ class Uss implements Driver
     public function create($pathname, $file)
     {
         try {
-            $this->upyun->write($pathname, fopen($file, 'r'));
+            $this->uss->write($pathname, fopen($file, 'r'));
         } catch (\Exception $e) {
             $this->error = $e->getMessage();
             return false;
@@ -89,7 +89,7 @@ class Uss implements Driver
     public function delete($pathname)
     {
         try {
-            $this->upyun->delete($pathname);
+            $this->uss->delete($pathname);
         } catch (\Exception $e) {
             $this->error = $e->getMessage();
             return false;
@@ -110,7 +110,7 @@ class Uss implements Driver
             foreach ($list as $value) {
                 if (is_string($value)) {
                     // 异步删除
-                    $this->upyun->delete($value, true);
+                    $this->uss->delete($value, true);
                 }
             }
         } catch (\Exception $e) {
@@ -123,6 +123,6 @@ class Uss implements Driver
 
     public function getError()
     {
-        return 'Upyun：' . $this->error;
+        return 'Uss：' . $this->error;
     }
 }

@@ -13,6 +13,7 @@ use app\common\model\Users;
 use GuzzleHttp\Client;
 use think\Db;
 use think\Exception;
+use think\exception\ErrorException;
 use think\facade\Config;
 
 class Upload extends Base
@@ -27,6 +28,9 @@ class Upload extends Base
 
                 Db::commit();
             } catch (Exception $e) {
+                Db::rollback();
+                return response($e->getMessage(), 500);
+            } catch (ErrorException $e) {
                 Db::rollback();
                 return response($e->getMessage(), 500);
             }

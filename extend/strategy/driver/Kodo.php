@@ -66,8 +66,8 @@ class Kodo implements Driver
     {
         $this->options = $options;
         try {
-            $auth = new Auth($this->options['qiniu_access_key'], $this->options['qiniu_secret_key']);
-            $this->uploadToken = $auth->uploadToken($this->options['qiniu_bucket']);
+            $auth = new Auth($this->options['kodo_access_key'], $this->options['kodo_secret_key']);
+            $this->uploadToken = $auth->uploadToken($this->options['kodo_bucket']);
             $config = new Config();
             $this->uploadMgr = new UploadManager();
             $this->bucketMgr = new BucketManager($auth, $config);
@@ -105,7 +105,7 @@ class Kodo implements Driver
      */
     public function delete($pathname)
     {
-        $err = $this->bucketMgr->delete($this->options['qiniu_bucket'], $pathname);
+        $err = $this->bucketMgr->delete($this->options['kodo_bucket'], $pathname);
         if ($err) {
             $this->error = $err;
             return false;
@@ -122,7 +122,7 @@ class Kodo implements Driver
      */
     public function deletes(array $list)
     {
-        $ops = $this->bucketMgr->buildBatchDelete($this->options['qiniu_bucket'], $list);
+        $ops = $this->bucketMgr->buildBatchDelete($this->options['kodo_bucket'], $list);
         list($ret, $err) = $this->bucketMgr->batch($ops);
         if ($err) {
             $this->error = $err;
@@ -133,6 +133,6 @@ class Kodo implements Driver
 
     public function getError()
     {
-        return 'Qiniu：' . $this->error;
+        return 'Kodo：' . $this->error;
     }
 }
