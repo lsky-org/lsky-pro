@@ -152,7 +152,7 @@ class User extends Base
     public function moveImages($ids = [], $folderId)
     {
         if ($this->request->isPost()) {
-            if (Folders::where('id', $folderId)->count()) {
+            if ($this->user->folders()->where('id', $folderId)->count()) {
                 if (Images::where('id', 'in', $ids)->setField('folder_id', $folderId)) {
                     return $this->success('移动成功');
                 }
