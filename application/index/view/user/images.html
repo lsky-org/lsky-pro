@@ -21,6 +21,7 @@
         <form action="" method="post" id="search-form">
           <select class="operation mdui-select" name="state" mdui-select>
             <option value="">选中项</option>
+            <option value="move">移动</option>
             <option value="delete">删除</option>
           </select>
           <div class="mdui-btn-group mdui-m-r-1 mdui-float-left">
@@ -29,10 +30,10 @@
           <input class="mdui-textfield-input search-input mdui-float-right" type="text" name="keyword" placeholder="回车搜索..." value="" autocomplete="off"/>
         </form>
         <div class="mdui-clearfix"></div>
+        <ul class="breadcrumb mdui-m-t-1">
+          <li class="active"><a data-id="0">Home</a></li>
+        </ul>
       </div>
-      <ul class="breadcrumb">
-        <li class="active"><a data-id="0">Home</a></li>
-      </ul>
       <div class="mdui-divider mdui-m-b-1"></div>
       <div class="mdui-row">
         <div class="box mdui-row-xs-3 mdui-row-sm-9 mdui-row-md-9 mdui-row-lg-10 mdui-col-xl-12">
@@ -88,6 +89,21 @@
           </div>
         </div>
       </div>
+      <!-- Folders Dialog -->
+      <div class="mdui-dialog" id="folders">
+        <div class="mdui-dialog-content mdui-p-a-0">
+          <ul class="breadcrumb">
+            <li class="active"><a data-id="0">Home</a></li>
+          </ul>
+          <ul class="mdui-list">
+            <!-- folders -->
+          </ul>
+        </div>
+        <div class="mdui-dialog-actions">
+          <button class="mdui-btn mdui-ripple" mdui-dialog-close>取消</button>
+          <button class="mdui-btn mdui-ripple" mdui-dialog-confirm>确定</button>
+        </div>
+      </div>
     </div>
   </main>
 </div>
@@ -103,8 +119,19 @@
 <script>
   $(function () {
 
-    var params = {}, viewer, foldersBox = $('.folders-box'), imagesBox = $('.images-box'), totalBox = $('small.num'), infoDialog = $(".mdui-dialog#info"), qrcodeApi = 'https://www.kuaizhan.com/common/encode-png?large=true&data=';
+    var params = {},
+      viewer,
+      foldersBox = $('.folders-box'),
+      imagesBox = $('.images-box'),
+      totalBox = $('small.num'),
+      foldersDialog = new mdui.Dialog('.mdui-dialog#folders', {
+        modal: true
+      }),
+      selectedImagesId = [],
+      infoDialog = $(".mdui-dialog#info"),
+      qrcodeApi = 'https://www.kuaizhan.com/common/encode-png?large=true&data=';
     params.page = 1;
+
 
     // 函数库
     var methods = {
@@ -117,6 +144,7 @@
             var images = response.data.images.data;
             var folders = response.data.folders;
             totalBox.text(response.data.images.total);
+
             if (folders.length) {
               for (var f = 0; f < folders.length; f++) {
                 foldersBox.append(
@@ -185,6 +213,33 @@
         }, function () {
 
         }, {confirmText: '确定', cancelText: '取消'});
+      },
+      getFolders: function (options, openDialog, callback) {
+        openDialog = openDialog || false;
+        app.ajax("{:url('user/getFolders')}", options, function (response) {
+          if (response.code) {
+            $('#folders ul.mdui-list').html('');
+            var folders = response.data;
+            if (folders.length) {
+              for (var i = 0; i < folders.length; i++) {
+                $('#folders ul.mdui-list').append(
+                  '<li class="mdui-list-item mdui-ripple" data-id="' + folders[i].id + '" data-parent-id="' + folders[i].parent_id + '">' +
+                  '  <i class="mdui-list-item-avatar mdui-icon material-icons">&#xe2c7;</i>' +
+                  '  <div class="mdui-list-item-content">' +
+                  '  <div class="mdui-list-item-title">' + folders[i].name + '</div>' +
+                  '    <div class="mdui-list-item-text">' + folders[i].create_time + '</div>' +
+                  '  </div>' +
+                  '</li>'
+                );
+              }
+            } else {
+              $('#folders ul.mdui-list').html('<li class="mdui-text-center mdui-text-color-black-secondary">没有找到文件夹</li>');
+            }
+            foldersDialog.handleUpdate();
+            openDialog && foldersDialog.open();
+            callback && callback();
+          }
+        })
       }
     };
 
@@ -319,11 +374,13 @@
       }
     });
 
+    // Context End
+
     // 文件夹点击操作
-    $('.folders-box').on('click', '', function (e) {
+    $('.folders-box').on('click', '.mdui-col', function (e) {
       var $that = $(e.target), $item = $that.closest('.item');
-      $('ul.breadcrumb li:last-child').removeClass('active');
-      $('ul.breadcrumb').append(
+      $('.screen-box ul.breadcrumb li:last-child').removeClass('active');
+      $('.screen-box ul.breadcrumb').append(
         '<li class="active">' +
         '  <a data-id="' + $item.data('id') + '">' + $item.data('name') + '</a>' +
         '</li>'
@@ -335,7 +392,7 @@
     });
 
     // 面包屑导航点击
-    $('ul.breadcrumb').on('click', 'li:not(.active) a', function (e) {
+    $('.screen-box ul.breadcrumb').on('click', 'li:not(.active) a', function (e) {
       e.preventDefault();
       methods.resetData({
         page: 1,
@@ -344,7 +401,41 @@
       $(this).parent('li').addClass('active').nextAll().remove();
     });
 
-    // Context End
+    // 模态框面包屑导航点击
+    $('.mdui-dialog ul.breadcrumb').on('click', 'li:not(.active) a', function (e) {
+      e.preventDefault();
+      methods.getFolders({
+        id: $(this).data('id')
+      });
+      $(this).parent('li').addClass('active').nextAll().remove();
+    });
+
+    // 模态框内文件夹点击操作
+    $('#folders').on('click', 'ul.mdui-list li.mdui-list-item', function (e) {
+      var that = this;
+      methods.getFolders({parentId: $(that).data('id')}, false, function () {
+        $('#folders ul.breadcrumb li:last-child').removeClass('active');
+        $('#folders ul.breadcrumb').append(
+          '<li class="active">' +
+          '  <a data-id="' + $(that).data('id') + '">' + $(that).find('.mdui-list-item-title').text() + '</a>' +
+          '</li>'
+        );
+      });
+    });
+
+    // 确认移动文件夹事件
+    mdui.JQ('#folders').on('confirm.mdui.dialog', function (e) {
+      app.ajax("{:url('user/moveImages')}", {
+        ids: selectedImagesId,
+        folderId: $('#folders ul.breadcrumb li:last-child a').data('id')
+      }, function (response) {
+        if (response.code) {
+          methods.resetData();
+          return app.msg(true, response.msg);
+        }
+        mdui.alert(response.msg);
+      })
+    });
 
     // 加载更多
     $('.more').click(function () {
@@ -363,19 +454,27 @@
     // 选中项操作
     $('.screen-box .mdui-select.operation').on('close.mdui.select', function () {
       if ($(this).val() !== '') {
-        var selected = $('.images-box .item.choice'), array = [];
+        var selected = $('.images-box .item.choice');
+        selectedImagesId = [];
         if (selected.length) {
           selected.each(function (index, value) {
-            array.push($(value).data('id'));
+            selectedImagesId.push($(value).data('id'));
           });
 
+          // 删除
           if ('delete' === $(this).val()) {
-            methods.delete(array, true, function () {
+            methods.delete(selectedImagesId, true, function () {
               selected.remove();
               totalBox.text(parseInt(totalBox.text()) - selected.length);
               // methods.getData();
             });
           }
+
+          // 移动
+          if ('move' === $(this).val()) {
+            methods.getFolders({parentId: $('#folders ul.breadcrumb li:last-child a').data('id')}, true);
+          }
+
         } else {
           app.msg(false, '至少选择一项数据！')
         }

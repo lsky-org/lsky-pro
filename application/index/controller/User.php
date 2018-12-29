@@ -141,6 +141,28 @@ class User extends Base
         }
     }
 
+    public function getFolders($parentId = 0)
+    {
+        if ($this->request->isPost()) {
+            $folders = $this->user->folders()->where('parent_id', $parentId)->select();
+            return $this->success('success', null, $folders);
+        }
+    }
+
+    public function moveImages($ids = [], $folderId)
+    {
+        if ($this->request->isPost()) {
+            if (Folders::where('id', $folderId)->count()) {
+                if (Images::where('id', 'in', $ids)->setField('folder_id', $folderId)) {
+                    return $this->success('移动成功');
+                }
+                return $this->error('移动失败');
+            } else {
+                return $this->error('该文件夹不存在！');
+            }
+        }
+    }
+
     public function renameFolder()
     {
         if ($this->request->isPost()) {
