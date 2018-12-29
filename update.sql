@@ -31,6 +31,7 @@ UPDATE `lsky_config` SET `value` = 'kodo' WHERE `lsky_config`.`value` = 'qiniu';
 UPDATE `lsky_config` SET `value` = 'uss' WHERE `lsky_config`.`value` = 'upyun';
 
 -- v1.4.1
+UPDATE `lsky_config` SET `value` = '1.4.1' WHERE `lsky_config`.`name` = 'system_version';
 CREATE TABLE IF NOT EXISTS `lsky_folders` (
   `id` int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL COMMENT 'ID',
   `user_id` int(11) NOT NULL COMMENT '用户ID',
