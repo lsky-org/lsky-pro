@@ -45,12 +45,12 @@ class User extends Base
         return $this->fetch();
     }
 
-    public function deleteImages()
+    public function deleteImages($deleteId = null)
     {
         if ($this->request->isPost()) {
             Db::startTrans();
             try {
-                $id = $this->request->post('id');
+                $id = $deleteId ? $deleteId : $this->request->post('id');
                 $deletes = []; // 需要删除的文件
                 if (is_array($id)) {
                     $images = Images::all($id);
@@ -92,9 +92,9 @@ class User extends Base
                 Db::commit();
             } catch (Exception $e) {
                 Db::rollback();
-                return $this->error($e->getMessage());
+                return $deleteId ? false : $this->error($e->getMessage());
             }
-            return $this->success('删除成功');
+            return $deleteId ? true : $this->success('删除成功');
         }
     }
 
@@ -131,7 +131,7 @@ class User extends Base
                 $this->getDeleteFoldersAndImages($id, $folders, $images);
                 $folders[] = (int) $id;
                 Folders::destroy($folders, true);
-                Images::destroy($images, true);
+                $this->deleteImages($images);
                 Db::commit();
             } catch (Exception $e) {
                 Db::rollback();
