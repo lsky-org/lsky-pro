@@ -298,6 +298,18 @@ main ul.breadcrumb li.active a {
   cursor: default;
   color: #6c757d;
 }
+main .mdui-table td,
+main .mdui-table th {
+  padding: 0 10px;
+}
+.krajee-default .file-footer-caption {
+  margin-bottom: 28px;
+}
+.krajee-default .file-thumb-progress .progress,
+.krajee-default .file-thumb-progress .progress-bar {
+  height: 20px;
+  font-size: 12px;
+}
 .file-input .file-preview {
   border-radius: 0;
   border: none;

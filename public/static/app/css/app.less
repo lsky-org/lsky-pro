@@ -326,9 +326,24 @@ main {
       }
     }
   }
+
+  .mdui-table td, .mdui-table th {
+    padding: 0 10px;
+  }
 }
 
 // 重写fileinput插件样式
+.krajee-default {
+  .file-footer-caption {
+    margin-bottom: 28px;
+  }
+  .file-thumb-progress {
+    .progress, .progress-bar {
+      height: 20px;
+      font-size: 12px;
+    }
+  }
+}
 .file-input {
   @box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.13);
   @form-control-padding: 10px 18px;
