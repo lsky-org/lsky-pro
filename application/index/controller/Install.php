@@ -242,12 +242,7 @@ EOT;
                         }
                     }
 
-                    foreach (explode(';', $file) as $item) {
-                        if ($item && !$mysqli->query($item . ';')) {
-                            throw new Exception('数据写入失败');
-                        }
-                    }
-
+                    $mysqli->multi_query($file);
                     $mysqli->commit();
                     $mysqli->autocommit(true);
                     $mysqli->close();

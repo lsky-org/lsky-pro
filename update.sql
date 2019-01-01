@@ -43,6 +43,6 @@ CREATE TABLE IF NOT EXISTS `lsky_folders` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='文件夹表';
 
 -- v1.4.2
-UPDATE `lsky_config` SET `value` = '1.4.2' WHERE `lsky_config`.`name` = 'system_version';
-UPDATE `lsky`.`lsky_images` SET `strategy` = 'uss' WHERE  `lsky_images`.`strategy` = 'upyun';
-UPDATE `lsky`.`lsky_images` SET `strategy` = 'kodo' WHERE  `lsky_images`.`strategy` = 'qiniu';
+UPDATE `lsky_config` SET `value` = '1.4.2' WHERE `lsky_config` = 'system_version';
+UPDATE `lsky_images` SET `strategy` = 'uss' WHERE `lsky_images`.`strategy` = 'upyun';
+UPDATE `lsky_images` SET `strategy` = 'kodo' WHERE `lsky_images`.`strategy` = 'qiniu';
