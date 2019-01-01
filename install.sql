@@ -79,7 +79,7 @@ INSERT INTO `lsky_config` (`id`, `key`, `type`, `input_type`, `name`, `title`, `
 (38, 'uss', 'text', 'text', 'uss_operator_name', 'OperatorName', '操作员账号', '', ''),
 (39, 'uss', 'text', 'password', 'uss_operator_pwd', 'OperatorPwd', '操作员密码', '', ''),
 (40, 'uss', 'text', 'text', 'uss_service_name', 'ServiceName', '云储存服务名称', '', ''),
-(41, '', 'text', 'text', 'system_version', '系统版本', NULL, '1.4.1', ''),
+(41, '', 'text', 'text', 'system_version', '系统版本', NULL, '1.4.2', ''),
 
 
 (42, 'audit', 'bool', 'checkbox', 'open_audit', '开启图片鉴黄', '鉴黄接口申请地址：https://www.moderatecontent.com', '0', ''),
