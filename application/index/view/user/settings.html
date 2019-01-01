@@ -20,6 +20,10 @@
           <input class="mdui-textfield-input" type="text" name="nickname" value="{$user.nickname}" maxlength="15" placeholder="昵称"/>
         </div>
         <div class="mdui-textfield">
+          <label class="mdui-textfield-label">默认上传文件夹</label>
+          <input class="mdui-textfield-input" type="text" name="default_folder" value="{$user.default_folder}" maxlength="30" placeholder="默认上传文件夹名(不存在上传时自动创建)"/>
+        </div>
+        <div class="mdui-textfield">
           <label class="mdui-textfield-label">原密码</label>
           <input class="mdui-textfield-input" type="password" name="password_old" placeholder="原密码，不修改请留空"/>
         </div>

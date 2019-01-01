@@ -8,6 +8,7 @@
 
 namespace app\index\controller;
 
+use app\common\model\Folders;
 use app\common\model\Images;
 use app\common\model\Users;
 use GuzzleHttp\Client;
@@ -77,7 +78,7 @@ class Upload extends Base
             if (Config::get('app.app_debug')) {
                 throw new Exception($strategy->getError());
             }
-            throw new Exception('上传失败');
+            throw new Exception('上传失败，请检查策略配置是否正确！');
         }
 
         $cdnDomain = $currentStrategy . '_cdn_domain';
@@ -107,7 +108,7 @@ class Upload extends Base
             }
         }
 
-        if (!Images::create([
+        $imageData = [
             'user_id' => $user ? $user->id : 0,
             'strategy' => $currentStrategy,
             'path' => dirname($pathname),
@@ -117,7 +118,25 @@ class Upload extends Base
             'mime' => $mime,
             'sha1' => $sha1,
             'md5' => $md5
-        ])) {
+        ];
+
+        // 默认上传文件夹，暂只支持一级
+        if ($this->user->default_folder) {
+            $folderId = $this->user->folders()->where('name', $this->user->default_folder)->value('id');
+            if (!$folderId) {
+                if (!$folderId = $this->user->folders()->insertGetId([
+                    'user_id' => $this->user->id,
+                    'parent_id' => 0,
+                    'name' => $this->user->default_folder
+                ])) {
+                    throw new Exception('文件夹创建失败！');
+                }
+            }
+
+            $imageData['folder_id'] = $folderId;
+        }
+
+        if (!Images::create($imageData)) {
             $strategy->delete($pathname);
             throw new Exception('图片数据保存失败');
         }

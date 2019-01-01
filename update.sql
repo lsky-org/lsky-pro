@@ -41,3 +41,8 @@ CREATE TABLE IF NOT EXISTS `lsky_folders` (
   `update_time` int(11) DEFAULT NULL COMMENT '更新时间',
   `create_time` int(11) DEFAULT NULL COMMENT '添加时间'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='文件夹表';
+
+-- v1.4.2
+UPDATE `lsky_config` SET `value` = '1.4.2' WHERE `lsky_config`.`name` = 'system_version';
+UPDATE `lsky`.`lsky_images` SET `strategy` = 'uss' WHERE  `lsky_images`.`strategy` = 'upyun';
+UPDATE `lsky`.`lsky_images` SET `strategy` = 'kodo' WHERE  `lsky_images`.`strategy` = 'qiniu';
