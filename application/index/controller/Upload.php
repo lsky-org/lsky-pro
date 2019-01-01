@@ -121,7 +121,7 @@ class Upload extends Base
         ];
 
         // 默认上传文件夹，暂只支持一级
-        if ($this->user->default_folder) {
+        if ($this->user && $this->user->default_folder) {
             $folderId = $this->user->folders()->where('name', $this->user->default_folder)->value('id');
             if (!$folderId) {
                 if (!$folderId = $this->user->folders()->insertGetId([
