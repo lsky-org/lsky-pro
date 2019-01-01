@@ -13,7 +13,7 @@
 [![PHP](https://img.shields.io/badge/PHP->=5.6-orange.svg?style=flat-square)](http://php.net)
 [![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/wisp-x/lsky-pro.svg?style=flat-square)](https://github.com/wisp-x/lsky-pro)
 
-> master分支为开发版，不定时更新，下载正式版程序请点击[这里](https://github.com/wisp-x/lsky-pro/releases)
+> master分支为最新版，其他版本请点击[这里](https://github.com/wisp-x/lsky-pro/releases)
 
 > 发现bug可发送邮件至邮箱：i@wispx.cn，或提交[issues](https://github.com/wisp-x/lsky-pro/issues)，确认bug后我会及时修复，谢谢！
 
@@ -30,6 +30,7 @@
 - 支持一键复制图片外链、二维码扫描链接。
 - 支持设置上传文件、文件夹路径命名规则。
 - 支持图片鉴黄功能。
+- 支持文件夹分类功能。
 - 对外开放的上传接口。
 
 安装需求
