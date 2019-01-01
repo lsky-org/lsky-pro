@@ -262,6 +262,7 @@ EOT;
             }
         } catch (Exception $e) {
             $mysqli->rollback();
+            $mysqli->close();
             $code = 0;
             $msg = $e->getMessage();
         }
