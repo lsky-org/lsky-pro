@@ -6,6 +6,7 @@
 
 runtime
 /config/db.php
+.env
 
 # Icon must end with two \r
 Icon
