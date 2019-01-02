@@ -242,7 +242,14 @@ EOT;
                         }
                     }
 
-                    $mysqli->multi_query($file);
+                    foreach (explode(';', $file) as $value) {
+                        if ($value && !ctype_space($value)) {
+                            if (!$mysqli->query($value . ';')) {
+                                throw new Exception('数据导入失败，错误信息：' . $mysqli->error . '，sql语句：' . $value);
+                            }
+                        }
+                    }
+
                     $mysqli->commit();
                     $mysqli->autocommit(true);
                     $mysqli->close();
