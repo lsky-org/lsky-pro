@@ -15,7 +15,7 @@
 
 return [
     // 应用名称
-    'app_name'               => Env::get('app.name'),
+    'app_name'               => Env::get('app.name', 'Lsky Pro'),
     // 应用地址
     'app_host'               => '',
     // 应用调试模式
