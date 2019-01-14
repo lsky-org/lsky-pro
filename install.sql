@@ -11,23 +11,22 @@
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 
--- 导出  表 lsky.lsky_config 结构
-DROP TABLE IF EXISTS `lsky_config`;
+-- 导出  表 tuchuang.lsky_config 结构
 CREATE TABLE IF NOT EXISTS `lsky_config` (
   `id` smallint(6) unsigned NOT NULL AUTO_INCREMENT,
   `key` varchar(32) DEFAULT NULL COMMENT 'key',
   `type` varchar(32) NOT NULL DEFAULT 'text' COMMENT 'text|bool|textarea|select',
   `input_type` varchar(32) NOT NULL DEFAULT 'text' COMMENT 'input type属性',
-  `name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '配置名',
-  `title` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '配置标题',
-  `tip` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '配置描述',
-  `value` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '配置值',
-  `extend` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '扩展属性',
+  `name` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '配置名',
+  `title` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '配置标题',
+  `tip` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '配置描述',
+  `value` text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '配置值',
+  `extend` text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '扩展属性',
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=COMPACT COMMENT='系统配置';
+) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='系统配置';
 
--- 正在导出表  lsky.lsky_config 的数据：~45 rows (大约)
+-- 正在导出表  tuchuang.lsky_config 的数据：~5 rows (大约)
 DELETE FROM `lsky_config`;
 /*!40000 ALTER TABLE `lsky_config` DISABLE KEYS */;
 INSERT INTO `lsky_config` (`id`, `key`, `type`, `input_type`, `name`, `title`, `tip`, `value`, `extend`) VALUES
@@ -85,8 +84,7 @@ INSERT INTO `lsky_config` (`id`, `key`, `type`, `input_type`, `name`, `title`, `
 	(53, 'github', 'text', 'text', 'github_cdn_domain', '访问url', '', '', '');
 /*!40000 ALTER TABLE `lsky_config` ENABLE KEYS */;
 
--- 导出  表 lsky.lsky_folders 结构
-DROP TABLE IF EXISTS `lsky_folders`;
+-- 导出  表 tuchuang.lsky_folders 结构
 CREATE TABLE IF NOT EXISTS `lsky_folders` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `user_id` int(11) NOT NULL COMMENT '用户ID',
@@ -96,15 +94,14 @@ CREATE TABLE IF NOT EXISTS `lsky_folders` (
   `update_time` int(11) DEFAULT NULL COMMENT '更新时间',
   `create_time` int(11) DEFAULT NULL COMMENT '添加时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='文件夹表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='文件夹表';
 
--- 正在导出表  lsky.lsky_folders 的数据：~0 rows (大约)
+-- 正在导出表  tuchuang.lsky_folders 的数据：~0 rows (大约)
 DELETE FROM `lsky_folders`;
 /*!40000 ALTER TABLE `lsky_folders` DISABLE KEYS */;
 /*!40000 ALTER TABLE `lsky_folders` ENABLE KEYS */;
 
--- 导出  表 lsky.lsky_images 结构
-DROP TABLE IF EXISTS `lsky_images`;
+-- 导出  表 tuchuang.lsky_images 结构
 CREATE TABLE IF NOT EXISTS `lsky_images` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `user_id` int(11) NOT NULL DEFAULT '0' COMMENT '用户ID，为0表示游客上传',
@@ -120,13 +117,14 @@ CREATE TABLE IF NOT EXISTS `lsky_images` (
   `ip` varchar(128) DEFAULT NULL COMMENT '上传者IP',
   `create_time` int(11) NOT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='图片表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='图片表';
 
+-- 正在导出表  tuchuang.lsky_images 的数据：~0 rows (大约)
+DELETE FROM `lsky_images`;
+/*!40000 ALTER TABLE `lsky_images` DISABLE KEYS */;
+/*!40000 ALTER TABLE `lsky_images` ENABLE KEYS */;
 
-
-
--- 导出  表 lsky.lsky_users 结构
-DROP TABLE IF EXISTS `lsky_users`;
+-- 导出  表 tuchuang.lsky_users 结构
 CREATE TABLE IF NOT EXISTS `lsky_users` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `username` varchar(32) NOT NULL COMMENT '用户名',
@@ -145,9 +143,14 @@ CREATE TABLE IF NOT EXISTS `lsky_users` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='用户表';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='用户表';
 
-
+-- 正在导出表  tuchuang.lsky_users 的数据：~0 rows (大约)
+DELETE FROM `lsky_users`;
+/*!40000 ALTER TABLE `lsky_users` DISABLE KEYS */;
+INSERT INTO `lsky_users` (`id`, `username`, `nickname`, `email`, `password`, `quota`, `default_folder`, `is_admin`, `state`, `token`, `reg_ip`, `delete_time`, `update_time`, `create_time`) VALUES
+	(2, 'zhepama', NULL, 'zhepama@gmail.com', '96e79218965eb72c92a549dd5a330112', 1073741824.00, NULL, 1, 1, NULL, '::', NULL, 1547498108, 1547498108);
+/*!40000 ALTER TABLE `lsky_users` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
