@@ -23,7 +23,9 @@
         "upyun/sdk": "^3.3",
         "qcloud/cos-sdk-v5": "^1.2",
         "topthink/think-image": "^1.0",
-        "phpmailer/phpmailer": "^6.0"
+        "phpmailer/phpmailer": "^6.0",
+        "knplabs/github-api": "^2.10",
+        "php-http/guzzle6-adapter": "^1.1"
     },
     "autoload": {
         "psr-4": {

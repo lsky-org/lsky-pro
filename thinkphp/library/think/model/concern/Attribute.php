@@ -371,7 +371,8 @@ trait Attribute
                 case 'datetime':
                 case 'date':
                     $format = !empty($param) ? $param : $this->dateFormat;
-                    $value  = $this->formatDateTime($format . '.u');
+                    $format .= strpos($format, 'u') || false !== strpos($format, '\\') ? '' : '.u';
+                    $value = $this->formatDateTime($format);
                     break;
                 case 'timestamp':
                 case 'integer':
@@ -384,7 +385,8 @@ trait Attribute
             'date',
             'timestamp',
         ])) {
-            $value = $this->formatDateTime($this->dateFormat . '.u');
+            $format = strpos($this->dateFormat, 'u') || false !== strpos($this->dateFormat, '\\') ? '' : '.u';
+            $value  = $this->formatDateTime($this->dateFormat . $format);
         } else {
             $value = time();
         }

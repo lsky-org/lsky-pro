@@ -392,11 +392,12 @@ abstract class Model implements \JsonSerializable, \ArrayAccess
      * 设置数据是否存在
      * @access public
      * @param  bool $exists
-     * @return void
+     * @return $this
      */
     public function exists($exists)
     {
         $this->exists = $exists;
+        return $this;
     }
 
     /**

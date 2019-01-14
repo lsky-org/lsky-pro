@@ -204,7 +204,7 @@ class Memcached extends Driver
             $keys = $this->getTagItem($tag);
 
             $this->handler->deleteMulti($keys);
-            $this->rm('tag_' . md5($tag));
+            $this->rm($this->getTagKey($tag));
 
             return true;
         }
@@ -212,5 +212,68 @@ class Memcached extends Driver
         $this->writeTimes++;
 
         return $this->handler->flush();
+    }
+
+    /**
+     * 缓存标签
+     * @access public
+     * @param  string        $name 标签名
+     * @param  string|array  $keys 缓存标识
+     * @param  bool          $overlay 是否覆盖
+     * @return $this
+     */
+    public function tag($name, $keys = null, $overlay = false)
+    {
+        if (is_null($keys)) {
+            $this->tag = $name;
+        } else {
+            $tagName = $this->getTagKey($name);
+            if ($overlay) {
+                $this->handler->delete($tagName);
+            }
+
+            if (!$this->handler->has($tagName)) {
+                $this->handler->set($tagName, '');
+            }
+
+            foreach ($keys as $key) {
+                $this->handler->append($tagName, ',' . $key);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * 更新标签
+     * @access protected
+     * @param  string $name 缓存标识
+     * @return void
+     */
+    protected function setTagItem($name)
+    {
+        if ($this->tag) {
+            $tagName = $this->getTagKey($this->tag);
+
+            if ($this->handler->has($tagName)) {
+                $this->handler->append($tagName, ',' . $name);
+            } else {
+                $this->handler->set($tagName, $name);
+            }
+
+            $this->tag = null;
+        }
+    }
+
+    /**
+     * 获取标签包含的缓存标识
+     * @access public
+     * @param  string $tag 缓存标签
+     * @return array
+     */
+    public function getTagItem($tag)
+    {
+        $tagName = $this->getTagKey($tag);
+        return explode(',', trim($this->handler->get($tagName), ','));
     }
 }

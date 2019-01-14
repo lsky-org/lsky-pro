@@ -29,4 +29,8 @@ return [
         'name'  => '又拍云USS',
         'class' => \strategy\driver\Uss::class
     ],
+    'github'     => [
+        'name'  => 'Github',
+        'class' => \strategy\driver\Github::class
+    ],
 ];

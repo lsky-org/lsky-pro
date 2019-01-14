@@ -241,9 +241,9 @@ class HasMany extends Relation
      */
     public function save($data, $replace = true)
     {
-        $model = $this->make($data);
+        $model = $this->make();
 
-        return $model->replace($replace)->save() ? $model : false;
+        return $model->replace($replace)->save($data) ? $model : false;
     }
 
     /**
