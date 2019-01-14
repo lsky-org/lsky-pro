@@ -143,14 +143,9 @@ CREATE TABLE IF NOT EXISTS `lsky_users` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='用户表';
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='用户表';
 
--- 正在导出表  tuchuang.lsky_users 的数据：~0 rows (大约)
-DELETE FROM `lsky_users`;
-/*!40000 ALTER TABLE `lsky_users` DISABLE KEYS */;
-INSERT INTO `lsky_users` (`id`, `username`, `nickname`, `email`, `password`, `quota`, `default_folder`, `is_admin`, `state`, `token`, `reg_ip`, `delete_time`, `update_time`, `create_time`) VALUES
-	(2, 'zhepama', NULL, 'zhepama@gmail.com', '96e79218965eb72c92a549dd5a330112', 1073741824.00, NULL, 1, 1, NULL, '::', NULL, 1547498108, 1547498108);
-/*!40000 ALTER TABLE `lsky_users` ENABLE KEYS */;
+
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
