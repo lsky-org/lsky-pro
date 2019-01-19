@@ -6,9 +6,10 @@
 <div class="mdui-container">
   <main>
     <div class="strategy-container">
-      <div class="mdui-chip current-strategy none mdui-m-b-2">
-        <span class="mdui-chip-icon mdui-color-blue"><i class="mdui-icon material-icons">&#xe1db;</i></span>
-        <span class="mdui-chip-title"></span>
+      <div class="mdui-typo">
+        <blockquote class="mdui-m-l-0">
+          <p>储存策略，可配置多个，使用不同的角色组来控制用户图片储存策略。</p>
+        </blockquote>
       </div>
       <div id="tab" class="mdui-tab mdui-tab-scrollable" mdui-tab>
         {foreach $strategy as $key => $value}
@@ -44,19 +45,6 @@
 <script>
   $(function () {
 
-    var currentStrategy = function () {
-      $('.current-strategy .mdui-chip-title').text('当前使用储存策略：' + $('#tab a.mdui-tab-active').text());
-      $('.current-strategy').is(":hidden") && $('.current-strategy').css('display', 'inline-block');
-    };
-
-    currentStrategy();
-
-    $('form').submit(function (e) {
-      e.preventDefault();
-      app.request(this.action, $(this).serialize(), function () {
-        currentStrategy();
-      })
-    });
   });
 </script>
 {/block}

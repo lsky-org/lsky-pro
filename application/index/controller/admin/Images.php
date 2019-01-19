@@ -30,7 +30,7 @@ class Images extends Base
     {
         parent::initialize();
         $this->strategyList = Config::pull('strategy');
-        $this->assign('strategyList', $this->strategyList);
+        $this->assign('strategy_list', $this->strategyList);
     }
 
     public function index($where = '', $keyword = '', $limit = 15)
