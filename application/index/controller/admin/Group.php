@@ -25,7 +25,7 @@ class Group extends Base
 
     public function index()
     {
-        $groups = GroupModel::select()->each(function ($item) {
+        $groups = GroupModel::select()->order('id', 'desc')->each(function ($item) {
             $item->strategy_str = isset($this->strategyList[$item->strategy]) ? $this->strategyList[$item->strategy]['name'] : '未知';
             return $item;
         });
