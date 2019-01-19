@@ -82,7 +82,7 @@ INSERT INTO `lsky_config` (`id`, `key`, `type`, `input_type`, `name`, `title`, `
 (41, '', 'text', 'text', 'system_version', '系统版本', NULL, '1.4.2', ''),
 
 
-(42, 'audit', 'bool', 'checkbox', 'open_audit', '开启图片鉴黄', '鉴黄接口申请地址：https://www.moderatecontent.com', '0', ''),
+(42, 'audit', 'bool', 'checkbox', 'open_audit', '开启图片鉴黄', '接口申请地址：<a href="https://www.moderatecontent.com" target="_blank">https://www.moderatecontent.com</a>', '0', ''),
 (43, 'audit', 'text', 'text', 'audit_key', 'Key', NULL, '', ''),
 (44, 'audit', 'select', 'text', 'audit_index', '内容评级', '1=所有人，2=少年，3=成人', '3', '{\"1\": \"所有人\", \"2\": \"少年\", \"3\": \"成人\"}'),
 (45, 'other', 'bool', 'checkbox', 'open_api', '开启API', '是否开放接口', '0', ''),
@@ -109,6 +109,7 @@ CREATE TABLE IF NOT EXISTS `lsky_images` (
   `sha1` varchar(100) NOT NULL COMMENT 'hash sha1',
   `md5` varchar(32) NOT NULL COMMENT 'hash md5',
   `ip` varchar(128) DEFAULT NULL COMMENT '上传者IP',
+  `suspicious` tinyint(1) NOT NULL DEFAULT '0' COMMENT '可疑图片',
   `create_time` int(11) NOT NULL COMMENT '创建时间'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='图片表';
 

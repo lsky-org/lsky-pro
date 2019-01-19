@@ -91,6 +91,7 @@ class Upload extends Base
         $url = make_url($domain, $pathname);
 
         // 图片鉴黄
+        $suspicious = 0;
         if ($this->config['open_audit']) {
             $client = new Client();
             $response = $client->get("https://www.moderatecontent.com/api/v2?key={$this->config['audit_key']}&url={$url}");
@@ -98,8 +99,9 @@ class Upload extends Base
                 $result = json_decode($response->getBody()->getContents());
                 if (0 == $result->error_code) {
                     if ($result->rating_index >= $this->config['audit_index']) {
-                        $strategy->delete($pathname);
-                        throw new Exception('图片[' . $image->getInfo('name') . ']涉嫌违规，禁止上传！');
+                        /*$strategy->delete($pathname);
+                        throw new Exception('图片[' . $image->getInfo('name') . ']涉嫌违规，禁止上传！');*/
+                        $suspicious = 1;
                     }
                 } else {
                     $strategy->delete($pathname);
@@ -117,7 +119,8 @@ class Upload extends Base
             'size' => $size,
             'mime' => $mime,
             'sha1' => $sha1,
-            'md5' => $md5
+            'md5' => $md5,
+            'suspicious' => $suspicious
         ];
 
         // 默认上传文件夹，暂只支持一级

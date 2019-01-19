@@ -49,6 +49,7 @@ UPDATE `lsky_images` SET `strategy` = 'kodo' WHERE `lsky_images`.`strategy` = 'q
 
 -- v1.4.3
 UPDATE `lsky_config` SET `value` = '1.4.3' WHERE `lsky_config`.`name` = 'system_version';
+UPDATE `lsky_config` SET `tip` = '接口申请地址：<a href="https://www.moderatecontent.com" target="_blank">https://www.moderatecontent.com</a>' WHERE `lsky_config`.`name` = 'open_audit';
 INSERT IGNORE INTO `lsky_config` (`id`, `key`, `type`, `input_type`, `name`, `title`, `tip`, `value`, `extend`) VALUES
 (NULL, 'basics', 'textarea', 'textarea', 'custom_style', '自定义CSS', NULL, '<!-- 可以直接引入第三方css样式 -->\r\n<style>\r\n  /* body {} */\r\n</style>', ''),
 (NULL, 'basics', 'textarea', 'textarea', 'statistics_code', '统计代码', NULL, '<script>\r\n  // js统计代码 \r\n</script>', '');

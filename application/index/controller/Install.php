@@ -217,7 +217,8 @@ EOT;
                     // 新建表字段
                     $tableFields = [
                         'lsky_images' => [
-                            'folder_id' => "ALTER TABLE `lsky_images` ADD `folder_id` INT NOT NULL DEFAULT '0' COMMENT '文件夹ID' AFTER `user_id`;"
+                            'folder_id' => "ALTER TABLE `lsky_images` ADD `folder_id` INT NOT NULL DEFAULT '0' COMMENT '文件夹ID' AFTER `user_id`;",
+                            'suspicious' => "ALTER TABLE `lsky_images` ADD `suspicious` TINYINT(1) NOT NULL DEFAULT '0' COMMENT '可疑图片' AFTER `ip`;",
                         ],
                         'lsky_users' => [
                             'default_folder' => "ALTER TABLE `lsky_users` ADD `default_folder` VARCHAR(32) DEFAULT NULL COMMENT '默认上传文件夹' AFTER `quota`;"

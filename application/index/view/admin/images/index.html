@@ -16,11 +16,12 @@
     </div>
     <div class="mdui-clearfix mdui-m-t-1"></div>
     <form action="" method="post" id="search-form">
-      <select class="strategy mdui-select mdui-float-left" name="strategy" mdui-select>
+      <select class="where mdui-select mdui-float-left" name="where" mdui-select>
         <option value="">全部</option>
         {foreach $strategyList as $key => $value}
-        <option value="{$key}" {if $key eq $strategy}selected{/if}>{$value.name}</option>
+        <option value='{"strategy": "{$key}"}' {if $key eq $strategy}selected{/if}>{$value.name}</option>
         {/foreach}
+        <option value='{"suspicious": "1"}' {eq name="suspicious" value="1"} selected{/eq}>可疑图片</option>
       </select>
       <input type="hidden" name="page" value="1">
       <input class="mdui-textfield-input search-input mdui-float-left" type="text" name="keyword" placeholder="回车搜索..." value="{$keyword}" autocomplete="off"/>
@@ -98,6 +99,9 @@
         }, {confirmText: '确定', cancelText: '取消'});
       }
     };
+    $('.mdui-select.where').on('close.mdui.select', function () {
+      $('#search-form').submit();
+    });
     $('.mdui-select.operation').on('close.mdui.select', function () {
       if ($(this).val() !== '') {
         var selected = $('tr.mdui-table-row-selected');
