@@ -124,6 +124,7 @@ CREATE TABLE IF NOT EXISTS `lsky_users` (
   `email` varchar(100) NOT NULL COMMENT '邮箱',
   `password` varchar(32) NOT NULL COMMENT '密码',
   `quota` decimal(20,2) NOT NULL DEFAULT '0.00' COMMENT '可用配额容量(字节：b)',
+  `default_folder` varchar(32) DEFAULT NULL COMMENT '默认上传文件夹',
   `is_admin` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否为管理员',
   `state` tinyint(1) NOT NULL DEFAULT '1' COMMENT '0：冻结，1：正常',
   `token` varchar(32) DEFAULT NULL COMMENT 'Token',
