@@ -47,8 +47,8 @@ UPDATE `lsky_config` SET `value` = '1.4.2' WHERE `lsky_config`.`name` = 'system_
 UPDATE `lsky_images` SET `strategy` = 'uss' WHERE `lsky_images`.`strategy` = 'upyun';
 UPDATE `lsky_images` SET `strategy` = 'kodo' WHERE `lsky_images`.`strategy` = 'qiniu';
 
--- v1.4.3
-UPDATE `lsky_config` SET `value` = '1.4.3' WHERE `lsky_config`.`name` = 'system_version';
+-- v1.5.0
+UPDATE `lsky_config` SET `value` = '1.5.0' WHERE `lsky_config`.`name` = 'system_version';
 UPDATE `lsky_config` SET `tip` = '接口申请地址：<a href="https://www.moderatecontent.com" target="_blank">https://www.moderatecontent.com</a>' WHERE `lsky_config`.`name` = 'open_audit';
 INSERT IGNORE INTO `lsky_config` (`id`, `key`, `type`, `input_type`, `name`, `title`, `tip`, `value`, `extend`) VALUES
 (NULL, 'basics', 'textarea', 'textarea', 'custom_style', '自定义CSS', NULL, '<!-- 可以直接引入第三方css样式 -->\r\n<style>\r\n  /* body {} */\r\n</style>', ''),
