@@ -8,10 +8,13 @@
 
 namespace app\index\controller;
 
+use app\common\model\Images;
+
 class Index extends Base
 {
     public function index()
     {
+        $this->assign('images_count', Images::cache(120)->count());
         return $this->fetch();
     }
 

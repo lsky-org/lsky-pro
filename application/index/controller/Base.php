@@ -55,7 +55,7 @@ class Base extends Controller
         }
 
         // 检测数据库结构更新
-        if ($this->user && $this->user->is_admin) {
+        if ($this->user && $this->user->is_admin && !\config('app.app_debug')) {
             if (file_exists(Env::get('root_path') . 'update.sql')) {
                 $this->redirect(url('/install/update'));
             }

@@ -14,7 +14,7 @@
     <div class="upload-container">
       <div class="title">
         <h1>Image Upload</h1>
-        <p>最大可上传 {:round($config.upload_max_size / 1024 / 1024)} MB的图片，单次同时可选择 {$config.upload_single_num} 张。</p>
+        <p>最大可上传 {:round($config.upload_max_size / 1024 / 1024)} MB的图片，单次同时可选择 {$config.upload_single_num} 张。本站已托管 {$images_count} 张图片。</p>
       </div>
       <form action="" method="post" enctype="multipart/form-data">
         <input id="image" style="display: none;" type="file" multiple name="image" accept="image/*">
@@ -84,7 +84,7 @@
       $("#code-bbcode ul").prepend("<li>[img]" + response.data.url + "[/img]<i class=\"copy iconfont icon-copy\"></i></li>");
       $("#code-markdown ul").prepend("<li>![" + response.data.name + "](" + response.data.url + ")<i class=\"copy iconfont icon-copy\"></i></li>");
       $("#code-markdown-with-link ul").prepend("<li>[![" + response.data.name + "](" + response.data.url + ")](" + response.data.url + ")<i class=\"copy iconfont icon-copy\"></i></li>");
-      $(".success-info").css("width", "inherit");
+      $(".success-info").css("width", "inherit").css('display', 'block');
       if (response.data.quota && response.data.use_quota) {
         $('.quota-container progress').attr('max', response.data.quota);
         $('.quota-container progress').val(response.data.use_quota);
@@ -96,6 +96,13 @@
     } else {
       mdui.alert(response.msg);
     }
+  }).on("filecleared", function (event, data, msg) {
+    // 清空
+    $('.success-info')
+      .css('display', 'none')
+      .find('#code-url, #code-html, #code-bbcode, #code-markdown, #code-markdown-with-link')
+      .find('ul')
+      .html('');
   });
   $('#image').css("display", "block");
 </script>
