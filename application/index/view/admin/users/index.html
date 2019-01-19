@@ -42,7 +42,7 @@
           <td>{$value.username}</td>
           <td>
             <select class="mdui-select group">
-              {foreach $groups as $group}
+              {foreach $groups as $val}
               <option value="{$group.id}" {if $value.group_id eq $val.id}selected{/if}>{$val.name}</option>
               {/foreach}
             </select>
