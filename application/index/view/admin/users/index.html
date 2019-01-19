@@ -7,7 +7,7 @@
   <main>
     <div class="mdui-chip">
       <span class="mdui-chip-icon"><i class="mdui-icon material-icons">&#xe88e;</i></span>
-      <span class="mdui-chip-title">系统共有 <small class="mdui-text-color-red">{$users->total()}</small> 个用户</span>
+      <span class="mdui-chip-title">共有 <small class="mdui-text-color-red">{$users->total()}</small> 个用户</span>
       <a href="" class="mdui-chip-delete" mdui-tooltip="{content: '刷新', position: 'right'}"><i class="mdui-icon material-icons">&#xe863;</i></a>
     </div>
     <div class="mdui-clearfix mdui-m-t-1"></div>
@@ -145,6 +145,9 @@
         }, {confirmText: '确定', cancelText: '取消'});
       }
     };
+    $('.mdui-select.where').on('close.mdui.select', function () {
+      $('#search-form').submit();
+    });
     $('.mdui-select.operation').on('close.mdui.select', function () {
       if ($(this).val() !== '') {
         var selected = $('tr.mdui-table-row-selected');
