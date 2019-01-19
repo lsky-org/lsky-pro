@@ -53,6 +53,7 @@ CREATE TABLE IF NOT EXISTS `lsky_images` (
 DROP TABLE IF EXISTS `lsky_users`;
 CREATE TABLE IF NOT EXISTS `lsky_users` (
   `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `group_id` int(11) NOT NULL DEFAULT '0' COMMENT '角色组ID',
   `username` varchar(32) NOT NULL UNIQUE COMMENT '用户名',
   `nickname` varchar(32) DEFAULT NULL COMMENT '昵称',
   `email` varchar(100) NOT NULL UNIQUE COMMENT '邮箱',
