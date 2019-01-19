@@ -48,5 +48,7 @@ UPDATE `lsky_images` SET `strategy` = 'uss' WHERE `lsky_images`.`strategy` = 'up
 UPDATE `lsky_images` SET `strategy` = 'kodo' WHERE `lsky_images`.`strategy` = 'qiniu';
 
 -- v1.4.3
+UPDATE `lsky_config` SET `value` = '1.4.3' WHERE `lsky_config`.`name` = 'system_version';
 INSERT IGNORE INTO `lsky_config` (`id`, `key`, `type`, `input_type`, `name`, `title`, `tip`, `value`, `extend`) VALUES
-(NULL, 'basics', 'textarea', 'textarea', 'statistics_code', '统计代码', NULL, '<script>\r\n    // js统计代码 \r\n</script>', '');
+(NULL, 'basics', 'textarea', 'textarea', 'custom_style', '自定义CSS', NULL, '<!-- 可以直接引入第三方css样式 -->\r\n<style>\r\n  /* body {} */\r\n</style>', ''),
+(NULL, 'basics', 'textarea', 'textarea', 'statistics_code', '统计代码', NULL, '<script>\r\n  // js统计代码 \r\n</script>', '');

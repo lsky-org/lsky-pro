@@ -17,6 +17,7 @@
   <!--[if IE]>
   <script>window.location.href = '/compatibility.html';</script>
   <![endif]-->
+  {$config.custom_style|raw}
 </head>
 <body class="mdui-theme-accent-indigo mdui-appbar-with-toolbar {if cookie('?menu') and cookie('menu') eq 'open'}mdui-drawer-body-left{/if}">
 {block name="header"}
@@ -178,5 +179,6 @@
   app.update(thatVer, false);
 </script>
 {/if}
+{$config.statistics_code|raw}
 </body>
 </html>
