@@ -8,6 +8,7 @@
 
 namespace app\index\controller;
 
+use app\common\model\Group;
 use app\common\model\Users;
 use PHPMailer\PHPMailer\PHPMailer;
 use think\Controller;
@@ -25,6 +26,8 @@ class Base extends Controller
     protected $config = null;
 
     protected $configs = null;
+
+    protected $group = null;
 
     /**
      * 当前储存策略配置
@@ -55,13 +58,22 @@ class Base extends Controller
         }
 
         // 检测数据库结构更新
-        if ($this->user && $this->user->is_admin) {
+        if ($this->user && $this->user->is_admin && !\config('app.app_debug')) {
             if (file_exists(Env::get('root_path') . 'update.sql')) {
                 $this->redirect(url('/install/update'));
             }
         }
 
-        $this->currentStrategyConfig = $this->getStrategyConfig(strtolower($this->config['storage_strategy']));
+        // 角色组
+        if ($this->user) {
+            $this->group = $this->user->group;
+        }
+        if (!$this->group) {
+            // 默认角色组
+            $this->group = Group::where('default', 1)->find();
+        }
+
+        $this->currentStrategyConfig = $this->getStrategyConfig(strtolower($this->group->strategy));
 
         $this->assign([
             'config'    => $this->config,
@@ -96,7 +108,7 @@ class Base extends Controller
      */
     protected function getStrategyInstance($strategy = null)
     {
-        $currentStrategy = $strategy ? $strategy : strtolower($this->config['storage_strategy']);
+        $currentStrategy = $strategy ? $strategy : strtolower($this->group->strategy);
         // 驱动
         $driver = Config::get('strategy.' . $currentStrategy . '.class');
         // 获取该储存策略配置

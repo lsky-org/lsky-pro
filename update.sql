@@ -46,3 +46,20 @@ CREATE TABLE IF NOT EXISTS `lsky_folders` (
 UPDATE `lsky_config` SET `value` = '1.4.2' WHERE `lsky_config`.`name` = 'system_version';
 UPDATE `lsky_images` SET `strategy` = 'uss' WHERE `lsky_images`.`strategy` = 'upyun';
 UPDATE `lsky_images` SET `strategy` = 'kodo' WHERE `lsky_images`.`strategy` = 'qiniu';
+
+-- v1.5.0
+UPDATE `lsky_config` SET `value` = '1.5.0' WHERE `lsky_config`.`name` = 'system_version';
+UPDATE `lsky_config` SET `tip` = '接口申请地址：<a href="https://www.moderatecontent.com" target="_blank">https://www.moderatecontent.com</a>' WHERE `lsky_config`.`name` = 'open_audit';
+INSERT IGNORE INTO `lsky_config` (`id`, `key`, `type`, `input_type`, `name`, `title`, `tip`, `value`, `extend`) VALUES
+(NULL, 'basics', 'textarea', 'textarea', 'custom_style', '自定义CSS', NULL, '<!-- 可以直接引入第三方css样式 -->\r\n<style>\r\n  /* body {} */\r\n</style>', ''),
+(NULL, 'basics', 'textarea', 'textarea', 'statistics_code', '统计代码', NULL, '<script>\r\n  // js统计代码 \r\n</script>', '');
+CREATE TABLE IF NOT EXISTS `lsky_group` (
+  `id` INT NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `strategy` varchar(32) NOT NULL COMMENT '使用策略',
+  `name` varchar(32) NOT NULL COMMENT '组名称',
+  `default` tinyint(1) NOT NULL DEFAULT '0' COMMENT '默认',
+  `update_time` int(11) DEFAULT NULL COMMENT '更新时间',
+  `create_time` int(11) DEFAULT NULL COMMENT '添加时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci COMMENT='文件夹表';
+INSERT IGNORE INTO `lsky_group` (`id`, `strategy`, `name`, `default`, `update_time`, `create_time`) VALUES (NULL, 'local', '默认组', '1', '0', '0');

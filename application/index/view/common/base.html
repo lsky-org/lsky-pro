@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="Cache-Control" content="no-siteapp"/>
@@ -17,6 +17,7 @@
   <!--[if IE]>
   <script>window.location.href = '/compatibility.html';</script>
   <![endif]-->
+  {$config.custom_style|raw}
 </head>
 <body class="mdui-theme-accent-indigo mdui-appbar-with-toolbar {if cookie('?menu') and cookie('menu') eq 'open'}mdui-drawer-body-left{/if}">
 {block name="header"}
@@ -83,6 +84,7 @@
         <i class="mdui-collapse-item-arrow mdui-icon material-icons">&#xe313;</i>
       </div>
       <div class="mdui-collapse-item-body mdui-list">
+        <a href="{:url('admin/group/index')}" class="mdui-list-item mdui-ripple {if $uri eq 'admin.group/index'}mdui-list-item-active{/if}">角色组</a>
         <a href="{:url('admin/users/index')}" class="mdui-list-item mdui-ripple {if $uri eq 'admin.users/index'}mdui-list-item-active{/if}">用户管理</a>
         <a href="{:url('admin/images/index')}" class="mdui-list-item mdui-ripple {if $uri eq 'admin.images/index'}mdui-list-item-active{/if}">图片管理</a>
         <a href="{:url('admin/strategy/index')}" class="mdui-list-item mdui-ripple {if $uri eq 'admin.strategy/index'}mdui-list-item-active{/if}">储存策略</a>
@@ -130,7 +132,7 @@
 </div>
 <footer>
   <div class="mdui-container">
-    Copyright &copy; 2018 <a href="https://www.lsky.pro">Lsky Pro</a>. All rights reserved.
+    Copyright &copy; 2018 - 2019 <a href="https://www.lsky.pro">Lsky Pro</a>. All rights reserved.
     {if $config.icp_number}<a href="http://www.miitbeian.gov.cn" target="_blank">{$config.icp_number}</a>.{/if}
     请勿上传违反中国大陆和香港法律的图片，违者后果自负。
   </div>
@@ -178,5 +180,6 @@
   app.update(thatVer, false);
 </script>
 {/if}
+{$config.statistics_code|raw}
 </body>
 </html>

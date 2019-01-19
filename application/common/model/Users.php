@@ -80,4 +80,9 @@ class Users extends Model
     {
         return $this->hasMany('Folders', 'user_id', 'id');
     }
+
+    public function group()
+    {
+        return $this->hasOne('Group', 'id', 'group_id');
+    }
 }

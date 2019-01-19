@@ -30,14 +30,20 @@ class Images extends Base
     {
         parent::initialize();
         $this->strategyList = Config::pull('strategy');
-        $this->assign('strategyList', $this->strategyList);
+        $this->assign('strategy_list', $this->strategyList);
     }
 
-    public function index($strategy = '', $keyword = '', $limit = 15)
+    public function index($where = '', $keyword = '', $limit = 15)
     {
+        $where = json_decode($where, true);
+        if (null == $where) {
+            $where = [
+                'suspicious' => 0
+            ];
+        }
         $model = new ImagesModel();
-        if (!empty($strategy)) {
-            $model = $model->where('strategy', $strategy);
+        foreach ($where as $field => $value) {
+            $model = $model->where($field, $value);
         }
         if (!empty($keyword)) {
             $model = $model->where('pathname|sha1|md5', 'like', "%{$keyword}%");
@@ -47,7 +53,8 @@ class Images extends Base
                 'keyword' => $keyword
             ]
         ])->each(function ($item) {
-            $item->username = Users::where('id', $item->user_id)->value('username');
+            $username = Users::where('id', $item->user_id)->value('username');
+            $item->username = $username ? $username : '访客';
             $item->strategyStr = isset($this->strategyList[$item->strategy]) ? $this->strategyList[$item->strategy]['name'] : '未知';
             return $item;
         });
@@ -55,8 +62,10 @@ class Images extends Base
             'images' => $images,
             'keyword' => $keyword,
             'strategyList' => $this->strategyList,
-            'strategy' => $strategy
+            'strategy' => isset($where['strategy']) ? $where['strategy'] : '',
+            'suspicious' => isset($where['suspicious']) ? $where['suspicious'] : 0
         ]);
+
         return $this->fetch();
     }
 
@@ -130,7 +139,7 @@ class Images extends Base
             } catch (Exception $e) {
                 return $this->error('获取失败');
             } catch (RequestException $e) {
-                return $this->error('淘宝接口异常');
+                return $this->error('淘宝接口发生异常，状态码：' . $response->getStatusCode());
             }
             return $this->success('获取成功', null, $data);
         }

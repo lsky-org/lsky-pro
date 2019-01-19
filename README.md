@@ -12,7 +12,7 @@
 [![License](https://img.shields.io/badge/license-GPL_V3.0-yellowgreen.svg)](https://github.com/wisp-x/lsky-pro/blob/master/LICENSE)
 [![PHP](https://img.shields.io/badge/PHP->=5.6-orange.svg)](http://php.net)
 [![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/wisp-x/lsky-pro.svg)](https://github.com/wisp-x/lsky-pro)
-[![Join the chat at https://gitter.im/wisp-x/lsky-pro](https://badges.gitter.im/wisp-x/lsky-pro.svg)](https://gitter.im/wisp-x/lsky-pro?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge&style=flat-square)
+[![Join the chat at https://gitter.im/wisp-x/lsky-pro](https://badges.gitter.im/wisp-x/lsky-pro.svg)](https://gitter.im/wisp-x/lsky-pro?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 > master分支为最新版，其他版本请点击[这里](https://github.com/wisp-x/lsky-pro/releases)
 

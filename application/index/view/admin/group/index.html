@@ -1,0 +1,201 @@
+{extend name="common:base" /}
+
+{block name="title"}角色组 - {$config.site_name}{/block}
+
+{block name="main"}
+<div class="mdui-container">
+  <main>
+    <div class="mdui-table-fluid mdui-m-t-2 mdui-m-b-2">
+      <div class="mdui-typo">
+        <blockquote>
+          <p>不同的角色组下的用户，上传图片将使用不同的储存策略。<br>至少有一个默认角色组，新注册用户和访客将会使用默认的角色组。<br>角色组删除后，该组下面的用户将重置默认角色组。</p>
+        </blockquote>
+      </div>
+      <div class="mdui-btn-group mdui-m-a-1">
+        <button type="button" id="add" class="mdui-btn mdui-ripple mdui-btn-raised" mdui-dialog="{target: '#add-dialog'}">添加</button>
+      </div>
+      <table class="mdui-table mdui-table-selectable">
+        <thead>
+        <tr>
+          <th>使用策略</th>
+          <th>名称</th>
+          <th>注册默认</th>
+          <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {foreach $groups as $value}
+        <tr data-id="{$value.id}">
+          <td>
+            <select class="mdui-select strategy">
+              {foreach $strategy_list as $strategy => $val}
+              <option value="{$strategy}" {if $value.strategy eq $strategy} selected{/if}>{$val.name}</option>
+              {/foreach}
+            </select>
+          </td>
+          <td>{$value.name}</td>
+          <td>
+            <label class="mdui-switch">
+              <input type="checkbox" class="default" {if $value.default eq 1}checked{/if}/>
+              <i class="mdui-switch-icon"></i>
+            </label>
+          </td>
+          <td>
+            <div class="mdui-btn-group">
+              <button class="mdui-btn mdui-btn-raised mdui-btn-dense edit">编辑</button>
+              <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-red mdui-btn-dense del">删除</button>
+            </div>
+          </td>
+        </tr>
+        {/foreach}
+        </tbody>
+      </table>
+    </div>
+  </main>
+  <div class="mdui-dialog" id="add-dialog">
+    <div class="mdui-dialog-content">
+      <form action="{:url('admin/group/edit')}" method="post">
+        <div class="mdui-dialog-title">添加角色组</div>
+        <div class="mdui-textfield">
+          <label class="mdui-textfield-label">组名称</label>
+          <input class="mdui-textfield-input" type="text" name="name" value="" placeholder="用户名" autocomplete="off"/>
+        </div>
+        <div class="mdui-textfield">
+          <label class="mdui-textfield-label">使用策略</label>
+          <select class="mdui-select" name="strategy">
+            {foreach $strategy_list as $strategy => $val}
+            <option value="{$strategy}">{$val.name}</option>
+            {/foreach}
+          </select>
+        </div>
+        <div class="mdui-textfield">
+          <label class="mdui-textfield-label">注册默认</label>
+          <label class="mdui-switch">
+            <input type="checkbox" name="default" value="1"/>
+            <i class="mdui-switch-icon"></i>
+          </label>
+        </div>
+        <div class="mdui-dialog-actions">
+          <button type="button" class="mdui-btn mdui-ripple" mdui-dialog-cancel>取消</button>
+          <button class="mdui-btn mdui-ripple">确定</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="mdui-dialog" id="edit-dialog">
+    <div class="mdui-dialog-content">
+      <form action="{:url('admin/group/edit')}" method="post">
+        <div class="mdui-dialog-title">添加角色组</div>
+        <div class="mdui-textfield">
+          <label class="mdui-textfield-label">组名称</label>
+          <input class="mdui-textfield-input" type="text" name="name" value="" placeholder="用户名" autocomplete="off"/>
+        </div>
+        <div class="mdui-textfield">
+          <label class="mdui-textfield-label">使用策略</label>
+          <select class="mdui-select" name="strategy">
+            {foreach $strategy_list as $strategy => $val}
+            <option value="{$strategy}">{$val.name}</option>
+            {/foreach}
+          </select>
+        </div>
+        <div class="mdui-textfield">
+          <label class="mdui-textfield-label">注册默认</label>
+          <label class="mdui-switch">
+            <input type="checkbox" name="default" value="1"/>
+            <i class="mdui-switch-icon"></i>
+          </label>
+        </div>
+        <input type="hidden" name="id" value="">
+        <div class="mdui-dialog-actions">
+          <button type="button" class="mdui-btn mdui-ripple" mdui-dialog-cancel>取消</button>
+          <button class="mdui-btn mdui-ripple">修改</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{/block}
+
+{block name="js"}
+<script>
+  $(function () {
+    var editDialog = new mdui.Dialog('#edit-dialog');
+    var methods = {
+      delete: function (id, batch, callback) {
+        var msg = '确认删除该角色组吗？';
+        if (batch) {
+          msg = '确认删除选中项角色组吗？';
+        }
+        mdui.confirm(msg, function () {
+          app.request("{:url('admin/group/del')}", {id: id}, function () {
+            callback && callback();
+          });
+        }, function () {
+
+        }, {confirmText: '确定', cancelText: '取消'});
+      },
+    };
+    // 编辑提交
+    $('#edit-dialog form').submit(function (e) {
+      e.preventDefault();
+      app.request("{:url('admin/group/edit')}", $(this).serialize(), function () {
+        editDialog.close();
+        history.go(0);
+      });
+    });
+    // 添加角色组
+    $('#add-dialog form').submit(function (e) {
+      e.preventDefault();
+      app.request("{:url('admin/group/add')}", $(this).serialize(), function () {
+        history.go(0);
+      });
+    });
+    // 更改储存策略
+    $('td select.strategy').change(function () {
+      var tr = $(this).closest('tr');
+      app.request("{:url('admin/group/setStrategy')}", {id: tr.data('id'), strategy: $(this).val()});
+    });
+    // 状态切换
+    $('td .default').change(function () {
+      var tr = $(this).closest('tr');
+      app.request("{:url('admin/group/setDefault')}", {id: tr.data('id'), value: this.checked ? 1 : 0}, function () {
+          $('td .default').attr('checked', false);
+          mdui.mutation('checkbox');
+      }, function () {
+          history.go(0);
+      });
+    });
+    // 编辑
+    $('td button.edit').click(function () {
+      var tr = $(this).closest('tr');
+      app.ajax("{:url('admin/group/getGroup')}", {id: tr.data('id')}, function (response) {
+        if (response.code) {
+          var form = $("#edit-dialog form");
+          for (x in response.data) {
+            var input = form.find("input[name='" + x + "']");
+            if (input.length) {
+              input.val(response.data[x]);
+            }
+            if (x === 'default') {
+              form.find("[name='default']").attr('checked', 1 === response.data[x]);
+              mdui.mutation('checkbox');
+            }
+          }
+          editDialog.open();
+        } else {
+          mdui.snackbar({
+            message: response.msg
+          });
+        }
+      });
+    });
+    // 删除
+    $('td button.del').click(function () {
+      var tr = $(this).closest('tr');
+      methods.delete(tr.data('id'), false, function () {
+        tr.remove();
+      });
+    });
+  });
+</script>
+{/block}
