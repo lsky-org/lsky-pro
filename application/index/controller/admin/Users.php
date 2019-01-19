@@ -37,7 +37,8 @@ class Users extends Base
         $this->assign([
             'users' => $users,
             'state' => $state,
-            'keyword' => $keyword
+            'keyword' => $keyword,
+            'groups' => \app\common\model\Group::select()
         ]);
         return $this->fetch();
     }
@@ -130,6 +131,21 @@ class Users extends Base
                 return $this->error('状态修改失败');
             }
             return $this->success('状态修改成功');
+        }
+    }
+
+    public function setGroup()
+    {
+        if ($this->request->isPost()) {
+            $id = $this->request->post('id');
+            $groupId = $this->request->post('group_id');
+            if (!$group = \app\common\model\Group::find($groupId)) {
+                return $this->error('数据获取失败');
+            }
+            if (!UsersModel::where('id', $id)->setField('group_id', $groupId)) {
+                return $this->error('修改失败');
+            }
+            return $this->success('修改成功');
         }
     }
 }

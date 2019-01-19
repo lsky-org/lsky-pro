@@ -7,7 +7,7 @@
   <main>
     <div class="mdui-chip">
       <span class="mdui-chip-icon"><i class="mdui-icon material-icons">&#xe88e;</i></span>
-      <span class="mdui-chip-title">系统共有 <small class="mdui-text-color-red">{$users->total()}</small> 个用户</span>
+      <span class="mdui-chip-title">共有 <small class="mdui-text-color-red">{$users->total()}</small> 个用户</span>
       <a href="" class="mdui-chip-delete" mdui-tooltip="{content: '刷新', position: 'right'}"><i class="mdui-icon material-icons">&#xe863;</i></a>
     </div>
     <div class="mdui-clearfix mdui-m-t-1"></div>
@@ -26,6 +26,7 @@
         <thead>
         <tr>
           <th>用户名</th>
+          <th>角色组</th>
           <th>昵称</th>
           <th>邮箱</th>
           <th>已使用容量</th>
@@ -39,6 +40,13 @@
         {foreach $users as $value}
         <tr data-id="{$value.id}">
           <td>{$value.username}</td>
+          <td>
+            <select class="mdui-select group">
+              {foreach $groups as $group}
+              <option value="{$group.id}" {if $value.group_id eq $val.id}selected{/if}>{$val.name}</option>
+              {/foreach}
+            </select>
+          </td>
           <td>{$value.nickname}</td>
           <td>{$value.email}</td>
           <td>{$value.use_quota|format_size}</td>
@@ -145,6 +153,13 @@
         }, {confirmText: '确定', cancelText: '取消'});
       }
     };
+    $('.mdui-select.where').on('close.mdui.select', function () {
+      $('#search-form').submit();
+    });
+    $('td select.group').change(function () {
+      var tr = $(this).closest('tr');
+      app.request("{:url('admin/users/setGroup')}", {id: tr.data('id'), group_id: $(this).val()});
+    });
     $('.mdui-select.operation').on('close.mdui.select', function () {
       if ($(this).val() !== '') {
         var selected = $('tr.mdui-table-row-selected');
