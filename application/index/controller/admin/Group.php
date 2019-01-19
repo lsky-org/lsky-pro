@@ -66,6 +66,12 @@ class Group extends Base
                 if (true !== $validate) {
                     throw new Exception($validate);
                 }
+                $data['default'] = array_key_exists('default', $data) ? 1 : 0;
+                if ($data['default'] === 0) {
+                    if (!GroupModel::where('default', 1)->where('id', 'neq', $data['id'])->count()) {
+                        throw new Exception('至少保留一个默认分组');
+                    }
+                }
                 if (!GroupModel::update($data)) {
                     throw new Exception('编辑失败');
                 }
