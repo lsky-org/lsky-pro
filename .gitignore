@@ -3,6 +3,7 @@
 .AppleDouble
 .LSOverride
 .idea
+.vscode
 
 runtime
 /config/db.php
