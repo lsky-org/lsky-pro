@@ -44,7 +44,10 @@
 {block name="js"}
 <script>
   $(function () {
-
+    $('form').submit(function (e) {
+      e.preventDefault();
+      app.request(this.action, $(this).serialize());
+    })
   });
 </script>
 {/block}
