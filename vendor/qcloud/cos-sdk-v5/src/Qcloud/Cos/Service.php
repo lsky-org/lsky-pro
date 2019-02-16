@@ -43,7 +43,9 @@ class Service {
                             'required' => true,
                             'type' => 'string',
                             'location' => 'uri',
-                            'minLength' => 1),
+                            'minLength' => 1,
+                            'filters' => array(
+                                'Qcloud\\Cos\\Client::explodeKey')),
                         'UploadId' => array(
                             'required' => true,
                             'type' => 'string',
@@ -133,7 +135,9 @@ class Service {
                             'required' => true,
                             'type' => 'string',
                             'location' => 'uri',
-                            'minLength' => 1),
+                            'minLength' => 1,
+                            'filters' => array(
+                                'Qcloud\\Cos\\Client::explodeKey')),
                         'Parts' => array(
                             'type' => 'array',
                             'location' => 'xml',
@@ -235,6 +239,8 @@ class Service {
                             'type' => 'string',
                             'location' => 'uri',
                             'minLength' => 1,
+                            'filters' => array(
+                                'Qcloud\\Cos\\Client::explodeKey')
                         ),
                         'Metadata' => array(
                             'type' => 'object',
@@ -409,6 +415,8 @@ class Service {
                             'type' => 'string',
                             'location' => 'uri',
                             'minLength' => 1,
+                            'filters' => array(
+                                'Qcloud\\Cos\\Client::explodeKey')
                         ),
                         'Metadata' => array(
                             'type' => 'object',
@@ -590,7 +598,9 @@ class Service {
                             'required' => true,
                             'type' => 'string',
                             'location' => 'uri',
-                            'minLength' => 1),
+                            'minLength' => 1,
+                            'filters' => array(
+                                'Qcloud\\Cos\\Client::explodeKey')),
                         'MFA' => array(
                             'type' => 'string',
                             'location' => 'header',
@@ -670,6 +680,8 @@ class Service {
                                         'required' => true,
                                         'type' => 'string',
                                         'minLength' => 1,
+                                        'filters' => array(
+                                            'Qcloud\\Cos\\Client::explodeKey')
                                     ),
                                     'VersionId' => array(
                                         'type' => 'string',
@@ -800,7 +812,9 @@ class Service {
                             'required' => true,
                             'type' => 'string',
                             'location' => 'uri',
-                            'minLength' => 1),
+                            'minLength' => 1,
+                            'filters' => array(
+                                'Qcloud\\Cos\\Client::explodeKey')),
                         'Range' => array(
                             'type' => 'string',
                             'location' => 'header'),
@@ -880,6 +894,8 @@ class Service {
                             'type' => 'string',
                             'location' => 'uri',
                             'minLength' => 1,
+                            'filters' => array(
+                                'Qcloud\\Cos\\Client::explodeKey')
                         ),
                         'VersionId' => array(
                             'type' => 'string',
@@ -1171,7 +1187,9 @@ class Service {
                             'required' => true,
                             'type' => 'string',
                             'location' => 'uri',
-                            'minLength' => 1),
+                            'minLength' => 1,
+                            'filters' => array(
+                                'Qcloud\\Cos\\Client::explodeKey')),
                         'PartNumber' => array(
                             'required' => true,
                             'type' => 'numeric',
@@ -1264,7 +1282,9 @@ class Service {
                             'required' => true,
                             'type' => 'string',
                             'location' => 'uri',
-                            'minLength' => 1),
+                            'minLength' => 1,
+                            'filters' => array(
+                                'Qcloud\\Cos\\Client::explodeKey')),
                         'Metadata' => array(
                             'type' => 'object',
                             'location' => 'header',
@@ -1444,6 +1464,8 @@ class Service {
                             'type' => 'string',
                             'location' => 'uri',
                             'minLength' => 1,
+                            'filters' => array(
+                                'Qcloud\\Cos\\Client::explodeKey')
                         ),
                         'RequestPayer' => array(
                             'type' => 'string',
@@ -1833,6 +1855,8 @@ class Service {
                                                     'Key' => array(
                                                         'type' => 'string'
                                                     ),
+                                                    'filters' => array(
+                                                        'Qcloud\\Cos\\Client::explodeKey'),
                                                     'Value' => array(
                                                         'type' => 'string'
                                                     ),
@@ -2103,6 +2127,8 @@ class Service {
                                                     ),
                                                 ),
                                             ),
+                                            'filters' => array(
+                                                'Qcloud\\Cos\\Client::explodeKey')
                                         ),
                                     ),
                                 ),
@@ -2132,6 +2158,8 @@ class Service {
                             'type' => 'string',
                             'location' => 'uri',
                             'minLength' => 1,
+                            'filters' => array(
+                                'Qcloud\\Cos\\Client::explodeKey')
                         ),
                         'VersionId' => array(
                             'type' => 'string',
@@ -2197,7 +2225,9 @@ class Service {
                             'required' => true,
                             'type' => 'string',
                             'location' => 'uri',
-                            'minLength' => 1),
+                            'minLength' => 1,
+                            'filters' => array(
+                                'Qcloud\\Cos\\Client::explodeKey')),
                         'MaxParts' => array(
                             'type' => 'numeric',
                             'location' => 'query',
@@ -2456,6 +2486,8 @@ class Service {
                             'type' => 'string',
                             'location' => 'uri',
                             'minLength' => 1,
+                            'filters' => array(
+                                'Qcloud\\Cos\\Client::explodeKey')
                         ),
                         'Range' => array(
                             'type' => 'string',
@@ -2599,6 +2631,8 @@ class Service {
                             'type' => 'string',
                             'location' => 'uri',
                             'minLength' => 1,
+                            'filters' => array(
+                                'Qcloud\\Cos\\Client::explodeKey')
                         ),
                         'PartNumber' => array(
                             'required' => true,
@@ -2685,7 +2719,7 @@ class Service {
                         ),
                         'Key' => array(
                             'type' => 'string',
-                            'location' => 'xml',
+                            'location' => 'xml'
                         ),
                         'Expiration' => array(
                             'type' => 'string',

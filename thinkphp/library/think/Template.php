@@ -1311,7 +1311,7 @@ class Template
     public function __debugInfo()
     {
         $data = get_object_vars($this);
-        unset($data['app'], $data['storege']);
+        unset($data['app'], $data['storage']);
 
         return $data;
     }

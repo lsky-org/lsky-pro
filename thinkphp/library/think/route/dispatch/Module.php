@@ -69,10 +69,6 @@ class Module extends Dispatch
         // 获取控制器名
         $controller = strip_tags($result[1] ?: $this->rule->getConfig('default_controller'));
 
-        if (!preg_match('/^[A-Za-z](\w|\.)*$/', $controller)) {
-            throw new HttpException(404, 'controller not exists:' . $controller);
-        }
-
         $this->controller = $convert ? strtolower($controller) : $controller;
 
         // 获取操作名
@@ -97,10 +93,6 @@ class Module extends Dispatch
                 $this->rule->getConfig('url_controller_layer'),
                 $this->rule->getConfig('controller_suffix'),
                 $this->rule->getConfig('empty_controller'));
-
-            if ($instance instanceof Controller) {
-                $instance->registerMiddleware();
-            }
         } catch (ClassNotFoundException $e) {
             throw new HttpException(404, 'controller not exists:' . $e->getClass());
         }

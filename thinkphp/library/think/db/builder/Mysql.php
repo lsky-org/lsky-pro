@@ -94,13 +94,17 @@ class Mysql extends Builder
      * @param  Query        $query        查询对象
      * @param  string       $key
      * @param  string       $exp
-     * @param  Expression   $value
+     * @param  mixed        $value
      * @param  string       $field
      * @return string
      */
-    protected function parseRegexp(Query $query, $key, $exp, Expression $value, $field)
+    protected function parseRegexp(Query $query, $key, $exp, $value, $field)
     {
-        return $key . ' ' . $exp . ' ' . $value->getValue();
+        if ($value instanceof Expression) {
+            $value = $value->getValue();
+        }
+
+        return $key . ' ' . $exp . ' ' . $value;
     }
 
     /**
@@ -145,7 +149,7 @@ class Mysql extends Builder
             throw new Exception('not support data:' . $key);
         }
 
-        if ('*' != $key && ($strict || !preg_match('/[,\'\"\*\(\)`.\s]/', $key))) {
+        if ('*' != $key && !preg_match('/[,\'\"\*\(\)`.\s]/', $key)) {
             $key = '`' . $key . '`';
         }
 

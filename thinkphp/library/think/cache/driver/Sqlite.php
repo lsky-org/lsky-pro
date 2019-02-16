@@ -216,7 +216,7 @@ class Sqlite extends Driver
     public function clear($tag = null)
     {
         if ($tag) {
-            $name = sqlite_escape_string($tag);
+            $name = sqlite_escape_string($this->getTagKey($tag));
             $sql  = 'DELETE FROM ' . $this->options['table'] . ' WHERE tag=\'' . $name . '\'';
             sqlite_query($this->handler, $sql);
             return true;

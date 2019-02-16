@@ -114,7 +114,7 @@ class Sqlsrv extends Builder
             throw new Exception('not support data:' . $key);
         }
 
-        if ('*' != $key && ($strict || !preg_match('/[,\'\"\*\(\)\[.\s]/', $key))) {
+        if ('*' != $key && !preg_match('/[,\'\"\*\(\)\[.\s]/', $key)) {
             $key = '[' . $key . ']';
         }
 

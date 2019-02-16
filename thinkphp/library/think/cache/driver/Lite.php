@@ -198,7 +198,7 @@ class Lite extends Driver
                 unlink($key);
             }
 
-            $this->rm('tag_' . md5($tag));
+            $this->rm($this->getTagKey($tag));
             return true;
         }
 

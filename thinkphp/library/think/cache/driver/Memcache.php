@@ -188,11 +188,13 @@ class Memcache extends Driver
         if ($tag) {
             // 指定标签清除
             $keys = $this->getTagItem($tag);
+
             foreach ($keys as $key) {
                 $this->handler->delete($key);
             }
 
-            $this->rm('tag_' . md5($tag));
+            $tagName = $this->getTagKey($tag);
+            $this->rm($tagName);
             return true;
         }
 
@@ -200,4 +202,5 @@ class Memcache extends Driver
 
         return $this->handler->flush();
     }
+
 }

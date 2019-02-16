@@ -159,10 +159,12 @@ class Xcache extends Driver
         if ($tag) {
             // 指定标签清除
             $keys = $this->getTagItem($tag);
+
             foreach ($keys as $key) {
                 xcache_unset($key);
             }
-            $this->rm('tag_' . md5($tag));
+
+            $this->rm($this->getTagKey($tag));
             return true;
         }
 

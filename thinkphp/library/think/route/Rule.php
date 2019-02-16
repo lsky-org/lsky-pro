@@ -722,13 +722,17 @@ abstract class Rule
 
         // 替换路由地址中的变量
         if (is_string($route) && !empty($matches)) {
-            foreach ($matches as $key => $val) {
-                if (false !== strpos($route, '<' . $key . '>')) {
-                    $route = str_replace('<' . $key . '>', $val, $route);
-                } elseif (false !== strpos($route, ':' . $key)) {
-                    $route = str_replace(':' . $key, $val, $route);
-                }
+            $search = $replace = [];
+
+            foreach ($matches as $key => $value) {
+                $search[]  = '<' . $key . '>';
+                $replace[] = $value;
+
+                $search[]  = ':' . $key;
+                $replace[] = $value;
             }
+
+            $route = str_replace($search, $replace, $route);
         }
 
         // 解析额外参数
@@ -997,7 +1001,7 @@ abstract class Rule
             }
         }
 
-        $regex = str_replace($match, $replace, $rule);
+        $regex = str_replace(array_unique($match), array_unique($replace), $rule);
         $regex = str_replace([')?/', ')/', ')?-', ')-', '\\\\/'], [')\/', ')\/', ')\-', ')\-', '\/'], $regex);
 
         if (isset($hasSlash)) {

@@ -11,6 +11,7 @@ class Signature {
     public function __destruct() {
     }
     public function signRequest(RequestInterface $request) {
+
         $signTime = (string)(time() - 60) . ';' . (string)(time() + 3600);
         $httpString = strtolower($request->getMethod()) . "\n" . urldecode($request->getPath()) .
             "\n\nhost=" . $request->getHost() . "\n";
