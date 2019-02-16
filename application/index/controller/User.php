@@ -130,8 +130,8 @@ class User extends Base
                 $folders = $images = [];
                 $this->getDeleteFoldersAndImages($id, $folders, $images);
                 $folders[] = (int) $id;
-                Folders::destroy($folders, true);
-                $this->deleteImages($images);
+                $folders && Folders::destroy($folders, true);
+                $images && $this->deleteImages($images);
                 Db::commit();
             } catch (Exception $e) {
                 Db::rollback();
