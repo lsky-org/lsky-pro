@@ -63,7 +63,7 @@ CREATE TABLE IF NOT EXISTS `lsky_users` (
   `is_admin` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否为管理员',
   `state` tinyint(1) NOT NULL DEFAULT '1' COMMENT '0：冻结，1：正常',
   `token` varchar(32) DEFAULT NULL COMMENT 'Token',
-  `reg_ip` varchar(32) DEFAULT NULL COMMENT '注册IP',
+  `reg_ip` varchar(128) DEFAULT NULL COMMENT '注册IP',
   `delete_time` int(11) DEFAULT NULL COMMENT '删除时间',
   `update_time` int(11) NOT NULL COMMENT '更新时间',
   `create_time` int(11) NOT NULL COMMENT '添加时间',
