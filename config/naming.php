@@ -8,11 +8,8 @@
 
 // [命名规则配置文件]
 
-use think\facade\Session;
-
 $time = time();
 $md5 = md5('LSKY PRO' . uniqid() . time());
-$uid = Session::has('uid') ? Session::get('uid') : 0;
 
 return [
     'path'  => [
@@ -81,12 +78,6 @@ return [
             'example'   => '0a9a5e8723dbde0d',
             'explain'   => 'md5(非文件md5)',
             'value'     => substr($md5, 8, 16),
-        ],
-        [
-            'name'      => '{uid}',
-            'example'   => '1',
-            'explain'   => '用户ID(用户从网页端登录可用，否则为0)',
-            'value'     => $uid,
         ],
         [
             'name'      => '{rend-character}',
@@ -161,12 +152,6 @@ return [
             'example'   => '0a9a5e8723dbde0d',
             'explain'   => 'md5(非文件md5)',
             'value'     => substr($md5, 8, 16),
-        ],
-        [
-            'name'      => '{uid}',
-            'example'   => '1',
-            'explain'   => '用户ID(用户从网页端登录可用，否则为0)',
-            'value'     => $uid,
         ],
         [
             'name'      => '{rend-character}',
