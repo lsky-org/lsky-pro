@@ -27,6 +27,13 @@
               {case text}
               <input class="mdui-textfield-input" type="{$val.input_type}" name="{$val.name}" value="{$val.value}" autocomplete="off" placeholder="{$val.title}"/>
               {/case}
+              {case select}
+              <select name="{$val.name}" class="mdui-select">
+                {foreach $val.extend as $k => $v}
+                <option value="{$k}" {if $k eq $val.value}selected{/if}>{$v}</option>
+                {/foreach}
+              </select>
+              {/case}
               {/switch}
             </div>
             {/foreach}

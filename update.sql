@@ -63,3 +63,6 @@ CREATE TABLE IF NOT EXISTS `lsky_group` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci COMMENT='文件夹表';
 INSERT IGNORE INTO `lsky_group` (`id`, `strategy`, `name`, `default`, `update_time`, `create_time`) VALUES (NULL, 'local', '默认组', '1', '0', '0');
+
+-- v1.5.1
+UPDATE `lsky_config` SET `value` = '1.5.1' WHERE `lsky_config`.`name` = 'system_version';
