@@ -140,9 +140,13 @@ trait Conversion
         // 过滤属性
         if (!empty($this->visible)) {
             $array = $this->parseAttr($this->visible, $visible);
-            $data  = array_intersect_key($data, array_flip($array));
-        } elseif (!empty($this->hidden)) {
-            $array = $this->parseAttr($this->hidden, $hidden, false);
+            if (!empty($array)) {
+                $data = array_intersect_key($data, array_flip($array));
+            }
+        }
+
+        if (empty($array) && !empty($this->hidden)) {
+            $array = $this->parseAttr($this->hidden, $hidden);
             $data  = array_diff_key($data, array_flip($array));
         }
 
@@ -187,10 +191,7 @@ trait Conversion
 
                     $item[$key] = $relation->append([$attr])->toArray();
                 } else {
-                    $value = $this->getAttr($name, $item);
-                    if (false !== $value) {
-                        $item[$name] = $value;
-                    }
+                    $item[$name] = $this->getAttr($name, $item);
                 }
             }
         }
@@ -256,28 +257,18 @@ trait Conversion
      * @access protected
      * @param  array $attrs  属性
      * @param  array $result 结果集
-     * @param  bool  $visible
      * @return array
      */
-    protected function parseAttr($attrs, &$result, $visible = true)
+    protected function parseAttr($attrs, &$result)
     {
         $array = [];
 
         foreach ($attrs as $key => $val) {
             if (is_array($val)) {
-                if ($visible) {
-                    $array[] = $key;
-                }
-
                 $result[$key] = $val;
             } elseif (strpos($val, '.')) {
                 list($key, $name) = explode('.', $val);
-
-                if ($visible) {
-                    $array[] = $key;
-                }
-
-                $result[$key][] = $name;
+                $result[$key][]   = $name;
             } else {
                 $array[] = $val;
             }

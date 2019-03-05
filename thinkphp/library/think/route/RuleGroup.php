@@ -151,10 +151,6 @@ class RuleGroup extends Rule
         $method = strtolower($request->method());
         $rules  = $this->getMethodRules($method);
 
-        if (count($rules) == 0) {
-            return false;
-        }
-
         if ($this->parent) {
             // 合并分组参数
             $this->mergeGroupOptions();

@@ -454,7 +454,7 @@ abstract class Builder
                 $array[] = $key . ' ' . $exp . ' :' . $name;
             }
 
-            $whereStr = '(' . implode($array, ' ' . strtoupper($logic) . ' ') . ')';
+            $whereStr = '(' . implode(' ' . strtoupper($logic) . ' ', $array) . ')';
         } else {
             $whereStr = $key . ' ' . $exp . ' ' . $value;
         }

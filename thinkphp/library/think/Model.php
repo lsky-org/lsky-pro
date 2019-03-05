@@ -438,6 +438,16 @@ abstract class Model implements \JsonSerializable, \ArrayAccess
     }
 
     /**
+     * 判断模型是否为空
+     * @access public
+     * @return bool
+     */
+    public function isEmpty()
+    {
+        return empty($this->data);
+    }
+
+    /**
      * 保存当前数据对象
      * @access public
      * @param  array  $data     数据

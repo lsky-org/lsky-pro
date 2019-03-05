@@ -21,6 +21,7 @@ use think\Facade;
  * @method \think\Log record(mixed $msg, string $type = 'info', array $context = []) static 记录日志信息
  * @method \think\Log clear() static 清空日志信息
  * @method \think\Log key(string $key) static 当前日志记录的授权key
+ * @method \think\Log close() static 关闭本次请求日志写入
  * @method bool check(array $config) static 检查日志写入权限
  * @method bool save() static 保存调试信息
  * @method void write(mixed $msg, string $type = 'info', bool $force = false) static 实时写入日志信息

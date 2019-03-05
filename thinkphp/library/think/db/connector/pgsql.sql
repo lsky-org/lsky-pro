@@ -37,6 +37,10 @@ DECLARE
      v_sql varchar;
      v_rec RECORD;
      v_key varchar;
+     v_conkey smallint[];
+     v_pk varchar[];
+   v_len smallint;
+   v_pos smallint := 1;
 BEGIN
      SELECT
            pg_class.oid  INTO v_oid
@@ -48,6 +52,31 @@ BEGIN
      IF NOT FOUND THEN
          RETURN;
      END IF;
+
+     SELECT
+         pg_constraint.conkey INTO v_conkey
+     FROM
+         pg_constraint
+     INNER JOIN pg_class ON pg_constraint.conrelid = pg_class.oid
+     INNER JOIN pg_attribute ON pg_attribute.attrelid = pg_class.oid
+     INNER JOIN pg_type ON pg_type.oid = pg_attribute.atttypid
+     WHERE
+        pg_class.relname = a_table_name
+     AND pg_constraint.contype = 'p';     
+     
+   v_len := array_length(v_conkey,1) + 1;
+   WHILE v_pos < v_len LOOP
+            SELECT 
+                pg_attribute.attname INTO v_key 
+            FROM pg_constraint 
+            INNER JOIN pg_class ON pg_constraint.conrelid = pg_class.oid 
+            INNER JOIN pg_attribute ON pg_attribute.attrelid = pg_class.oid AND pg_attribute.attnum = pg_constraint.conkey [ v_conkey[v_pos] ] 
+            INNER JOIN pg_type ON pg_type.oid = pg_attribute.atttypid 
+            WHERE pg_class.relname = a_table_name AND pg_constraint.contype = 'p';        
+            v_pk := array_append(v_pk,v_key);
+      
+      v_pos := v_pos + 1;
+     END LOOP;
 
      v_sql='
      SELECT
@@ -83,12 +112,19 @@ BEGIN
          v_ret.fields_not_null=v_rec.fields_not_null;
          v_ret.fields_default=v_rec.fields_default;
          v_ret.fields_comment=v_rec.fields_comment;
-         SELECT constraint_name INTO v_key FROM information_schema.key_column_usage WHERE table_schema=a_schema_name AND table_name=a_table_name AND column_name=v_rec.fields_name;
-         IF FOUND THEN
-            v_ret.fields_key_name=v_key;
-         ELSE
-            v_ret.fields_key_name='';
-         END IF;
+        
+         v_ret.fields_key_name='';
+     
+     v_len := array_length(v_pk,1) + 1;
+     v_pos := 1;
+     WHILE v_pos < v_len LOOP
+             IF v_rec.fields_name = v_pk[v_pos] THEN
+                v_ret.fields_key_name=v_pk[v_pos];
+                EXIT;
+             END IF;
+       v_pos := v_pos + 1;
+         END LOOP;        
+
          RETURN NEXT v_ret;
      END LOOP;
      RETURN ;

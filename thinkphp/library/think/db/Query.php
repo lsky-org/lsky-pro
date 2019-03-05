@@ -1655,6 +1655,7 @@ class Query
     {
         if (true === $option) {
             $this->options = [];
+            $this->bind    = [];
         } elseif (is_string($option) && isset($this->options[$option])) {
             unset($this->options[$option]);
         }
