@@ -128,4 +128,4 @@ Container::get('app')->bind('index')->run()->send();
 ---
 [GPL 3.0](https://opensource.org/licenses/GPL-3.0)
 
-Copyright (c) 2018-present LskyPro.
+Copyright (c) 2018-present Lsky Pro.
