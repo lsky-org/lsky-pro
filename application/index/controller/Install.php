@@ -93,6 +93,7 @@ class Install extends Controller
                         }
                         $data['password'] = md5($data['password']);
                         $data['reg_ip'] = request()->ip();
+                        $data['token'] = make_token();
                         $dbConfig = Session::get('db');
                         $hostname = $dbConfig['hostname'];
                         $database = $dbConfig['database'];

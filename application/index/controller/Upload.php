@@ -64,6 +64,9 @@ class Upload extends Base
             if (($user->use_quota + $size) > $user->quota) {
                 throw new Exception('保存失败！您的储存容量不足，请联系管理员！');
             }
+
+            // 重新初始化
+            $this->init($user);
         }
 
         // 当前储存策略

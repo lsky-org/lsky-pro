@@ -50,36 +50,55 @@ class Base extends Controller
             $this->config[$value->name] = $value->value;
         }
         $this->configs = $configs;
+        $user = null;
         if (Session::has('uid')) {
-            $this->user = Users::get(Session::get('uid'));
-            if (!$this->user) {
+            $user = Users::get(Session::get('uid'));
+            if (!$user) {
                 Session::delete('uid');
             }
         }
 
         // 检测数据库结构更新
-        if ($this->user && $this->user->is_admin) {
+        if ($user && $user->is_admin) {
             if (file_exists(Env::get('root_path') . 'update.sql')) {
                 $this->redirect(url('/install/update'));
             }
         }
 
-        // 角色组
-        if ($this->user) {
-            $this->group = $this->user->group;
-        }
-        if (!$this->group) {
-            // 默认角色组
-            $this->group = Group::where('default', 1)->find();
-        }
-
-        $this->currentStrategyConfig = $this->getStrategyConfig(strtolower($this->group->strategy));
+        $this->init($user);
 
         $this->assign([
             'config'    => $this->config,
             'user'      => $this->user,
             'uri'       => strtolower($this->request->controller() . '/' . $this->request->action())
         ]);
+    }
+
+    /**
+     * 初始化基础数据
+     *
+     * @param null $user
+     *
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
+    protected function init($user = null)
+    {
+        $this->user = $user;
+
+        // 角色组
+        if ($this->user) {
+            $this->group = $this->user->group;
+        }
+
+        if (!$this->group) {
+            // 默认角色组
+            $this->group = Group::where('default', 1)->find();
+        }
+
+        // 重新设置当前储存策略
+        $this->currentStrategyConfig = $this->getStrategyConfig(strtolower($this->group->strategy));
     }
 
     /**
