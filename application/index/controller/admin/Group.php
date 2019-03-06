@@ -88,6 +88,9 @@ class Group extends Base
             Db::startTrans();
             try {
                 $id = $this->request->post('id');
+                if (1 == $id) {
+                    throw new Exception('默认组不可删除');
+                }
                 $group = GroupModel::find($id);
                 // 至少保留一个默认分组
                 $defaultId = GroupModel::where('default', 1)->where('id', 'neq', $id)->value('id');
