@@ -85,7 +85,7 @@
   <div class="mdui-dialog" id="edit-dialog">
     <div class="mdui-dialog-content">
       <form action="{:url('admin/group/edit')}" method="post">
-        <div class="mdui-dialog-title">添加角色组</div>
+        <div class="mdui-dialog-title">编辑角色组</div>
         <div class="mdui-textfield">
           <label class="mdui-textfield-label">组名称</label>
           <input class="mdui-textfield-input" type="text" name="name" value="" placeholder="组名称" autocomplete="off"/>
@@ -175,6 +175,9 @@
             var input = form.find("input[name='" + x + "']");
             if (input.length) {
               input.val(response.data[x]);
+            }
+            if (x === 'strategy') {
+              form.find("[name='strategy'] option[value='" + response.data[x] + "']").attr("selected", true);
             }
             if (x === 'default') {
               form.find("[name='default']").attr('checked', 1 === response.data[x]);
