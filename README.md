@@ -112,7 +112,7 @@ Container::get('app')->bind('index')->run()->send();
 联系我
 ---
 - QQ：1591788658
-- Email: 1591788658@qq.com
+- Email: i@wispx.cn
 - Blog：[https://www.wispx.cn](https://www.wispx.cn)
 
 鸣谢

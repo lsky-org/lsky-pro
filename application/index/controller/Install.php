@@ -85,6 +85,7 @@ class Install extends Controller
                     try {
                         $data = $this->request->post();
                         $data['is_admin'] = 1;
+                        $data['group_id'] = 1;
                         $data['quota'] = 1073741824;
                         $data['update_time'] = time();
                         $data['create_time'] = time();

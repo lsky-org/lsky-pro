@@ -17,9 +17,14 @@ class Users extends Model
 {
     use SoftDelete;
 
-    protected $insert = ['reg_ip', 'quota', 'token'];
+    protected $insert = ['reg_ip', 'quota', 'token', 'group_id'];
 
     protected $append = ['use_quota'];
+
+    public function setGroupIdAttr()
+    {
+        return Group::where('default', 1)->value('id');
+    }
 
     public function setPassWordAttr($password)
     {
