@@ -98,6 +98,8 @@ FAQ：如果覆盖更新文件后无法重定向到更新页面，或首页出�
 // [ 应用入口文件 ]
 namespace think;
 
+define('ROOT_PATH', __DIR__ . DIRECTORY_SEPARATOR);
+
 // 加载基础文件
 require __DIR__ . '/thinkphp/base.php';
 
@@ -126,4 +128,4 @@ Container::get('app')->bind('index')->run()->send();
 ---
 [GPL 3.0](https://opensource.org/licenses/GPL-3.0)
 
-Copyright (c) 2018 Wisp X.
+Copyright (c) 2018 - 2019 Wisp X.
