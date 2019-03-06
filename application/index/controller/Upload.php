@@ -67,9 +67,10 @@ class Upload extends Base
         }
 
         // 当前储存策略
-        $currentStrategy = strtolower($this->config['storage_strategy']);
+        $currentStrategy = strtolower($this->group->strategy);
         // 获取当前储存策略配置
         $strategyConfig = $this->currentStrategyConfig;
+
         // 获取当前驱动实例
         $strategy = $this->getStrategyInstance();
 
@@ -147,10 +148,15 @@ class Upload extends Base
         $data = [
             'name' => $image->getInfo('name'),
             'url' => $url,
+            'size' => $size,
+            'mime' => $mime,
+            'sha1' => $sha1,
+            'md5' => $md5,
         ];
+
         if ($this->user) {
-            $data['quota'] = sprintf('%.2f', (float) $user->quota);
-            $data['use_quota'] = sprintf('%.2f', (float) $user->use_quota);
+            $data['quota'] = sprintf('%.2f', (float)$user->quota);
+            $data['use_quota'] = sprintf('%.2f', (float)$user->use_quota);
         }
 
         return $data;
@@ -199,10 +205,10 @@ class Upload extends Base
         ), '/');
 
         $file = trim(str_replace(
-            array_column($naming['file'], 'name'),
-            array_column($naming['file'], 'value'),
-            $this->config['file_naming_rule']
-        ), '/') . '.' . get_file_ext($name);
+                array_column($naming['file'], 'name'),
+                array_column($naming['file'], 'value'),
+                $this->config['file_naming_rule']
+            ), '/') . '.' . get_file_ext($name);
 
         return $path . '/' . $file;
     }
