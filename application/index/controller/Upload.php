@@ -65,6 +65,10 @@ class Upload extends Base
                 throw new Exception('保存失败！您的储存容量不足，请联系管理员！');
             }
 
+            if (!$user->state) {
+                throw new Exception('你的账号被冻结，请联系管理员！');
+            }
+
             // 重新初始化
             $this->init($user);
         }
