@@ -197,18 +197,24 @@ class Upload extends Base
     private function makePathname($name)
     {
         $naming = Config::pull('naming');
+        $pathRule = $this->config['path_naming_rule'];
+        $fileRule = $this->config['file_naming_rule'];
 
         $path = trim(str_replace(
             array_column($naming['path'], 'name'),
             array_column($naming['path'], 'value'),
-            $this->config['path_naming_rule']
+            $pathRule
         ), '/');
 
-        $file = trim(str_replace(
+        if ($fileRule === '{original}') {
+            $file = $name;
+        } else {
+            $file = trim(str_replace(
                 array_column($naming['file'], 'name'),
                 array_column($naming['file'], 'value'),
-                $this->config['file_naming_rule']
+                $fileRule
             ), '/') . '.' . get_file_ext($name);
+        }
 
         return $path . '/' . $file;
     }

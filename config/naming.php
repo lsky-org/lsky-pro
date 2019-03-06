@@ -159,5 +159,11 @@ return [
             'explain'   => '16位随机字符串',
             'value'     => str_rand(),
         ],
+        [
+            'name'      => '{original}',
+            'example'   => '无',
+            'explain'   => '原文件名',
+            'value'     => '{original}',
+        ],
     ],
 ];
