@@ -67,3 +67,6 @@ INSERT IGNORE INTO `lsky_group` (`id`, `strategy`, `name`, `default`, `create_ti
 -- v1.5.1
 UPDATE `lsky_config` SET `value` = '1.5.1' WHERE `lsky_config`.`name` = 'system_version';
 ALTER TABLE `lsky_users` CHANGE `reg_ip` `reg_ip` VARCHAR(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '注册IP';
+
+-- v1.5.2
+UPDATE `lsky_config` SET `value` = '1.5.2' WHERE `lsky_config`.`name` = 'system_version';
