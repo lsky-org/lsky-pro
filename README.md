@@ -22,6 +22,8 @@ _  /___(__  )_  ,<  _  /_/ /     _  ____/_  /   / /_/ /
 [![PHP](https://img.shields.io/badge/PHP->=5.6-orange.svg)](http://php.net)
 [![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/wisp-x/lsky-pro.svg)](https://github.com/wisp-x/lsky-pro)
 [![Join the chat at https://gitter.im/wisp-x/lsky-pro](https://badges.gitter.im/wisp-x/lsky-pro.svg)](https://gitter.im/wisp-x/lsky-pro?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Backers on Open Collective](https://opencollective.com/lsky-pro/backers/badge.svg)](#backers) 
+[![Sponsors on Open Collective](https://opencollective.com/lsky-pro/sponsors/badge.svg)](#sponsors) 
 
 > master分支为最新版，其他版本请点击[这里](https://github.com/wisp-x/lsky-pro/releases)
 
@@ -129,3 +131,33 @@ Container::get('app')->bind('index')->run()->send();
 [GPL 3.0](https://opensource.org/licenses/GPL-3.0)
 
 Copyright (c) 2018-present Lsky Pro.
+
+## Contributors
+
+This project exists thanks to all the people who contribute. 
+<a href="https://github.com/wisp-x/lsky-pro/graphs/contributors"><img src="https://opencollective.com/lsky-pro/contributors.svg?width=890&button=false" /></a>
+
+
+## Backers
+
+Thank you to all our backers! 🙏 [[Become a backer](https://opencollective.com/lsky-pro#backer)]
+
+<a href="https://opencollective.com/lsky-pro#backers" target="_blank"><img src="https://opencollective.com/lsky-pro/backers.svg?width=890"></a>
+
+
+## Sponsors
+
+Support this project by becoming a sponsor. Your logo will show up here with a link to your website. [[Become a sponsor](https://opencollective.com/lsky-pro#sponsor)]
+
+<a href="https://opencollective.com/lsky-pro/sponsor/0/website" target="_blank"><img src="https://opencollective.com/lsky-pro/sponsor/0/avatar.svg"></a>
+<a href="https://opencollective.com/lsky-pro/sponsor/1/website" target="_blank"><img src="https://opencollective.com/lsky-pro/sponsor/1/avatar.svg"></a>
+<a href="https://opencollective.com/lsky-pro/sponsor/2/website" target="_blank"><img src="https://opencollective.com/lsky-pro/sponsor/2/avatar.svg"></a>
+<a href="https://opencollective.com/lsky-pro/sponsor/3/website" target="_blank"><img src="https://opencollective.com/lsky-pro/sponsor/3/avatar.svg"></a>
+<a href="https://opencollective.com/lsky-pro/sponsor/4/website" target="_blank"><img src="https://opencollective.com/lsky-pro/sponsor/4/avatar.svg"></a>
+<a href="https://opencollective.com/lsky-pro/sponsor/5/website" target="_blank"><img src="https://opencollective.com/lsky-pro/sponsor/5/avatar.svg"></a>
+<a href="https://opencollective.com/lsky-pro/sponsor/6/website" target="_blank"><img src="https://opencollective.com/lsky-pro/sponsor/6/avatar.svg"></a>
+<a href="https://opencollective.com/lsky-pro/sponsor/7/website" target="_blank"><img src="https://opencollective.com/lsky-pro/sponsor/7/avatar.svg"></a>
+<a href="https://opencollective.com/lsky-pro/sponsor/8/website" target="_blank"><img src="https://opencollective.com/lsky-pro/sponsor/8/avatar.svg"></a>
+<a href="https://opencollective.com/lsky-pro/sponsor/9/website" target="_blank"><img src="https://opencollective.com/lsky-pro/sponsor/9/avatar.svg"></a>
+
+
