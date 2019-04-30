@@ -101,7 +101,7 @@ class Upload extends Base
         // 图片鉴黄
         $suspicious = 0;
         if ($this->config['open_audit']) {
-            $client = new Client();
+            $client = new Client(['timeout' => 30.00]);
             $response = $client->get("https://www.moderatecontent.com/api/v2?key={$this->config['audit_key']}&url={$url}");
             if (200 == $response->getStatusCode()) {
                 $result = json_decode($response->getBody()->getContents());
