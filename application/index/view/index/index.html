@@ -64,6 +64,15 @@
     app.msg(false, '复制失败');
   });
 
+  var sort = function (uls) {
+    for (var i = 0; i < uls.length; i++) {
+      var sortEle = $(uls[i]).find('li').sort(function (a, b) {
+        return $(a).data('index') > $(b).data('index') ? 1 : -1;
+      });
+      $(uls[i]).empty().append(sortEle);
+    }
+  };
+
   $("#image").fileinput({
     uploadUrl: "{:url('upload/upload')}",
     language: "zh",
@@ -79,11 +88,15 @@
   }).on("fileuploaded", function(event, data, previewId, index) {
     var form = data.form, files = data.files, extra = data.extra, response = data.response, reader = data.reader;
     if(200 === response.code) {
-      $("#code-url ul").prepend("<li>" + response.data.url + "<i class=\"copy iconfont icon-copy\"></i></li>");
-      $("#code-html ul").prepend("<li>&lt;img src=\"" + response.data.url + "\" alt=\"" + response.data.name + "\" title=\"" + response.data.name + "\" /&gt;<i class=\"copy iconfont icon-copy\"></i></li>");
-      $("#code-bbcode ul").prepend("<li>[img]" + response.data.url + "[/img]<i class=\"copy iconfont icon-copy\"></i></li>");
-      $("#code-markdown ul").prepend("<li>![" + response.data.name + "](" + response.data.url + ")<i class=\"copy iconfont icon-copy\"></i></li>");
-      $("#code-markdown-with-link ul").prepend("<li>[![" + response.data.name + "](" + response.data.url + ")](" + response.data.url + ")<i class=\"copy iconfont icon-copy\"></i></li>");
+      $("#code-url ul").prepend("<li data-index=" + index + ">" + response.data.url + "<i class=\"copy iconfont icon-copy\"></i></li>");
+      $("#code-html ul").prepend("<li data-index=" + index + ">&lt;img src=\"" + response.data.url + "\" alt=\"" + response.data.name + "\" title=\"" + response.data.name + "\" /&gt;<i class=\"copy iconfont icon-copy\"></i></li>");
+      $("#code-bbcode ul").prepend("<li data-index=" + index + ">[img]" + response.data.url + "[/img]<i class=\"copy iconfont icon-copy\"></i></li>");
+      $("#code-markdown ul").prepend("<li data-index=" + index + ">![" + response.data.name + "](" + response.data.url + ")<i class=\"copy iconfont icon-copy\"></i></li>");
+      $("#code-markdown-with-link ul").prepend("<li data-index=" + index + ">[![" + response.data.name + "](" + response.data.url + ")](" + response.data.url + ")<i class=\"copy iconfont icon-copy\"></i></li>");
+
+      // 排序
+      sort(['#code-url ul', '#code-html ul', '#code-bbcode ul', '#code-markdown ul', '#code-markdown-with-link ul']);
+
       $(".success-info").css("width", "inherit").css('display', 'block');
       if (response.data.quota && response.data.use_quota) {
         $('.quota-container progress').attr('max', response.data.quota);
