@@ -190,7 +190,7 @@
               params.page++;
               return more.attr('disabled', false).text('加载更多');
             } else {
-              more.attr('disabled', true).text('暂无图片');
+              more.attr('disabled', true).text('暂无数据');
             }
           }
         });
@@ -446,6 +446,7 @@
     $('.screen-box form').submit(function (e) {
       e.preventDefault();
       // 清空内容
+      foldersBox.html('')
       imagesBox.html('');
       params.keyword = $(this).find("input[name='keyword']").val();
       methods.getData();
