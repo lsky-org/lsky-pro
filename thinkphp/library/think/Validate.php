@@ -1514,11 +1514,11 @@ class Validate
             $scene = $this->currentScene;
         }
 
+        $this->only = $this->append = $this->remove = [];
+
         if (empty($scene)) {
             return;
         }
-
-        $this->only = $this->append = $this->remove = [];
 
         if (method_exists($this, 'scene' . $scene)) {
             call_user_func([$this, 'scene' . $scene]);

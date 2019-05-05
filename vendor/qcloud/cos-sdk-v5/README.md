@@ -139,9 +139,6 @@ try {
         'ContentLength' => integer,
         'ContentType' => 'string',
         'Expires' => 'mixed type: string (date format)|int (unix timestamp)|\DateTime',
-        'GrantFullControl' => 'string',
-        'GrantRead' => 'string',
-        'GrantWrite' => 'string',
         'Metadata' => array(
             'string' => 'string',
         ),
@@ -189,9 +186,6 @@ try {
             'ContentLength' => integer,
             'ContentType' => 'string',
             'Expires' => 'mixed type: string (date format)|int (unix timestamp)|\DateTime',
-            'GrantFullControl' => 'string',
-            'GrantRead' => 'string',
-            'GrantWrite' => 'string',
             'Metadata' => array(
                 'string' => 'string',
             ),

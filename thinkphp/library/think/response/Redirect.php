@@ -87,11 +87,12 @@ class Redirect extends Response
     /**
      * 记住当前url后跳转
      * @access public
+     * @param string $url 指定记住的url
      * @return $this
      */
-    public function remember()
+    public function remember($url = null)
     {
-        $this->app['session']->set('redirect_url', $this->app['request']->url());
+        $this->app['session']->set('redirect_url', $url ?: $this->app['request']->url());
 
         return $this;
     }

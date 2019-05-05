@@ -12,7 +12,7 @@
   {block name="css"}{/block}
   <link rel="shortcut icon" href="/favicon.ico">
   <link rel="stylesheet" href="/static/app/iconfont/iconfont.css">
-  <link rel="stylesheet" href="/static/mdui/0.4.1/css/mdui.min.css">
+  <link rel="stylesheet" href="/static/mdui/0.4.2/css/mdui.min.css">
   <link rel="stylesheet" href="/static/app/css/app.css?v=1.1">
   <!--[if IE]>
   <script>window.location.href = '/compatibility.html';</script>
@@ -84,6 +84,7 @@
         <i class="mdui-collapse-item-arrow mdui-icon material-icons">&#xe313;</i>
       </div>
       <div class="mdui-collapse-item-body mdui-list">
+        <a href="{:url('admin/system/console')}" class="mdui-list-item mdui-ripple {if $uri eq 'admin.system/console'}mdui-list-item-active{/if}">控制台</a>
         <a href="{:url('admin/group/index')}" class="mdui-list-item mdui-ripple {if $uri eq 'admin.group/index'}mdui-list-item-active{/if}">角色组</a>
         <a href="{:url('admin/users/index')}" class="mdui-list-item mdui-ripple {if $uri eq 'admin.users/index'}mdui-list-item-active{/if}">用户管理</a>
         <a href="{:url('admin/images/index')}" class="mdui-list-item mdui-ripple {if $uri eq 'admin.images/index'}mdui-list-item-active{/if}">图片管理</a>
@@ -139,7 +140,7 @@
 </footer>
 {/block}
 <script src="/static/jquery/3.3.1/jquery.min.js"></script>
-<script src="/static/mdui/0.4.1/js/mdui.min.js"></script>
+<script src="/static/mdui/0.4.2/js/mdui.min.js"></script>
 <script src="/static/marked/0.5.1/marked.js"></script>
 <script src="/static/app/js/app.js?v=1.0"></script>
 {block name="js"}{/block}

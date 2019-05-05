@@ -1527,7 +1527,7 @@ class Query
         }
 
         if ($field instanceof Expression) {
-            return $this->whereRaw($field, is_array($op) ? $op : []);
+            return $this->whereRaw($field, is_array($op) ? $op : [], $logic);
         } elseif ($strict) {
             // 使用严格模式查询
             $where = [$field, $op, $condition, $logic];
@@ -1538,7 +1538,7 @@ class Query
             $where = $field;
         } elseif (is_string($field)) {
             if (preg_match('/[,=\<\'\"\(\s]/', $field)) {
-                return $this->whereRaw($field, $op);
+                return $this->whereRaw($field, $op, $logic);
             } elseif (is_string($op) && strtolower($op) == 'exp') {
                 $bind = isset($param[2]) && is_array($param[2]) ? $param[2] : null;
                 return $this->whereExp($field, $condition, $bind, $logic);

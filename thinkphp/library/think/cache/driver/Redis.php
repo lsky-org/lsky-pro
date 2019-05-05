@@ -267,6 +267,10 @@ class Redis extends Driver
     protected function getTagItem($tag)
     {
         $tagName = $this->getTagKey($tag);
-        return $this->handler->sMembers($tagName);
+        $keys    = $this->handler->sMembers($tagName);
+
+        return array_map(function ($key) {
+            return $this->getCacheKey($key);
+        }, $keys);
     }
 }

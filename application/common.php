@@ -15,10 +15,11 @@
  * 转换文件大小单位
  *
  * @param $size
+ * @param $array
  *
- * @return string
+ * @return string|array
  */
-function format_size($size)
+function format_size($size, $array = false)
 {
     if (0 == $size) {
         return "0.00 Bytes";
@@ -29,6 +30,10 @@ function format_size($size)
     $n = count($unit);
     if($i >= $n) {
         $i = $n - 1;
+    }
+
+    if ($array) {
+        return [sprintf("%.2f", $size / pow($base, $i)), $unit[$i] . 'B'];
     }
 
     return sprintf("%.2f", $size / pow($base, $i)) . ' ' . $unit[$i] . 'B';

@@ -680,8 +680,6 @@ class Service {
                                         'required' => true,
                                         'type' => 'string',
                                         'minLength' => 1,
-                                        'filters' => array(
-                                            'Qcloud\\Cos\\Client::explodeKey')
                                     ),
                                     'VersionId' => array(
                                         'type' => 'string',

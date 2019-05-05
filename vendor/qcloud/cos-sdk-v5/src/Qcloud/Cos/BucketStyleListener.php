@@ -22,12 +22,14 @@ class BucketStyleListener implements EventSubscriberInterface {
     private $ip;
     private $port;
     private $ipport;
+    private $endpoint;
 
-    public function __construct($appId, $ip=null, $port=null) {
+    public function __construct($appId, $ip=null, $port=null, $endpoint=null) {
         $this->appId = $appId;
         $this->ip = $ip;
         $this->port = $port;
         $this->ipport = null;
+        $this->endpoint = $endpoint;
         if ($ip != null) {
             $this->ipport = $ip;
             if ($port != null) {
@@ -54,7 +56,11 @@ class BucketStyleListener implements EventSubscriberInterface {
             if ($this->ipport != null) {
                 $request->setHost($this->ipport);
                 $request->setHeader('Host', 'service.cos.myqcloud.com');
-            } else {
+            } else if ($this->endpoint != null) {
+                $request->setHost($this->endpoint);
+                $request->setHeader('Host', 'service.cos.myqcloud.com');
+            }
+            else {
 
                 $request->setHost('service.cos.myqcloud.com');
             }
@@ -81,7 +87,12 @@ class BucketStyleListener implements EventSubscriberInterface {
             $request->setHost($this->ipport);
             $request->setHeader('Host', $realHost);
         } else {
-            $request->setHost($realHost);
+            if($this->endpoint != null) {
+                $tmp = $bucket. '.' . $this->endpoint;
+                $request->setHost($tmp);
+            } else {
+                $request->setHost($realHost);
+            }
         }
         if (!$bucket) {
             $request->getParams()->set('cos.resource', '/');
@@ -93,4 +104,4 @@ class BucketStyleListener implements EventSubscriberInterface {
             );
         }
     }
-}
+} 

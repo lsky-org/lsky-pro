@@ -48,6 +48,31 @@ class System extends Base
         return $this->fetch();
     }
 
+    public function console()
+    {
+        $storage = Db::name('images')->max('size');
+        $imagesCount = Db::name('images')->count();
+        $suspiciousImagesCount = Db::name('images')->where('suspicious', 1)->count();
+        $users_count = Db::name('users')->count();
+        $today = Db::name('images')->whereTime('create_time', 'today')->count();
+        $yesterday = Db::name('images')->whereTime('create_time', 'yesterday')->count();
+        $month = Db::name('images')->whereTime('create_time', 'month')->count();
+        $tourists = Db::name('images')->where('user_id', 0)->count();
+
+        $this->assign([
+            'storage' => format_size($storage, true), // 占用储存
+            'images_num' => $imagesCount, // 图片数量
+            'suspicious_images_num' => $suspiciousImagesCount, // 可疑图片
+            'users_num' => $users_count, // 用户数量
+            'today' => $today, // 今日上传
+            'yesterday' => $yesterday, // 昨日上传
+            'month' => $month, // 本月上传
+            'tourists' => $tourists, // 游客上传
+        ]);
+
+        return $this->fetch();
+    }
+
     public function testMail()
     {
         if ($this->request->isPost()) {

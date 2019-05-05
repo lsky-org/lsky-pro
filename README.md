@@ -13,16 +13,16 @@
 [![PHP](https://img.shields.io/badge/PHP->=5.6-orange.svg)](http://php.net)
 [![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/wisp-x/lsky-pro.svg)](https://github.com/wisp-x/lsky-pro)
 
-> master分支为最新版，其他版本请点击[这里](https://github.com/wisp-x/lsky-pro/releases)
+> master 分支为最新版，其他版本请点击[这里](https://github.com/wisp-x/lsky-pro/releases)
 
-> 发现bug可发送邮件至邮箱：i@wispx.cn，或提交[issues](https://github.com/wisp-x/lsky-pro/issues)，确认bug后我会及时修复，谢谢！
+> 发现 bug 可发送邮件至邮箱：i@wispx.cn，或提交 [issues](https://github.com/wisp-x/lsky-pro/issues)，确认 bug 后我会及时修复，谢谢！
 
 ![homepage.png](./public/static/app/images/demo/1.png)
 ![homepage.png](./public/static/app/images/demo/2.png)
 
 主要特性
 ---
-- 支持第三方云储存，支持本地、阿里云OSS、腾讯云COS、七牛云、又拍云。
+- 支持第三方云储存，支持本地、阿里云 OSS、腾讯云 COS、七牛云、又拍云。
 - 支持多图上传、拖拽上传、上传预览、全屏预览、页面响应式布局。
 - 简洁的图片管理功能，支持鼠标右键、单选多选等操作。
 - 强大的图片预览功能，支持响应式。
@@ -35,18 +35,18 @@
 
 安装需求
 ---
-* PHP版本 &ge; 5.6(建议使用PHP7+)
-* mysql版本 &ge; 5.5
-* mysqli支持
-* fileinfo拓展
-* curl拓展
+* PHP 版本 &ge; 5.6(建议使用PHP7+)
+* mysql 版本 &ge; 5.5
+* mysqli 支持
+* fileinfo 拓展
+* curl 拓展
 * rewrite
 
 安装教程
 ---
-1. 下载兰空，上传至web运行环境，解压。
+1. 下载兰空，上传至 web 运行环境，解压。
 2. 设置运行目录为 public。
-3. 配置Rewrite规则：
+3. 配置 Rewrite 规则：
     ##### Nginx：
     ```
     location / {
@@ -57,10 +57,10 @@
     ```
 
     ##### Apache:
-    Apache直接使用.htaccess即可
+    Apache 直接使用 .htaccess 即可
 
 4. 访问首页，未安装自动跳转至安装页面，根据页面提示安装即可。
-5. 安装完成以后请设置runtime目录0755权限，如果你使用本地存储，public 目录也需要设置为0755权限
+5. 安装完成以后请设置 runtime 目录0755权限，如果你使用本地存储，public 目录也需要设置为0755权限
 
 如何更新到最新版？
 ---
@@ -74,11 +74,11 @@ FAQ：如果覆盖更新文件后无法重定向到更新页面，或首页出�
 
 如何修改网站运行目录？
 ---
-默认程序的入口文件在 ```public``` 目录下，所以需要把public目录设置为网站运行目录，这样做是为了：
+默认程序的入口文件在 ```public``` 目录下，所以需要把 public 目录设置为网站运行目录，这样做是为了：
 > 入口文件位置的设计是为了让应用部署更安全，```public``` 目录为web可访问目录，其他的文件都可以放到非WEB访问目录下面。
 
-而你如果安装时没有设置，使用 ```http://域名/public``` 的方式来访问站点，会导致css和js等静态资源无法获取。  
-如果你 无法 或 不会 设置运行目录，可以将public目录下的所有文件和文件夹（包括.htaccess文件）移动到根目录
+而你如果安装时没有设置，使用 ```http://域名/public``` 的方式来访问站点，会导致 css 和 js 等静态资源无法获取。  
+如果你 无法 或 不会 设置运行目录，可以将 public 目录下的所有文件和文件夹（包括 .htaccess 文件）移动到根目录
 (和 ```application``` 文件夹同级)即可，尽管我们不推荐你这么做，这样会导致应用程序核心文件暴露在外。
 
 移动文件以后，打开根目录 ```index.php``` 文件，修改如下：

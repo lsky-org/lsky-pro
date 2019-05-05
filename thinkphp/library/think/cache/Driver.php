@@ -360,4 +360,9 @@ abstract class Driver
     {
         return $this->writeTimes;
     }
+
+    public function __call($method, $args)
+    {
+        return call_user_func_array([$this->handler, $method], $args);
+    }
 }

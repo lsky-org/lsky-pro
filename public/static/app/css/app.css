@@ -137,6 +137,16 @@ main .upload-container .success-info ul li:hover i.icon-copy {
   color: #00b0ff;
   cursor: pointer;
 }
+main .console-container .mdui-table td,
+main .console-container .mdui-table th {
+  padding: 12px 28px;
+}
+main .console-container div.item > div {
+  border-radius: 3px;
+}
+main .console-container div.item > div p {
+  margin-bottom: 20px;
+}
 main .system-container .mdui-textfield-label {
   pointer-events: inherit;
 }

@@ -23,7 +23,7 @@ use think\Facade;
  * @method array set(mixed $name, mixed $value = null) static 设置配置参数
  * @method array reset(string $name ='') static 重置配置参数
  * @method void remove(string $name = '') static 移除配置
- * @method void setYaconf(mixed $$yaconf) static 设置开启Yaconf 或者指定配置文件名
+ * @method void setYaconf(mixed $yaconf) static 设置开启Yaconf 或者指定配置文件名
  */
 class Config extends Facade
 {
