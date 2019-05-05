@@ -375,8 +375,12 @@ main {
 
     .file-preview-thumbnails {
       .krajee-default.file-preview-frame {
-        border: 0;
+        border: 2px solid transparent;
+        transition: all .3s;
         box-shadow: @box-shadow;
+        &.hover {
+          border: 2px solid red;
+        }
       }
     }
 

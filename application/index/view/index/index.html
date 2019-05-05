@@ -118,5 +118,11 @@
       .html('');
   });
   $('#image').css("display", "block");
+
+  $('.success-info ul').on('mouseenter', "li", function() {
+    $('.file-preview .file-drop-zone .file-preview-thumbnails > [data-template=image]').eq($(this).data('index')).addClass('hover');
+  }).on('mouseout', 'li', function () {
+    $('.file-preview .file-drop-zone .file-preview-thumbnails > [data-template=image]').eq($(this).data('index')).removeClass('hover');
+  });
 </script>
 {/block}

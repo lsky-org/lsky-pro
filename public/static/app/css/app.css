@@ -330,8 +330,12 @@ main .mdui-table th {
   right: 6px;
 }
 .file-input .file-preview .file-preview-thumbnails .krajee-default.file-preview-frame {
-  border: 0;
+  border: 2px solid transparent;
+  transition: all 0.3s;
   box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.13);
+}
+.file-input .file-preview .file-preview-thumbnails .krajee-default.file-preview-frame.hover {
+  border: 2px solid red;
 }
 .file-input .file-preview .kv-fileinput-error ul {
   list-style: none;
