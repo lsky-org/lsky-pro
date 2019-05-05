@@ -50,7 +50,7 @@ class System extends Base
 
     public function console()
     {
-        $storage = Db::name('images')->max('size');
+        $storage = Db::name('images')->sum('size');
         $imagesCount = Db::name('images')->count();
         $suspiciousImagesCount = Db::name('images')->where('suspicious', 1)->count();
         $users_count = Db::name('users')->count();
