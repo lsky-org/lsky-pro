@@ -70,13 +70,13 @@ main {
 
       h1 {
         font-weight: 300;
-        font-size: 3rem;
+        font-size: 1.7rem;
         text-shadow: -5px 5px 0 rgba(0, 0, 0, .1);
       }
 
       p {
         margin-top: 1rem;
-        font-size: 1.3rem;
+        font-size: .8rem;
         color: #999;
       }
     }
@@ -95,7 +95,7 @@ main {
         li {
           position: relative;
           margin-top: 0.5rem;
-          padding: 1rem;
+          padding: .8rem;
           border: 1px solid #dadada;
           background-color: #f7f7f7;
           font-size: 14px;
@@ -360,8 +360,9 @@ main {
   }
 }
 .file-input {
+  font-size: 1rem;
   @box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.13);
-  @form-control-padding: 10px 18px;
+  @form-control-padding: 8px 18px;
 
   .file-preview {
     border-radius: 0;
@@ -371,6 +372,10 @@ main {
     .fileinput-remove {
       top: 6px;
       right: 6px;
+    }
+
+    .file-drop-zone-title {
+      font-size: 1.2em;
     }
 
     .file-preview-thumbnails {
@@ -425,6 +430,10 @@ main {
 
     .input-group-append {
       box-shadow: @box-shadow;
+    }
+
+    .file-caption .file-caption-name {
+      font-size: 90%;
     }
   }
 }

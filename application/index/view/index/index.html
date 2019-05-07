@@ -3,8 +3,9 @@
 {block name="title"}{$config.site_name}{/block}
 
 {block name="css"}
-<link href="/static/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-<link href="/static/bootstrap-fileinput/4.5.1/css/fileinput.min.css" rel="stylesheet">
+<link href="/static/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+<link href="/static/bootstrap-fileinput/5.0.1/css/fileinput.min.css" rel="stylesheet">
+<link href="/static/bootstrap-fileinput/5.0.1/fontawesome/5.5.0/css/all.css" rossorigin="anonymous" rel="stylesheet">
 {/block}
 
 {block name="main"}
@@ -46,9 +47,13 @@
 {/block}
 {block name="js"}
 <script src="/static/clipboard.js/2.0.1/clipboard.min.js"></script>
-<script src="/static/bootstrap-fileinput/4.5.1/js/fileinput.min.js"></script>
-<script src="/static/bootstrap-fileinput/4.5.1/js/locales/zh.js"></script>
-<script src="/static/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="/static/bootstrap-fileinput/5.0.1/js/plugins/piexif.min.js"></script>
+<script src="/static/bootstrap-fileinput/5.0.1/js/plugins/sortable.min.js"></script>
+<script src="/static/bootstrap-fileinput/5.0.1/js/plugins/purify.min.js"></script>
+<script src="/static/bootstrap-fileinput/5.0.1/js/fileinput.min.js"></script>
+<script src="/static/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script src="/static/bootstrap-fileinput/5.0.1/themes/fas/theme.min.js"></script>
+<script src="/static/bootstrap-fileinput/5.0.1/js/locales/zh.js"></script>
 <script>
   var clipboard = new ClipboardJS('.copy', {
     text: function(trigger) {
@@ -76,6 +81,7 @@
   $("#image").fileinput({
     uploadUrl: "{:url('upload/upload')}",
     language: "zh",
+    theme: "fas",
     uploadAsync: true,
     overwriteInitial: false,
     //browseClass: "btn btn-file",
