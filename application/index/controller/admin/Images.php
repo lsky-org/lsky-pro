@@ -46,7 +46,7 @@ class Images extends Base
             $model = $model->where($field, $value);
         }
         if (!empty($keyword)) {
-            $model = $model->where('pathname|sha1|md5', 'like', "%{$keyword}%");
+            $model = $model->where('pathname|sha1|md5|ip', 'like', "%{$keyword}%");
         }
         $images = $model->order('id', 'desc')->paginate($limit, false, [
             'query' => [

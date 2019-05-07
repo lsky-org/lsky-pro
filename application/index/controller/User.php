@@ -24,7 +24,7 @@ class User extends Base
                 $model = $this->user->images()->order('create_time', 'desc');
                 $folders = $this->user->folders()->where('parent_id', $folderId)->select();
                 if (!empty($keyword)) {
-                    $model = $model->where('pathname', 'like', "%{$keyword}%");
+                    $model = $model->where('pathname|sha1|md5|ip', 'like', "%{$keyword}%");
                 }
                 if (is_numeric($folderId)) {
                     $model = $model->where('folder_id', $folderId);
