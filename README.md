@@ -13,9 +13,7 @@
 [![PHP](https://img.shields.io/badge/PHP->=5.6-orange.svg)](http://php.net)
 [![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/wisp-x/lsky-pro.svg)](https://github.com/wisp-x/lsky-pro)
 
-> master 分支为最新版，其他版本请点击[这里](https://github.com/wisp-x/lsky-pro/releases)
-
-> 发现 bug 可发送邮件至邮箱：i@wispx.cn，或提交 [issues](https://github.com/wisp-x/lsky-pro/issues)，确认 bug 后我会及时修复，谢谢！
+> 下载稳定版请点击[这里](https://github.com/wisp-x/lsky-pro/releases)，发现 bug 可发送邮件至邮箱：i@wispx.cn，或提交 [issues](https://github.com/wisp-x/lsky-pro/issues)，确认 bug 后我会及时修复，谢谢！
 
 ![homepage.png](./public/static/app/images/demo/1.png)
 ![homepage.png](./public/static/app/images/demo/2.png)
