@@ -324,7 +324,6 @@ main .mdui-table th {
   font-size: 1rem;
 }
 .file-input .file-preview {
-  border-radius: 0;
   border: none;
   box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.13);
 }
@@ -349,7 +348,6 @@ main .mdui-table th {
 .file-input .file-caption-main .form-control {
   box-shadow: 0 2px 15px 0 rgba(0, 0, 0, 0.13);
   border: none;
-  border-radius: 0;
   height: 40px;
   padding: 8px 18px;
 }
@@ -369,7 +367,6 @@ main .mdui-table th {
 .file-input .file-caption-main .btn-file {
   border-color: #2383eb;
   background-color: #2383eb;
-  border-radius: 0;
 }
 .file-input .file-caption-main .input-group-append {
   box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.13);
