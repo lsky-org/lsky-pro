@@ -38,7 +38,7 @@ class Images extends Base
         $where = json_decode($where, true);
         if (null == $where) {
             $where = [
-                'suspicious' => 0
+                'suspicious' => 0,
             ];
         }
         $model = new ImagesModel();
@@ -63,7 +63,8 @@ class Images extends Base
             'keyword' => $keyword,
             'strategyList' => $this->strategyList,
             'strategy' => isset($where['strategy']) ? $where['strategy'] : '',
-            'suspicious' => isset($where['suspicious']) ? $where['suspicious'] : 0
+            'suspicious' => isset($where['suspicious']) ? $where['suspicious'] : 0,
+            'user_id' => isset($where['user_id']) ? $where['user_id'] : null,
         ]);
 
         return $this->fetch();
