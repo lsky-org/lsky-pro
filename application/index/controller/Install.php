@@ -42,7 +42,8 @@ class Install extends Controller
                     'isCurl' => $isCurl,
                     'isFileInfo' => $isFileInfo,
                     'isMysqli' => $isMysqli,
-                    'testing' => $testing
+                    'testing' => $testing,
+                    'dir' => is_writable(Env::get('runtime_path')) && is_writable($configPath),
                 ]);
                 break;
             case 2:
