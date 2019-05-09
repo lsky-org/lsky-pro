@@ -37,10 +37,12 @@
     {if 0 == $config.allowed_tourist_upload and !$user}
     <div class="mask">
       <div class="content">
-        <div class="panel-box">
-          <h3 class="mdui-m-b-2 text-center">请登录后体验</h3>
-          <a href="{:url('auth/login')}" class="mdui-btn mdui-ripple mdui-color-cyan mdui-text-color-white">登录</a>
-          <a href="{:url('auth/register')}" class="mdui-btn mdui-ripple mdui-color-green mdui-text-color-white">注册</a>
+        <div class="panel-box mdui-color-white mdui-text-center">
+          <h6 class="mdui-m-b-2">请登录后体验</h6>
+          <div class="mdui-btn-group">
+            <a href="{:url('auth/login')}" class="mdui-btn mdui-ripple mdui-color-cyan mdui-text-color-white mdui-btn-dense">登录</a>
+            <a href="{:url('auth/register')}" class="mdui-btn mdui-ripple mdui-color-green mdui-text-color-white mdui-btn-dense">注册</a>
+          </div>
         </div>
       </div>
     </div>

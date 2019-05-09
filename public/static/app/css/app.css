@@ -86,7 +86,7 @@ main .upload-container .title {
 }
 main .upload-container .title h1 {
   font-weight: 300;
-  font-size: 1.7rem;
+  font-size: 1.8rem;
   text-shadow: -5px 5px 0 rgba(0, 0, 0, 0.1);
 }
 main .upload-container .title p {
@@ -379,6 +379,9 @@ main .mask .content {
 }
 .file-input .file-caption-main .input-group-append {
   box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.13);
+}
+.file-input .file-caption-main .input-group-append .btn {
+  box-shadow: 0 2px 15px 0 rgba(0, 0, 0, 0.13);
 }
 .file-input .file-caption-main .file-caption .file-caption-name {
   font-size: 90%;
