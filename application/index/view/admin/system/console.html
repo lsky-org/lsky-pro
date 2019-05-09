@@ -67,13 +67,13 @@
             <td>操作系统：</td>
             <td>{:php_uname('s')}</td>
             <td>服务器 IP：</td>
-            <td>{$Think.server.server_addr}</td>
+            <td>{:GetHostByName($Think.server.http_host)}</td>
             <td>网站域名：</td>
             <td>{$Think.server.http_host}</td>
           </tr>
           <tr>
             <td>运行环境：</td>
-            <td>Nginx</td>
+            <td>{$Think.server.server_software}</td>
             <td>PHP 版本：</td>
             <td>{$Think.PHP_VERSION}</td>
             <td>文件上传限制：</td>
