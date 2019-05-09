@@ -6,8 +6,10 @@
 
 # Lsky Pro - Your photo album on the cloud.
 
-[官网](https://www.lsky.pro)
-[手册](https://www.kancloud.cn/wispx/lsky-pro)
+[官网](https://www.lsky.pro) &nbsp;
+[手册](https://www.kancloud.cn/wispx/lsky-pro) &nbsp;
+[演示](https://pic.iqy.ink) &nbsp;
+[Telegram 群组](https://t.me/lsky_pro)
 
 [![License](https://img.shields.io/badge/license-GPL_V3.0-yellowgreen.svg)](https://github.com/wisp-x/lsky-pro/blob/master/LICENSE)
 [![PHP](https://img.shields.io/badge/PHP->=5.6-orange.svg)](http://php.net)
