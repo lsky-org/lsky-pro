@@ -1512,6 +1512,7 @@ class Query
     {
         if ($field instanceof $this) {
             $this->options['where'] = $field->getOptions('where');
+            $this->bind($field->getBind(false));
             return $this;
         }
 
@@ -2197,12 +2198,12 @@ class Query
     }
 
     /**
-     * 设置需要追加输出的属性
+     * 设置需要附加的输出属性
      * @access public
-     * @param  array $append 需要追加的属性
+     * @param  array $append   属性列表
      * @return $this
      */
-    public function append(array $append)
+    public function append(array $append = [])
     {
         $this->options['append'] = $append;
         return $this;
@@ -3355,13 +3356,13 @@ class Query
 
         // 输出属性控制
         if (!empty($options['visible'])) {
-            $result->visible($options['visible']);
+            $result->visible($options['visible'], true);
         } elseif (!empty($options['hidden'])) {
-            $result->hidden($options['hidden']);
+            $result->hidden($options['hidden'], true);
         }
 
         if (!empty($options['append'])) {
-            $result->append($options['append']);
+            $result->append($options['append'], true);
         }
 
         // 关联查询

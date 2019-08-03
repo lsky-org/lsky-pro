@@ -21,3 +21,8 @@ script:
 after_script:
   - wget https://scrutinizer-ci.com/ocular.phar
   - php ocular.phar code-coverage:upload --format=php-clover coverage.clover
+
+env:
+  global:
+    - secure: "V9BsntXQZwvO9EOD6itzaae2uq+GemzyTUTxMTJx1/jFoUNpCU2O2UAgjA2XSEr5sgci0KWDV4Krbzv3EBB4uplOFLMI3w32256UHbT9E0x3YjhfPJZk68MH1iS1be7X81LDHON7yveavK8987s3qzjeUcbfLSPgccT+cvf7+dc="
+    - QINIU_ACCESS_KEY=vHg2e7nOh7Jsucv2Azr5FH6omPgX22zoJRWa0FN5

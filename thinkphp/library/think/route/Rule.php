@@ -642,15 +642,24 @@ abstract class Rule
     protected function checkCrossDomain($request)
     {
         if (!empty($this->option['cross_domain'])) {
-
             $header = [
-                'Access-Control-Allow-Origin'  => '*',
-                'Access-Control-Allow-Methods' => 'GET, POST, PATCH, PUT, DELETE',
-                'Access-Control-Allow-Headers' => 'Authorization, Content-Type, If-Match, If-Modified-Since, If-None-Match, If-Unmodified-Since, X-Requested-With',
+                'Access-Control-Allow-Credentials' => 'true',
+                'Access-Control-Allow-Methods'     => 'GET, POST, PATCH, PUT, DELETE',
+                'Access-Control-Allow-Headers'     => 'Authorization, Content-Type, If-Match, If-Modified-Since, If-None-Match, If-Unmodified-Since, X-Requested-With',
             ];
 
             if (!empty($this->option['header'])) {
                 $header = array_merge($header, $this->option['header']);
+            }
+
+            if (!isset($header['Access-Control-Allow-Origin'])) {
+                $httpOrigin = $request->header('origin');
+
+                if ($httpOrigin && strpos(config('cookie.domain'), $httpOrigin)) {
+                    $header['Access-Control-Allow-Origin'] = $httpOrigin;
+                } else {
+                    $header['Access-Control-Allow-Origin'] = '*';
+                }
             }
 
             $this->option['header'] = $header;

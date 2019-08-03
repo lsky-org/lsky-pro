@@ -487,12 +487,17 @@ class Console
     public function getNamespaces()
     {
         $namespaces = [];
-        foreach ($this->commands as $command) {
-            $namespaces = array_merge($namespaces, $this->extractAllNamespaces($command->getName()));
+        foreach ($this->commands as $name => $command) {
+            if (is_string($command)) {
+                $namespaces = array_merge($namespaces, $this->extractAllNamespaces($name));
+            } else {
+                $namespaces = array_merge($namespaces, $this->extractAllNamespaces($command->getName()));
 
-            foreach ($command->getAliases() as $alias) {
-                $namespaces = array_merge($namespaces, $this->extractAllNamespaces($alias));
+                foreach ($command->getAliases() as $alias) {
+                    $namespaces = array_merge($namespaces, $this->extractAllNamespaces($alias));
+                }
             }
+
         }
 
         return array_values(array_unique(array_filter($namespaces)));

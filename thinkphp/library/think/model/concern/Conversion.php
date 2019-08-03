@@ -164,13 +164,15 @@ trait Conversion
         foreach ($data as $key => $val) {
             if ($val instanceof Model || $val instanceof ModelCollection) {
                 // 关联模型对象
-                if (isset($this->visible[$key])) {
+                if (isset($this->visible[$key]) && is_array($this->visible[$key])) {
                     $val->visible($this->visible[$key]);
-                } elseif (isset($this->hidden[$key])) {
+                } elseif (isset($this->hidden[$key]) && is_array($this->hidden[$key])) {
                     $val->hidden($this->hidden[$key]);
                 }
                 // 关联模型对象
-                $item[$key] = $val->toArray();
+                if (!isset($this->hidden[$key]) || true !== $this->hidden[$key]) {
+                    $item[$key] = $val->toArray();
+                }
             } elseif (isset($this->visible[$key])) {
                 $item[$key] = $this->getAttr($key);
             } elseif (!isset($this->hidden[$key]) && !$hasVisible) {

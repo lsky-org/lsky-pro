@@ -149,11 +149,6 @@ class RuleItem extends Rule
      */
     public function checkRule($request, $url, $match = null, $completeMatch = false)
     {
-        if ($dispatch = $this->checkCrossDomain($request)) {
-            // 允许跨域
-            return $dispatch;
-        }
-
         // 检查参数有效性
         if (!$this->checkOption($this->option, $request)) {
             return false;
@@ -169,6 +164,15 @@ class RuleItem extends Rule
         }
 
         if (false !== $match) {
+            if (!empty($option['cross_domain'])) {
+                if ($dispatch = $this->checkCrossDomain($request)) {
+                    // 允许跨域
+                    return $dispatch;
+                }
+
+                $option['header'] = $this->option['header'];
+            }
+
             // 检查前置行为
             if (isset($option['before']) && false === $this->checkBefore($option['before'])) {
                 return false;

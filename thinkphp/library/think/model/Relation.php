@@ -59,6 +59,16 @@ abstract class Relation
     }
 
     /**
+     * 获取当前的关联模型类的实例
+     * @access public
+     * @return Query
+     */
+    public function getQuery()
+    {
+        return $this->query;
+    }
+
+    /**
      * 设置当前关联为自关联
      * @access public
      * @param  bool $self 是否自关联
@@ -127,6 +137,17 @@ abstract class Relation
                 $val[0] = $relation . '.' . $val[0];
             }
         }
+    }
+
+    /**
+     * 更新数据
+     * @access public
+     * @param  array $data 更新数据
+     * @return integer|string
+     */
+    public function update(array $data = [])
+    {
+        return $this->query->update($data);
     }
 
     /**

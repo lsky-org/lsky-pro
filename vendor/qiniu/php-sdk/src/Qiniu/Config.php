@@ -3,48 +3,51 @@ namespace Qiniu;
 
 final class Config
 {
-    const SDK_VER = '7.2.7';
+    const SDK_VER = '7.2.9';
 
     const BLOCK_SIZE = 4194304; //4*1024*1024 分块上传块大小，该参数为接口规格，不能修改
 
     const RSF_HOST = 'rsf.qiniu.com';
     const API_HOST = 'api.qiniu.com';
     const RS_HOST = 'rs.qiniu.com';      //RS Host
-    const UC_HOST = 'https://api.qiniu.com';              //UC Host
+    const UC_HOST = 'uc.qbox.me';              //UC Host
     const RTCAPI_HOST = 'http://rtc.qiniuapi.com';
     const ARGUS_HOST = 'argus.atlab.ai';
+    const CASTER_HOST = 'pili-caster.qiniuapi.com';
+    const SMS_HOST="https://sms.qiniuapi.com";
     const RTCAPI_VERSION = 'v3';
+    const SMS_VERSION='v1';
 
-    // Zone 空间对应的机房
-    public $zone;
+    // Zone 空间对应的存储区域
+    public $region;
     //BOOL 是否使用https域名
     public $useHTTPS;
     //BOOL 是否使用CDN加速上传域名
     public $useCdnDomains;
     // Zone Cache
-    private $zoneCache;
+    private $regionCache;
 
     // 构造函数
-    public function __construct(Zone $z = null)
+    public function __construct(Region $z = null)
     {
         $this->zone = $z;
         $this->useHTTPS = false;
         $this->useCdnDomains = false;
-        $this->zoneCache = array();
+        $this->regionCache = array();
     }
 
     public function getUpHost($accessKey, $bucket)
     {
-        $zone = $this->getZone($accessKey, $bucket);
+        $region = $this->getRegion($accessKey, $bucket);
         if ($this->useHTTPS === true) {
             $scheme = "https://";
         } else {
             $scheme = "http://";
         }
 
-        $host = $zone->srcUpHosts[0];
+        $host = $region->srcUpHosts[0];
         if ($this->useCdnDomains === true) {
-            $host = $zone->cdnUpHosts[0];
+            $host = $region->cdnUpHosts[0];
         }
 
         return $scheme . $host;
@@ -52,16 +55,16 @@ final class Config
 
     public function getUpBackupHost($accessKey, $bucket)
     {
-        $zone = $this->getZone($accessKey, $bucket);
+        $region = $this->getRegion($accessKey, $bucket);
         if ($this->useHTTPS === true) {
             $scheme = "https://";
         } else {
             $scheme = "http://";
         }
 
-        $host = $zone->cdnUpHosts[0];
+        $host = $region->cdnUpHosts[0];
         if ($this->useCdnDomains === true) {
-            $host = $zone->srcUpHosts[0];
+            $host = $region->srcUpHosts[0];
         }
 
         return $scheme . $host;
@@ -69,7 +72,7 @@ final class Config
 
     public function getRsHost($accessKey, $bucket)
     {
-        $zone = $this->getZone($accessKey, $bucket);
+        $region = $this->getRegion($accessKey, $bucket);
 
         if ($this->useHTTPS === true) {
             $scheme = "https://";
@@ -77,12 +80,12 @@ final class Config
             $scheme = "http://";
         }
 
-        return $scheme . $zone->rsHost;
+        return $scheme . $region->rsHost;
     }
 
     public function getRsfHost($accessKey, $bucket)
     {
-        $zone = $this->getZone($accessKey, $bucket);
+        $region = $this->getRegion($accessKey, $bucket);
 
         if ($this->useHTTPS === true) {
             $scheme = "https://";
@@ -90,12 +93,12 @@ final class Config
             $scheme = "http://";
         }
 
-        return $scheme . $zone->rsfHost;
+        return $scheme . $region->rsfHost;
     }
 
     public function getIovipHost($accessKey, $bucket)
     {
-        $zone = $this->getZone($accessKey, $bucket);
+        $region = $this->getRegion($accessKey, $bucket);
 
         if ($this->useHTTPS === true) {
             $scheme = "https://";
@@ -103,12 +106,12 @@ final class Config
             $scheme = "http://";
         }
 
-        return $scheme . $zone->iovipHost;
+        return $scheme . $region->iovipHost;
     }
 
     public function getApiHost($accessKey, $bucket)
     {
-        $zone = $this->getZone($accessKey, $bucket);
+        $region = $this->getRegion($accessKey, $bucket);
 
         if ($this->useHTTPS === true) {
             $scheme = "https://";
@@ -116,22 +119,22 @@ final class Config
             $scheme = "http://";
         }
 
-        return $scheme . $zone->apiHost;
+        return $scheme . $region->apiHost;
     }
 
-    private function getZone($accessKey, $bucket)
+    private function getRegion($accessKey, $bucket)
     {
         $cacheId = "$accessKey:$bucket";
 
-        if (isset($this->zoneCache[$cacheId])) {
-            $zone = $this->zoneCache[$cacheId];
+        if (isset($this->regionCache[$cacheId])) {
+            $region = $this->regionCache[$cacheId];
         } elseif (isset($this->zone)) {
-            $zone = $this->zone;
-            $this->zoneCache[$cacheId] = $zone;
+            $region = $this->zone;
+            $this->regionCache[$cacheId] = $region;
         } else {
-            $zone = Zone::queryZone($accessKey, $bucket);
-            $this->zoneCache[$cacheId] = $zone;
+            $region = Zone::queryZone($accessKey, $bucket);
+            $this->regionCache[$cacheId] = $region;
         }
-        return $zone;
+        return $region;
     }
 }

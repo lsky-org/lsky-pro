@@ -19,6 +19,7 @@ class AppClient
     }
 
     /*
+     * 创建应用
      * hub: 直播空间名
      * title: app 的名称  注意，Title 不是唯一标识，重复 create 动作将生成多个 app
      * maxUsers：人数限制
@@ -41,6 +42,7 @@ class AppClient
     }
 
     /*
+     * 更新应用
      * appId: app 的唯一标识，创建的时候由系统生成。
      * Title: app 的名称， 可选。
      * Hub: 绑定的直播 hub，可选，用于合流后 rtmp 推流。
@@ -75,6 +77,7 @@ class AppClient
     }
 
     /*
+     * 获取应用信息
      * appId: app 的唯一标识，创建的时候由系统生成。
      */
     public function getApp($appId)
@@ -85,6 +88,7 @@ class AppClient
     }
 
     /*
+     * 删除应用
      * appId: app 的唯一标识，创建的时候由系统生成
      */
     public function deleteApp($appId)
@@ -95,7 +99,7 @@ class AppClient
     }
 
     /*
-     * 获取房间的人数
+     * 获取房间内用户列表
      * appId: app 的唯一标识，创建的时候由系统生成。
      * roomName: 操作所查询的连麦房间。
      */
@@ -107,7 +111,7 @@ class AppClient
     }
 
    /*
-    * 踢出玩家
+    * 踢出用户
     * appId: app 的唯一标识，创建的时候由系统生成。
     * roomName: 连麦房间
     * userId: 请求加入房间的用户ID
@@ -120,7 +124,7 @@ class AppClient
     }
 
     /*
-     * 获取房间的人数
+     * 获取应用中活跃房间
      * appId: app 的唯一标识，创建的时候由系统生成。
      * prefix: 所查询房间名的前缀索引，可以为空。
      * offset: int 类型，分页查询的位移标记。
@@ -149,6 +153,7 @@ class AppClient
     }
 
     /*
+     * 生成加入房间的令牌
      * appId: app 的唯一标识，创建的时候由系统生成。
      * roomName: 房间名称，需满足规格 ^[a-zA-Z0-9_-]{3,64}$
      * userId: 请求加入房间的用户 ID，需满足规格 ^[a-zA-Z0-9_-]{3,50}$

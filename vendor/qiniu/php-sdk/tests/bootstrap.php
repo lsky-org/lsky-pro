@@ -21,7 +21,7 @@ $dummyAuth = new Auth($dummyAccessKey, $dummySecretKey);
 
 //cdn
 $timestampAntiLeechEncryptKey = getenv('QINIU_TIMESTAMP_ENCRPTKEY');
-$customDomain = "http://phpsdk.qiniuts.com";
+$customDomain = "http://phpsdk.peterpy.cn";
 
 $tid = getenv('TRAVIS_JOB_NUMBER');
 if (!empty($tid)) {

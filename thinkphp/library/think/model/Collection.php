@@ -24,8 +24,10 @@ class Collection extends BaseCollection
      */
     public function load($relation)
     {
-        $item = current($this->items);
-        $item->eagerlyResultSet($this->items, $relation);
+        if (!$this->isEmpty()) {
+            $item = current($this->items);
+            $item->eagerlyResultSet($this->items, $relation);
+        }
 
         return $this;
     }

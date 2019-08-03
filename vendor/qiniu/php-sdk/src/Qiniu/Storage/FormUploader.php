@@ -33,10 +33,8 @@ final class FormUploader
         $mime,
         $fname
     ) {
-
         $fields = array('token' => $upToken);
         if ($key === null) {
-            $fname='nullkey';
         } else {
             $fields['key'] = $key;
         }

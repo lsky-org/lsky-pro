@@ -25,6 +25,12 @@ final class Client
         return self::sendRequest($request);
     }
 
+    public static function PUT($url, $body, array $headers = array())
+    {
+        $request = new Request('PUT', $url, $headers, $body);
+        return self::sendRequest($request);
+    }
+
     public static function multipartPost(
         $url,
         $fields,
@@ -56,6 +62,7 @@ final class Client
         array_push($data, '');
 
         $body = implode("\r\n", $data);
+        // var_dump($data);exit;
         $contentType = 'multipart/form-data; boundary=' . $mimeBoundary;
         $headers['Content-Type'] = $contentType;
         $request = new Request('POST', $url, $headers, $body);
@@ -91,12 +98,10 @@ final class Client
             CURLOPT_CUSTOMREQUEST => $request->method,
             CURLOPT_URL => $request->url,
         );
-
         // Handle open_basedir & safe mode
         if (!ini_get('safe_mode') && !ini_get('open_basedir')) {
             $options[CURLOPT_FOLLOWLOCATION] = true;
         }
-
         if (!empty($request->headers)) {
             $headers = array();
             foreach ($request->headers as $key => $val) {
@@ -105,7 +110,6 @@ final class Client
             $options[CURLOPT_HTTPHEADER] = $headers;
         }
         curl_setopt($ch, CURLOPT_HTTPHEADER, array('Expect:'));
-
         if (!empty($request->body)) {
             $options[CURLOPT_POSTFIELDS] = $request->body;
         }

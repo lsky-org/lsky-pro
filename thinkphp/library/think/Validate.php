@@ -519,7 +519,7 @@ class Validate
 
         if (isset($this->append[$field])) {
             // 追加额外的验证规则
-            $rules = array_unique(array_merge($rules, $this->append[$field]));
+            $rules = array_unique(array_merge($rules, $this->append[$field]), SORT_REGULAR);
         }
 
         $i      = 0;
