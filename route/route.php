@@ -17,6 +17,6 @@ Route::view('compatibility', 'index@tpl/compatibility');
 Route::group('api', function () {
     Route::post('token', 'api/Token/index');
     Route::post('upload', 'api/Upload/index');
-});
+})->allowCrossDomain();
 
 return [];
