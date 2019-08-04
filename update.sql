@@ -73,3 +73,6 @@ UPDATE `lsky_config` SET `value` = '1.5.2' WHERE `lsky_config`.`name` = 'system_
 
 -- v1.5.3
 UPDATE `lsky_config` SET `value` = '1.5.3' WHERE `lsky_config`.`name` = 'system_version';
+
+-- v1.5.4
+UPDATE `lsky_config` SET `value` = '1.5.4' WHERE `lsky_config`.`name` = 'system_version';
