@@ -78,7 +78,7 @@ class Base extends Controller
             'msg' => $msg,
             'data' => $data,
             'time' => time()
-        ], $this->format, $code);
+        ], $this->format, 200);
 
         throw new HttpResponseException($response);
     }
