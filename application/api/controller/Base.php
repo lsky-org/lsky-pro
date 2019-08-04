@@ -32,7 +32,7 @@ class Base extends Controller
         }
 
         if (!$this->config['open_api']) {
-            $this->response('API is not open yet.', 500);
+            $this->response('API is not open yet.', [], 500);
         }
 
         $this->token = $this->request->header('token');
@@ -54,11 +54,11 @@ class Base extends Controller
     protected function auth($token)
     {
         if (!$token) {
-            $this->response('Token does not exist.', 500);
+            $this->response('Token does not exist.', [], 401);
         }
         $this->user = Users::get(['token' => $token]);
         if (!$this->user) {
-            $this->response('Authentication failed', 500);
+            $this->response('Authentication failed', [], 401);
         }
     }
 
@@ -66,12 +66,12 @@ class Base extends Controller
      * 返回数据给客户端并中断输出
      *
      * @param string $msg  提示信息
-     * @param null   $data 数据
+     * @param array  $data 数据
      * @param int    $code 状态码
      *
      * @throws HttpResponseException
      */
-    protected function response($msg = '', $data = null, $code = 200)
+    protected function response($msg = '', $data = [], $code = 200)
     {
         $response = Response::create([
             'code' => $code,
