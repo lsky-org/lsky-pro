@@ -9,6 +9,7 @@
 [官网](https://www.lsky.pro) &nbsp;
 [手册](https://www.kancloud.cn/wispx/lsky-pro) &nbsp;
 [演示](https://pic.iqy.ink) &nbsp;
+[Chrome 拓展](https://github.com/wisp-x/lsky-pro-chrome-extension)
 [Telegram 群组](https://t.me/lsky_pro)
 
 [![License](https://img.shields.io/badge/license-GPL_V3.0-yellowgreen.svg)](https://github.com/wisp-x/lsky-pro/blob/master/LICENSE)
