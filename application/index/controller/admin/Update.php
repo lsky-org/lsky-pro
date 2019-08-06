@@ -9,8 +9,8 @@
 
 namespace app\index\controller\admin;
 
-use think\Controller;
 use think\Db;
+use think\facade\Config;
 use think\facade\Env;
 
 class Update extends Base
@@ -20,21 +20,22 @@ class Update extends Base
         // https://dev.tencent.com/u/wispx/p/lsky-pro-releases/git/raw/master/releases/lsky-pro-1.5.4.zip
         echo <<<EOT
 <style>
-  body {background-color: black;}
+  body {background-color: black;color: white;}
   span {color: white;}
 </style>
 <pre>
 EOT;
-        Db::startTrans();
+
         try {
             $this->out('检测更新中...');
             $version = $this->checkUpdate();
-            if (! $version) {
+            if (!$version) {
                 throw new \Exception('版本信息获取失败!');
             }
-            $this->out("检测到新版本 v{$version}");
+            $this->out("检测到新版本 [v{$version}]");
             $runtimePath = Env::get('runtime_path');
             $url = "https://dev.tencent.com/u/wispx/p/lsky-pro-releases/git/raw/master/releases/lsky-pro-{$version}.zip";
+            $dirname = "lsky-pro-{$version}";
             $name = "lsky-pro-{$version}.zip";
             // $ip = $this->getRandIp();
             $context = stream_context_create(
@@ -43,6 +44,7 @@ EOT;
                     'timeout' => 600
                 ]]
             );
+            $this->out('<font color="#ffd700">开始更新操作, 请勿关闭本窗口...</font>');
             $this->out('安装包下载中, 请耐心等待...');
             if (!$file = @file_get_contents($url, false, $context)) {
                 throw new \Exception('安装包下载失败, 请稍后再试!');
@@ -52,18 +54,148 @@ EOT;
                 throw new \Exception('安装包保存失败! 请检查 runtime 目录权限!');
             }
             $this->out('保存完成!', '正在执行解压...');
-            // TODO 解压
-            // TODO 执行更新sql
-            // TODO 覆盖文件
+            if (! $this->extractZip($runtimePath . $name)) {
+                throw new \Exception('安装包解压失败!');
+            }
+            // 读取sql文件
+            $this->out('解压完成!', '正在更新数据...');
+            // 更新表结构
+            //$tableFields = require "{$runtimePath}{$dirname}/config/table.php";
+            $sqlFile = file_get_contents("{$runtimePath}{$dirname}/update.sql");
 
-            Db::commit();
+            $config = Config::pull('db');
+            $mysqli = new \mysqli(
+                $config['hostname'],
+                $config['username'],
+                $config['password'],
+                $config['database'],
+                $config['hostport']
+            );
+            if ($mysqli->connect_errno) {
+                $mysqli->close();
+                throw new \Exception("数据库连接失败! {$mysqli->connect_error}");
+            }
+
+            $mysqli->autocommit(false);
+            $mysqli->select_db($config['database']);
+            $mysqli->query("SET NAMES utf8");
+
+            /*foreach ($tableFields as $table => $fields) {
+                foreach ($fields as $field => $sql) {
+                    $fetchFields = $mysqli->query("DESCRIBE `{$table}`;");
+                    // 判断字段是否已存在
+                    $flag = true;
+                    foreach ($fetchFields as $fetchField) {
+                        if ($field == $fetchField['Field']) {
+                            $flag = false;
+                        }
+                    }
+                    if ($flag) {
+                        if (!$mysqli->query($sql)) {
+                            throw new \Exception($mysqli->error);
+                        }
+                    }
+                }
+            }*/
+
+            foreach (explode(';', $sqlFile) as $value) {
+                if ($value && !ctype_space($value)) {
+                    if (!$mysqli->query($value . ';')) {
+                        throw new \Exception("数据更新失败! 错误信息：{$mysqli->error}, sql语句：{$value}");
+                    }
+                }
+            }
+            $this->out('数据库更新完毕!', '正在复制文件...');
+            $this->out('清理临时数据...');
+            // TODO 复制文件
+            // TODO 清理临时数据
+
+            $mysqli->commit();
+            $mysqli->autocommit(true);
+            $mysqli->close();
+
             $this->out("<font color='green'>更新成功!</font>");
         } catch (\Exception $e) {
-            Db::rollback();
             $this->out("<font color='red'>{$e->getMessage()}</font>");
         }
 
         ob_end_flush();
+    }
+
+    /**
+     * 解压文件到指定目录
+     *
+     * @param $filename                 zip压缩包路径加文件名
+     * @param bool $destDir             解压文件的目的路径
+     * @param bool $createZipNameDir    是否以压缩文件的名字创建目标文件夹
+     * @param bool $overwrite           是否覆盖
+     * @return bool
+     */
+    public function extractZip($filename, $destDir = false, $createZipNameDir = false, $overwrite = true)
+    {
+        if ($zip = zip_open($filename)) {
+            if ($zip) {
+                $splitter = ($createZipNameDir === true) ? "." : "/";
+                if ($destDir === false) {
+                    $destDir = substr($filename, 0, strrpos($filename, $splitter)) . "/";
+                }
+
+                // 如果不存在 创建目标解压目录
+                $this->mkdirs($destDir);
+
+                // 对每个文件进行解压
+                while ($zip_entry = zip_read($zip)) {
+                    // 文件不在根目录
+                    $pos_last_slash = strrpos(zip_entry_name($zip_entry), "/");
+                    if ($pos_last_slash !== false) {
+                        // 创建目录 在末尾带 /
+                        $this->mkdirs($destDir . substr(zip_entry_name($zip_entry), 0, $pos_last_slash + 1));
+                    }
+
+                    // 打开包
+                    if (zip_entry_open($zip, $zip_entry, "r")) {
+                        // 文件名保存在磁盘上
+                        $file_name = $destDir . zip_entry_name($zip_entry);
+                        // 检查文件是否需要重写
+                        if ($overwrite === true || $overwrite === false && !is_file($file_name)) {
+                            // 读取压缩文件的内容
+                            $fstream = zip_entry_read($zip_entry, zip_entry_filesize($zip_entry));
+                            @file_put_contents($file_name, $fstream);
+                            // 设置权限
+                            chmod($file_name, 0755);
+                        }
+                        zip_entry_close($zip_entry);
+                    }
+                }
+                zip_close($zip);
+            }
+        } else {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * 创建目录
+     *
+     * @param $path
+     */
+    public function mkdirs($path)
+    {
+        if (!is_dir($path)) {
+            $directoryPath = "";
+            $directories = explode("/", $path);
+            array_pop($directories);
+
+            foreach ($directories as $directory) {
+                $directoryPath .= $directory . "/";
+                if (!is_dir($directoryPath)) {
+                    mkdir($directoryPath);
+                    chmod($directoryPath, 0777);
+                }
+            }
+        }
     }
 
     /**
