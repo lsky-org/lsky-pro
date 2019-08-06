@@ -10,17 +10,32 @@
 namespace app\index\controller\admin;
 
 use think\Controller;
+use think\Db;
 use think\facade\Env;
 
-class Update extends Controller
+class Update extends Base
 {
     public function index()
     {
         // https://dev.tencent.com/u/wispx/p/lsky-pro-releases/git/raw/master/releases/lsky-pro-1.5.4.zip
+        echo <<<EOT
+<style>
+  body {background-color: black;}
+  span {color: white;}
+</style>
+<pre>
+EOT;
+        Db::startTrans();
         try {
+            $this->out('检测更新中...');
+            $version = $this->checkUpdate();
+            if (! $version) {
+                throw new \Exception('版本信息获取失败!');
+            }
+            $this->out("检测到新版本 v{$version}");
             $runtimePath = Env::get('runtime_path');
-            $url = 'https://dev.tencent.com/u/wispx/p/lsky-pro-releases/git/raw/master/releases/lsky-pro-1.5.4.zip';
-            $name = 'lsky-pro-1.5.4.zip';
+            $url = "https://dev.tencent.com/u/wispx/p/lsky-pro-releases/git/raw/master/releases/lsky-pro-{$version}.zip";
+            $name = "lsky-pro-{$version}.zip";
             // $ip = $this->getRandIp();
             $context = stream_context_create(
                 ['http' => [
@@ -28,28 +43,66 @@ class Update extends Controller
                     'timeout' => 600
                 ]]
             );
-
-            $this->out('安装包下载中(请勿关闭本窗口)...');
-            $file = file_get_contents($url, false, $context);
-            $this->out('安装包下载完成!', '保存安装包...');
-            file_put_contents($runtimePath . $name, $file);
-            $this->out('保存完成!', '解压中...');
+            $this->out('安装包下载中, 请耐心等待...');
+            if (!$file = @file_get_contents($url, false, $context)) {
+                throw new \Exception('安装包下载失败, 请稍后再试!');
+            }
+            $this->out('安装包下载完成!', '正在保存安装包...');
+            if (!@file_put_contents($runtimePath . $name, $file)) {
+                throw new \Exception('安装包保存失败! 请检查 runtime 目录权限!');
+            }
+            $this->out('保存完成!', '正在执行解压...');
             // TODO 解压
             // TODO 执行更新sql
             // TODO 覆盖文件
+
+            Db::commit();
+            $this->out("<font color='green'>更新成功!</font>");
         } catch (\Exception $e) {
-            $this->out("更新失败, 请尝试手动更新! <br>错误信息: {$e->getMessage()}");
+            Db::rollback();
+            $this->out("<font color='red'>{$e->getMessage()}</font>");
         }
 
         ob_end_flush();
     }
 
+    /**
+     * 检测最新版
+     *
+     * @return bool|string
+     * @throws \Exception
+     */
+    private function checkUpdate()
+    {
+        $client = new \GuzzleHttp\Client();
+        $response = $client->get('https://api.github.com/repos/wisp-x/lsky-pro/releases/latest');
+        if (200 === $response->getStatusCode()) {
+            $result = json_decode($response->getBody()->getContents());
+            $version = ltrim(strtolower($result->name), 'v');
+            if ($this->config['system_version'] > $version) {
+                throw new \Exception('不可降级!');
+            }
+            if ($this->config['system_version'] == $version) {
+                throw new \Exception('当前已经是最新版!');
+            }
+
+            return $version;
+        }
+
+        return false;
+    }
+
+    /**
+     * Out Print
+     *
+     * @param mixed ...$args
+     */
     private function out(...$args)
     {
         if (ob_get_level() == 0) ob_start();
 
         foreach ($args as $i => $arg) {
-            echo $arg . '<br>';
+            echo "<span><font color='green'>root@lsky-pro</font>:~$ {$arg}</span>";
             echo str_pad('', 4096) . "\n";
 
             ob_flush();
