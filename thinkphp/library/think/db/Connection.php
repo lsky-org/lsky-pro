@@ -1467,9 +1467,7 @@ abstract class Connection
             $value = is_array($val) ? $val[0] : $val;
             $type  = is_array($val) ? $val[1] : PDO::PARAM_STR;
 
-            if (self::PARAM_FLOAT == $type) {
-                $value = (float) $value;
-            } elseif (PDO::PARAM_STR == $type) {
+            if ((self::PARAM_FLOAT == $type || PDO::PARAM_STR == $type) && is_string($value)) {
                 $value = '\'' . addslashes($value) . '\'';
             } elseif (PDO::PARAM_INT == $type && '' === $value) {
                 $value = 0;
@@ -1503,7 +1501,7 @@ abstract class Connection
                 if (PDO::PARAM_INT == $val[1] && '' === $val[0]) {
                     $val[0] = 0;
                 } elseif (self::PARAM_FLOAT == $val[1]) {
-                    $val[0] = (float) $val[0];
+                    $val[0] = is_string($val[0]) ? (float) $val[0] : $val[0];
                     $val[1] = PDO::PARAM_STR;
                 }
 

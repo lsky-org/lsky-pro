@@ -15,27 +15,15 @@ $cosClient = new Qcloud\Cos\Client(
 try {
     $result = $cosClient->putBucketCors(array(
         'Bucket' => 'examplebucket-125000000', //格式：BucketName-APPID
-        'Rules' => array(
+        'CORSRules' => array(
             array(
-                'Expiration' => array(
-                    'Days' => integer,
-                ),
-                'ID' => 'string',
-                'Filter' => array(
-                    'Prefix' => 'string'
-                ),
-                'Status' => 'string',
-                'Transitions' => array(
-                    array(
-                        'Days' => integer,
-                        'StorageClass' => 'string'
-                    ),
-                    // ... repeated
-                ),
+                'ID' => '1234',
+                'AllowedHeaders' => array('*'),
+                'AllowedMethods' => array('PUT'),
+                'AllowedOrigins' => array('http://www.qq.com'),
             ),
-            // ... repeated
-        )
-    );
+        ), 
+    ));
     // 请求成功
     print_r($result);
 } catch (\Exception $e) {
