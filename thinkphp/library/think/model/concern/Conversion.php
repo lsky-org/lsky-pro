@@ -189,10 +189,12 @@ trait Conversion
 
                     if (!$relation) {
                         $relation = $this->getAttr($key);
-                        $relation->visible($name);
+                        if ($relation) {
+                            $relation->visible($name);
+                        }
                     }
 
-                    $item[$key] = $relation->append($name)->toArray();
+                    $item[$key] = $relation ? $relation->append($name)->toArray() : [];
                 } elseif (strpos($name, '.')) {
                     list($key, $attr) = explode('.', $name);
                     // 追加关联对象属性
@@ -200,10 +202,12 @@ trait Conversion
 
                     if (!$relation) {
                         $relation = $this->getAttr($key);
-                        $relation->visible([$attr]);
+                        if ($relation) {
+                            $relation->visible([$attr]);
+                        }
                     }
 
-                    $item[$key] = $relation->append([$attr])->toArray();
+                    $item[$key] = $relation ? $relation->append([$attr])->toArray() : [];
                 } else {
                     $item[$name] = $this->getAttr($name, $item);
                 }

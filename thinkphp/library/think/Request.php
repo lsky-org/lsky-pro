@@ -682,6 +682,7 @@ class Request
                 // 判断URL里面是否有兼容模式参数
                 $pathinfo = $_GET[$this->config['var_pathinfo']];
                 unset($_GET[$this->config['var_pathinfo']]);
+                unset($this->get[$this->config['var_pathinfo']]);
             } elseif ($this->isCli()) {
                 // CLI模式下 index.php module/controller/action/params/...
                 $pathinfo = isset($_SERVER['argv'][1]) ? $_SERVER['argv'][1] : '';
@@ -700,6 +701,10 @@ class Request
                         break;
                     }
                 }
+            }
+
+            if (!empty($pathinfo)) {
+                unset($this->get[$pathinfo], $this->request[$pathinfo]);
             }
 
             $this->pathinfo = empty($pathinfo) || '/' == $pathinfo ? '' : ltrim($pathinfo, '/');
@@ -1039,7 +1044,7 @@ class Request
 
     protected function getInputData($content)
     {
-        if (false !== strpos($this->contentType(), 'application/json') || 0 === strpos($content, '{"')) {
+        if ($this->isJson()) {
             return (array) json_decode($content, true);
         } elseif (strpos($content, '=')) {
             parse_str($content, $data);
@@ -1629,6 +1634,19 @@ class Request
         }
 
         return false;
+    }
+
+    /**
+     * 当前是否JSON请求
+     * @access public
+     * @return bool
+     */
+    public function isJson()
+    {
+        $contentType = $this->contentType();
+        $acceptType  = $this->type();
+
+        return false !== strpos($contentType, 'json') || false !== strpos($acceptType, 'json');
     }
 
     /**

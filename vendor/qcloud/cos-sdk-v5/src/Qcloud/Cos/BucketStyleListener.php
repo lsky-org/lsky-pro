@@ -73,13 +73,13 @@ class BucketStyleListener implements EventSubscriberInterface {
             }
         }
         $request->setHeader('Date', gmdate('D, d M Y H:i:s T'));
-        $request->setPath(preg_replace("#^/{$bucket}#", '', $request->getPath()));
 
+        $url_bucket = rawurlencode($bucket);
+        $request->setPath(preg_replace("#^/{$url_bucket}#", '', $request->getPath()));
         if ($this->appId != null && endWith($bucket,'-'.$this->appId) == False)
         {
             $bucket = $bucket.'-'.$this->appId;
         }
-//        $request->setPath(urldecode($request->getPath()));
         $request->getParams()->set('bucket', $bucket)->set('key', $key);
 
         $realHost = $bucket. '.' . $request->getHost();
