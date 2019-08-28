@@ -84,7 +84,7 @@
   };
 
   $("#image").fileinput({
-    uploadUrl: "{:url('upload/upload')}",
+    uploadUrl: "{:url('upload/upload')}" + '?rand=' + new Date().getTime().toString(36) + Math.random().toString(36).slice(2),
     language: "zh",
     theme: "fas",
     previewFileType: "image",
