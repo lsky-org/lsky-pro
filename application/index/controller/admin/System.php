@@ -54,7 +54,7 @@ class System extends Base
         $storage = Images::sum('size');
         $imagesCount = Images::count();
         $suspiciousImagesCount = Images::where('suspicious', 1)->count();
-        $users_count = Images::count();
+        $users_count = \app\common\model\Users::count();
         $today = Images::whereTime('create_time', 'today')->count();
         $yesterday = Images::whereTime('create_time', 'yesterday')->count();
         $month = Images::whereTime('create_time', 'month')->count();
