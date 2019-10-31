@@ -473,6 +473,55 @@ Content-Type: image/png
       </div>
       <h4 class="mdui-m-t-2 mdui-m-b-1">返回数据(data)与第三条相同</h4>
     </div>
+
+    <div class="mdui-m-b-2">
+      <h2>5. 删除图片</h2>
+      <div class="mdui-row">
+        <div class="mdui-col-md-6">
+          <div class="mdui-table-fluid mdui-m-t-1">
+            <table class="mdui-table">
+              <thead>
+              <tr>
+                <td>功能</td>
+                <td>接口</td>
+              </tr>
+              </thead>
+              <tbody>
+              <tr>
+                <td>请求方式</td>
+                <td>POST</td>
+              </tr>
+              <tr>
+                <td>URL</td>
+                <td>{$domain}/api/delete</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <h4 class="mdui-m-t-2 mdui-m-b-1">请求参数</h4>
+      <div class="mdui-table-fluid">
+        <table class="mdui-table">
+          <thead>
+          <tr>
+            <td>参数名称</td>
+            <td>类型</td>
+            <td>是否必须</td>
+            <td>说明</td>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>id</td>
+            <td>String</td>
+            <td>是</td>
+            <td>图片ID, 删除多个使用逗号分隔</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </main>
 </div>
 {/block}
