@@ -10,6 +10,7 @@
 namespace app\api\controller;
 
 use app\common\model\Images;
+use app\index\controller\User;
 
 class Image extends Base
 {
@@ -42,6 +43,19 @@ class Image extends Base
             return $item;
         });
         $this->response('success', $images);
+    }
+
+    public function delete()
+    {
+        $user = new User();
+        $data = str_replace('，', ',', $this->param('id'));
+        if (strpos($data, ',') !== false) {
+            $data = explode(',', $data);
+        }
+        if ($user->deleteImages($data)) {
+            return $this->response('删除成功!');
+        }
+        return $this->response('删除失败!', [], 500);
     }
 
     private function parseData($data)

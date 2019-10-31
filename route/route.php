@@ -19,6 +19,7 @@ Route::group('api', function () {
     Route::any('upload', 'api/Upload/index');
     Route::any('image', 'api/Image/find');
     Route::any('images', 'api/Image/items');
+    Route::any('delete', 'api/Image/delete');
 })
     ->header('Access-Control-Allow-Headers', 'Authorization, Content-Type, If-Match, If-Modified-Since, If-None-Match, If-Unmodified-Since, X-Requested-With, Token')
     ->allowCrossDomain();
