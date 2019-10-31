@@ -17,6 +17,7 @@ class Update extends Base
 {
     public function index()
     {
+        die;
         // https://dev.tencent.com/u/wispx/p/lsky-pro-releases/git/raw/master/releases/lsky-pro-1.5.4.zip
         echo <<<EOT
 <style>
