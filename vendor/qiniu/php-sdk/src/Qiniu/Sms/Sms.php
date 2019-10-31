@@ -33,7 +33,7 @@ class Sms
         "signature_id": <signature_id>
         }
      */
-    public function createSignature(string $signature, string $source, string $pics = null)
+    public function createSignature($signature, $source, $pics = null)
     {
         $params['signature'] = $signature;
         $params['source'] = $source;
@@ -62,7 +62,7 @@ class Sms
         "signature": string
         }
     */
-    public function updateSignature(string $id, string $signature, string $source, string $pics = null)
+    public function updateSignature($id, $signature, $source, $pics = null)
     {
         $params['signature'] = $signature;
         $params['source'] = $source;
@@ -96,7 +96,7 @@ class Sms
     "page_size": int,
     }
  */
-    public function checkSignature(string $audit_status = null, int $page = 1, int $page_size = 20)
+    public function checkSignature($audit_status = null, $page = 1, $page_size = 20)
     {
 
         $url = sprintf(
@@ -116,7 +116,7 @@ class Sms
  * id 签名id string 类型，必填，
  * @retrun : 请求成功 HTTP 状态码为 200
  */
-    public function deleteSignature(string $id)
+    public function deleteSignature($id)
     {
         $url = $this->baseURL . 'signature/' . $id;
         list(, $err)  = $this->delete($url);
@@ -139,11 +139,11 @@ class Sms
                 }
     */
     public function createTemplate(
-        string $name,
-        string $template,
-        string $type,
-        string $description,
-        string $signture_id
+        $name,
+        $template,
+        $type,
+        $description,
+        $signture_id
     ) {
         $params['name'] = $name;
         $params['template'] = $template;
@@ -181,7 +181,7 @@ class Sms
         "page_size": int
         }
   */
-    public function queryTemplate(string $audit_status = null, int $page = 1, int $page_size = 20)
+    public function queryTemplate($audit_status = null, $page = 1, $page_size = 20)
     {
 
         $url = sprintf(
@@ -205,11 +205,11 @@ class Sms
     * @retrun : 请求成功 HTTP 状态码为 200
     */
     public function updateTemplate(
-        string $id,
-        string $name,
-        string $template,
-        string $description,
-        string $signature_id
+        $id,
+        $name,
+        $template,
+        $description,
+        $signature_id
     ) {
         $params['name'] = $name;
         $params['template'] = $template;
@@ -226,7 +226,7 @@ class Sms
     * id :模板id string 类型，必填，
     * @retrun : 请求成功 HTTP 状态码为 200
     */
-    public function deleteTemplate(string $id)
+    public function deleteTemplate($id)
     {
         $url = $this->baseURL . 'template/' . $id;
         list(, $err)  = $this->delete($url);
@@ -243,7 +243,7 @@ class Sms
         "job_id": string
         }
     */
-    public function sendMessage(string $template_id, array $mobiles, array $parameters = null)
+    public function sendMessage($template_id, $mobiles, $parameters = null)
     {
         $params['template_id'] = $template_id;
         $params['mobiles'] = $mobiles;
@@ -256,7 +256,7 @@ class Sms
         return $ret;
     }
 
-    public function imgToBase64(string $img_file)
+    public function imgToBase64($img_file)
     {
         $img_base64 = '';
         if (file_exists($img_file)) {

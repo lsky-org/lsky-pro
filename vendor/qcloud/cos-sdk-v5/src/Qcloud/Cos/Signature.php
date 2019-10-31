@@ -11,9 +11,10 @@ class Signature {
     public function __destruct() {
     }
     public function signRequest(RequestInterface $request) {
+        $host = $request->getHeader('Host');
         $signTime = (string)(time() - 60) . ';' . (string)(time() + 3600);
         $httpString = strtolower($request->getMethod()) . "\n" . urldecode($request->getPath()) .
-            "\n\nhost=" . $request->getHost() . "\n";
+            "\n\nhost=" . $host . "\n";
         $sha1edHttpString = sha1($httpString);
         $stringToSign = "sha1\n$signTime\n$sha1edHttpString\n";
         $signKey = hash_hmac('sha1', $signTime, $this->secretKey);
@@ -27,9 +28,10 @@ class Signature {
         RequestInterface $request,
         $expires = "10 minutes"
     ) {
+        $host = $request->getHeader('Host');
         $signTime = (string)(time() - 60) . ';' . (string)(strtotime($expires));
         $httpString = strtolower($request->getMethod()) . "\n" . urldecode($request->getPath()) .
-            "\n\nhost=" . $request->getHost() . "\n";
+            "\n\nhost=" . $host . "\n";
         $sha1edHttpString = sha1($httpString);
         $stringToSign = "sha1\n$signTime\n$sha1edHttpString\n";
         $signKey = hash_hmac('sha1', $signTime, $this->secretKey);

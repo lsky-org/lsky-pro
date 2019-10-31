@@ -33,7 +33,7 @@ class AppClient
         if (!empty($maxUsers)) {
             $params['maxUsers'] = $maxUsers;
         }
-        if (!empty($noAutoKickUser)) {
+        if ($noAutoKickUser !== null) {
             $params['noAutoKickUser'] = $noAutoKickUser;
         }
         $body = json_encode($params);
@@ -65,7 +65,7 @@ class AppClient
         if (!empty($maxUsers)) {
             $params['maxUsers'] = $maxUsers;
         }
-        if (!empty($noAutoKickUser)) {
+        if ($noAutoKickUser !== null) {
             $params['noAutoKickUser'] = $noAutoKickUser;
         }
         if (!empty($mergePublishRtmp)) {

@@ -353,7 +353,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
                 $result = isset($data[$field]) ? $data[$field] : null;
             }
 
-            switch ($operator) {
+            switch (strtolower($operator)) {
                 case '===':
                     return $result === $value;
                 case '!==':
