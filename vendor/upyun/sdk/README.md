@@ -95,6 +95,15 @@ $file = fopen('/local/path/file', 'r');
 $client->write('/save/path', $file);
 ```
 
+#### 使用并行式断点续传上传文件
+
+```
+$serviceConfig->setUploadType('BLOCK_PARALLEL');
+$client = new Upyun($serviceConfig);
+$file = fopen('/local/path/file', 'r');
+$client->write('/save/path', $file);
+```
+
 #### 上传图片并转换格式为 `png`，详见[上传作图](http://docs.upyun.com/cloud/image/#_2)
 
 ```

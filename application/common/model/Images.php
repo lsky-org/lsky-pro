@@ -16,6 +16,8 @@ class Images extends Model
 
     protected $insert = ['ip'];
 
+    protected $append = ['url'];
+
     public function getUrlAttr($url, $data)
     {
         // 图片链接

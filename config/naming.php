@@ -8,13 +8,10 @@
 
 // [命名规则配置文件]
 
-$array = gettimeofday();
-$aa = ($array['sec'] * 100000 + $array['usec'] / 10) & 0x7FFFFFFF;
-$logId = ((($array['sec'] * 100000 + $array['usec'] / 10) & 0x7FFFFFFF) | 0x80000000);
-
 $time = time();
-$md5 = md5('LSKY PRO' . $logId . time());
-$uniqid = substr(md5($logId), 8, 13);
+$rand = function_exists('session_create_id') ? session_create_id() : uniqid();
+$md5 = md5('LSKY PRO' . $rand . time());
+$uniqid = substr(md5($rand), 8, 13);
 
 return [
     'path' => [

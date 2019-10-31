@@ -47,7 +47,6 @@ class BucketStyleListener implements EventSubscriberInterface {
      * @param Event $event Event emitted.
      */
     public function onCommandAfterPrepare(Event $event) {
-
         $command = $event['command'];
         $bucket = $command['Bucket'];
         $request = $command->getRequest();
@@ -81,7 +80,7 @@ class BucketStyleListener implements EventSubscriberInterface {
             $bucket = $bucket.'-'.$this->appId;
         }
         $request->getParams()->set('bucket', $bucket)->set('key', $key);
-
+        
         $realHost = $bucket. '.' . $request->getHost();
         if($this->ipport != null) {
             $request->setHost($this->ipport);

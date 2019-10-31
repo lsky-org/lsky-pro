@@ -170,23 +170,16 @@ final class CdnManager
     public static function createTimestampAntiLeechUrl($rawUrl, $encryptKey, $durationInSeconds)
     {
         $parsedUrl = parse_url($rawUrl);
-
         $deadline = time() + $durationInSeconds;
         $expireHex = dechex($deadline);
-
         $path = isset($parsedUrl['path']) ? $parsedUrl['path'] : '';
-        $path = implode('/', array_map('rawurlencode', explode('/', $path)));
         $strToSign = $encryptKey . $path . $expireHex;
         $signStr = md5($strToSign);
-
-        $url = $parsedUrl['scheme'].'://'.$parsedUrl['host'].$path;
-        
         if (isset($parsedUrl['query'])) {
-            $signedUrl = $url . '&sign=' . $signStr . '&t=' . $expireHex;
+            $signedUrl = $rawUrl . '&sign=' . $signStr . '&t=' . $expireHex;
         } else {
-            $signedUrl = $url . '?sign=' . $signStr . '&t=' . $expireHex;
+            $signedUrl = $rawUrl . '?sign=' . $signStr . '&t=' . $expireHex;
         }
-
         return $signedUrl;
     }
 }

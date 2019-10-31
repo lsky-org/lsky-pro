@@ -1,0 +1,23 @@
+{
+  "name": "nicolab/php-ftp-client",
+  "type": "library",
+  "description": "A flexible FTP and SSL-FTP client for PHP. This lib provides helpers easy to use to manage the remote files.",
+  "license": "MIT",
+  "keywords": ["ftp", "sftp", "ssl-ftp", "ssl", "file", "server", "lib", "helper"],
+  "homepage": "https://github.com/Nicolab/php-ftp-client",
+
+	"authors"            : [
+    {
+      "name"     : "Nicolas Tallefourtane",
+      "email"    : "dev@nicolab.net",
+      "homepage" : "http://nicolab.net"
+    }
+  ],
+  "require": {
+    "php": ">=5.4",
+    "ext-ftp": "*"
+  },
+  "autoload": {
+    "psr-0": {"FtpClient": "src/"}
+  }
+}

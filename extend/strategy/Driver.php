@@ -16,6 +16,8 @@ namespace strategy;
  */
 interface Driver
 {
+    public function __construct($options = []);
+
     /**
      * 创建文件
      *

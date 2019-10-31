@@ -29,4 +29,8 @@ return [
         'name'  => '又拍云USS',
         'class' => \strategy\driver\Uss::class
     ],
+    'remote'  => [
+        'name'  => '远程',
+        'class' => \strategy\driver\Remote::class
+    ],
 ];

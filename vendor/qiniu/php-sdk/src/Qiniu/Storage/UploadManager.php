@@ -46,7 +46,7 @@ final class UploadManager
         $data,
         $params = null,
         $mime = 'application/octet-stream',
-        $fname = null
+        $fname = "default_filename"
     ) {
     
         $params = self::trimParams($params);

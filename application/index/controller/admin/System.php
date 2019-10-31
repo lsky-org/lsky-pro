@@ -10,6 +10,7 @@ namespace app\index\controller\admin;
 
 use app\common\model\Config;
 use think\Db;
+use app\common\model\Images;
 use think\Exception;
 
 /**
@@ -50,14 +51,14 @@ class System extends Base
 
     public function console()
     {
-        $storage = Db::name('images')->sum('size');
-        $imagesCount = Db::name('images')->count();
-        $suspiciousImagesCount = Db::name('images')->where('suspicious', 1)->count();
-        $users_count = Db::name('users')->count();
-        $today = Db::name('images')->whereTime('create_time', 'today')->count();
-        $yesterday = Db::name('images')->whereTime('create_time', 'yesterday')->count();
-        $month = Db::name('images')->whereTime('create_time', 'month')->count();
-        $tourists = Db::name('images')->where('user_id', 0)->count();
+        $storage = Images::sum('size');
+        $imagesCount = Images::count();
+        $suspiciousImagesCount = Images::where('suspicious', 1)->count();
+        $users_count = \app\common\model\Users::count();
+        $today = Images::whereTime('create_time', 'today')->count();
+        $yesterday = Images::whereTime('create_time', 'yesterday')->count();
+        $month = Images::whereTime('create_time', 'month')->count();
+        $tourists = Images::where('user_id', 0)->count();
 
         $this->assign([
             'storage' => format_size($storage, true), // 占用储存
