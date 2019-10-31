@@ -47,55 +47,53 @@ class User extends Base
 
     public function deleteImages($deleteId = null)
     {
-        if ($this->request->isPost()) {
-            Db::startTrans();
-            try {
-                $id = $deleteId ? $deleteId : $this->request->post('id');
-                $deletes = []; // 需要删除的文件
-                if (is_array($id)) {
-                    $images = Images::all($id);
-                    foreach ($images as &$value) {
-                        $deletes[$value->strategy][] = $value->pathname;
-                        $value->delete();
-                        unset($value);
-                    }
-                } else {
-                    $image = Images::get($id);
-                    if (!$image) {
-                        throw new Exception('没有找到该图片数据');
-                    }
-                    $deletes[$image->strategy][] = $image->pathname;
-                    $image->delete();
+        Db::startTrans();
+        try {
+            $id = $deleteId ? $deleteId : $this->request->post('id');
+            $deletes = []; // 需要删除的文件
+            if (is_array($id)) {
+                $images = Images::all($id);
+                foreach ($images as &$value) {
+                    $deletes[$value->strategy][] = $value->pathname;
+                    $value->delete();
+                    unset($value);
                 }
-                // 是否开启软删除(开启了只删除记录，不删除文件)
-                if (!$this->config['soft_delete']) {
-                    $strategy = [];
-                    // 实例化所有储存策略驱动
-                    $strategyAll = array_keys(Config::pull('strategy'));
-                    foreach ($strategyAll as $value) {
-                        // 获取储存策略驱动
-                        $strategy[$value] = $this->getStrategyInstance($value);
-                    }
+            } else {
+                $image = Images::get($id);
+                if (!$image) {
+                    throw new Exception('没有找到该图片数据');
+                }
+                $deletes[$image->strategy][] = $image->pathname;
+                $image->delete();
+            }
+            // 是否开启软删除(开启了只删除记录，不删除文件)
+            if (!$this->config['soft_delete']) {
+                $strategy = [];
+                // 实例化所有储存策略驱动
+                $strategyAll = array_keys(Config::pull('strategy'));
+                foreach ($strategyAll as $value) {
+                    // 获取储存策略驱动
+                    $strategy[$value] = $this->getStrategyInstance($value);
+                }
 
-                    foreach ($deletes as $key => $val) {
-                        if (1 === count($val)) {
-                            if (!$strategy[$key]->delete(isset($val[0]) ? $val[0] : null)) {
-                                throw new Exception('删除失败');
-                            }
-                        } else {
-                            if (!$strategy[$key]->deletes($val)) {
-                                throw new Exception('批量删除失败');
-                            }
+                foreach ($deletes as $key => $val) {
+                    if (1 === count($val)) {
+                        if (!$strategy[$key]->delete(isset($val[0]) ? $val[0] : null)) {
+                            throw new Exception('删除失败');
+                        }
+                    } else {
+                        if (!$strategy[$key]->deletes($val)) {
+                            throw new Exception('批量删除失败');
                         }
                     }
                 }
-                Db::commit();
-            } catch (Exception $e) {
-                Db::rollback();
-                return $deleteId ? false : $this->error($e->getMessage());
             }
-            return $deleteId ? true : $this->success('删除成功');
+            Db::commit();
+        } catch (Exception $e) {
+            Db::rollback();
+            return $deleteId ? false : $this->error($e->getMessage());
         }
+        return $deleteId ? true : $this->success('删除成功');
     }
 
     public function createFolder()
