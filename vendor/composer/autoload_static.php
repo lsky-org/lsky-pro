@@ -129,6 +129,13 @@ class ComposerStaticInitf1a511e38c2f284964a16f1eeccf1745
                 0 => __DIR__ . '/..' . '/guzzle/guzzle/src',
             ),
         ),
+        'F' => 
+        array (
+            'FtpClient' => 
+            array (
+                0 => __DIR__ . '/..' . '/nicolab/php-ftp-client/src',
+            ),
+        ),
     );
 
     public static function getInitializer(ClassLoader $loader)

@@ -23,7 +23,8 @@
         "upyun/sdk": "^3.3",
         "qcloud/cos-sdk-v5": "^1.2",
         "topthink/think-image": "^1.0",
-        "phpmailer/phpmailer": "^6.0"
+        "phpmailer/phpmailer": "^6.0",
+        "nicolab/php-ftp-client": "^1.5"
     },
     "autoload": {
         "psr-4": {
