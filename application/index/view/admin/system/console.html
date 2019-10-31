@@ -10,7 +10,9 @@
         <div class="mdui-col item mdui-m-b-2">
           <div class="mdui-color-blue mdui-text-center mdui-text-color-white mdui-p-a-2 mdui-shadow-4 mdui-hoverable">
             <p><i class="mdui-icon material-icons">&#xe623;</i> 占用储存</p>
-            <span class="mdui-text-color-amber">{$storage[0]} <small class="mdui-text-color-white">{$storage[1]}</small></span>
+            <span class="mdui-text-color-amber">{$storage[0]}
+              <small class="mdui-text-color-white">{if $storage[0]}{$storage[1]}{else/}Kb{/if}</small>
+            </span>
           </div>
         </div>
         <div class="mdui-col item mdui-m-b-2">
