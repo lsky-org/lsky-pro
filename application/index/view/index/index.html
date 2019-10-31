@@ -12,6 +12,12 @@
 <div class="mdui-container">
   <main>
     <div class="upload-container">
+      {if $config.notice}
+      <div class="alert alert-info alert-dismissible fade show">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        {$config.notice|raw}
+      </div>
+      {/if}
       <div class="title">
         <h1>Image Upload</h1>
         <p>最大可上传 {:round($config.upload_max_size / 1024 / 1024)} MB的图片，单次同时可选择 {$config.upload_single_num} 张。本站已托管 {$images_count} 张图片。</p>
