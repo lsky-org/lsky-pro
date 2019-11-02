@@ -10,7 +10,7 @@
 namespace strategy\driver;
 
 use FtpClient\FtpException;
-use strategy\driver;
+use strategy\Driver;
 
 class Remote implements Driver
 {
