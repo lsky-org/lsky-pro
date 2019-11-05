@@ -37,7 +37,7 @@ class Upload extends Base
             Db::commit();
         } catch (Exception $e) {
             Db::rollback();
-            return $this->response($e->getMessage(), null, 500);
+            return $this->response($e->getMessage(), [], 500);
         }
         return $this->response('success', $data);
     }
