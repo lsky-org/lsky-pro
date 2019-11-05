@@ -76,7 +76,7 @@ class Base extends Controller
         $response = Response::create([
             'code' => $code,
             'msg' => $msg,
-            'data' => $data,
+            'data' => $data ?: new \stdClass(),
             'time' => time()
         ], $this->format, 200);
 
