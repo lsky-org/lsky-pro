@@ -227,6 +227,301 @@ Content-Type: image/png
   "time": 1544245931
 }</pre>
     </div>
+
+    <div class="mdui-shadow-2 mdui-m-t-2 mdui-m-b-1 mdui-p-a-3 mdui-text-color-red">
+      注意：以下接口均需要 Token
+    </div>
+    <div class="mdui-m-b-2">
+      <h2>3. 获取图片列表</h2>
+      <div class="mdui-row">
+        <div class="mdui-col-md-6">
+          <div class="mdui-table-fluid mdui-m-t-1">
+            <table class="mdui-table">
+              <thead>
+              <tr>
+                <td>功能</td>
+                <td>接口</td>
+              </tr>
+              </thead>
+              <tbody>
+              <tr>
+                <td>请求方式</td>
+                <td>POST</td>
+              </tr>
+              <tr>
+                <td>URL</td>
+                <td>{$domain}/api/images</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <h4 class="mdui-m-t-2 mdui-m-b-1">请求参数</h4>
+      <div class="mdui-table-fluid">
+        <table class="mdui-table">
+          <thead>
+          <tr>
+            <td>参数名称</td>
+            <td>类型</td>
+            <td>是否必须</td>
+            <td>说明</td>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>page</td>
+            <td>String</td>
+            <td>是</td>
+            <td>页码</td>
+          </tr>
+          <tr>
+            <td>rows</td>
+            <td>String</td>
+            <td>否</td>
+            <td>每页数量, 默认 20 条</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      <h4 class="mdui-m-t-2 mdui-m-b-1">返回数据(data)说明</h4>
+      <div class="mdui-table-fluid">
+        <table class="mdui-table">
+          <thead>
+          <tr>
+            <td>参数名称</td>
+            <td>类型</td>
+            <td>实例值</td>
+            <td>说明</td>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>total</td>
+            <td>Number</td>
+            <td>999</td>
+            <td>数据总量</td>
+          </tr>
+          <tr>
+            <td>per_page</td>
+            <td>String</td>
+            <td>1</td>
+            <td>每页数量</td>
+          </tr>
+          <tr>
+            <td>current_page</td>
+            <td>Number</td>
+            <td>1</td>
+            <td>当前所在页码</td>
+          </tr>
+          <tr>
+            <td>last_page</td>
+            <td>Number</td>
+            <td>999</td>
+            <td>最后一页页码</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      <h4 class="mdui-m-t-2 mdui-m-b-1">图片数据说明</h4>
+      <div class="mdui-table-fluid">
+        <table class="mdui-table">
+          <thead>
+          <tr>
+            <td>参数名称</td>
+            <td>类型</td>
+            <td>实例值</td>
+            <td>说明</td>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>id</td>
+            <td>Number</td>
+            <td>1</td>
+            <td>图片ID</td>
+          </tr>
+          <tr>
+            <td>strategy</td>
+            <td>String</td>
+            <td>oss</td>
+            <td>储存策略, (cos:腾讯云, kodo:七牛云, local:本地, oss:阿里云oss, remote:远程储存, uss:又拍云)</td>
+          </tr>
+          <tr>
+            <td>path</td>
+            <td>String</td>
+            <td>2019/10/31</td>
+            <td>图片所在路径</td>
+          </tr>
+          <tr>
+            <td>name</td>
+            <td>String</td>
+            <td>929616303ca92.jpg</td>
+            <td>图片名称</td>
+          </tr>
+          <tr>
+            <td>pathname</td>
+            <td>String</td>
+            <td>2019/10/31/929616303ca92.jpg</td>
+            <td>图片路径+名称</td>
+          </tr>
+          <tr>
+            <td>size</td>
+            <td>String</td>
+            <td>30405.00</td>
+            <td>图片大小(字节: b)</td>
+          </tr>
+          <tr>
+            <td>mime</td>
+            <td>String</td>
+            <td>image/jpeg</td>
+            <td>图片 mime 类型</td>
+          </tr>
+          <tr>
+            <td>sha1</td>
+            <td>String</td>
+            <td>0143f7904f12e2a76ff2935f21a771b8adadf961</td>
+            <td>图片 sha1 值</td>
+          </tr>
+          <tr>
+            <td>md5</td>
+            <td>String</td>
+            <td>e630c1d832f1701b0afe09cfe86a7f2b</td>
+            <td>图片 md5 值</td>
+          </tr>
+          <tr>
+            <td>ip</td>
+            <td>String</td>
+            <td>192.168.0.1</td>
+            <td>上传者 IP</td>
+          </tr>
+          <tr>
+            <td>suspicious</td>
+            <td>Number</td>
+            <td>0</td>
+            <td>是否是可疑图片, (0:否, 1:是)</td>
+          </tr>
+          <tr>
+            <td>update_time</td>
+            <td>Number</td>
+            <td>1572491936</td>
+            <td>图片上传时间</td>
+          </tr>
+          <tr>
+            <td>update_date</td>
+            <td>String</td>
+            <td>2019-10-31 11:18:56</td>
+            <td>图片上传日期</td>
+          </tr>
+          <tr>
+            <td>url</td>
+            <td>String</td>
+            <td>http://domain.com/2019/10/31/929616303ca92.jpg</td>
+            <td>图片链接</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="mdui-m-b-2">
+      <h2>4. 获取单张图片</h2>
+      <div class="mdui-row">
+        <div class="mdui-col-md-6">
+          <div class="mdui-table-fluid mdui-m-t-1">
+            <table class="mdui-table">
+              <thead>
+              <tr>
+                <td>功能</td>
+                <td>接口</td>
+              </tr>
+              </thead>
+              <tbody>
+              <tr>
+                <td>请求方式</td>
+                <td>POST</td>
+              </tr>
+              <tr>
+                <td>URL</td>
+                <td>{$domain}/api/image</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <h4 class="mdui-m-t-2 mdui-m-b-1">请求参数</h4>
+      <div class="mdui-table-fluid">
+        <table class="mdui-table">
+          <thead>
+          <tr>
+            <td>参数名称</td>
+            <td>类型</td>
+            <td>是否必须</td>
+            <td>说明</td>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>id</td>
+            <td>String</td>
+            <td>是</td>
+            <td>图片ID</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      <h4 class="mdui-m-t-2 mdui-m-b-1">返回数据(data)与第三条相同</h4>
+    </div>
+
+    <div class="mdui-m-b-2">
+      <h2>5. 删除图片</h2>
+      <div class="mdui-row">
+        <div class="mdui-col-md-6">
+          <div class="mdui-table-fluid mdui-m-t-1">
+            <table class="mdui-table">
+              <thead>
+              <tr>
+                <td>功能</td>
+                <td>接口</td>
+              </tr>
+              </thead>
+              <tbody>
+              <tr>
+                <td>请求方式</td>
+                <td>POST</td>
+              </tr>
+              <tr>
+                <td>URL</td>
+                <td>{$domain}/api/delete</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <h4 class="mdui-m-t-2 mdui-m-b-1">请求参数</h4>
+      <div class="mdui-table-fluid">
+        <table class="mdui-table">
+          <thead>
+          <tr>
+            <td>参数名称</td>
+            <td>类型</td>
+            <td>是否必须</td>
+            <td>说明</td>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>id</td>
+            <td>String</td>
+            <td>是</td>
+            <td>图片ID, 删除多个使用逗号分隔</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </main>
 </div>
 {/block}

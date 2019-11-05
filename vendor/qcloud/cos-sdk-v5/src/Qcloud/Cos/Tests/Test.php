@@ -606,6 +606,7 @@ class BucketTest extends \PHPUnit_Framework_TestCase
                         )
                     )
                 ));
+            sleep(3);
             $result = $this->cosClient->getBucketLifecycle(array(
                 // Bucket is required
                 'Bucket' => $this->bucket,

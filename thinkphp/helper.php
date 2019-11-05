@@ -686,7 +686,13 @@ if (!function_exists('widget')) {
      */
     function widget($name, $data = [])
     {
-        return app()->action($name, $data, 'widget');
+        $result = app()->action($name, $data, 'widget');
+
+        if (is_object($result)) {
+            $result = $result->getContent();
+        }
+
+        return $result;
     }
 }
 

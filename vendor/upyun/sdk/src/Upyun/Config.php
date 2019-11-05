@@ -32,7 +32,7 @@ class Config
     public $useSsl;
 
     /**
-     * @var string 上传使用的接口类型，可以设置为 `REST`：使用 rest api 上传，`AUTO` 根据文件大小自动判断，`BLOCK` 使用断点续传
+     * @var string 上传使用的接口类型，可以设置为 `REST`：使用 rest api 上传，`AUTO` 根据文件大小自动判断，`BLOCK` 使用串行式断点续传，`BLOCK_PARALLEL` 使用并行式断点续传
      * 当上传小文件时，不推荐使用断点续传；上传时如果设置了异步预处理`withAsyncProcess=true`，将会使用表单 api 上传
      */
     public $uploadType = 'AUTO';
@@ -41,6 +41,11 @@ class Config
      * @var int 上传的接口类型设置为 `AUTO` 时，文件大小的边界值：小于该值时，使用 rest api，否则使用断点续传。 默认 30M
      */
     public $sizeBoundary = 31457280;
+
+    /**
+     * @var int 并行式断点续传的并发数
+     */
+    public $concurrency = 5;
 
     /**
      * @var int request timeout seconds
@@ -143,5 +148,15 @@ class Config
     public function getProtocol()
     {
         return $this->useSsl ? 'https://' : 'http://';
+    }
+
+    public function setUploadType($uploadType)
+    {
+        $this->uploadType = $uploadType;
+    }
+
+    public function setConcurrency($concurrency)
+    {
+        $this->concurrency = $concurrency;
     }
 }

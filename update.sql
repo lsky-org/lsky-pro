@@ -76,3 +76,14 @@ UPDATE `lsky_config` SET `value` = '1.5.3' WHERE `lsky_config`.`name` = 'system_
 
 -- v1.5.4
 UPDATE `lsky_config` SET `value` = '1.5.4' WHERE `lsky_config`.`name` = 'system_version';
+
+-- v1.5.5
+UPDATE `lsky_config` SET `value` = '1.5.5' WHERE `lsky_config`.`name` = 'system_version';
+INSERT IGNORE INTO `lsky_config` (`id`, `key`, `type`, `input_type`, `name`, `title`, `tip`, `value`, `extend`) VALUES
+(NULL, 'basics', 'textarea', 'textarea', 'notice', '系统公告', '支持html', '', ''),
+(NULL, 'remote', 'text', 'text', 'remote_cdn_domain', '域名', NULL, '', ''),
+(NULL, 'remote', 'select', 'text', 'remote_type', '远程储存类型', NULL, 'ftp', '{\"ftp\":\"Ftp\"}'),
+(NULL, 'remote', 'text', 'text', 'remote_host', '连接地址', NULL, '', ''),
+(NULL, 'remote', 'text', 'text', 'remote_name', '登录账号', NULL, '', ''),
+(NULL, 'remote', 'text', 'password', 'remote_password', '登录密码', NULL, '', ''),
+(NULL, 'remote', 'text', 'number', 'remote_port', '连接端口', NULL, '21', '');

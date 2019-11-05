@@ -377,7 +377,7 @@ class Upyun
             case self::$PROCESS_TYPE_SYNC_FILE:
                 $options['app_name'] = 'spiderman';
                 break;
-            case self::$PROCESS_TYPE_SYNC_FILE:
+            case self::$PROCESS_TYPE_CONVERT:
                 $options['app_name'] = 'uconvert';
                 break;
             case self::$PROCESS_TYPE_STITCH:
@@ -460,7 +460,7 @@ class Upyun
      * @param string $file 需要剪辑的又拍云云存储中的 m3u8 文件路径
      * @param string $saveAs 剪辑完成后新的 m3u8 文件保存路径
      * @param array $slice 需要被保留或删除的片段。
-     * @param bool $$isInclude 默认为 `true` 表示 `$slice` 参数描述的片段被保留，否则表示 `$slice` 参数描述的片段被删除
+     * @param bool $isInclude 默认为 `true` 表示 `$slice` 参数描述的片段被保留，否则表示 `$slice` 参数描述的片段被删除
      * @param bool $index 指定 `$slice` 参数的格式，默认为 `false` 表示使用时间范围描述片段，单位秒：`[<开始时间>, <结束时间>]`；`true` 表示使用 `m3u8` 文件的分片序号，从 0 开始，这种方式可以一次对多个片段操作
      *
      * @return array 见 [m3u8 剪辑 - 响应](http://docs.upyun.com/cloud/sync_video/#_6)
@@ -473,7 +473,7 @@ class Upyun
             'save_as' => $saveAs,
             'index' => $index,
         ];
-        if ($$isInclude) {
+        if ($isInclude) {
             $params['include'] = $slice;
         } else {
             $params['exclude'] = $slice;

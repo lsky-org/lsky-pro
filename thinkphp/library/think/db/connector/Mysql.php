@@ -136,7 +136,27 @@ class Mysql extends Connection
      */
     protected function getExplain($sql)
     {
-        $pdo    = $this->linkID->query("EXPLAIN " . $sql);
+        $pdo = $this->linkID->prepare("EXPLAIN " . $this->queryStr);
+
+        foreach ($this->bind as $key => $val) {
+            // 占位符
+            $param = is_int($key) ? $key + 1 : ':' . $key;
+
+            if (is_array($val)) {
+                if (PDO::PARAM_INT == $val[1] && '' === $val[0]) {
+                    $val[0] = 0;
+                } elseif (self::PARAM_FLOAT == $val[1]) {
+                    $val[0] = is_string($val[0]) ? (float) $val[0] : $val[0];
+                    $val[1] = PDO::PARAM_STR;
+                }
+
+                $result = $pdo->bindValue($param, $val[0], $val[1]);
+            } else {
+                $result = $pdo->bindValue($param, $val);
+            }
+        }
+
+        $pdo->execute();
         $result = $pdo->fetch(PDO::FETCH_ASSOC);
         $result = array_change_key_case($result);
 

@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit04f78adc0d26d025ab398ddde054e232
+class ComposerStaticInitf1a511e38c2f284964a16f1eeccf1745
 {
     public static $files = array (
         '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
@@ -129,14 +129,21 @@ class ComposerStaticInit04f78adc0d26d025ab398ddde054e232
                 0 => __DIR__ . '/..' . '/guzzle/guzzle/src',
             ),
         ),
+        'F' => 
+        array (
+            'FtpClient' => 
+            array (
+                0 => __DIR__ . '/..' . '/nicolab/php-ftp-client/src',
+            ),
+        ),
     );
 
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit04f78adc0d26d025ab398ddde054e232::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit04f78adc0d26d025ab398ddde054e232::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInit04f78adc0d26d025ab398ddde054e232::$prefixesPsr0;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitf1a511e38c2f284964a16f1eeccf1745::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitf1a511e38c2f284964a16f1eeccf1745::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInitf1a511e38c2f284964a16f1eeccf1745::$prefixesPsr0;
 
         }, null, ClassLoader::class);
     }

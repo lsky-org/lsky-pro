@@ -160,7 +160,10 @@ class View
      */
     public function filter($filter)
     {
-        $this->filter = $filter;
+        if ($filter) {
+            $this->filter = $filter;
+        }
+
         return $this;
     }
 

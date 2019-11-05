@@ -1,0 +1,7 @@
+/vendor
+composer.phar
+composer.lock
+.DS_Store
+Thumbs.db
+/.Trash-1000
+.idea/

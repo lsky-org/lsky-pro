@@ -12,7 +12,7 @@ use Qcloud\Cos\Signature;
 use Qcloud\Cos\TokenListener;
 
 class Client extends GSClient {
-    const VERSION = '1.3.2';
+    const VERSION = '1.3.4';
 
     private $region;       // string: region.
     private $credentials;
@@ -66,7 +66,6 @@ class Client extends GSClient {
         $this->addSubscriber(new TokenListener($this->token));
         $this->addSubscriber(new SignatureListener($this->secretId, $this->secretKey));
         $this->addSubscriber(new BucketStyleListener($this->appId, $this->ip, $this->port, $this->endpoint));
-        // Allow for specifying bodies with file paths and file handles
         $this->addSubscriber(new UploadBodyListener(array('PutObject', 'UploadPart')));
     }
 
@@ -122,6 +121,7 @@ class Client extends GSClient {
                 ) + $options['params']);
 
             $rt['Location'] = $rt['ObjectURL'];
+            $rt['Location'] = ltrim($rt['Location'], $this->schema. "://");
             unset($rt['ObjectURL']);
         }
         else {
@@ -132,6 +132,8 @@ class Client extends GSClient {
                 ) + $options['params']);
 
             $rt = $multipartUpload->performUploading();
+            unset($rt['Bucket']);
+            unset($rt['Key']);
         }
         return $rt;
     }

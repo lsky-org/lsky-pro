@@ -105,4 +105,28 @@ class Rest
         }
         return $this;
     }
+
+    public function toRequest()
+    {
+        $url = $this->endpoint . $this->storagePath;
+        $body = null;
+        if ($this->file && $this->method === 'PUT') {
+            $body = $this->file;
+        }
+
+        $request = new Psr7\Request(
+            $this->method,
+            Util::encodeURI($url),
+            $this->headers,
+            $body
+        );
+        $authHeader = Signature::getHeaderSign($this->config,
+            $this->method,
+            $request->getUri()->getPath()
+        );
+        foreach ($authHeader as $head => $value) {
+            $request = $request->withHeader($head, $value);
+        }
+        return $request;
+    }
 }
