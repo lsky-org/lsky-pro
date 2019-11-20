@@ -24,6 +24,8 @@
       </div>
       <form action="" method="post" enctype="multipart/form-data">
         <input id="image" style="display: none;" type="file" multiple name="image" accept="image/*">
+        <br>
+        <input id="album" class="input-group form-control" type="text" name="album" placeholder="上传到相册" tabindex="500">
       </form>
       <div class="success-info">
         <div class="mdui-tab mdui-tab-scrollable" mdui-tab>
@@ -100,6 +102,12 @@
     //browseClass: "btn btn-file",
     maxFileSize: "{$config.upload_max_size / 1024}",// kb
     maxFileCount: "{$config.upload_single_num}",
+    uploadExtraData: function(previewId, index) {
+                    var data = {
+                        album : $('#album').val(),
+                    };
+                    return data;
+                },
     showCaption: true,
     dropZoneEnabled: true,
     browseIcon: "<i class=\"glyphicon glyphicon-picture\"></i> ",
