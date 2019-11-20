@@ -87,6 +87,18 @@ return [
             'explain' => '16位随机字符串',
             'value' => str_rand(),
         ],
+        [
+            'name' => '{input}',
+            'example' => 'life、宠物',
+            'explain' => '上传到相册名字，上传时由用户输入指定，比如上传时输入 life，则会上传到 path-store/life/文件夹下',
+            'value' => $md5,
+        ],
+        [
+            'name' => '{input_with_user}',
+            'example' => 'life、宠物',
+            'explain' => '上传到相册名字，上传时由用户输入指定，路径带有当前用户名前缀，比如上传时输入 life，则会上传到: path-store/username/life/文件夹下',
+            'value' => $md5,
+        ],
     ],
     'file' => [
         [
