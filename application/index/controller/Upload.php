@@ -211,9 +211,9 @@ class Upload extends Base
         $fileRule = $this->config['file_naming_rule'];
 
         if ($pathRule === '{input}') {
-            $path = trim($_POST['album'], '/');
+            $path = trim(input('album'), '/');
         } elseif ($pathRule === '{input_with_user}') {
-            $path = trim($this->user->username . '/' . $_POST['album'], '/');
+            $path = trim($this->user->username . '/' . input('album'), '/');
         } else {
             $path = trim(str_replace(
                 array_column($naming['path'], 'name'),
