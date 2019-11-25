@@ -107,6 +107,13 @@ Container::get('app')->bind('index')->run()->send();
 - Email: i@wispx.cn
 - Blog：[https://www.wispx.cn](https://www.wispx.cn)
 
+捐赠
+---
+Lsky Pro 的开发和更新等，都是作者在空余时间独立开发，并免费开源使用，如果您认可我的作品，并且觉得对你有所帮助我们愿意接受来自各方面的捐赠😃。  
+![支付宝](./public/static/app/images/demo/alipay.png) 
+![微信](./public/static/app/images/demo/wechat.jpeg)  
+左图支付宝，右图微信  
+
 鸣谢
 ---
 - ThinkPHP
