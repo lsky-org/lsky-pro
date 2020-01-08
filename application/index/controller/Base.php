@@ -42,7 +42,7 @@ class Base extends Controller
 
         // 检测程序是否已安装
         if (!file_exists(Env::get('config_path') . 'db.php')) {
-            $this->redirect(url('/install'));
+            if (!\config('app.app_debug')) $this->redirect(url('/install'));
         }
 
         $configs = \app\common\model\Config::all();
@@ -60,7 +60,7 @@ class Base extends Controller
 
         // 检测数据库结构更新
         if ($user && $user->is_admin) {
-            if (file_exists(Env::get('root_path') . 'update.sql')) {
+            if (file_exists(Env::get('root_path') . 'update.sql') && !\config('app.app_debug')) {
                 $this->redirect(url('/install/update'));
             }
         }
