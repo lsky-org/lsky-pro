@@ -7,6 +7,6 @@
  */
 
 return [
-    // 色情图片是否直接拦截
+    // 违规图片是否直接拦截
     'intercept_salacity' => false,
 ];
