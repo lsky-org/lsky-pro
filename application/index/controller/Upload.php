@@ -82,12 +82,6 @@ class Upload extends Base
         $strategy = $this->getStrategyInstance();
 
         $pathname = strtolower($this->makePathname($image->getInfo('name')));
-        if (!$strategy->create($pathname, $image->getPathname())) {
-            if (Config::get('app.app_debug')) {
-                throw new Exception($strategy->getError());
-            }
-            throw new Exception('上传失败，请检查策略配置是否正确！');
-        }
 
         $cdnDomain = $currentStrategy . '_cdn_domain';
         $domain = $this->request->domain();
@@ -97,6 +91,19 @@ class Upload extends Base
             }
         }
         $url = make_url($domain, $pathname);
+
+        // 检测是否存在该图片，有则直接返回
+        if ($oldImage = Images::where('md5', $md5)->find()) {
+            $url = make_url($domain, $oldImage->pathname);
+            goto exist;
+        }
+
+        if (!$strategy->create($pathname, $image->getPathname())) {
+            if (Config::get('app.app_debug')) {
+                throw new Exception($strategy->getError());
+            }
+            throw new Exception('上传失败，请检查策略配置是否正确！');
+        }
 
         // 图片鉴黄
         $suspicious = 0;
@@ -154,6 +161,8 @@ class Upload extends Base
             $strategy->delete($pathname);
             throw new Exception('图片数据保存失败');
         }
+
+        exist:
 
         $data = [
             'name' => $image->getInfo('name'),
