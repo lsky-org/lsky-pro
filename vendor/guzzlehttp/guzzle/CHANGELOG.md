@@ -1,5 +1,23 @@
 # Change Log
 
+## 6.5.2 - 2019-12-23
+
+* idn_to_ascii() fix for old PHP versions [#2489](https://github.com/guzzle/guzzle/pull/2489)
+
+## 6.5.1 - 2019-12-21
+
+* Better defaults for PHP installations with old ICU lib [#2454](https://github.com/guzzle/guzzle/pull/2454)
+* IDN support for redirects [#2424](https://github.com/guzzle/guzzle/pull/2424)
+
+## 6.5.0 - 2019-12-07
+
+* Improvement: Added support for reset internal queue in MockHandler. [#2143](https://github.com/guzzle/guzzle/pull/2143)
+* Improvement: Added support to pass arbitrary options to `curl_multi_init`. [#2287](https://github.com/guzzle/guzzle/pull/2287)
+* Fix: Gracefully handle passing `null` to the `header` option. [#2132](https://github.com/guzzle/guzzle/pull/2132)
+* Fix: `RetryMiddleware` did not do exponential delay between retires due unit mismatch. [#2132](https://github.com/guzzle/guzzle/pull/2132)
+* Fix: Prevent undefined offset when using array for ssl_key options. [#2348](https://github.com/guzzle/guzzle/pull/2348)
+* Deprecated `ClientInterface::VERSION`
+
 ## 6.4.1 - 2019-10-23
 
 * No `guzzle.phar` was created in 6.4.0 due expired API token. This release will fix that 

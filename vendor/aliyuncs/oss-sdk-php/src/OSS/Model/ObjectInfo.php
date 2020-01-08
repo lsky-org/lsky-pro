@@ -6,11 +6,11 @@ namespace OSS\Model;
  *
  * Class ObjectInfo
  *
- * listObjects接口中返回的Object列表中的类
+ * The element type of ObjectListInfo, which is the return value type of listObjects
  *
- * listObjects接口返回数据中包含两个Array
- * 一个是拿到的Object列表【可以理解成对应文件系统中的文件列表】
- * 一个是拿到的Prefix列表【可以理解成对应文件系统中的目录列表】
+ * The return value of listObjects includes two arrays
+ * One is the returned ObjectListInfo, which is similar to a file list in a file system.
+ * The other is the returned prefix list, which is similar to a folder list in a file system.
  *
  * @package OSS\Model
  */

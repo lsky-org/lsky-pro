@@ -9,54 +9,54 @@ $ossClient = Common::getOssClient();
 $download_file = "download.jpg";
 if (is_null($ossClient)) exit(1);
 
-//*******************************简单使用***************************************************************
+//******************************* Simple Usage ***************************************************************
 
-// 先把本地的example.jpg上传到指定$bucket, 命名为$object
+// Upload example.jpg to the specified bucket and rename it to $object.
 $ossClient->uploadFile($bucketName, $object, "example.jpg");
 
-// 图片缩放
+// Image resize
 $options = array(
     OssClient::OSS_FILE_DOWNLOAD => $download_file,
     OssClient::OSS_PROCESS => "image/resize,m_fixed,h_100,w_100", );
 $ossClient->getObject($bucketName, $object, $options);
 printImage("imageResize",$download_file);
 
-// 图片裁剪
+// Image crop
 $options = array(
     OssClient::OSS_FILE_DOWNLOAD => $download_file,
     OssClient::OSS_PROCESS => "image/crop,w_100,h_100,x_100,y_100,r_1", );
 $ossClient->getObject($bucketName, $object, $options);
 printImage("iamgeCrop", $download_file);
 
-// 图片旋转
+// Image rotate
 $options = array(
     OssClient::OSS_FILE_DOWNLOAD => $download_file,
     OssClient::OSS_PROCESS => "image/rotate,90", );
 $ossClient->getObject($bucketName, $object, $options);
 printImage("imageRotate", $download_file);
 
-// 图片锐化
+// Image sharpen
 $options = array(
     OssClient::OSS_FILE_DOWNLOAD => $download_file,
     OssClient::OSS_PROCESS => "image/sharpen,100", );
 $ossClient->getObject($bucketName, $object, $options);
 printImage("imageSharpen", $download_file);
 
-// 图片水印
+// Add watermark into a image
 $options = array(
     OssClient::OSS_FILE_DOWNLOAD => $download_file,
     OssClient::OSS_PROCESS => "image/watermark,text_SGVsbG8g5Zu-54mH5pyN5YqhIQ", );
 $ossClient->getObject($bucketName, $object, $options);
 printImage("imageWatermark", $download_file);
 
-// 图片格式转换
+// Image format convertion
 $options = array(
     OssClient::OSS_FILE_DOWNLOAD => $download_file,
     OssClient::OSS_PROCESS => "image/format,png", );
 $ossClient->getObject($bucketName, $object, $options);
 printImage("imageFormat", $download_file);
 
-// 获取图片信息
+// Get image information
 $options = array(
     OssClient::OSS_FILE_DOWNLOAD => $download_file,
     OssClient::OSS_PROCESS => "image/info", );
@@ -65,7 +65,7 @@ printImage("imageInfo", $download_file);
 
 
 /**
- *  生成一个带签名的可用于浏览器直接打开的url, URL的有效期是3600秒
+ * Generate a signed url which could be used in browser to access the object. The expiration time is 1 hour.
  */
  $timeout = 3600;
 $options = array(
@@ -74,7 +74,7 @@ $options = array(
 $signedUrl = $ossClient->signUrl($bucketName, $object, $timeout, "GET", $options);
 Common::println("rtmp url: \n" . $signedUrl);
 
-//最后删除上传的$object
+// Finally delete the $object uploaded.
 $ossClient->deleteObject($bucketName, $object);     
 
 function printImage($func, $imageFile)

@@ -349,6 +349,7 @@ class Url
     // 匹配路由地址
     public function getRuleUrl($rule, &$vars = [], $allowDomain = '')
     {
+        $port = $this->app['request']->port();
         foreach ($rule as $item) {
             list($url, $pattern, $domain, $suffix, $method) = $item;
 
@@ -356,8 +357,8 @@ class Url
                 continue;
             }
 
-            if (!in_array($this->app['request']->port(), [80, 443])) {
-                $domain .= ':' . $this->app['request']->port();
+            if ($port && !in_array($port, [80, 443])) {
+                $domain .= ':' . $port;
             }
 
             if (empty($pattern)) {
@@ -365,11 +366,12 @@ class Url
             }
 
             $type = $this->config['url_common_param'];
+            $keys = [];
 
             foreach ($pattern as $key => $val) {
                 if (isset($vars[$key])) {
-                    $url = str_replace(['[:' . $key . ']', '<' . $key . '?>', ':' . $key, '<' . $key . '>'], $type ? $vars[$key] : urlencode($vars[$key]), $url);
-                    unset($vars[$key]);
+                    $url    = str_replace(['[:' . $key . ']', '<' . $key . '?>', ':' . $key, '<' . $key . '>'], $type ? $vars[$key] : urlencode($vars[$key]), $url);
+                    $keys[] = $key;
                     $url    = str_replace(['/?', '-?'], ['/', '-'], $url);
                     $result = [rtrim($url, '?/-'), $domain, $suffix];
                 } elseif (2 == $val) {
@@ -377,9 +379,13 @@ class Url
                     $url    = str_replace(['/?', '-?'], ['/', '-'], $url);
                     $result = [rtrim($url, '?/-'), $domain, $suffix];
                 } else {
+                    $result = null;
+                    $keys   = [];
                     break;
                 }
             }
+
+            $vars = array_diff_key($vars, array_flip($keys));
 
             if (isset($result)) {
                 return $result;

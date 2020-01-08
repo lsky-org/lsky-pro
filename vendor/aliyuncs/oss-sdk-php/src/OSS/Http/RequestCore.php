@@ -3,7 +3,7 @@ namespace OSS\Http;
 
 
 /**
- * Handles all HTTP requests using cURL and manages the responses.
+ * Handle all HTTP requests using cURL and manages the responses.
  *
  * @version 2011.06.07
  * @copyright 2006-2011 Ryan Parman
@@ -75,7 +75,7 @@ class RequestCore
     public $method;
 
     /**
-     * Stores the proxy settings to use for the request.
+     * Store the proxy settings to use for the request.
      */
     public $proxy = null;
 
@@ -170,14 +170,14 @@ class RequestCore
     public $registered_streaming_write_callback = null;
 
     /**
-     * 请求超时时间， 默认是5184000秒，6天
+     * The request timeout time, which is 5,184,000 seconds,that is, 6 days by default
      *
      * @var int
      */
     public $timeout = 5184000;
 
     /**
-     * 连接超时时间，默认是10秒
+     * The connection timeout time, which is 10 seconds by default
      *
      * @var int
      */
@@ -216,7 +216,7 @@ class RequestCore
     // CONSTRUCTOR/DESTRUCTOR
 
     /**
-     * Constructs a new instance of this class.
+     * Construct a new instance of this class.
      *
      * @param string $url (Optional) The URL to request or service endpoint to query.
      * @param string $proxy (Optional) The faux-url to use for proxy settings. Takes the following format: `proxy://user:pass@hostname:port`
@@ -249,7 +249,7 @@ class RequestCore
     }
 
     /**
-     * Destructs the instance. Closes opened file handles.
+     * Destruct the instance. Closes opened file handles.
      *
      * @return $this A reference to the current instance.
      */
@@ -271,7 +271,7 @@ class RequestCore
     // REQUEST METHODS
 
     /**
-     * Sets the credentials to use for authentication.
+     * Set the credentials to use for authentication.
      *
      * @param string $user (Required) The username to authenticate with.
      * @param string $pass (Required) The password to authenticate with.
@@ -285,7 +285,7 @@ class RequestCore
     }
 
     /**
-     * Adds a custom HTTP header to the cURL request.
+     * Add a custom HTTP header to the cURL request.
      *
      * @param string $key (Required) The custom HTTP header to set.
      * @param mixed $value (Required) The value to assign to the custom HTTP header.
@@ -298,7 +298,7 @@ class RequestCore
     }
 
     /**
-     * Removes an HTTP header from the cURL request.
+     * Remove an HTTP header from the cURL request.
      *
      * @param string $key (Required) The custom HTTP header to set.
      * @return $this A reference to the current instance.
@@ -324,7 +324,7 @@ class RequestCore
     }
 
     /**
-     * Sets a custom useragent string for the class.
+     * Set a custom useragent string for the class.
      *
      * @param string $ua (Required) The useragent string to use.
      * @return $this A reference to the current instance.
@@ -373,7 +373,7 @@ class RequestCore
     }
 
     /**
-     * Sets the length in bytes to read from the stream while streaming up.
+     * Set the length in bytes to read from the stream while streaming up.
      *
      * @param integer $size (Required) The length in bytes to read from the stream.
      * @return $this A reference to the current instance.
@@ -386,7 +386,7 @@ class RequestCore
     }
 
     /**
-     * Sets the resource to read from while streaming up. Reads the stream from its current position until
+     * Set the resource to read from while streaming up. Reads the stream from its current position until
      * EOF or `$size` bytes have been read. If `$size` is not given it will be determined by <php:fstat()> and
      * <php:ftell()>.
      *
@@ -414,7 +414,7 @@ class RequestCore
     }
 
     /**
-     * Sets the file to read from while streaming up.
+     * Set the file to read from while streaming up.
      *
      * @param string $location (Required) The readable location to read from.
      * @return $this A reference to the current instance.
@@ -428,7 +428,7 @@ class RequestCore
     }
 
     /**
-     * Sets the resource to write to while streaming down.
+     * Set the resource to write to while streaming down.
      *
      * @param resource $resource (Required) The writeable resource to write to.
      * @return $this A reference to the current instance.
@@ -441,7 +441,7 @@ class RequestCore
     }
 
     /**
-     * Sets the file to write to while streaming down.
+     * Set the file to write to while streaming down.
      *
      * @param string $location (Required) The writeable location to write to.
      * @return $this A reference to the current instance.
@@ -631,7 +631,7 @@ class RequestCore
     }
 
     /**
-     * Prepares and adds the details of the cURL request. This can be passed along to a <php:curl_multi_exec()>
+     * Prepare and adds the details of the cURL request. This can be passed along to a <php:curl_multi_exec()>
      * function.
      *
      * @return resource The handle for the cURL object.
@@ -685,7 +685,6 @@ class RequestCore
 
         // Enable a proxy connection if requested.
         if ($this->proxy) {
-
             $host = $this->proxy['host'];
             $host .= ($this->proxy['port']) ? ':' . $this->proxy['port'] : '';
             curl_setopt($curl_handle, CURLOPT_PROXY, $host);
@@ -830,7 +829,7 @@ class RequestCore
     }
 
     /**
-     * Sends the request, calling necessary utility functions to update built-in properties.
+     * Send the request, calling necessary utility functions to update built-in properties.
      *
      * @param boolean $parse (Optional) Whether to parse the response with ResponseCore or not.
      * @return string The resulting unparsed data from the request.

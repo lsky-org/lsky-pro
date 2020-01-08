@@ -5,16 +5,17 @@ namespace OSS\Core;
 /**
  * Class MimeTypes
  *
- * 在上传文件的时候，根据文件的缺省名，得到其对应的Content-type
+ * The map of a file's extention name to its corresponding Content-Type value in the file upload request.
+ * If the file extention name is not predefined in this class, getMimetype() returns null.
  *
  * @package OSS\Core
  */
 class MimeTypes
 {
     /**
-     * 根据文件名，获取http协议header中的content-type应该填写的数据
+     * Get the content-type value of http header from the file's extension name.
      *
-     * @param string $name 缺省名
+     * @param string $name Default file extension name.
      * @return string content-type
      */
     public static function getMimetype($name)

@@ -5,7 +5,7 @@ namespace OSS\Model;
 /**
  * Class LiveChannelListInfo
  *
- * ListBucketLiveChannels接口返回数据
+ * The data returned by ListBucketLiveChannels
  *
  * @package OSS\Model
  * @link http://help.aliyun.com/document_detail/oss/api-reference/bucket/GetBucket.html

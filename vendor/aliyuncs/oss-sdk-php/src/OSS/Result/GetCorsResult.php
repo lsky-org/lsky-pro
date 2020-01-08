@@ -18,8 +18,7 @@ class GetCorsResult extends Result
     }
 
     /**
-     * 根据返回http状态码判断，[200-299]即认为是OK, 获取bucket相关配置的接口，404也认为是一种
-     * 有效响应
+     * Check if the response is OK, according to the http status. [200-299]:OK, the Cors config could be got; [404]: not found--no Cors config.
      *
      * @return bool
      */

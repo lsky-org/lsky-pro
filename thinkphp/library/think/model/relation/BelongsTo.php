@@ -11,6 +11,7 @@
 
 namespace think\model\relation;
 
+use Closure;
 use think\Loader;
 use think\Model;
 
@@ -49,7 +50,7 @@ class BelongsTo extends OneToOne
      */
     public function getRelation($subRelation = '', $closure = null)
     {
-        if ($closure) {
+        if ($closure instanceof Closure) {
             $closure($this->query);
         }
 
@@ -79,7 +80,7 @@ class BelongsTo extends OneToOne
      */
     public function getRelationCountQuery($closure, $aggregate = 'count', $field = '*', &$aggregateAlias = '')
     {
-        if ($closure) {
+        if ($closure instanceof Closure) {
             $return = $closure($this->query);
 
             if ($return && is_string($return)) {
@@ -111,7 +112,7 @@ class BelongsTo extends OneToOne
             return 0;
         }
 
-        if ($closure) {
+        if ($closure instanceof Closure) {
             $return = $closure($this->query);
 
             if ($return && is_string($return)) {

@@ -29,7 +29,7 @@ class StorageCapacityConfig implements XmlConfig
     }
 
     /**
-     * 把StorageCapacityConfig序列化成xml
+     * Serialize StorageCapacityConfig into xml
      *
      * @return string
      */

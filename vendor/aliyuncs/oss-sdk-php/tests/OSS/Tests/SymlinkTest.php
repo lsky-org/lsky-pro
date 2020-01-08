@@ -53,7 +53,7 @@ class SymlinkTest extends TestOssClientBase
             $this->ossClient->getObject($bucket, $symlink);
             $this->assertTrue(false);
         }catch (OssException $e){
-            $this->assertEquals('The symlink target object does not exist', $e->getErrorMessage());
+            $this->assertEquals('The specified key does not exist.', $e->getErrorMessage());
         }
     }
 

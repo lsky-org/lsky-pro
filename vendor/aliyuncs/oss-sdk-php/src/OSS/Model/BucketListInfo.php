@@ -5,7 +5,7 @@ namespace OSS\Model;
 /**
  * Class BucketListInfo
  *
- * ListBuckets接口返回的数据类型
+ * It's the type of return value of ListBuckets.
  *
  * @package OSS\Model
  */
@@ -21,7 +21,7 @@ class BucketListInfo
     }
 
     /**
-     * 得到BucketInfo列表
+     * Get the BucketInfo list
      *
      * @return BucketInfo[]
      */
@@ -31,7 +31,7 @@ class BucketListInfo
     }
 
     /**
-     * BucketInfo信息列表
+     * BucketInfo list
      *
      * @var array
      */

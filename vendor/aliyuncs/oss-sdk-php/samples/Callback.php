@@ -7,14 +7,14 @@ $bucket = Common::getBucketName();
 $ossClient = Common::getOssClient();
 if (is_null($ossClient)) exit(1);
 
-//*******************************简单使用***************************************************************
+//******************************* Simple Usage ***************************************************************
 
-/** putObject 使用callback上传内容到oss文件
-  * callbackurl参数指定请求回调的服务器url
-  * callbackbodytype参数可为application/json或application/x-www-form-urlencoded, 可选参数，默认为application/x-www-form-urlencoded
-  * OSS_CALLBACK_VAR参数可以不设置
+/**  putObject Upload content to an OSS file using callback.
+  * The callbackurl specifies the server url for the request callback.
+  * The callbackbodytype can be application/json or application/x-www-form-urlencoded,the optional parameters,the default for the application/x - WWW - form - urlencoded
+  * Users can choose not to set OSS_BACK_VAR
   */
-$url = 
+$url =
     '{
         "callbackUrl":"callback.oss-demo.com:23450",
         "callbackHost":"oss-cn-hangzhou.aliyuncs.com",
@@ -35,17 +35,17 @@ Common::println($result['body']);
 Common::println($result['info']['http_code']);
 
 /**
-  * completeMultipartUpload 使用callback上传内容到oss文件
-  * callbackurl参数指定请求回调的服务器url
-  * callbackbodytype参数可为application/json或application/x-www-form-urlencoded, 可选参数，默认为application/x-www-form-urlencoded
-  * OSS_CALLBACK_VAR参数可以不设置
-  */  
+  * completeMultipartUpload  Upload content to an OSS file using callback.
+  * callbackurl specifies the server url for the request callback
+  * The callbackbodytype can be application/json or application/x-www-form-urlencoded,the optional parameters,the default for the application/x - WWW - form - urlencoded
+  * Users can choose not to set OSS_BACK_VAR.
+ */
 $object = "multipart-callback-test.txt";
 $copiedObject = "multipart-callback-test.txt.copied";
 $ossClient->putObject($bucket, $copiedObject, file_get_contents(__FILE__));
 
 /**
-  *  step 1. 初始化一个分块上传事件, 也就是初始化上传Multipart, 获取upload id
+  *  step 1. Initialize a block upload event, that is, a multipart upload process to get an upload id
   */
 $upload_id = $ossClient->initiateMultipartUpload($bucket, $object);
 
