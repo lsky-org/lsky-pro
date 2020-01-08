@@ -163,7 +163,6 @@ class Upload extends Base
         }
 
         exist:
-
         $data = [
             'name' => $image->getInfo('name'),
             'url' => $url,
