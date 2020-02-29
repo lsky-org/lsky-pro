@@ -4,8 +4,8 @@
 
 {block name="css"}
 <link href="/static/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
-<link href="/static/bootstrap-fileinput/5.0.1/css/fileinput.min.css" rel="stylesheet">
-<link href="/static/bootstrap-fileinput/5.0.1/fontawesome/5.5.0/css/all.css" rossorigin="anonymous" rel="stylesheet">
+<link href="/static/bootstrap-fileinput/5.0.8/css/fileinput.min.css" rel="stylesheet">
+<link href="/static/bootstrap-fileinput/5.0.8/fontawesome/5.5.0/css/all.css" rossorigin="anonymous" rel="stylesheet">
 {/block}
 
 {block name="main"}
@@ -59,12 +59,13 @@
 {block name="js"}
 <script src="/static/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <script src="/static/clipboard.js/2.0.1/clipboard.min.js"></script>
-<script src="/static/bootstrap-fileinput/5.0.1/js/plugins/piexif.min.js"></script>
-<script src="/static/bootstrap-fileinput/5.0.1/js/plugins/sortable.min.js"></script>
-<script src="/static/bootstrap-fileinput/5.0.1/js/plugins/purify.min.js"></script>
-<script src="/static/bootstrap-fileinput/5.0.1/js/fileinput.min.js"></script>
-<script src="/static/bootstrap-fileinput/5.0.1/themes/fas/theme.min.js"></script>
-<script src="/static/bootstrap-fileinput/5.0.1/js/locales/zh.js"></script>
+<script src="/static/bootstrap-fileinput/5.0.8/js/plugins/piexif.min.js"></script>
+<script src="/static/bootstrap-fileinput/5.0.8/js/plugins/sortable.min.js"></script>
+<script src="/static/bootstrap-fileinput/5.0.8/js/plugins/purify.min.js"></script>
+<script src="/static/bootstrap-fileinput/5.0.8/js/fileinput.min.js"></script>
+<script src="/static/bootstrap-fileinput/5.0.8/themes/fas/theme.min.js"></script>
+<script src="/static/bootstrap-fileinput/5.0.8/js/locales/zh.js"></script>
+<script src="/static/sweetalert/2.1.2/sweetalert.min.js"></script>
 <script>
   var clipboard = new ClipboardJS('.copy', {
     text: function(trigger) {
@@ -90,7 +91,7 @@
   };
 
   $("#image").fileinput({
-    uploadUrl: "{:url('upload/upload')}" + '?rand=' + new Date().getTime().toString(36) + Math.random().toString(36).slice(2),
+    uploadUrl: "{:url('upload/upload')}",
     language: "zh",
     theme: "fas",
     previewFileType: "image",
@@ -144,4 +145,75 @@
     $('.file-preview .file-drop-zone .file-preview-thumbnails > [data-template=image]').eq($(this).data('index')).removeClass('hover');
   });
 </script>
+{if 1 == $config.allowed_tourist_upload or $user}
+<script>
+  // Originate from https://sm.ms
+  document.addEventListener('paste', function (event) {
+    var isChrome = false;
+    if ( event.clipboardData || event.originalEvent ) {
+      var clipboardData = (event.clipboardData || event.originalEvent.clipboardData);
+      if ( clipboardData.items ) {
+        // for chrome
+        var  items = clipboardData.items,
+          len = items.length,
+          blob = null;
+        isChrome = true;
+
+        event.preventDefault();
+
+        let images = [];
+        for (var i = 0; i < len; i++) {
+          if (items[i].type.indexOf("image") !== -1) {
+            blob = items[i].getAsFile();
+            images.push(blob);
+          }
+        }
+        if(images.length > 0) {
+          uploadBlobFile(images);
+        }
+        if ( blob !== null ) {
+          var reader = new FileReader();
+          reader.onload = function (event) {
+            var base64_str = event.target.result;
+          }
+
+        }
+      } else {
+        //for firefox
+      }
+    } else {
+    }
+  });
+
+  function uploadBlobFile(images) {
+    var form = $("#image");
+    swal({
+      title: "提醒",
+      text: "是否上传粘贴的图片?",
+      icon: "warning",
+      dangerMode: true,
+      buttons: {
+        cancel: {
+          text: "取消",
+          visible: true,
+          closeModal: true,
+        },
+        confirm: {
+          text: "是",
+          value: true,
+          visible: true,
+          closeModal: true
+        }
+      }
+    }).then(function (willUpload) {
+      if (willUpload) {
+        form.fileinput('readFiles', images);
+        setTimeout(function () {
+          form.fileinput('upload');
+        }, 400)
+      }
+    });
+  }
+</script>
+{/if}
 {/block}

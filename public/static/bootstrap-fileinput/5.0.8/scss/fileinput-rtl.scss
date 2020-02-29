@@ -1,0 +1,136 @@
+/*!
+ * bootstrap-fileinput v5.0.8
+ * http://plugins.krajee.com/file-input
+ *
+ * Krajee RTL (Right To Left) default styling for bootstrap-fileinput.
+ *
+ * Author: Kartik Visweswaran
+ * Copyright: 2014 - 2019, Kartik Visweswaran, Krajee.com
+ *
+ * Licensed under the BSD-3-Clause
+ * https://github.com/kartik-v/bootstrap-fileinput/blob/master/LICENSE.md
+ */
+
+//colors
+$zorba: #a2958a !default;
+$mine-shaft: #333 !default;
+
+//standard measures
+$radius: 4px !default;
+$pad: 5px !default;
+$border: 1px !default;
+
+//operations
+@function multiply($pixels, $multiplier) {
+    @return $pixels * $multiplier;
+}
+
+//@extend-elements
+%set_float_left {
+    float: left;
+}
+
+%set_float_right {
+    float: right;
+}
+
+%set_text_right {
+    text-align: right;
+}
+
+.kv-rtl {
+    direction: rtl;
+    .floating-buttons {
+        left: multiply($pad, 2);
+        right: auto;
+        .btn-kv {
+            margin-left: 0;
+            margin-right: multiply($pad, 0.6);
+        }
+    }
+    .file-caption-icon {
+        left: auto;
+        right: multiply($pad, 1.6);
+    }
+    .close {
+        @extend %set_float_left;
+    }
+    .file-zoom-dialog {
+        @extend %set_text_right;
+    }
+    .file-error-message {
+        pre {
+            @extend %set_text_right;
+        }
+        ul {
+            @extend %set_text_right;
+        }
+    }
+    .file-drop-zone {
+        margin: multiply($pad, 2.4) multiply($pad, 2.4) multiply($pad, 2.4) multiply($pad, 3);
+    }
+    .btn-prev {
+        right: multiply($pad, 0.2);
+        left: auto;
+    }
+    .btn-next {
+        left: multiply($pad, 0.2);
+        right: auto;
+    }
+    .pull-right {
+        float: left !important;
+    }
+    .pull-left {
+        float: right !important;
+    }
+    .float-right {
+        @extend .pull-right;
+    }
+    .float-left {
+        @extend .pull-left;
+    }
+    .kv-zoom-title {
+        direction: ltr;
+    }
+    .krajee-default {
+        &.file-preview-frame {
+            @extend %set_float_right;
+            box-shadow: (-$border) $border multiply($border, 5) 0 $zorba;
+            &:not(.file-preview-error):hover {
+                box-shadow: multiply($border, -3) multiply($border, 3) multiply($border, 5) 0 $mine-shaft;
+            }
+        }
+        .file-actions {
+            @extend %set_float_left;
+        }
+        .file-other-error {
+            @extend %set_float_left;
+        }
+        .file-drag-handle {
+            @extend %set_float_right;
+        }
+        .file-upload-indicator {
+            @extend %set_float_right;
+        }
+    }
+    .kv-zoom-actions .btn-kv {
+        margin-left: 0;
+        margin-right: multiply($pad, 0.6);
+    }
+    .file-caption.icon-visible .file-caption-name {
+        padding-left: 0;
+        padding-right: multiply($pad, 3);
+    }
+    .input-group-btn > .btn:last-child {
+        border-radius: $radius 0 0 $radius;
+    }
+    .input-group .form-control:first-child {
+        border-radius: 0 $radius $radius 0;
+    }
+    .btn-file input[type=file] {
+        left: auto;
+        right: 0;
+        text-align: left;
+        background: none repeat scroll 100% 0 transparent;
+    }
+}
