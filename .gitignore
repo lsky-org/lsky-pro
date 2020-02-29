@@ -4,6 +4,7 @@
 .LSOverride
 .idea
 .vscode
+*.iml
 
 runtime
 /config/db.php
