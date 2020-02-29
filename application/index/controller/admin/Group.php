@@ -50,10 +50,10 @@ class Group extends Base
                     throw new Exception('添加失败');
                 }
             } catch (Exception $e) {
-                return $this->error($e->getMessage());
+                $this->error($e->getMessage());
             }
 
-            return $this->success('添加成功');
+            $this->success('添加成功');
         }
     }
 
@@ -76,9 +76,9 @@ class Group extends Base
                     throw new Exception('编辑失败');
                 }
             } catch (Exception $e) {
-                return $this->error($e->getMessage());
+                $this->error($e->getMessage());
             }
-            return $this->success('编辑成功');
+            $this->success('编辑成功');
         }
     }
 
@@ -105,9 +105,9 @@ class Group extends Base
                 Db::commit();
             } catch (Exception $e) {
                 Db::rollback();
-                return $this->error($e->getMessage());
+                $this->error($e->getMessage());
             }
-            return $this->success('删除成功');
+            $this->success('删除成功');
         }
     }
 
@@ -115,7 +115,7 @@ class Group extends Base
     {
         if ($this->request->isPost()) {
             $id = $this->request->post('id');
-            return $this->success('success', null, GroupModel::find($id));
+            $this->success('success', null, GroupModel::find($id));
         }
     }
 
@@ -126,16 +126,16 @@ class Group extends Base
             $value = $this->request->post('value');
             if (1 != $value) {
                 if (!GroupModel::where('default', 1)->where('id', 'neq', $id)->count()) {
-                    return $this->error('至少保留一个默认分组');
+                    $this->error('至少保留一个默认分组');
                 }
             }
             if (!GroupModel::update([
                 'id' => $id,
                 'default' => $value
             ])) {
-                return $this->error('设置失败');
+                $this->error('设置失败');
             }
-            return $this->success('设置成功');
+            $this->success('设置成功');
         }
     }
 
@@ -145,15 +145,15 @@ class Group extends Base
             $id = $this->request->post('id');
             $strategy = $this->request->post('strategy');
             if (!array_key_exists($strategy, $this->strategyList)) {
-                return $this->error('储存策略不存在');
+                $this->error('储存策略不存在');
             }
             if (!GroupModel::update([
                 'id' => $id,
                 'strategy' => $strategy
             ])) {
-                return $this->error('设置失败');
+                $this->error('设置失败');
             }
-            return $this->success('设置成功');
+            $this->success('设置成功');
         }
     }
 }

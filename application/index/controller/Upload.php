@@ -36,7 +36,7 @@ class Upload extends Base
                 return response($e->getMessage(), 500);
             }
 
-            return $this->result($data, 200, '上传成功');
+            $this->result($data, 200, '上传成功');
         }
     }
 

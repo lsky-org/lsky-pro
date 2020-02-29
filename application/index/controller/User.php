@@ -35,9 +35,9 @@ class User extends Base
                     return $item;
                 });
             } catch (Exception $e) {
-                return $this->error($e->getMessage());
+                $this->error($e->getMessage());
             }
-            return $this->success('success', null, [
+            $this->success('success', null, [
                 'images' => $images,
                 'folders'=> $folders
             ]);
@@ -113,9 +113,9 @@ class User extends Base
                 }
                 Folders::create($data);
             } catch (Exception $e) {
-                return $this->error($e->getMessage());
+                $this->error($e->getMessage());
             }
-            return $this->success('创建成功');
+            $this->success('创建成功');
         }
     }
 
@@ -133,9 +133,9 @@ class User extends Base
                 Db::commit();
             } catch (Exception $e) {
                 Db::rollback();
-                return $this->error($e->getMessage());
+                $this->error($e->getMessage());
             }
-            return $this->success('删除成功');
+            $this->success('删除成功');
         }
     }
 
@@ -143,7 +143,7 @@ class User extends Base
     {
         if ($this->request->isPost()) {
             $folders = $this->user->folders()->where('parent_id', $parentId)->select();
-            return $this->success('success', null, $folders);
+            $this->success('success', null, $folders);
         }
     }
 
@@ -152,11 +152,11 @@ class User extends Base
         if ($this->request->isPost()) {
             if ($this->user->folders()->where('id', $folderId)->count()) {
                 if (Images::where('id', 'in', $ids)->setField('folder_id', $folderId)) {
-                    return $this->success('移动成功');
+                    $this->success('移动成功');
                 }
-                return $this->error('移动失败');
+                $this->error('移动失败');
             } else {
-                return $this->error('该文件夹不存在！');
+                $this->error('该文件夹不存在！');
             }
         }
     }
@@ -183,9 +183,9 @@ class User extends Base
                 Db::commit();
             } catch (Exception $e) {
                 Db::rollback();
-                return $this->error($e->getMessage());
+                $this->error($e->getMessage());
             }
-            return $this->success('重命名成功');
+            $this->success('重命名成功');
         }
     }
 
@@ -219,9 +219,9 @@ class User extends Base
                 if (!$data['password']) unset($data['password']);
                 $this->user->save($data);
             } catch (Exception $e) {
-                return $this->error($e->getMessage());
+                $this->error($e->getMessage());
             }
-            return $this->success('保存成功');
+            $this->success('保存成功');
         }
         return $this->fetch();
     }

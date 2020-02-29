@@ -117,9 +117,9 @@ class Images extends Base
                 Db::commit();
             } catch (Exception $e) {
                 Db::rollback();
-                return $this->error($e->getMessage());
+                $this->error($e->getMessage());
             }
-            return $this->success('删除成功');
+            $this->success('删除成功');
         }
     }
 
@@ -138,11 +138,11 @@ class Images extends Base
                     }
                 }
             } catch (Exception $e) {
-                return $this->error('获取失败');
+                $this->error('获取失败');
             } catch (RequestException $e) {
-                return $this->error('淘宝接口发生异常，状态码：' . $response->getStatusCode());
+                $this->error('淘宝接口发生异常，状态码：' . $response->getStatusCode());
             }
-            return $this->success('获取成功', null, $data);
+            $this->success('获取成功', null, $data);
         }
     }
 }

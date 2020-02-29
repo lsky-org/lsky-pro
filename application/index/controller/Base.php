@@ -159,7 +159,7 @@ class Base extends Controller
                 throw new Exception('Mailer Error: ' . $mail->ErrorInfo);
             }
         } catch (Exception $e) {
-            return $this->error($e->getMessage());
+            $this->error($e->getMessage());
         }
 
         return true;
