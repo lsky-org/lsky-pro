@@ -51,10 +51,8 @@ class Users extends Model
         return sprintf("%.2f", $this->hasMany('Images', 'user_id', 'id')->sum('size'));
     }
 
-    public static function login($account, $password)
+    public static function login($account, $password, $field = 'email')
     {
-        $field = 'email';
-
         if (!$account) {
             throw new Exception('请输入账号');
         }

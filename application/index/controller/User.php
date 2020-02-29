@@ -197,7 +197,7 @@ class User extends Base
                 $id = $this->request->post('id');
                 $name = $this->request->post('name');
 
-                $validate = Validate::make(['name|名称'  => 'require|max:25|chsDash']);
+                $validate = Validate::make(['name|别名'  => 'require|max:60|chsDash']);
                 if (!$validate->check(['name' => $name])) {
                     throw new \Exception($validate->getError());
                 }

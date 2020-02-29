@@ -14,11 +14,11 @@ use think\facade\Session;
 
 class Auth extends Base
 {
-    public function login($account = null, $password = null)
+    public function login($type = null, $account = null, $password = null)
     {
         if ($this->request->isPost()) {
             try {
-                Users::login($account, $password);
+                Users::login($account, $password, $type);
             } catch (Exception $e) {
                 Session::flash('error', $e->getMessage());
                 return $this->fetch();
