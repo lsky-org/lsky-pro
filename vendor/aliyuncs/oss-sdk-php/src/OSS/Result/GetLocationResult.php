@@ -4,8 +4,8 @@ namespace OSS\Result;
 use OSS\Core\OssException;
 
 /**
- * Class GetLocationResult getBucketLocation接口返回结果类，封装了
- * 返回的xml数据的解析
+ * Class GetLocationResult getBucketLocation interface returns the result class, encapsulated
+ * The returned xml data is parsed
  *
  * @package OSS\Result
  */

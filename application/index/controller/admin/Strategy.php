@@ -42,9 +42,9 @@ class Strategy extends Base
                 Db::commit();
             } catch (Exception $e) {
                 Db::rollback();
-                return $this->error($e->getMessage());
+                $this->error($e->getMessage());
             }
-            return $this->success('保存成功');
+            $this->success('保存成功');
         }
         return $this->fetch();
     }

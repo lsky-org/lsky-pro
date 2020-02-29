@@ -14,11 +14,11 @@ use think\facade\Session;
 
 class Auth extends Base
 {
-    public function login($account = null, $password = null)
+    public function login($type = null, $account = null, $password = null)
     {
         if ($this->request->isPost()) {
             try {
-                Users::login($account, $password);
+                Users::login($account, $password, $type);
             } catch (Exception $e) {
                 Session::flash('error', $e->getMessage());
                 return $this->fetch();
@@ -64,7 +64,7 @@ class Auth extends Base
                     'password|密码' => 'require|confirm',
                 ]);
                 if (true !== $validate) {
-                    return $this->error($validate);
+                    $this->error($validate);
                 }
                 if ($data['code'] != Session::get('code', 'forgot_')) {
                     throw new Exception('验证码不正确');
@@ -75,10 +75,10 @@ class Auth extends Base
                 $user->password = $data['password'];
                 $user->save();
             } catch (Exception $e) {
-                return $this->error($e->getMessage());
+                $this->error($e->getMessage());
             }
             $delSession();
-            return $this->success('重置成功');
+            $this->success('重置成功');
         }
         $delSession();
         return $this->fetch();
@@ -93,23 +93,23 @@ class Auth extends Base
                 'captcha|验证码' => 'require|captcha'
             ]);
             if (true !== $validate) {
-                return $this->error($validate);
+                $this->error($validate);
             }
 
             if (!$user = Users::get(['email' => $data['email']])) {
-                return $this->error('账号不存在');
+                $this->error('账号不存在');
             }
 
             $code = generate_code();
             $err = $this->sendMail($data['email'], '找回密码', "尊敬的 {$user->username}， 您好，您正在申请重置密码操作，本次的验证码是 <b>{$code}</b>，如果不是您本人操作请忽略！");
 
             if (true !== $err) {
-                return $this->error($err);
+                $this->error($err);
             }
 
             Session::set('code', $code, 'forgot_');
             Session::set('email', $data['email'], 'forgot_');
-            return $this->success('发送成功');
+            $this->success('发送成功');
         }
     }
 }

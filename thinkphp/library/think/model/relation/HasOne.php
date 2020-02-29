@@ -11,6 +11,7 @@
 
 namespace think\model\relation;
 
+use Closure;
 use think\db\Query;
 use think\Loader;
 use think\Model;
@@ -50,7 +51,7 @@ class HasOne extends OneToOne
     {
         $localKey = $this->localKey;
 
-        if ($closure) {
+        if ($closure instanceof Closure) {
             $closure($this->query);
         }
 
@@ -79,7 +80,7 @@ class HasOne extends OneToOne
      */
     public function getRelationCountQuery($closure, $aggregate = 'count', $field = '*', &$aggregateAlias = '')
     {
-        if ($closure) {
+        if ($closure instanceof Closure) {
             $return = $closure($this->query);
 
             if ($return && is_string($return)) {
@@ -111,7 +112,7 @@ class HasOne extends OneToOne
             return 0;
         }
 
-        if ($closure) {
+        if ($closure instanceof Closure) {
             $return = $closure($this->query);
             if ($return && is_string($return)) {
                 $name = $return;

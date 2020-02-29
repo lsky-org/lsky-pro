@@ -22,7 +22,7 @@ class CorsConfig implements XmlConfig
     }
 
     /**
-     * 得到CorsRule列表
+     * Get CorsRule list
      *
      * @return CorsRule[]
      */
@@ -33,7 +33,7 @@ class CorsConfig implements XmlConfig
 
 
     /**
-     * 添加一条CorsRule
+     * Add a new CorsRule
      *
      * @param CorsRule $rule
      * @throws OssException
@@ -47,7 +47,7 @@ class CorsConfig implements XmlConfig
     }
 
     /**
-     * 从xml数据中解析出CorsConfig
+     * Parse CorsConfig from the xml.
      *
      * @param string $strXml
      * @throws OssException
@@ -78,7 +78,7 @@ class CorsConfig implements XmlConfig
     }
 
     /**
-     * 生成xml字符串
+     * Serialize the object into xml string.
      *
      * @return string
      */
@@ -105,7 +105,7 @@ class CorsConfig implements XmlConfig
     const OSS_MAX_RULES = 10;
 
     /**
-     * orsRule列表
+     * CorsRule list
      *
      * @var CorsRule[]
      */

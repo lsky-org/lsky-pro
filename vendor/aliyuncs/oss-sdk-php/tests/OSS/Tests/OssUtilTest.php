@@ -222,4 +222,30 @@ BBBB;
         return str_replace("\n", "", str_replace("\r", "", $xml));
     }
 
+	public function testGetHostPortFromEndpoint()
+    {
+        $str =  OssUtil::getHostPortFromEndpoint('http://username:password@hostname:80/path?arg=value#anchor');
+        $this->assertEquals('hostname:80', $str);
+
+        $str =  OssUtil::getHostPortFromEndpoint('hostname:80');
+        $this->assertEquals('hostname:80', $str);
+
+        $str =  OssUtil::getHostPortFromEndpoint('www.hostname.com');
+        $this->assertEquals('www.hostname.com', $str);
+
+        $str =  OssUtil::getHostPortFromEndpoint('http://www.hostname.com');
+        $this->assertEquals('www.hostname.com', $str);
+
+        $str =  OssUtil::getHostPortFromEndpoint('https://www.hostname.com');
+        $this->assertEquals('www.hostname.com', $str);
+
+        $str =  OssUtil::getHostPortFromEndpoint('192.168.1.10:8080');
+        $this->assertEquals('192.168.1.10:8080', $str);
+
+        $str =  OssUtil::getHostPortFromEndpoint('http:///path?arg=value#anchor');
+        $this->assertEquals('', $str);
+
+        $str =  OssUtil::getHostPortFromEndpoint('file://username:password@hostname:80/path?arg=value#anchor');
+        $this->assertEquals('hostname:80', $str);
+    }
 }

@@ -13,7 +13,7 @@ use OSS\Core\OssException;
 class LifecycleConfig implements XmlConfig
 {
     /**
-     * 从xml数据中解析出LifecycleConfig
+     * Parse the xml into this object.
      *
      * @param string $strXml
      * @throws OssException
@@ -48,7 +48,7 @@ class LifecycleConfig implements XmlConfig
 
 
     /**
-     * 生成xml字符串
+     * Serialize the object to xml
      *
      * @return string
      */
@@ -65,7 +65,7 @@ class LifecycleConfig implements XmlConfig
 
     /**
      *
-     * 添加LifecycleRule
+     * Add a LifecycleRule
      *
      * @param LifecycleRule $lifecycleRule
      * @throws OssException
@@ -79,7 +79,7 @@ class LifecycleConfig implements XmlConfig
     }
 
     /**
-     *  将配置转换成字符串，便于用户查看
+     *  Serialize the object into xml string.
      *
      * @return string
      */
@@ -89,7 +89,7 @@ class LifecycleConfig implements XmlConfig
     }
 
     /**
-     * 得到所有的生命周期规则
+     * Get all lifecycle rules.
      *
      * @return LifecycleRule[]
      */

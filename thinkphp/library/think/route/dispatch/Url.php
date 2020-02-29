@@ -60,7 +60,7 @@ class Url extends Dispatch
             $controller = !empty($path) ? array_shift($path) : null;
         }
 
-        if ($controller && !preg_match('/^[A-Za-z][\w|\.]*$/', $controller)) {
+        if ($controller && !preg_match('/^[A-Za-z0-9][\w|\.]*$/', $controller)) {
             throw new HttpException(404, 'controller not exists:' . $controller);
         }
 

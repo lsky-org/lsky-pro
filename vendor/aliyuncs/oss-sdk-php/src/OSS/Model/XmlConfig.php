@@ -10,7 +10,7 @@ interface XmlConfig
 {
 
     /**
-     * 接口定义，实现此接口的类都需要实现从xml数据解析的函数
+     * Interface method: Parse the object from the xml.
      *
      * @param string $strXml
      * @return null
@@ -18,7 +18,7 @@ interface XmlConfig
     public function parseFromXml($strXml);
 
     /**
-     * 接口定义，实现此接口的类，都需要实现把子类序列化成xml字符串的接口
+     * Interface method: Serialize the object into xml.
      *
      * @return string
      */

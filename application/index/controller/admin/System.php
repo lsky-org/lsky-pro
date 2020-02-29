@@ -39,9 +39,9 @@ class System extends Base
                 Db::commit();
             } catch (Exception $e) {
                 Db::rollback();
-                return $this->error($e->getMessage());
+                $this->error($e->getMessage());
             }
-            return $this->success('保存成功');
+            $this->success('保存成功');
         }
         // 命名规则
         $naming = \think\facade\Config::pull('naming');
@@ -80,9 +80,9 @@ class System extends Base
             $email = $this->request->post('email');
             $err = $this->sendMail($email, '测试', '这是一封测试邮件！');
             if (true !== $err) {
-                return $this->error($err);
+                $this->error($err);
             }
-            return $this->success('发送成功');
+            $this->success('发送成功');
         }
     }
 }

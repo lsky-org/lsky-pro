@@ -124,7 +124,7 @@ class Redis implements SessionHandlerInterface
      */
     public function destroy($sessID)
     {
-        return $this->handler->delete($this->config['session_name'] . $sessID) > 0;
+        return $this->handler->del($this->config['session_name'] . $sessID) > 0;
     }
 
     /**

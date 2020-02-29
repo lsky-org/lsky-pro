@@ -105,11 +105,11 @@ class Images extends Base
                     foreach ($deletes as $key => $val) {
                         if (1 === count($val)) {
                             if (!$strategy[$key]->delete(isset($val[0]) ? $val[0] : null)) {
-                                throw new Exception('删除失败');
+                                // throw new Exception('删除失败');
                             }
                         } else {
                             if (!$strategy[$key]->deletes($val)) {
-                                throw new Exception('批量删除失败');
+                                //  throw new Exception('批量删除失败');
                             }
                         }
                     }
@@ -117,9 +117,9 @@ class Images extends Base
                 Db::commit();
             } catch (Exception $e) {
                 Db::rollback();
-                return $this->error($e->getMessage());
+                $this->error($e->getMessage());
             }
-            return $this->success('删除成功');
+            $this->success('删除成功');
         }
     }
 
@@ -138,11 +138,11 @@ class Images extends Base
                     }
                 }
             } catch (Exception $e) {
-                return $this->error('获取失败');
+                $this->error('获取失败');
             } catch (RequestException $e) {
-                return $this->error('淘宝接口发生异常，状态码：' . $response->getStatusCode());
+                $this->error('淘宝接口发生异常，状态码：' . $response->getStatusCode());
             }
-            return $this->success('获取成功', null, $data);
+            $this->success('获取成功', null, $data);
         }
     }
 }

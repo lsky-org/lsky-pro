@@ -75,9 +75,9 @@ class Install extends Controller
                             'hostport' => $hostport,
                         ]);
                     } catch (Exception $e) {
-                        return $this->error($e->getMessage());
+                        $this->error($e->getMessage());
                     }
-                    return $this->success('数据写入成功');
+                    $this->success('数据写入成功');
                 }
                 break;
             case 3:
@@ -146,7 +146,7 @@ EOT;
                         $db->name('users')->insert($data);
                     } catch (Exception $e) {
                         @unlink($configPath . 'db.php');
-                        return $this->error($e->getMessage());
+                        $this->error($e->getMessage());
                     }
                     Session::flash('install_success', true);
                     // 删除sql文件
@@ -156,7 +156,7 @@ EOT;
                     }
                     // 删除session
                     Session::delete('db');
-                    return $this->success('设置成功');
+                    $this->success('设置成功');
                 }
                 break;
         }

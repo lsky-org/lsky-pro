@@ -5,10 +5,10 @@ namespace OSS\Model;
 /**
  * Class PrefixInfo
  *
- * listObjects接口中返回的Prefix列表中的类
- * listObjects接口返回数据中包含两个Array:
- * 一个是拿到的Object列表【可以理解成对应文件系统中的文件列表】
- * 一个是拿到的Prefix列表【可以理解成对应文件系统中的目录列表】
+ * ListObjects return Prefix list of classes
+ * The returned data contains two arrays
+ * One is to get the list of objects【Can be understood as the corresponding file system file list】
+ * One is to get Prefix list【Can be understood as the corresponding file system directory list】
  *
  * @package OSS\Model
  * @link http://help.aliyun.com/document_detail/oss/api-reference/bucket/GetBucket.html

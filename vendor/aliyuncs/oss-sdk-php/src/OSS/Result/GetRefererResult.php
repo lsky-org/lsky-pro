@@ -12,7 +12,7 @@ use OSS\Model\RefererConfig;
 class GetRefererResult extends Result
 {
     /**
-     * 解析RefererConfig数据
+     * Parse RefererConfig data
      *
      * @return RefererConfig
      */
@@ -25,8 +25,8 @@ class GetRefererResult extends Result
     }
 
     /**
-     * 根据返回http状态码判断，[200-299]即认为是OK, 获取bucket相关配置的接口，404也认为是一种
-     * 有效响应
+     * Judged according to the return HTTP status code, [200-299] that is OK, get the bucket configuration interface,
+     * 404 is also considered a valid response
      *
      * @return bool
      */

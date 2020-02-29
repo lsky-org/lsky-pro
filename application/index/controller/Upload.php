@@ -21,23 +21,21 @@ class Upload extends Base
 {
     public function upload()
     {
-        if ($this->request->isPost()) {
-            Db::startTrans();
-            try {
+        Db::startTrans();
+        try {
 
-                $data = $this->execute($this->user);
+            $data = $this->execute($this->user);
 
-                Db::commit();
-            } catch (Exception $e) {
-                Db::rollback();
-                return response($e->getMessage(), 500);
-            } catch (ErrorException $e) {
-                Db::rollback();
-                return response($e->getMessage(), 500);
-            }
-
-            return $this->result($data, 200, '上传成功');
+            Db::commit();
+        } catch (Exception $e) {
+            Db::rollback();
+            return response($e->getMessage(), 500);
+        } catch (ErrorException $e) {
+            Db::rollback();
+            return response($e->getMessage(), 500);
         }
+
+        $this->result($data, 200, '上传成功');
     }
 
     /**
@@ -82,12 +80,6 @@ class Upload extends Base
         $strategy = $this->getStrategyInstance();
 
         $pathname = strtolower($this->makePathname($image->getInfo('name')));
-        if (!$strategy->create($pathname, $image->getPathname())) {
-            if (Config::get('app.app_debug')) {
-                throw new Exception($strategy->getError());
-            }
-            throw new Exception('上传失败，请检查策略配置是否正确！');
-        }
 
         $cdnDomain = $currentStrategy . '_cdn_domain';
         $domain = $this->request->domain();
@@ -97,6 +89,22 @@ class Upload extends Base
             }
         }
         $url = make_url($domain, $pathname);
+
+        // 检测是否存在该图片，有则直接返回
+        if ($oldImage = Images::where('md5', $md5)->where('strategy', $currentStrategy)->find()) {
+            $pathname = $oldImage->pathname;
+            $url = make_url($domain, $pathname);
+            goto exist;
+        }
+
+        if (!$strategy->create($pathname, $image->getPathname())) {
+            if (Config::get('app.app_debug')) {
+                throw new Exception($strategy->getError());
+            }
+            throw new Exception('上传失败，请检查策略配置是否正确！');
+        }
+
+        exist:
 
         // 图片鉴黄
         $suspicious = 0;
@@ -209,23 +217,20 @@ class Upload extends Base
         $naming = Config::pull('naming');
         $pathRule = $this->config['path_naming_rule'];
         $fileRule = $this->config['file_naming_rule'];
-
         $path = trim(str_replace(
             array_column($naming['path'], 'name'),
             array_column($naming['path'], 'value'),
             $pathRule
         ), '/');
-
         if ($fileRule === '{original}') {
             $file = $name;
         } else {
             $file = trim(str_replace(
-                array_column($naming['file'], 'name'),
-                array_column($naming['file'], 'value'),
-                $fileRule
-            ), '/') . '.' . get_file_ext($name);
+                    array_column($naming['file'], 'name'),
+                    array_column($naming['file'], 'value'),
+                    $fileRule
+                ), '/') . '.' . get_file_ext($name);
         }
-
         return $path . '/' . $file;
     }
 }

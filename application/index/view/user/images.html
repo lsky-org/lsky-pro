@@ -53,6 +53,10 @@
             <div class="mdui-col-xs-12 mdui-col-sm-9 mdui-col-md-9 mdui-col-lg-9 mdui-col-xl-9">
               <table>
                 <tbody>
+                <tr class="alias_name">
+                  <td align="right">别名：</td>
+                  <td align="left"></td>
+                </tr>
                 <tr class="url">
                   <td align="right">链接：</td>
                   <td align="left">
@@ -161,15 +165,17 @@
             }
             if (images.length) {
               for (var i = 0; i < images.length; i++) {
+                var filename = images[i].alias_name || images[i].name;
+
                 imagesBox.append(
                   '<div class="mdui-col">' +
-                  '  <div class="item" data-id="' + images[i].id + '" data-json=\'' + JSON.stringify(images[i]) + '\' title=' + images[i].name + '>' +
+                  '  <div class="item" data-id="' + images[i].id + '" data-json=\'' + JSON.stringify(images[i]) + '\' title=' + filename + '>' +
                   '    <i class="choice iconfont icon-choice"></i>' +
                   '    <i class="info iconfont icon-info"></i>' +
                   '      <div class="info image">' +
                   '        <img data-original="' + images[i].url + '" src="' + images[i].url + '">' +
                   '      </div>' +
-                  '    <p class="name">' + images[i].name + '</p>' +
+                  '    <p class="name">' + filename + '</p>' +
                   '  </div>' +
                   '</div>');
               }
@@ -322,6 +328,24 @@
           },
           {text: '新窗口打开图片', href: data.url, target: '_blank'},
           {divider: true},
+          {text: '重命名', action: function (e) {
+              e.preventDefault();
+              mdui.prompt('请输入图片名称',
+                function (value) {
+                  app.ajax("{:url('user/renameImage')}", {
+                    id: data.id,
+                    name: value
+                  }, function (response) {
+                    if (response.code) {
+                      methods.resetData();
+                      return app.msg(true, response.msg);
+                    }
+                    mdui.alert(response.msg);
+                  })
+                }
+              );
+            }
+          },
           {text: '复制链接', action: function (e) {
               e.preventDefault();
               $('#copy-url').attr('data-clipboard-text', data.url).click();

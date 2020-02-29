@@ -87,3 +87,6 @@ INSERT IGNORE INTO `lsky_config` (`id`, `key`, `type`, `input_type`, `name`, `ti
 (NULL, 'remote', 'text', 'text', 'remote_name', '登录账号', NULL, '', ''),
 (NULL, 'remote', 'text', 'password', 'remote_password', '登录密码', NULL, '', ''),
 (NULL, 'remote', 'text', 'number', 'remote_port', '连接端口', NULL, '21', '');
+
+-- v1.5.6
+UPDATE `lsky_config` SET `value` = '1.5.6' WHERE `lsky_config`.`name` = 'system_version';

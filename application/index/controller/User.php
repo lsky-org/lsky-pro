@@ -14,6 +14,7 @@ use think\Db;
 use think\facade\Config;
 use think\facade\Session;
 use think\Exception;
+use think\Validate;
 
 class User extends Base
 {
@@ -35,9 +36,9 @@ class User extends Base
                     return $item;
                 });
             } catch (Exception $e) {
-                return $this->error($e->getMessage());
+                $this->error($e->getMessage());
             }
-            return $this->success('success', null, [
+            $this->success('success', null, [
                 'images' => $images,
                 'folders'=> $folders
             ]);
@@ -79,11 +80,11 @@ class User extends Base
                 foreach ($deletes as $key => $val) {
                     if (1 === count($val)) {
                         if (!$strategy[$key]->delete(isset($val[0]) ? $val[0] : null)) {
-                            throw new Exception('删除失败');
+                            // throw new Exception('删除失败');
                         }
                     } else {
                         if (!$strategy[$key]->deletes($val)) {
-                            throw new Exception('批量删除失败');
+                            // throw new Exception('批量删除失败');
                         }
                     }
                 }
@@ -113,9 +114,9 @@ class User extends Base
                 }
                 Folders::create($data);
             } catch (Exception $e) {
-                return $this->error($e->getMessage());
+                $this->error($e->getMessage());
             }
-            return $this->success('创建成功');
+            $this->success('创建成功');
         }
     }
 
@@ -133,9 +134,9 @@ class User extends Base
                 Db::commit();
             } catch (Exception $e) {
                 Db::rollback();
-                return $this->error($e->getMessage());
+                $this->error($e->getMessage());
             }
-            return $this->success('删除成功');
+            $this->success('删除成功');
         }
     }
 
@@ -143,7 +144,7 @@ class User extends Base
     {
         if ($this->request->isPost()) {
             $folders = $this->user->folders()->where('parent_id', $parentId)->select();
-            return $this->success('success', null, $folders);
+            $this->success('success', null, $folders);
         }
     }
 
@@ -152,11 +153,11 @@ class User extends Base
         if ($this->request->isPost()) {
             if ($this->user->folders()->where('id', $folderId)->count()) {
                 if (Images::where('id', 'in', $ids)->setField('folder_id', $folderId)) {
-                    return $this->success('移动成功');
+                    $this->success('移动成功');
                 }
-                return $this->error('移动失败');
+                $this->error('移动失败');
             } else {
-                return $this->error('该文件夹不存在！');
+                $this->error('该文件夹不存在！');
             }
         }
     }
@@ -183,9 +184,30 @@ class User extends Base
                 Db::commit();
             } catch (Exception $e) {
                 Db::rollback();
-                return $this->error($e->getMessage());
+                $this->error($e->getMessage());
             }
-            return $this->success('重命名成功');
+            $this->success('重命名成功');
+        }
+    }
+
+    public function renameImage()
+    {
+        if ($this->request->isPost()) {
+            try {
+                $id = $this->request->post('id');
+                $name = $this->request->post('name');
+
+                $validate = Validate::make(['name|别名'  => 'require|max:60|chsDash']);
+                if (!$validate->check(['name' => $name])) {
+                    throw new \Exception($validate->getError());
+                }
+                if (!Images::where('id', $id)->update(['alias_name' => $name])) {
+                    throw new \Exception('重命名失败');
+                }
+            } catch (\Exception $e) {
+                $this->error($e->getMessage());
+            }
+            $this->success('重命名成功');
         }
     }
 
@@ -219,9 +241,9 @@ class User extends Base
                 if (!$data['password']) unset($data['password']);
                 $this->user->save($data);
             } catch (Exception $e) {
-                return $this->error($e->getMessage());
+                $this->error($e->getMessage());
             }
-            return $this->success('保存成功');
+            $this->success('保存成功');
         }
         return $this->fetch();
     }

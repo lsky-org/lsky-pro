@@ -45,7 +45,7 @@ class POP3
      *
      * @var string
      */
-    const VERSION = '6.1.1';
+    const VERSION = '6.1.4';
 
     /**
      * Default POP3 port number.
@@ -364,7 +364,7 @@ class POP3
      */
     protected function checkResponse($string)
     {
-        if (substr($string, 0, 3) !== '+OK') {
+        if (strpos($string, '+OK') !== 0) {
             $this->setError("Server reported an error: $string");
 
             return false;

@@ -35,6 +35,7 @@ CREATE TABLE IF NOT EXISTS `lsky_images` (
   `strategy` varchar(32) NOT NULL DEFAULT 'local' COMMENT '储存策略，默认本地',
   `path` varchar(500) NOT NULL COMMENT '保存路径',
   `name` varchar(500) NOT NULL COMMENT '保存名称',
+  `alias_name` varchar(255) NULL DEFAULT NULL COMMENT '别名',
   `pathname` varchar(500) NOT NULL COMMENT '保存名称',
   `size` decimal(12,2) NOT NULL DEFAULT '0.00' COMMENT '图片大小(字节：b)',
   `mime` varchar(32) NOT NULL COMMENT '文件MIME类型',

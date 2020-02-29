@@ -34,6 +34,7 @@
         <tr>
           <th>所属用户</th>
           <th>储存策略</th>
+          <th>别名</th>
           <th>路径</th>
           <th>大小</th>
           <th>类型</th>
@@ -47,6 +48,7 @@
         <tr data-id="{$value.id}">
           <td>{$value.username}</td>
           <td>{$value.strategyStr}</td>
+          <td>{$value.alias_name ?: '-'}</td>
           <td>{$value.pathname}</td>
           <td class="mdui-text-color-light-blue">{$value.size|format_size}</td>
           <td>{$value.mime}</td>

@@ -49,17 +49,17 @@ class Users extends Base
             $id = $this->request->post('id');
             if (is_array($id)) {
                 if (in_array($this->user->id, $id)) {
-                    return $this->error('不能删除自己的账号！');
+                    $this->error('不能删除自己的账号！');
                 }
             } else {
                 if ($id == $this->user->id) {
-                    return $this->error('不能删除自己的账号！');
+                    $this->error('不能删除自己的账号！');
                 }
             }
             if (!UsersModel::destroy($id)) {
-                return $this->error('删除失败');
+                $this->error('删除失败');
             }
-            return $this->success('删除成功');
+            $this->success('删除成功');
         }
     }
 
@@ -69,18 +69,18 @@ class Users extends Base
             $id = $this->request->post('id');
             if (is_array($id)) {
                 if (in_array($this->user->id, $id)) {
-                    return $this->error('不能冻结自己的账号！');
+                    $this->error('不能冻结自己的账号！');
                 }
             } else {
                 if ($id == $this->user->id) {
-                    return $this->error('不能冻结自己的账号！');
+                    $this->error('不能冻结自己的账号！');
                 }
             }
             $model = new UsersModel();
             if (!$model->where('id', 'in', $id)->update(['state' => 0])) {
-                return $this->error('冻结失败');
+                $this->error('冻结失败');
             }
-            return $this->success('冻结成功');
+            $this->success('冻结成功');
         }
     }
 
@@ -89,10 +89,10 @@ class Users extends Base
         if ($this->request->isPost()) {
             $id = $this->request->post('id');
             if (!$user = UsersModel::get($id)) {
-                return $this->error('数据获取失败');
+                $this->error('数据获取失败');
             }
             unset($user->password);
-            return $this->success('成功', null, $user);
+            $this->success('成功', null, $user);
         }
     }
 
@@ -110,9 +110,9 @@ class Users extends Base
                     throw new Exception('修改失败');
                 }
             } catch (Exception $e) {
-                return $this->error($e->getMessage());
+                $this->error($e->getMessage());
             }
-            return $this->success('保存成功');
+            $this->success('保存成功');
         }
     }
 
@@ -122,15 +122,15 @@ class Users extends Base
             $id = $this->request->post('id');
             $state = $this->request->post('state');
             if (!$user = UsersModel::get($id)) {
-                return $this->error('数据获取失败');
+                $this->error('数据获取失败');
             }
             if ($user->id === $this->user->id) {
-                return $this->error('不可修改自己的状态');
+                $this->error('不可修改自己的状态');
             }
             if (!$user->where('id', $id)->setField('state', $state)) {
-                return $this->error('状态修改失败');
+                $this->error('状态修改失败');
             }
-            return $this->success('状态修改成功');
+            $this->success('状态修改成功');
         }
     }
 
@@ -140,12 +140,12 @@ class Users extends Base
             $id = $this->request->post('id');
             $groupId = $this->request->post('group_id');
             if (!$group = \app\common\model\Group::find($groupId)) {
-                return $this->error('数据获取失败');
+                $this->error('数据获取失败');
             }
             if (!UsersModel::where('id', $id)->setField('group_id', $groupId)) {
-                return $this->error('修改失败');
+                $this->error('修改失败');
             }
-            return $this->success('修改成功');
+            $this->success('修改成功');
         }
     }
 }

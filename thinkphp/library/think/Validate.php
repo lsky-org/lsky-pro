@@ -570,7 +570,7 @@ class Validate
                     $result = str_replace(':attribute', $title, $result);
 
                     if (strpos($result, ':rule') && is_scalar($rule)) {
-                        $msg = str_replace(':rule', (string) $rule, $result);
+                        $result = str_replace(':rule', (string) $rule, $result);
                     }
                 }
 
@@ -934,8 +934,8 @@ class Validate
             if (isset($rule[2])) {
                 $imageType = strtolower($rule[2]);
 
-                if ('jpeg' == $imageType) {
-                    $imageType = 'jpg';
+                if ('jpg' == $imageType) {
+                    $imageType = 'jpeg';
                 }
 
                 if (image_type_to_extension($type, false) != $imageType) {

@@ -67,7 +67,7 @@ class Memcached extends Driver
         }
 
         $this->handler->addServers($servers);
-
+        $this->handler->setOption(\Memcached::OPT_COMPRESSION, false);
         if ('' != $this->options['username']) {
             $this->handler->setOption(\Memcached::OPT_BINARY_PROTOCOL, true);
             $this->handler->setSaslAuthData($this->options['username'], $this->options['password']);
@@ -232,7 +232,7 @@ class Memcached extends Driver
                 $this->handler->delete($tagName);
             }
 
-            if (!$this->handler->has($tagName)) {
+            if (!$this->has($tagName)) {
                 $this->handler->set($tagName, '');
             }
 
@@ -255,7 +255,7 @@ class Memcached extends Driver
         if ($this->tag) {
             $tagName = $this->getTagKey($this->tag);
 
-            if ($this->handler->has($tagName)) {
+            if ($this->has($tagName)) {
                 $this->handler->append($tagName, ',' . $name);
             } else {
                 $this->handler->set($tagName, $name);

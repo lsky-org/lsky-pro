@@ -23,7 +23,7 @@ class Remote implements Driver
         try {
             $this->ftp = new \FtpClient\FtpClient();
             $this->ftp->connect($options['remote_host']);
-            $this->ftp->login($options['remote_name'], $options['remote_password']);
+            $this->ftp = $this->ftp->login($options['remote_name'], $options['remote_password']);
         } catch (FtpException $e) {
             $this->error = $e->getMessage();
         }
@@ -39,6 +39,8 @@ class Remote implements Driver
      */
     public function create($pathname, $file)
     {
+        if (!$this->check()) return false;
+
         try {
             $dirname = dirname($pathname);
             if (!$this->ftp->isDir($dirname)) {
@@ -66,6 +68,8 @@ class Remote implements Driver
      */
     public function delete($pathname)
     {
+        if (!$this->check()) return false;
+
         try {
             if (!$this->ftp->remove($pathname, true)) {
                 throw new FtpException('删除失败');
@@ -87,6 +91,8 @@ class Remote implements Driver
      */
     public function deletes(array $list)
     {
+        if (!$this->check()) return false;
+
         try {
             foreach ($list as $item) {
                 if (!$this->ftp->remove($item, true)) {
@@ -109,5 +115,15 @@ class Remote implements Driver
     public function getError()
     {
         return 'Remote：' . $this->error;
+    }
+
+    private function check()
+    {
+        if (!extension_loaded('ftp')) {
+            $this->error = 'php_ftp 拓展未开启';
+            return false;
+        }
+
+        return true;
     }
 }
