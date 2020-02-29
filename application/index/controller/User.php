@@ -14,6 +14,7 @@ use think\Db;
 use think\facade\Config;
 use think\facade\Session;
 use think\Exception;
+use think\Validate;
 
 class User extends Base
 {
@@ -183,6 +184,27 @@ class User extends Base
                 Db::commit();
             } catch (Exception $e) {
                 Db::rollback();
+                $this->error($e->getMessage());
+            }
+            $this->success('重命名成功');
+        }
+    }
+
+    public function renameImage()
+    {
+        if ($this->request->isPost()) {
+            try {
+                $id = $this->request->post('id');
+                $name = $this->request->post('name');
+
+                $validate = Validate::make(['name|名称'  => 'require|max:25|chsDash']);
+                if (!$validate->check(['name' => $name])) {
+                    throw new \Exception($validate->getError());
+                }
+                if (!Images::where('id', $id)->update(['alias_name' => $name])) {
+                    throw new \Exception('重命名失败');
+                }
+            } catch (\Exception $e) {
                 $this->error($e->getMessage());
             }
             $this->success('重命名成功');

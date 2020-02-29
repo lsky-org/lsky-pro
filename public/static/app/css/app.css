@@ -153,6 +153,7 @@ main .images-container #info .mdui-btn-group .mdui-btn {
 }
 main .images-container #info img.qrcode {
   text-align: center;
+  margin-top: 0.4rem;
 }
 main .images-container #info .mdui-dialog-content {
   padding-bottom: 0;
@@ -258,7 +259,6 @@ main .images-container .images-box .item p.name {
   font-size: 12px;
   margin: 0.3rem auto;
   line-height: 1.5em;
-  padding-bottom: 5px;
   overflow: hidden;
   display: -webkit-box;
   -webkit-box-orient: vertical;
