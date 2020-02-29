@@ -21,23 +21,21 @@ class Upload extends Base
 {
     public function upload()
     {
-        if ($this->request->isPost()) {
-            Db::startTrans();
-            try {
+        Db::startTrans();
+        try {
 
-                $data = $this->execute($this->user);
+            $data = $this->execute($this->user);
 
-                Db::commit();
-            } catch (Exception $e) {
-                Db::rollback();
-                return response($e->getMessage(), 500);
-            } catch (ErrorException $e) {
-                Db::rollback();
-                return response($e->getMessage(), 500);
-            }
-
-            $this->result($data, 200, '上传成功');
+            Db::commit();
+        } catch (Exception $e) {
+            Db::rollback();
+            return response($e->getMessage(), 500);
+        } catch (ErrorException $e) {
+            Db::rollback();
+            return response($e->getMessage(), 500);
         }
+
+        $this->result($data, 200, '上传成功');
     }
 
     /**
@@ -105,6 +103,8 @@ class Upload extends Base
             throw new Exception('上传失败，请检查策略配置是否正确！');
         }
 
+        exist:
+
         // 图片鉴黄
         $suspicious = 0;
         if ($this->config['open_audit']) {
@@ -162,7 +162,6 @@ class Upload extends Base
             throw new Exception('图片数据保存失败');
         }
 
-        exist:
         $data = [
             'name' => $image->getInfo('name'),
             'url' => $url,
