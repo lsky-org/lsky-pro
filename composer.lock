@@ -334,16 +334,16 @@
         },
         {
             "name": "nicolab/php-ftp-client",
-            "version": "v1.5.1",
+            "version": "v1.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Nicolab/php-ftp-client.git",
-                "reference": "8c66e1104da1b638f5d7a9e24624a5525b459a0c"
+                "reference": "8970bdb69b212779338624c0882c256e0833ff31"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Nicolab/php-ftp-client/zipball/8c66e1104da1b638f5d7a9e24624a5525b459a0c",
-                "reference": "8c66e1104da1b638f5d7a9e24624a5525b459a0c",
+                "url": "https://github-api-proxy.cnpkg.org/repos/Nicolab/php-ftp-client/zipball/8970bdb69b212779338624c0882c256e0833ff31",
+                "reference": "8970bdb69b212779338624c0882c256e0833ff31",
                 "shasum": ""
             },
             "require": {
@@ -356,7 +356,7 @@
                     "FtpClient": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -379,7 +379,7 @@
                 "ssl",
                 "ssl-ftp"
             ],
-            "time": "2019-04-23T09:22:37+00:00"
+            "time": "2019-12-02T18:06:47+00:00"
         },
         {
             "name": "phpmailer/phpmailer",
