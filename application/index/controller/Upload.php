@@ -91,8 +91,9 @@ class Upload extends Base
         $url = make_url($domain, $pathname);
 
         // 检测是否存在该图片，有则直接返回
-        if ($oldImage = Images::where('md5', $md5)->find()) {
-            $url = make_url($domain, $oldImage->pathname);
+        if ($oldImage = Images::where('md5', $md5)->where('strategy', $currentStrategy)->find()) {
+            $pathname = $oldImage->pathname;
+            $url = make_url($domain, $pathname);
             goto exist;
         }
 
