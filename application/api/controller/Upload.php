@@ -15,6 +15,10 @@ class Upload extends Base
 {
     public function initialize()
     {
+        if (!$this->config['open_api']) {
+            $this->response('API is not open yet.', [], 500);
+        }
+
         // 是否允许游客上传
         $token = $this->request->header('token', $this->param('token'));
         if (!$this->config['allowed_tourist_upload']) {
