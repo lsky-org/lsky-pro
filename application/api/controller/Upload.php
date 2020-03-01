@@ -15,7 +15,13 @@ class Upload extends Base
 {
     public function initialize()
     {
-        if (!$this->config['open_api']) {
+        $config = [];
+        $configs = \app\common\model\Config::all();
+        foreach ($configs as $key => &$value) {
+            $config[$value->name] = $value->value;
+        }
+
+        if (!$config['open_api']) {
             $this->response('API is not open yet.', [], 500);
         }
 
