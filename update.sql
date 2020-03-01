@@ -90,3 +90,6 @@ INSERT IGNORE INTO `lsky_config` (`id`, `key`, `type`, `input_type`, `name`, `ti
 
 -- v1.5.6
 UPDATE `lsky_config` SET `value` = '1.5.6' WHERE `lsky_config`.`name` = 'system_version';
+
+-- v1.5.7
+UPDATE `lsky_config` SET `value` = '1.5.7' WHERE `lsky_config`.`name` = 'system_version';
