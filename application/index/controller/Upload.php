@@ -173,8 +173,8 @@ class Upload extends Base
         ];
 
         if ($this->user) {
-            $data['quota'] = sprintf('%.2f', (float)$user->quota);
-            $data['use_quota'] = sprintf('%.2f', (float)$user->use_quota);
+            $data['quota'] = sprintf('%.2f', (float)$this->user->quota);
+            $data['use_quota'] = sprintf('%.2f', (float)$this->user->use_quota);
         }
 
         return $data;

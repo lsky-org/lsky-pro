@@ -16,7 +16,7 @@ class Upload extends Base
     public function initialize()
     {
         // 是否允许游客上传
-        $token = $this->request->header('token', $this->request->input('token'));
+        $token = $this->request->header('token', $this->param('token'));
         if (!$this->config['allowed_tourist_upload']) {
             $token && $this->auth($token);
         } else {
@@ -32,7 +32,7 @@ class Upload extends Base
         Db::startTrans();
         try {
 
-            $data = (action('index/upload/execute'))->execute($this->user);
+            $data = (new \app\index\controller\Upload)->execute($this->user);
 
             Db::commit();
         } catch (Exception $e) {
