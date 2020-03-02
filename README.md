@@ -17,7 +17,7 @@
 [![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/wisp-x/lsky-pro.svg)](https://github.com/wisp-x/lsky-pro)
 
 > 下载稳定版请点击[这里](https://github.com/wisp-x/lsky-pro/releases)，发现 bug 可发送邮件至邮箱：i@wispx.cn，或提交 [issues](https://github.com/wisp-x/lsky-pro/issues)  
-> 下载速度慢的可以移步 Coding https://dev.tencent.com/u/wispx/p/lsky-pro-releases/git
+> 下载速度慢的可以移步 Coding https://wispx.coding.net/p/lsky-pro-releases/git
 
 ![homepage.png](./public/static/app/images/demo/1.png)
 ![homepage.png](./public/static/app/images/demo/2.png)
@@ -74,7 +74,9 @@
 3. 删除旧版本程序所有文件，上传最新版程序到站点根目录即可(这一步也可以直接覆盖，但会有残留文件，不选择覆盖的话建议先打包备份旧版本)。
 4. 使用管理员账号登录，访问任意页面会跳转到升级数据库结构页面，根据提示操作即可。
 
-FAQ：如果覆盖更新文件后无法重定向到更新页面，或首页出现错误，请直接访问  ```http://域名/install/update.html``` 进行更新。
+FAQ：
+- 如果你开启了 ThinkPHP 系统的 debug，请先关闭，否则无法自动跳转至更新数据库结构页面。
+- 如果覆盖更新文件后无法重定向到更新页面，或首页出现错误，请直接访问  ```http://域名/install/update.html``` 进行更新。
 
 如何修改网站运行目录？
 ---
