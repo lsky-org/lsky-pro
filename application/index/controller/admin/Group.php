@@ -98,9 +98,7 @@ class Group extends Base
                     throw new Exception('至少保留一个默认分组');
                 }
                 // 转移该组下的用户到默认分组
-                if (!\app\common\model\Users::where('group_id', $group->id)->setField('group_id', $defaultId)) {
-                    throw new Exception('删除失败');
-                }
+                \app\common\model\Users::where('group_id', $group->id)->setField('group_id', $defaultId);
                 $group->delete();
                 Db::commit();
             } catch (Exception $e) {
