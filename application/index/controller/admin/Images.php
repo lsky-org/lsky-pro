@@ -80,7 +80,10 @@ class Images extends Base
                 if (is_array($id)) {
                     $images = ImagesModel::all($id);
                     foreach ($images as &$value) {
-                        $deletes[$value->strategy][] = $value->pathname;
+                        // 查找是否有相同 md5 的文件记录，有的话则只删除记录不删除文件
+                        if (!$this->exists($value)) {
+                            $deletes[$value->strategy][] = $value->pathname;
+                        }
                         $value->delete();
                         unset($value);
                     }
@@ -89,7 +92,9 @@ class Images extends Base
                     if (!$image) {
                         throw new Exception('没有找到该图片数据');
                     }
-                    $deletes[$image->strategy][] = $image->pathname;
+                    if (!$this->exists($image)) {
+                        $deletes[$image->strategy][] = $image->pathname;
+                    }
                     $image->delete();
                 }
                 // 是否开启软删除(开启了只删除记录，不删除文件)
@@ -121,6 +126,17 @@ class Images extends Base
             }
             $this->success('删除成功');
         }
+    }
+
+    /**
+     * 检测除本身图片以外的记录是否存在
+     *
+     * @param ImagesModel $image
+     * @return float|string
+     */
+    private function exists(ImagesModel $image)
+    {
+        return ImagesModel::where('id', 'neq', $image->id)->where('md5', $image->md5)->count();
     }
 
     public function getIpInfo()
