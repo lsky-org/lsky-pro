@@ -20,6 +20,7 @@ class User extends Base
 {
     public function images($keyword = '', $folderId = 0, $limit = 60)
     {
+        $images = $folders = [];
         if ($this->request->isPost()) {
             try {
                 $model = $this->user->images()->order('create_time', 'desc');
@@ -30,11 +31,7 @@ class User extends Base
                 if (is_numeric($folderId)) {
                     $model = $model->where('folder_id', $folderId);
                 }
-                $images = $model->paginate($limit)->each(function ($item) {
-                    $item->url = $item->url;
-                    // TODO 生成缩略图
-                    return $item;
-                });
+                $images = $model->paginate($limit);
             } catch (Exception $e) {
                 $this->error($e->getMessage());
             }
@@ -97,9 +94,15 @@ class User extends Base
             Db::commit();
         } catch (Exception $e) {
             Db::rollback();
-            return $deleteId ? false : $this->error($e->getMessage());
+            if ($deleteId) {
+                return false;
+            }
+            $this->error($e->getMessage());
         }
-        return $deleteId ? true : $this->success('删除成功');
+        if ($deleteId) {
+            return true;
+        }
+        $this->success('删除成功');
     }
 
     public function createFolder()
