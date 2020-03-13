@@ -85,4 +85,9 @@ class System extends Base
             $this->success('发送成功');
         }
     }
+
+    public function upgrade()
+    {
+        (new \Upgrade(app()->getRootPath()))->exec();
+    }
 }
