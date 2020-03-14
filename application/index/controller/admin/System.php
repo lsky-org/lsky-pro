@@ -113,7 +113,7 @@ class System extends Base
             }
 
             // 检测新增表字段
-            if (!$tableFields = @include($path . $release->files['table_fields'])) {
+            if (!$tableFields = @include($path . 'config/table.php')) {
                 throw new \Exception('表字段配置文件获取失败');
             }
             foreach ($tableFields as $table => $fields) {
