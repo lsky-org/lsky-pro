@@ -209,7 +209,7 @@ class User extends Base
                 if (!$validate->check(['name' => $name])) {
                     throw new \Exception($validate->getError());
                 }
-                if (!Images::where('id', $id)->where('user_id', $this->user->user_id)->update(['alias_name' => $name])) {
+                if (!Images::where('id', $id)->where('user_id', $this->user->id)->update(['alias_name' => $name])) {
                     throw new \Exception('重命名失败');
                 }
             } catch (\Exception $e) {
