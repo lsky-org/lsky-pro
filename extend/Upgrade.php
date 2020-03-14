@@ -18,34 +18,49 @@ class Upgrade
     private $path;
 
     /**
-     * Upgrade constructor.
-     * @param $path 系统根目录绝对路径
+     * 工作区目录
+     *
+     * @var
      */
-    public function __construct($path)
+    private $workspace;
+
+    /**
+     * 当前系统版本号
+     *
+     * @var
+     */
+    private $version;
+
+    /**
+     * @var
+     */
+    private $error;
+
+    /**
+     * Upgrade constructor.
+     * @param string $path 系统根目录绝对路径
+     * @param string $version 当前系统版本号
+     * @throws \Exception
+     */
+    public function __construct($path, $version)
     {
         $this->path = rtrim(str_replace('\\', '/', $path), '/') . '/';
-    }
+        $this->workspace = $this->path . 'runtime/.tmp/';
+        $this->version = $version;
 
-    private function getNewest()
-    {
-        // TODO 获取最新版本号
-        return '1.5.8';
-    }
-
-    private function getPackage()
-    {
-        // TODO 获取增量包下载链接
-//        return 'https://github.com/wisp-x/lsky-pro/archive/v1.5.8.zip';
-        return 'https://wispx.coding.net/p/lsky-pro-releases/d/lsky-pro-releases/git/raw/master/releases/lsky-pro-1.5.8.zip';
+        if (!class_exists('ZipArchive')) {
+            throw new \Exception('无法继续执行, 请确保 ZipArchive 正确安装');
+        }
     }
 
     /**
-     * 下载更新包
+     * 下载安装包
      *
+     * @param string $url
      * @return string
      * @throws Exception
      */
-    private function download()
+    public function download($url)
     {
         set_time_limit(0);
         ini_set('max_execution_time', 0);
@@ -56,7 +71,7 @@ class Upgrade
         ];
 
         $curl = curl_init();
-        curl_setopt($curl, CURLOPT_URL, $this->getPackage());
+        curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
         curl_setopt($curl, CURLOPT_TIMEOUT, 180);
@@ -72,14 +87,13 @@ class Upgrade
             throw new \Exception('增量包下载失败, 请稍后重试!');
         }
 
-        if (!is_dir($this->path . 'runtime')) @mkdir($this->path . 'runtime', 0777, true);
+        $this->rmdir($this->workspace);
+        @mkdir($this->workspace, 0777, true); // 创建工作目录
 
-        $pathname = $this->path . 'runtime/upgrade.zip';
+        $pathname = $this->workspace . 'upgrade.zip';
         if (!@file_put_contents($pathname, $contents)) {
-            throw new \Exception('更新包保存失败, 请检查 runtime 目录是否有写入权限');
+            throw new \Exception('安装包保存失败, 请检查 runtime 目录是否有写入权限');
         }
-
-        // TODO 校验 MD5, 校验失败则删除文件并抛出异常
 
         return $pathname;
     }
@@ -88,25 +102,22 @@ class Upgrade
      * 解压
      *
      * @param string $file 文件
-     * @param string $dir  解压到文件夹
+     * @param string $dir 解压到文件夹
      * @return mixed
      * @throws Exception
      */
-    private function unzip($file, $dir)
+    public function unzip($file, $dir)
     {
-        if (!class_exists('ZipArchive')) {
-            throw new \Exception('无法解压更新包, 请确保 ZipArchive 正确安装');
-        }
+        $this->rmdir($dir);
+        @mkdir($dir, 0777, true);
 
-        @unlink($dir) && @mkdir($dir, 0777, true);
-
-        $zip = new ZipArchive;
+        $zip = new \ZipArchive;
         if ($zip->open($file) !== true) {
-            throw new \Exception('无法打开更新包文件');
+            throw new \Exception('无法打开安装包文件');
         }
         if (!$zip->extractTo($dir)) {
             $zip->close();
-            throw new \Exception('无法解压更新包文件');
+            throw new \Exception('无法解压安装包文件');
         }
 
         $zip->close();
@@ -115,16 +126,129 @@ class Upgrade
         return $dir;
     }
 
-    public function exec()
+    /**
+     * 获取发行包列表
+     *
+     * @return mixed|array
+     * @throws Exception
+     */
+    public function releases()
     {
-        try {
-            $file = $this->download();
-
-            // 解压文件
-            $this->unzip($file, $this->path . 'runtime/.tmp');
-
-        } catch (\Exception $e) {
-            dump($e->getMessage());exit;
+        if (!$releases = @file_get_contents(self::RELEASES_URL)) {
+            throw new \Exception('更新服务器异常, 请稍后重试!');
         }
+
+        $releases = json_decode($releases, true);
+
+        // 排序
+        $weights = array_column($releases, 'weigh');
+        array_multisort($weights, SORT_DESC, $releases);
+
+        return array_map(function (&$item) {
+            return (object)$item;
+        }, $releases);
+    }
+
+    /**
+     * 判断版本号是否相同
+     *
+     * @param string $version 要与当前系统版本比对的版本号
+     * @return bool
+     */
+    public function check($version)
+    {
+        return version_compare($this->version, $version) === 0;
+    }
+
+    /**
+     * 获取错误信息
+     *
+     * @return mixed
+     */
+    public function getError()
+    {
+        return $this->error;
+    }
+
+    /**
+     * 删除文件夹
+     *
+     * @param $dir
+     * @return bool
+     */
+    private function rmdir($dir)
+    {
+        if (!$handle = @opendir($dir)) return false;
+
+        while (false !== ($file = readdir($handle))) {
+            if ($file !== "." && $file !== "..") { // 排除当前目录与父级目录
+                $file = $dir . '/' . $file;
+                if (is_dir($file)) {
+                    $this->rmdir($file);
+                } else {
+                    @unlink($file);
+                }
+            }
+        }
+
+        return @rmdir($dir);
+    }
+
+    /**
+     * 备份系统
+     *
+     * @param string $pathname 备份后的文件名称
+     * @return bool
+     */
+    public function backup($pathname)
+    {
+        $pathname = $this->path . $pathname;
+        $zip = new \ZipArchive;
+        $zip->open($pathname, \ZipArchive::CREATE);
+        $files = new RecursiveIteratorIterator(
+            new RecursiveDirectoryIterator($this->path,
+                RecursiveDirectoryIterator::SKIP_DOTS),
+            RecursiveIteratorIterator::CHILD_FIRST
+        );
+        foreach ($files as $file) {
+            $filePath = $file->getPathName();
+            $localName = str_replace($this->path, '', $filePath);
+            if ($file->isFile()) {
+                $zip->addFile($filePath, $localName);
+            } elseif ($file->isDir()) {
+                $zip->addEmptyDir($localName);
+            }
+        }
+        $zip->close();
+        return true;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPath()
+    {
+        return $this->path;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getWorkspace()
+    {
+        return $this->workspace;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getVersion()
+    {
+        return $this->version;
+    }
+
+    public function __destruct()
+    {
+        is_dir($this->workspace) && $this->rmdir($this->workspace); // 清除临时工作目录
     }
 }

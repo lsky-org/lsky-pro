@@ -88,6 +88,43 @@ class System extends Base
 
     public function upgrade()
     {
-        (new \Upgrade(app()->getRootPath()))->exec();
+        Db::startTrans();
+        try {
+            $upgrade = new \Upgrade(app()->getRootPath(), 'v1.5.8');
+
+            $releases = $upgrade->releases(); // 获取安装包列表
+            $release = current($releases); // 获取最新版
+
+            // 判断是否已经是最新版
+            if ($upgrade->check($release->version)) {
+                throw new \Exception('当前系统已经是最新版');
+            }
+
+            // 备份 sql
+            $this->backupSql($upgrade->getPath() . 'backup.sql');
+
+            $upgrade->backup('backup-' . date('YmdHis') . '.zip'); // 备份系统
+
+            $file = $upgrade->download($release->url); // 下载安装包
+
+            // 校验 MD5, 校验失败则删除文件并抛出异常
+            if (md5_file($file) !== $release->md5) {
+                throw new \Exception('安装包损坏, 请稍后重试');
+            }
+
+            $dir = $upgrade->unzip($file, $upgrade->getWorkspace()); // 解压安装包到工作区目录
+            // TODO 根据版本包配置, 导入 sql
+            // TODO sql 导入成功后根据配置删除指定文件, 然后再覆盖文件
+            Db::commit();
+        } catch (\Exception $e) {
+            Db::rollback();
+            $this->error($e->getMessage());
+        }
+        $this->success('更新完成');
+    }
+
+    private function backupSql($pathname)
+    {
+
     }
 }
