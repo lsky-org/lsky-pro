@@ -8,6 +8,7 @@
 
 namespace app\index\controller\admin;
 
+use app\common\model\Config;
 use think\Db;
 use app\common\model\Images;
 use think\Exception;
