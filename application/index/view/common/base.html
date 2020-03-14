@@ -14,12 +14,13 @@
   <link rel="stylesheet" href="/static/app/iconfont/iconfont.css">
   <link rel="stylesheet" href="/static/mdui/0.4.3/css/mdui.min.css">
   <link rel="stylesheet" href="/static/app/css/app.css?v=1.3">
+  <link rel="stylesheet" href="/static/app/css/markdown.css?v=1.0">
   <!--[if IE]>
   <script>window.location.href = '/compatibility.html';</script>
   <![endif]-->
-  {$config.custom_style|raw}
 </head>
 <body class="mdui-theme-accent-indigo mdui-appbar-with-toolbar {if cookie('?menu') and cookie('menu') eq 'open'}mdui-drawer-body-left{/if}">
+{$config.custom_style|raw}
 {block name="header"}
 <div class="mdui-appbar mdui-appbar-fixed">
   <div class="mdui-toolbar mdui-color-black">
@@ -142,10 +143,10 @@
 <script src="/static/jquery/3.3.1/jquery.min.js"></script>
 <script src="/static/mdui/0.4.3/js/mdui.min.js"></script>
 <script src="/static/marked/0.5.1/marked.js"></script>
-<script src="/static/app/js/app.js?v=1.0"></script>
+<script src="/static/app/js/app.js?v=1.1"></script>
 {block name="js"}{/block}
 <script>
-  var thatVer = '{$config.system_version}';
+  var ver = '{$config.system_version}';
   $(function () {
     var toTop = $("#to-top"), toTopHide = function () {
       if ($(window).scrollTop() > 50) {
@@ -172,13 +173,18 @@
     });
 
     $('#update').click(function () {
-      app.update(thatVer, true);
+      app.upgrade(true);
+    });
+
+    $('body').on('click', '.markdown-body a', function (e) {
+      e.preventDefault();
+      window.open(this.href, '_blank');
     });
   });
 </script>
 {if $user and $user.is_admin and !cookie('?no_update')}
 <script>
-  app.update(thatVer, false);
+  app.upgrade(false);
 </script>
 {/if}
 {$config.statistics_code|raw}

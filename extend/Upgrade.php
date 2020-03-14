@@ -146,7 +146,9 @@ class Upgrade
             throw new \Exception('更新服务器异常, 请稍后重试!');
         }
 
-        $releases = json_decode($releases, true);
+        if (!$releases = json_decode($releases, true)) {
+            throw new \Exception('更新包获取失败, 请稍后重试');
+        }
 
         // 排序
         $weights = array_column($releases, 'weigh');
@@ -155,6 +157,19 @@ class Upgrade
         return array_map(function (&$item) {
             return (object)$item;
         }, $releases);
+    }
+
+    /**
+     * 获取最新版
+     *
+     * @return mixed
+     * @throws Exception
+     */
+    public function release()
+    {
+        $releases = $this->releases();
+
+        return current($releases);
     }
 
     /**

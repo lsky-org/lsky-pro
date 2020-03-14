@@ -86,18 +86,21 @@ class System extends Base
         }
     }
 
+    /**
+     * 更新系统
+     */
     public function upgrade()
     {
         Db::startTrans();
+        $backup = 'backup-' . date('YmdHis') . '.zip';
         try {
             $upgrade = new \Upgrade(app()->getRootPath(), 'v' . $this->config['system_version']);
-            $releases = $upgrade->releases(); // 获取安装包列表
-            $release = current($releases); // 获取最新版
+            $release = $upgrade->release(); // 获取最新版
             // 判断是否已经是最新版
             if ($upgrade->check($release->version)) {
                 throw new \Exception('当前系统已经是最新版');
             }
-            $upgrade->backup('backup-' . date('YmdHis') . '.zip'); // 备份系统
+            $upgrade->backup($backup); // 备份系统
             $upgradeFile = app()->getRuntimePath() . 'upgrade.zip';// 判断是否存在安装包
             $file = file_exists($upgradeFile) ? $upgradeFile : $upgrade->download($release->url);
 
@@ -188,6 +191,29 @@ class System extends Base
             Db::rollback();
             $this->result([], 0, $e->getMessage());
         }
-        $this->result([], 1, '更新完成');
+        $this->result([], 1, '更新完成, 原系统文件已备份(' . $backup . ')');
+    }
+
+    public function check()
+    {
+        $release = null;
+        try {
+            $upgrade = new \Upgrade(app()->getRootPath(), 'v' . $this->config['system_version']);
+            $release = $upgrade->release(); // 获取安装包列表
+            if (!$release) {
+                throw new \Exception('获取版本时遇到错误');
+            }
+            // 判断是否已经是最新版
+            if ($upgrade->check($release->version)) {
+                throw new \Exception('当前系统已经是最新版');
+            }
+        } catch (\Exception $e) {
+            $this->error($e->getMessage());
+        }
+
+        $this->success('发现新版本', null, [
+            'version' => $release->version,
+            'info' => $release->info,
+        ]);
     }
 }

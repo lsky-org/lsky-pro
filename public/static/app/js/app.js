@@ -124,26 +124,27 @@ var app = {
     return (bytes / Math.pow(k, i)).toFixed(2) + ' ' + sizes[i];
   },
   /**
-   * Update
-   * @param ver
+   * 更新系统
    * @param auto
    */
-  update: function (ver, auto) {
+  upgrade: function (auto) {
     $.ajax({
-      url: 'https://api.github.com/repos/wisp-x/lsky-pro/releases/latest',
+      url: '/admin/system/check.html',
       success: function (response) {
-        var thatVer = parseInt(ver.replace(/[^\d]/g, ''));
-        var newVer = parseInt(response.name.replace(/[^\d]/g, ''));
-        if (thatVer < newVer) {
+        if (response.code === 0) {
+          // 已经是最新版
+          auto && app.msg(true, '已经是最新版本');
+        } else {
+          var loading = false;
           if (!app.cookie.has('no_update') || auto) {
             mdui.dialog({
-              title: '检测到新版本[' + response.name + ']',
-              content: '<div class="mdui-p-l-3 mdui-p-r-3">' + marked(response.body) + '</div>',
+              title: '检测到新版本[' + response.data.version + ']',
+              content: '<div class="markdown-body mdui-p-l-3 mdui-p-r-3">' + marked(response.data.info) + '</div>',
               modal: true,
               history: false,
               buttons: [
                 {
-                   text: '忽略'
+                  text: '忽略'
                 },
                 {
                   text: '不再提示',
@@ -152,16 +153,35 @@ var app = {
                   }
                 },
                 {
-                  text: '前往更新',
-                  onClick: function() {
-                    return open(response.html_url);
+                  text: '立即更新',
+                  close: false,
+                  onClick: function(inst) {
+                    if (loading) return;
+                    loading = true;
+                    mdui.dialog({
+                      overlay: true,
+                      modal: true,
+                      buttons: [],
+                      closeOnEsc: false,
+                      content: '<div class="mdui-spinner mdui-spinner-colorful"></div> 更新中, 请不要关闭窗口...'
+                    });
+                    // TODO 请求更新
+                    /*$.ajax({
+                      url: '/admin/system/upgrade.html',
+                      success: function (res) {
+                        mdui.alert(res.msg, '系统提示', function() {
+                          res.code && history.go(0);
+                        });
+                      },
+                      complete: function () {
+                        loading = false;
+                      }
+                    });*/
                   }
                 }
               ]
             });
           }
-        } else {
-          auto && app.msg(true, '已经是最新版本');
         }
         auto && app.cookie.delete('no_update');
       }
