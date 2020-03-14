@@ -32,16 +32,18 @@ class Install extends Controller
         $isCurl = function_exists('curl_init');
         $isFileInfo = function_exists('finfo_open');
         $isMysqli = class_exists('mysqli');
+        $isZip = class_exists('ZipArchive');
 
         switch ($step) {
             case 1:
                 // 运行环境检测
-                $testing = $phpVerGt56 && $isCurl && $isFileInfo && $isMysqli;
+                $testing = $phpVerGt56 && $isCurl && $isFileInfo && $isMysqli && $isZip;
                 $this->assign([
                     'phpVerGt56' => $phpVerGt56,
                     'isCurl' => $isCurl,
                     'isFileInfo' => $isFileInfo,
                     'isMysqli' => $isMysqli,
+                    'isZip' => $isZip,
                     'testing' => $testing,
                     'dir' => is_writable(Env::get('runtime_path')) && is_writable($configPath),
                 ]);
