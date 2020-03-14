@@ -4,7 +4,7 @@ namespace app\http\middleware;
 
 use think\facade\Session;
 
-class WebAuth
+class Auth
 {
     /**
      * 无需登录可访问的方法(除分层控制器)

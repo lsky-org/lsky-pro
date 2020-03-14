@@ -108,9 +108,33 @@ class System extends Base
 
             $dir = $upgrade->unzip($file, $upgrade->getWorkspace()); // 解压安装包到工作区目录
             $path = rtrim($dir . $release->path, '/') . '/'; // 新版本程序根目录
-            $sqlPath = $path . $release->sql; // sql 文件路径
-            if (!$sql = @file_get_contents($sqlPath)) {
+            $updateSql = $path . $release->sql; // 更新数据库结构 sql 文件路径
+            if (!$sql = @file_get_contents($updateSql)) {
                 throw new \Exception('SQL 文件获取失败');
+            }
+
+            // 复制 env 文件
+            $config = \config('database.');
+            $env = str_ireplace([
+                '{hostname}',
+                '{database}',
+                '{username}',
+                '{password}',
+                '{hostport}',
+            ], [
+                $config['hostname'],
+                $config['database'],
+                $config['username'],
+                $config['password'],
+                $config['hostport'],
+            ], @file_get_contents($path . '.env.example'));
+            if (!@file_put_contents($path . '.env', $env)) {
+                throw new \Exception('配置文件写入失败');
+            }
+
+            // 创建安装锁文件
+            if (!@fopen($path . 'application/install.lock', 'w')) {
+                throw new \Exception('安装锁文件创建失败');
             }
 
             // 检测新增表字段
@@ -152,10 +176,6 @@ class System extends Base
                     }
                 }
             }
-
-            // 删除安装包 sql 文件
-            @unlink($sqlPath);
-            @unlink($path . 'install.sql');
 
             // 复制文件夹
             $upgrade->copyDirs($path, $upgrade->getRootPath());

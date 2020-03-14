@@ -19,7 +19,7 @@ use think\facade\Env;
 
 class Base extends Controller
 {
-    protected $middleware = ['WebAuth'];
+    protected $middleware = ['Auth'];
 
     protected $user = null;
 
@@ -40,11 +40,6 @@ class Base extends Controller
     {
         parent::initialize();
 
-        // 检测程序是否已安装
-        if (!file_exists(Env::get('config_path') . 'db.php')) {
-            if (!\config('app.app_debug')) $this->redirect(url('/install'));
-        }
-
         $configs = \app\common\model\Config::all();
         foreach ($configs as $key => &$value) {
             $this->config[$value->name] = $value->value;
@@ -55,13 +50,6 @@ class Base extends Controller
             $user = Users::get(Session::get('uid'));
             if (!$user) {
                 Session::delete('uid');
-            }
-        }
-
-        // 检测数据库结构更新
-        if ($user && $user->is_admin) {
-            if (file_exists(Env::get('root_path') . 'update.sql') && !\config('app.app_debug')) {
-                $this->redirect(url('/install/update'));
             }
         }
 

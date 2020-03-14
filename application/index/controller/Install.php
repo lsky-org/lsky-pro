@@ -8,24 +8,18 @@
 
 namespace app\index\controller;
 
-use app\common\model\Users;
 use think\Controller;
 use think\Db;
 use think\Exception;
-use think\facade\Config;
-use think\facade\Env;
 use think\facade\Session;
 
 class Install extends Controller
 {
     public function index($step = 1)
     {
-        $rootPath = Env::get('root_path');
-        $configPath = Env::get('config_path');
-
         // 检测是否已安装
-        if (file_exists($configPath . 'db.php') && !Session::has('install_success')) {
-            exit('你已安装成功，请勿重复安装！');
+        if (file_exists(app()->getAppPath() . 'install.lock') && !Session::has('install_success')) {
+            exit('你已安装成功，需要重新安装请删除 install.lock 文件');
         }
 
         $phpVerGt56 = PHP_VERSION >= 5.6;
@@ -45,7 +39,7 @@ class Install extends Controller
                     'isMysqli' => $isMysqli,
                     'isZip' => $isZip,
                     'testing' => $testing,
-                    'dir' => is_writable(Env::get('runtime_path')) && is_writable($configPath),
+                    'dir' => is_writable(app()->getRuntimePath()) && is_writable(app()->getConfigPath()),
                 ]);
                 break;
             case 2:
@@ -57,26 +51,41 @@ class Install extends Controller
                     $password = $this->request->post('password');
                     $hostport = $this->request->post('hostport');
                     try {
-                        if (!$sqlFile = @file_get_contents($rootPath . 'install.sql')) {
-                            throw new Exception('安装文件不存在');
+                        $installSql = app()->getAppPath() . 'sql/install.sql';
+                        if (!is_file($installSql)) {
+                            throw new Exception('数据库 SQL 文件不存在');
                         }
-                        $mysqli = new \mysqli($hostname, $username,  $password, $database,  $hostport);
-                        if ($mysqli->connect_error) {
-                            $mysqli->close();
-                            throw new Exception($mysqli->connect_error);
+                        $db = Db::connect(array_merge(\config('database.'), [
+                            'hostname' => $hostname,
+                            'database' => $database,
+                            'username' => $username,
+                            'password' => $password,
+                            'hostport' => $hostport,
+                        ]));
+
+                        $lines = file($installSql);
+                        $temp = '';
+                        foreach ($lines as &$line) {
+                            $line = trim($line);
+                            if (substr($line, 0, 2) == '--' || $line == '' || substr($line, 0, 2) == '/*') continue;
+                            $temp .= $line;
+                            if (substr($line, -1, 1) == ';') {
+                                $db->execute($temp);
+                                $temp = '';
+                            }
                         }
-                        $mysqli->query("SET NAMES utf8");
-                        if (!$mysqli->multi_query($sqlFile)) {
-                            throw new Exception('数据写入失败');
-                        }
+
                         Session::set('db', [
                             'hostname' => $hostname,
                             'database' => $database,
                             'username' => $username,
                             'password' => $password,
                             'hostport' => $hostport,
+                            'prefix' => 'lsky_'
                         ]);
                     } catch (Exception $e) {
+                        $this->error($e->getMessage());
+                    } catch (\PDOException $e) {
                         $this->error($e->getMessage());
                     }
                     $this->success('数据写入成功');
@@ -98,64 +107,37 @@ class Install extends Controller
                         $data['password'] = md5($data['password']);
                         $data['reg_ip'] = request()->ip();
                         $data['token'] = make_token();
-                        $dbConfig = Session::get('db');
-                        $hostname = $dbConfig['hostname'];
-                        $database = $dbConfig['database'];
-                        $username = $dbConfig['username'];
-                        $password = $dbConfig['password'];
-                        $hostport = $dbConfig['hostport'];
-                        $dbPath = $configPath . 'db.php';
-                        $str = <<<EOT
-<?php
-/**
- * User: Wisp X
- * Date: 2018/10/13
- * Time: 10:18
- * Link: https://github.com/wisp-x
- */
 
-return [
-    // 服务器地址
-    'hostname'        => '$hostname',
-    // 数据库名
-    'database'        => '$database',
-    // 用户名
-    'username'        => '$username',
-    // 密码
-    'password'        => '$password',
-    // 端口
-    'hostport'        => '$hostport',
-];
-EOT;
-                        if (file_exists($dbPath)) {
-                            @file_put_contents($dbPath, $str);
-                        } else {
-                            $fp = fopen($dbPath, "w+");
-                            fwrite($fp, $str);
-                            fclose($fp);
+                        $config = Session::get('db');
+
+                        // 写入 env 文件
+                        $env = str_ireplace([
+                            '{hostname}',
+                            '{database}',
+                            '{username}',
+                            '{password}',
+                            '{hostport}',
+                        ], $config, @file_get_contents(app()->getRootPath() . '.env.example'));
+                        if (!@file_put_contents(app()->getRootPath() . '.env', $env)) {
+                            throw new \Exception('配置文件写入失败');
                         }
-                        $db = Db::connect(array_merge($dbConfig, [
-                            // 数据库类型
-                            'type'        => 'mysql',
-                            // 数据库连接参数
-                            'params'      => [],
-                            // 数据库编码默认采用utf8
-                            'charset'     => 'utf8mb4',
-                            // 数据库表前缀
-                            'prefix'      => 'lsky_',
-                        ]));
+
+                        $db = Db::connect(array_merge(\config('database.'), $config));
                         unset($data['password_confirm']);
                         $db->name('users')->insert($data);
+
+                        // 创建安装锁文件
+                        if (!@fopen(app()->getAppPath() . 'install.lock', 'w')) {
+                            throw new \Exception('安装锁文件创建失败');
+                        }
                     } catch (Exception $e) {
-                        @unlink($configPath . 'db.php');
+                        @unlink(app()->getAppPath() . 'install.lock');
+                        $this->error($e->getMessage());
+                    } catch (\PDOException $e) {
+                        @unlink(app()->getAppPath() . 'install.lock');
                         $this->error($e->getMessage());
                     }
                     Session::flash('install_success', true);
-                    // 删除sql文件
-                    @unlink($rootPath . 'install.sql');
-                    if (file_exists($rootPath . 'update.sql')) {
-                        @unlink($rootPath . 'update.sql');
-                    }
                     // 删除session
                     Session::delete('db');
                     $this->success('设置成功');
