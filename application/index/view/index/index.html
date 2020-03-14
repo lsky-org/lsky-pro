@@ -4,8 +4,8 @@
 
 {block name="css"}
 <link href="/static/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
-<link href="/static/bootstrap-fileinput/5.0.8/css/fileinput.min.css" rel="stylesheet">
-<link href="/static/bootstrap-fileinput/5.0.8/fontawesome/5.5.0/css/all.css" rossorigin="anonymous" rel="stylesheet">
+<link href="/static/bootstrap-fileinput/5.0.1/css/fileinput.min.css" rel="stylesheet">
+<link href="/static/bootstrap-fileinput/5.0.1/fontawesome/5.5.0/css/all.css" rossorigin="anonymous" rel="stylesheet">
 {/block}
 
 {block name="main"}
@@ -59,12 +59,12 @@
 {block name="js"}
 <script src="/static/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <script src="/static/clipboard.js/2.0.1/clipboard.min.js"></script>
-<script src="/static/bootstrap-fileinput/5.0.8/js/plugins/piexif.min.js"></script>
-<script src="/static/bootstrap-fileinput/5.0.8/js/plugins/sortable.min.js"></script>
-<script src="/static/bootstrap-fileinput/5.0.8/js/plugins/purify.min.js"></script>
-<script src="/static/bootstrap-fileinput/5.0.8/js/fileinput.min.js"></script>
-<script src="/static/bootstrap-fileinput/5.0.8/themes/fas/theme.min.js"></script>
-<script src="/static/bootstrap-fileinput/5.0.8/js/locales/zh.js"></script>
+<script src="/static/bootstrap-fileinput/5.0.1/js/plugins/piexif.min.js"></script>
+<script src="/static/bootstrap-fileinput/5.0.1/js/plugins/sortable.min.js"></script>
+<script src="/static/bootstrap-fileinput/5.0.1/js/plugins/purify.min.js"></script>
+<script src="/static/bootstrap-fileinput/5.0.1/js/fileinput.min.js"></script>
+<script src="/static/bootstrap-fileinput/5.0.1/themes/fas/theme.min.js"></script>
+<script src="/static/bootstrap-fileinput/5.0.1/js/locales/zh.js"></script>
 <script src="/static/sweetalert/2.1.2/sweetalert.min.js"></script>
 <script>
   var clipboard = new ClipboardJS('.copy', {
@@ -207,6 +207,7 @@
       }
     }).then(function (willUpload) {
       if (willUpload) {
+        $('.file-drop-zone-title').remove();
         form.fileinput('readFiles', images);
         setTimeout(function () {
           form.fileinput('upload');
