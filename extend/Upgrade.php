@@ -242,7 +242,8 @@ class Upgrade
             $path = trim(str_replace('\\', '/', $filePath), '/');
             if (
                 strpos($path, trim($this->getRootPath(), '/') . '/runtime') !== false ||
-                strpos($path, trim($this->getRootPath(), '/') . '/backups') !== false
+                strpos($path, trim($this->getRootPath(), '/') . '/backups') !== false ||
+                strpos($path, trim($this->getRootPath(), '/') . '/public') !== false
             ) {
                 continue;
             }
