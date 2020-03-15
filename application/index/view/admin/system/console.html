@@ -8,53 +8,54 @@
     <div class="console-container">
       <div class="mdui-row-sm-4 mdui-row-md-4 mdui-row-lg-4 mdui-row-xl-4">
         <div class="mdui-col item mdui-m-b-2">
-          <div class="mdui-color-blue mdui-text-center mdui-text-color-white mdui-p-a-2 mdui-shadow-4 mdui-hoverable">
-            <p><i class="mdui-icon material-icons">&#xe623;</i> 占用储存</p>
-            <span class="mdui-text-color-amber">{$storage[0]}
+          <div class="mdui-color-teal mdui-text-center mdui-text-color-white mdui-p-a-2 mdui-shadow-4 mdui-hoverable">
+            <i class="mdui-icon material-icons">&#xe623;</i>
+            <p>占用储存</p>
+            <span class="mdui-text-color-white">{$storage[0]}
               <small class="mdui-text-color-white">{if $storage[0]}{$storage[1]}{else/}Kb{/if}</small>
             </span>
           </div>
         </div>
         <div class="mdui-col item mdui-m-b-2">
-          <div class="mdui-color-blue mdui-text-center mdui-text-color-white mdui-p-a-2 mdui-shadow-4 mdui-hoverable">
+          <div class="mdui-color-cyan mdui-text-center mdui-text-color-white mdui-p-a-2 mdui-shadow-4 mdui-hoverable">
             <p><i class="mdui-icon material-icons">&#xe3b6;</i> 图片数量</p>
-            <span class="mdui-text-color-amber">{$images_num} <small class="mdui-text-color-white">张</small></span>
+            <span class="mdui-text-color-white">{$images_num} <small class="mdui-text-color-white">张</small></span>
           </div>
         </div>
         <div class="mdui-col item mdui-m-b-2">
-          <div class="mdui-color-blue mdui-text-center mdui-text-color-white mdui-p-a-2 mdui-shadow-4 mdui-hoverable">
+          <div class="mdui-color-orange mdui-text-center mdui-text-color-white mdui-p-a-2 mdui-shadow-4 mdui-hoverable">
             <p><i class="mdui-icon material-icons">&#xe8fd;</i> 可疑图片</p>
-            <span class="mdui-text-color-amber">{$suspicious_images_num} <small class="mdui-text-color-white">张</small></span>
+            <span class="mdui-text-color-white">{$suspicious_images_num} <small class="mdui-text-color-white">张</small></span>
           </div>
         </div>
         <div class="mdui-col item mdui-m-b-2">
-          <div class="mdui-color-blue mdui-text-center mdui-text-color-white mdui-p-a-2 mdui-shadow-4 mdui-hoverable">
+          <div class="mdui-color-deep-purple mdui-text-center mdui-text-color-white mdui-p-a-2 mdui-shadow-4 mdui-hoverable">
             <p><i class="mdui-icon material-icons">&#xe8d3;</i> 用户数量</p>
-            <span class="mdui-text-color-amber">{$users_num} <small class="mdui-text-color-white">个</small></span>
+            <span class="mdui-text-color-white">{$users_num} <small class="mdui-text-color-white">个</small></span>
           </div>
         </div>
         <div class="mdui-col item mdui-m-b-2">
-          <div class="mdui-color-blue mdui-text-center mdui-text-color-white mdui-p-a-2 mdui-shadow-4 mdui-hoverable">
+          <div class="mdui-color-red-accent mdui-text-center mdui-text-color-white mdui-p-a-2 mdui-shadow-4 mdui-hoverable">
             <p><i class="mdui-icon material-icons">&#xe2c3;</i> 今日上传</p>
-            <span class="mdui-text-color-amber">{$today} <small class="mdui-text-color-white">张</small></span>
+            <span class="mdui-text-color-white">{$today} <small class="mdui-text-color-white">张</small></span>
           </div>
         </div>
         <div class="mdui-col item mdui-m-b-2">
-          <div class="mdui-color-blue mdui-text-center mdui-text-color-white mdui-p-a-2 mdui-shadow-4 mdui-hoverable">
+          <div class="mdui-color-indigo-accent mdui-text-center mdui-text-color-white mdui-p-a-2 mdui-shadow-4 mdui-hoverable">
             <p><i class="mdui-icon material-icons">&#xe2c3;</i> 昨日上传</p>
-            <span class="mdui-text-color-amber">{$yesterday} <small class="mdui-text-color-white">张</small></span>
+            <span class="mdui-text-color-white">{$yesterday} <small class="mdui-text-color-white">张</small></span>
           </div>
         </div>
         <div class="mdui-col item mdui-m-b-2">
-          <div class="mdui-color-blue mdui-text-center mdui-text-color-white mdui-p-a-2 mdui-shadow-4 mdui-hoverable">
+          <div class="mdui-color-brown mdui-text-center mdui-text-color-white mdui-p-a-2 mdui-shadow-4 mdui-hoverable">
             <p><i class="mdui-icon material-icons">&#xe2c3;</i> 本月上传</p>
-            <span class="mdui-text-color-amber">{$month} <small class="mdui-text-color-white">张</small></span>
+            <span class="mdui-text-color-white">{$month} <small class="mdui-text-color-white">张</small></span>
           </div>
         </div>
         <div class="mdui-col item mdui-m-b-2">
-          <div class="mdui-color-blue mdui-text-center mdui-text-color-white mdui-p-a-2 mdui-shadow-4 mdui-hoverable">
+          <div class="mdui-color-blue-grey mdui-text-center mdui-text-color-white mdui-p-a-2 mdui-shadow-4 mdui-hoverable">
             <p><i class="mdui-icon material-icons">&#xe2c3;</i> 游客上传</p>
-            <span class="mdui-text-color-amber">{$tourists} <small class="mdui-text-color-white">张</small></span>
+            <span class="mdui-text-color-white">{$tourists} <small class="mdui-text-color-white">张</small></span>
           </div>
         </div>
       </div>

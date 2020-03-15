@@ -134,11 +134,15 @@ main .console-container .mdui-table td,
 main .console-container .mdui-table th {
   padding: 12px 28px;
 }
+main .console-container div.item i.mdui-icon {
+  float: left;
+  font-size: 3.7rem;
+}
 main .console-container div.item > div {
   border-radius: 3px;
 }
 main .console-container div.item > div p {
-  margin-bottom: 20px;
+  margin-bottom: 25px;
 }
 main .system-container .mdui-textfield-label {
   pointer-events: inherit;
