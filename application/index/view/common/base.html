@@ -32,10 +32,6 @@
       {if $user.is_admin}
       <span id="update" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">&#xe923;</i></span>
       {/if}
-    <!-- Theme -->
-    <a id="set-theme" href="javascript:app.toggleTheme()" class="mdui-btn mdui-btn-icon">
-      <i class="mdui-icon material-icons">{if cookie('theme') eq 'dark'}&#xe3ac;{else/}&#xe3a9;{/if}</i>
-    </a>
     <!-- User -->
     <a href="javascript:void(0)" mdui-menu="{target: '#user'}" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">&#xe853;</i></a>
     <ul class="mdui-menu" id="user">
@@ -49,6 +45,10 @@
       </li>
     </ul>
     {/if}
+    <!-- Theme -->
+    <a id="set-theme" href="javascript:app.toggleTheme()" class="mdui-btn mdui-btn-icon">
+      <i class="mdui-icon material-icons">{if cookie('theme') eq 'dark'}&#xe3ac;{else/}&#xe3a9;{/if}</i>
+    </a>
   </div>
 </div>
 {/block}
