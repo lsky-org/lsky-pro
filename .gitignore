@@ -5,6 +5,7 @@
 .idea
 .vscode
 *.iml
+runtime/.tmp
 
 /application/install.lock
 .env
