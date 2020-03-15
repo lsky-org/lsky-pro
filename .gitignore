@@ -6,8 +6,7 @@
 .vscode
 *.iml
 
-runtime
-/config/db.php
+/application/install.lock
 .env
 
 # Icon must end with two \r
