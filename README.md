@@ -4,14 +4,16 @@
 
 ☁ Your photo album on the cloud.
 
-[![docs](https://img.shields.io/badge/-%E7%9C%8B%E4%BA%91%E6%96%87%E6%A1%A3-blue)](https://www.kancloud.cn/wispx/lsky-pro)
 [![PHP](https://img.shields.io/badge/PHP->=5.6-orange.svg)](http://php.net)
 [![Release](https://img.shields.io/github/v/release/wisp-x/lsky-pro)](https://github.com/wisp-x/lsky-pro/releases)
 [![Issues](https://img.shields.io/github/issues/wisp-x/lsky-pro)](https://github.com/wisp-x/lsky-pro/issues)
 [![License](https://img.shields.io/badge/license-GPL_V3.0-yellowgreen.svg)](https://github.com/wisp-x/lsky-pro/blob/master/LICENSE)
 [![Code size](https://img.shields.io/github/languages/code-size/wisp-x/lsky-pro)](https://github.com/wisp-x/lsky-pro)
+[![Repo size](https://img.shields.io/github/repo-size/wisp-x/lsky-pro)](https://github.com/wisp-x/lsky-pro)
+[![Languages](https://img.shields.io/github/languages/count/wisp-x/lsky-pro)](https://github.com/wisp-x/lsky-pro)
 [![Last commit](https://img.shields.io/github/last-commit/wisp-x/lsky-pro/dev)](https://github.com/wisp-x/lsky-pro/commits/dev)
 
+[文档](https://www.kancloud.cn/wispx/lsky-pro) &nbsp;
 [演示](https://pic.iqy.ink) &nbsp;
 [Chrome 拓展](https://github.com/wisp-x/lsky-pro-chrome-extension) &nbsp;
 [Telegram 群组](https://t.me/lsky_pro)
@@ -28,12 +30,12 @@
 * [x] 简洁的图片管理功能，支持鼠标右键、单选多选、重命名等操作。
 * [x] 强大的图片预览功能，支持响应式。
 * [x] 支持全局配置用户初始剩余储存空间、支持单个设置用户剩余储存空间。
-* [x] 支持一键复制图片外链、二维码扫描链接。
-* [x] 支持设置上传文件、文件夹路径命名规则。
-* [x] 支持在线平滑升级系统
-* [x] 支持图片鉴黄功能。
-* [x] 支持文件夹分类功能。
-* [x] 对外开放的上传接口。  
+* [x] 支持一键复制图片外链、二维码扫描链接、图片鉴黄功能。
+* [x] 支持设置上传文件、文件夹路径命名规则、文件夹分类功能。
+* [x] 支持 OTA 平滑升级系统。
+* [x] 对外开放的上传接口。
+* [x] (Dark)暗黑主题
+* [ ] 图片广场  
 ...
 
 ### 🛠 安装要求
