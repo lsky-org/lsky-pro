@@ -1,20 +1,20 @@
-<p align="center">
-    <a href="./public/static/app/images/logo.png" target="_blank">
-        <img width="300" src="./public/static/app/images/logo.png">
-    </a>
-</p>
+<img align="right" width="100" src="https://i.loli.net/2020/03/15/pFEfhJgTbHYq3aG.png" alt="Lsky Pro Logo"/>
 
-<p align="center">Your photo album on the cloud.</p>
+<h1 align="left"><a href="https://www.lsky.pro">Lsky Pro</a></h1>
 
-[官网](https://www.lsky.pro) &nbsp;
-[手册](https://www.kancloud.cn/wispx/lsky-pro) &nbsp;
+☁ Your photo album on the cloud.
+
+[![docs](https://img.shields.io/badge/-%E7%9C%8B%E4%BA%91%E6%96%87%E6%A1%A3-red)](https://www.kancloud.cn/wispx/lsky-pro)
+[![PHP](https://img.shields.io/badge/PHP->=5.6-orange.svg)](http://php.net)
+[![Release](https://img.shields.io/github/v/release/wisp-x/lsky-pro)](https://github.com/wisp-x/lsky-pro/releases)
+[![Issues](https://img.shields.io/github/issues/wisp-x/lsky-pro)](https://github.com/wisp-x/lsky-pro/issues)
+[![License](https://img.shields.io/badge/license-GPL_V3.0-yellowgreen.svg)](https://github.com/wisp-x/lsky-pro/blob/master/LICENSE)
+[![Code size](https://img.shields.io/github/languages/code-size/wisp-x/lsky-pro)](https://github.com/wisp-x/lsky-pro)
+[![Last commit](https://img.shields.io/github/last-commit/wisp-x/lsky-pro/dev)](https://github.com/wisp-x/lsky-pro/commits/dev)
+
 [演示](https://pic.iqy.ink) &nbsp;
 [Chrome 拓展](https://github.com/wisp-x/lsky-pro-chrome-extension)
 [Telegram 群组](https://t.me/lsky_pro)
-
-[![License](https://img.shields.io/badge/license-GPL_V3.0-yellowgreen.svg)](https://github.com/wisp-x/lsky-pro/blob/master/LICENSE)
-[![PHP](https://img.shields.io/badge/PHP->=5.6-orange.svg)](http://php.net)
-[![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/wisp-x/lsky-pro.svg)](https://github.com/wisp-x/lsky-pro)
 
 > 下载稳定版请点击[这里](https://github.com/wisp-x/lsky-pro/releases)，发现 bug 可发送邮件至邮箱：i@wispx.cn，或提交 [issues](https://github.com/wisp-x/lsky-pro/issues)  
 > 下载速度慢的可以移步 Coding https://wispx.coding.net/p/lsky-pro-releases/d/lsky-pro-releases/git
