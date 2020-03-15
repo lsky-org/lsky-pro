@@ -238,6 +238,15 @@ class Upgrade
         foreach ($files as $file) {
             $filePath = $file->getPathName();
             $localName = str_replace($this->rootPath, '', $filePath);
+            // 跳过不需要备份的目录
+            $path = trim(str_replace('\\', '/', $filePath), '/');
+            if (
+                strpos($path, trim($this->getRootPath(), '/') . '/runtime') !== false ||
+                strpos($path, trim($this->getRootPath(), '/') . '/backups') !== false
+            ) {
+                continue;
+            }
+
             if ($file->isFile()) {
                 $zip->addFile($filePath, $localName);
             } elseif ($file->isDir()) {

@@ -163,6 +163,7 @@ var app = {
     setTimeout(function () {
       $.ajax({
         url: '/admin/system/upgrade.html',
+        type: 'POST',
         success: function (res) {
           $d.close();
           mdui.alert(res.msg, '系统提示', function() {

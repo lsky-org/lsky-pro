@@ -92,7 +92,8 @@ class System extends Base
     public function upgrade()
     {
         Db::startTrans();
-        $backup = 'backups/backup-' . date('YmdHis') . '.zip';
+        $backup = 'backups/' . date('YmdHis') . '.zip';
+        $upgrade = null;
         try {
             $upgrade = new \Upgrade(app()->getRootPath(), $this->config['system_version']);
             $release = $upgrade->release(); // 获取最新版
@@ -100,22 +101,22 @@ class System extends Base
             if ($upgrade->check($release->version)) {
                 throw new \Exception('当前系统已经是最新版');
             }
-            $upgrade->backup($backup); // 备份系统
             $upgradeFile = app()->getRuntimePath() . 'upgrade.zip';// 判断是否存在安装包
             $file = file_exists($upgradeFile) ? $upgradeFile : $upgrade->download($release->url);
 
-
             // 校验 MD5
-            if (strtolower(md5_file($file)) !== strtoupper($release->md5)) {
-                throw new \Exception('安装包损坏, 请稍后重试', 500);
+            if (strtolower(md5_file($file)) !== strtolower($release->md5)) {
+                throw new \Exception('安装包损坏, 请稍后重试');
             }
 
             $dir = $upgrade->unzip($file, $upgrade->getWorkspace()); // 解压安装包到工作区目录
             $path = rtrim($dir . strtolower($release->path), '/') . '/'; // 新版本程序解压后的根目录
             $updateSql = $path . $release->sql; // 更新数据库结构 sql 文件路径
             if (!$sql = @file_get_contents($updateSql)) {
-                throw new \Exception('SQL 文件获取失败', 500);
+                throw new \Exception('SQL 文件获取失败');
             }
+
+            $upgrade->backup($backup); // 备份原系统
 
             // 复制 env 文件
             $config = \config('database.');
@@ -187,10 +188,11 @@ class System extends Base
             Db::commit();
         } catch (\Exception $e) {
             Db::rollback();
-            if ($e->getCode() === 500) @unlink(app()->getRootPath() . $backup);
+            $upgrade->rmdir($upgrade->getWorkspace());
             $this->result([], 0, $e->getMessage());
         } catch (\PDOException $e) {
             Db::rollback();
+            $upgrade->rmdir($upgrade->getWorkspace());
             $this->result([], 0, $e->getMessage());
         }
         $this->result([], 1, '更新完成, 原系统文件已备份(' . $backup . ')');
