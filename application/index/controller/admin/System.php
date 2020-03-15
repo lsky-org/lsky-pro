@@ -92,7 +92,7 @@ class System extends Base
     public function upgrade()
     {
         Db::startTrans();
-        $backup = 'backup-' . date('YmdHis') . '.zip';
+        $backup = 'backups/backup-' . date('YmdHis') . '.zip';
         try {
             $upgrade = new \Upgrade(app()->getRootPath(), $this->config['system_version']);
             $release = $upgrade->release(); // 获取最新版
@@ -107,15 +107,14 @@ class System extends Base
 
             // 校验 MD5
             if (md5_file($file) !== $release->md5) {
-                @unlink(app()->getRootPath() . $backup);
-                throw new \Exception('安装包损坏, 请稍后重试');
+                throw new \Exception('安装包损坏, 请稍后重试', 500);
             }
 
             $dir = $upgrade->unzip($file, $upgrade->getWorkspace()); // 解压安装包到工作区目录
-            $path = rtrim($dir . $release->path, '/') . '/'; // 新版本程序根目录
+            $path = rtrim($dir . $release->path, '/') . '/'; // 新版本程序解压后的根目录
             $updateSql = $path . $release->sql; // 更新数据库结构 sql 文件路径
             if (!$sql = @file_get_contents($updateSql)) {
-                throw new \Exception('SQL 文件获取失败');
+                throw new \Exception('SQL 文件获取失败', 500);
             }
 
             // 复制 env 文件
@@ -134,7 +133,7 @@ class System extends Base
                 $config['hostport'],
             ], @file_get_contents($path . '.env.example'));
             if (!@file_put_contents($path . '.env', $env)) {
-                throw new \Exception('配置文件写入失败');
+                throw new \Exception('配置文件写入失败', 500);
             }
 
             // 创建安装锁文件
@@ -188,6 +187,7 @@ class System extends Base
             Db::commit();
         } catch (\Exception $e) {
             Db::rollback();
+            if ($e->getCode() === 500) @unlink(app()->getRootPath() . $backup);
             $this->result([], 0, $e->getMessage());
         } catch (\PDOException $e) {
             Db::rollback();

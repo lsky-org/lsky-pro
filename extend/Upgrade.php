@@ -99,7 +99,7 @@ class Upgrade
         curl_close($curl);
 
         if ($statusCode !== 200) {
-            throw new \Exception('增量包下载失败, 请稍后重试!');
+            throw new \Exception('安装包下载失败, 请稍后重试!');
         }
 
         if (!@file_put_contents($pathname, $contents)) {
@@ -226,6 +226,8 @@ class Upgrade
     public function backup($pathname)
     {
         $pathname = $this->rootPath . $pathname;
+        $dirname = dirname($pathname);
+        if (!is_dir($dirname)) mkdir($dirname);
         $zip = new \ZipArchive;
         $zip->open($pathname, \ZipArchive::CREATE);
         $files = new RecursiveIteratorIterator(
