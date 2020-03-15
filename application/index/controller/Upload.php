@@ -29,10 +29,10 @@ class Upload extends Base
             Db::commit();
         } catch (Exception $e) {
             Db::rollback();
-            return response($e->getMessage(), 500);
+            return json(['error' => $e->getMessage()]);
         } catch (ErrorException $e) {
             Db::rollback();
-            return response($e->getMessage(), 500);
+            return json(['error' => $e->getMessage()]);
         }
 
         $this->result($data, 200, '上传成功');
