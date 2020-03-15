@@ -61,7 +61,7 @@ main {
 
       h1 {
         font-weight: 300;
-        font-size: 1.8rem;
+        font-size: 2rem;
         text-shadow: -5px 5px 0 rgba(0, 0, 0, .1);
       }
 
@@ -122,13 +122,16 @@ main {
     .mdui-table td, .mdui-table th {
       padding: 12px 28px;
     }
+
     div.item {
       i.mdui-icon {
         float: left;
         font-size: 3.7rem;
       }
+
       & > div {
         border-radius: 3px;
+
         p {
           margin-bottom: 25px;
         }
@@ -350,6 +353,7 @@ main {
     bottom: -1px;
     background: rgba(255, 255, 255, 0.47058823529411764);
     z-index: 99;
+
     .content {
       position: absolute;
       top: 50%;
@@ -365,6 +369,7 @@ main {
   .file-footer-caption {
     margin-bottom: 28px;
   }
+
   .file-thumb-progress {
     .progress, .progress-bar {
       height: 20px;
@@ -372,6 +377,7 @@ main {
     }
   }
 }
+
 .file-input {
   font-size: 1rem;
   @box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.13);
@@ -395,6 +401,7 @@ main {
         border: 2px solid transparent;
         transition: all .3s;
         box-shadow: @box-shadow;
+
         &.hover {
           border: 2px solid red;
         }
@@ -440,6 +447,7 @@ main {
 
     .input-group-append {
       box-shadow: @box-shadow;
+
       .btn {
         box-shadow: 0 2px 15px 0 rgba(0, 0, 0, 0.13);
       }
@@ -468,7 +476,7 @@ main {
 }
 
 .mdui-btn-raised {
-  box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
+  box-shadow: 0 3px 1px -2px rgba(0, 0, 0, .2), 0 2px 2px 0 rgba(0, 0, 0, .14), 0 1px 5px 0 rgba(0, 0, 0, .12);
 }
 
 .panel {
@@ -666,6 +674,80 @@ footer {
   background-color: #fff;
   border-color: #ddd;
   cursor: not-allowed;
+}
+
+// dark 主题
+body.mdui-theme-layout-dark {
+  main {
+    .mdui-btn {
+      color: white !important;
+    }
+
+    .images-container {
+      .folders-box, .images-box {
+        .item {
+          p.name {
+            color: #a0a0a0;
+          }
+
+          &:hover {
+            background-color: #212121;
+          }
+        }
+      }
+    }
+
+    ul.breadcrumb {
+      background-color: #3e3e3e;
+
+      li.active a {
+        color: #c3c3c3;
+      }
+    }
+
+    .upload-container {
+      .success-info {
+        ul {
+          li {
+            border: 1px solid #888888;
+            background-color: #303030;
+            color: #d4d4d4;
+          }
+        }
+      }
+    }
+  }
+
+  footer {
+    background-color: #303030;
+  }
+
+  .modal-content {
+    background-color: #333;
+  }
+
+  .file-input {
+    .file-preview {
+      box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.20);
+    }
+
+    .file-caption-main {
+
+      .btn:first-child {
+        border-left: 0;
+      }
+
+      .form-control {
+        color: #bababa;
+        background-color: #303030;
+        box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.20);
+
+        .file-caption-name {
+          color: #c1c1c1;
+        }
+      }
+    }
+  }
 }
 
 @media (max-width: 1200px) {

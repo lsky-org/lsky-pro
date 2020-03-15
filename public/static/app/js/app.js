@@ -242,5 +242,12 @@ var app = {
         auto && app.cookie.delete('no_update');
       }
     });
+  },
+  toggleTheme: function () {
+    var theme = app.cookie.get('theme') || 'light';
+    theme = theme === 'dark' ? 'light' : 'dark';
+    app.cookie.set('theme', theme, 30, '/');
+    $('body')[theme === 'dark' ? 'addClass' : 'removeClass']('mdui-theme-layout-dark');
+    $('#set-theme i').html(theme === 'dark' ? '&#xe3ac;' : '&#xe3a9;');
   }
 };

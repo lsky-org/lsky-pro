@@ -86,7 +86,7 @@ main .upload-container .title {
 }
 main .upload-container .title h1 {
   font-weight: 300;
-  font-size: 1.8rem;
+  font-size: 2rem;
   text-shadow: -5px 5px 0 rgba(0, 0, 0, 0.1);
 }
 main .upload-container .title p {
@@ -566,6 +566,48 @@ footer {
   background-color: #fff;
   border-color: #ddd;
   cursor: not-allowed;
+}
+body.mdui-theme-layout-dark main .mdui-btn {
+  color: white !important;
+}
+body.mdui-theme-layout-dark main .images-container .folders-box .item p.name,
+body.mdui-theme-layout-dark main .images-container .images-box .item p.name {
+  color: #a0a0a0;
+}
+body.mdui-theme-layout-dark main .images-container .folders-box .item:hover,
+body.mdui-theme-layout-dark main .images-container .images-box .item:hover {
+  background-color: #212121;
+}
+body.mdui-theme-layout-dark main ul.breadcrumb {
+  background-color: #3e3e3e;
+}
+body.mdui-theme-layout-dark main ul.breadcrumb li.active a {
+  color: #c3c3c3;
+}
+body.mdui-theme-layout-dark main .upload-container .success-info ul li {
+  border: 1px solid #888888;
+  background-color: #303030;
+  color: #d4d4d4;
+}
+body.mdui-theme-layout-dark footer {
+  background-color: #303030;
+}
+body.mdui-theme-layout-dark .modal-content {
+  background-color: #333;
+}
+body.mdui-theme-layout-dark .file-input .file-preview {
+  box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.2);
+}
+body.mdui-theme-layout-dark .file-input .file-caption-main .btn:first-child {
+  border-left: 0;
+}
+body.mdui-theme-layout-dark .file-input .file-caption-main .form-control {
+  color: #bababa;
+  background-color: #303030;
+  box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.2);
+}
+body.mdui-theme-layout-dark .file-input .file-caption-main .form-control .file-caption-name {
+  color: #c1c1c1;
 }
 @media (max-width: 768px) {
   body {
