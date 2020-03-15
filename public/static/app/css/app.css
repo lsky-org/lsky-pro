@@ -147,6 +147,9 @@ main .console-container div.item > div p {
 main .system-container .mdui-textfield-label {
   pointer-events: inherit;
 }
+main .system-container .mdui-textfield {
+  overflow: inherit;
+}
 main .images-container #info .mdui-dialog-content {
   word-break: break-all;
   word-wrap: break-word;
