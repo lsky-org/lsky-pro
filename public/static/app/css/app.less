@@ -678,10 +678,47 @@ footer {
 
 // dark 主题
 body.mdui-theme-layout-dark {
-  main {
-    .mdui-btn {
-      color: white !important;
+  .markdown-body {
+    color: #eaeaea;
+
+    a {
+      color: #64adff;
     }
+
+    img {
+      background-color: rgba(0, 0, 0, 0);
+    }
+
+    .highlight pre, pre {
+      background-color: #585858;
+    }
+
+    table {
+      tr {
+        background-color: #4c4c4c;
+
+        &:nth-child(2n) {
+          background-color: #5d5d5d;
+        }
+      }
+    }
+  }
+
+  .pagination > .disabled > span,
+  .pagination > .disabled > span:hover,
+  .pagination > .disabled > span:focus,
+  .pagination > .disabled > a,
+  .pagination > .disabled > a:hover,
+  .pagination > .disabled > a:focus,
+  .pagination > li > a, .pagination > li > span {
+    background-color: #2b2b2b;
+  }
+
+  .mdui-btn, .mdui-theme-accent-indigo .mdui-dialog-actions .mdui-btn {
+    color: white !important;
+  }
+
+  main {
 
     .images-container {
       .folders-box, .images-box {

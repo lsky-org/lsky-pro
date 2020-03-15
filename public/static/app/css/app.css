@@ -567,7 +567,37 @@ footer {
   border-color: #ddd;
   cursor: not-allowed;
 }
-body.mdui-theme-layout-dark main .mdui-btn {
+body.mdui-theme-layout-dark .markdown-body {
+  color: #eaeaea;
+}
+body.mdui-theme-layout-dark .markdown-body a {
+  color: #64adff;
+}
+body.mdui-theme-layout-dark .markdown-body img {
+  background-color: rgba(0, 0, 0, 0);
+}
+body.mdui-theme-layout-dark .markdown-body .highlight pre,
+body.mdui-theme-layout-dark .markdown-body pre {
+  background-color: #585858;
+}
+body.mdui-theme-layout-dark .markdown-body table tr {
+  background-color: #4c4c4c;
+}
+body.mdui-theme-layout-dark .markdown-body table tr:nth-child(2n) {
+  background-color: #5d5d5d;
+}
+body.mdui-theme-layout-dark .pagination > .disabled > span,
+body.mdui-theme-layout-dark .pagination > .disabled > span:hover,
+body.mdui-theme-layout-dark .pagination > .disabled > span:focus,
+body.mdui-theme-layout-dark .pagination > .disabled > a,
+body.mdui-theme-layout-dark .pagination > .disabled > a:hover,
+body.mdui-theme-layout-dark .pagination > .disabled > a:focus,
+body.mdui-theme-layout-dark .pagination > li > a,
+body.mdui-theme-layout-dark .pagination > li > span {
+  background-color: #2b2b2b;
+}
+body.mdui-theme-layout-dark .mdui-btn,
+body.mdui-theme-layout-dark .mdui-theme-accent-indigo .mdui-dialog-actions .mdui-btn {
   color: white !important;
 }
 body.mdui-theme-layout-dark main .images-container .folders-box .item p.name,
