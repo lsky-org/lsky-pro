@@ -165,13 +165,16 @@ var app = {
         url: '/admin/system/upgrade.html',
         type: 'POST',
         success: function (res) {
-          $d.close();
           mdui.alert(res.msg, '系统提示', function() {
             res.code && history.go(0);
           });
         },
         complete: function () {
+          $d.close();
           loading = false;
+        },
+        error: function () {
+          mdui.alert('更新失败, 请稍后重试', '系统提示');
         }
       });
     }, 1000)
