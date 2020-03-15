@@ -96,12 +96,11 @@
     autoOrientImage: true,
     uploadAsync: true,
     overwriteInitial: false,
-    //browseClass: "btn btn-file",
     maxFileSize: "{$config.upload_max_size / 1024}",// kb
     maxFileCount: "{$config.upload_single_num}",
     showCaption: true,
     dropZoneEnabled: true,
-    browseIcon: "<i class=\"glyphicon glyphicon-picture\"></i> ",
+    browseIcon: "<i class=\"fas fa-images\"></i> ",
     allowedFileExtensions: JSON.parse('{:json_encode(explode(",", filter_comma($config.upload_allowed_exts)))}'),
   }).on("fileuploaded", function(event, data, previewId, index) {
     var form = data.form, files = data.files, extra = data.extra, response = data.response, reader = data.reader;
