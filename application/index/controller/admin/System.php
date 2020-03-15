@@ -189,13 +189,13 @@ class System extends Base
         } catch (\Exception $e) {
             Db::rollback();
             $upgrade->rmdir($upgrade->getWorkspace());
-            $this->result([], 0, $e->getMessage());
+            $this->error($e->getMessage());
         } catch (\PDOException $e) {
             Db::rollback();
             $upgrade->rmdir($upgrade->getWorkspace());
-            $this->result([], 0, $e->getMessage());
+            $this->error($e->getMessage());
         }
-        $this->result([], 1, '更新完成, 原系统文件已备份(' . $backup . ')');
+        $this->success('升级完成, 文件已备份至: ' . $backup);
     }
 
     public function check()

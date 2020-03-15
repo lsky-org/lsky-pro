@@ -166,7 +166,10 @@ var app = {
         type: 'POST',
         success: function (res) {
           mdui.alert(res.msg, '系统提示', function() {
-            res.code && history.go(0);
+            history.go(0);
+          }, {
+            modal: true,
+            closeOnEsc: true,
           });
         },
         complete: function () {
@@ -192,7 +195,6 @@ var app = {
           // 已经是最新版
           auto && app.msg(true, '已经是最新版本');
         } else {
-          var loading = false;
           if (!app.cookie.has('no_update') || auto) {
             mdui.dialog({
               title: '检测到新版本[' + response.version + ']',
