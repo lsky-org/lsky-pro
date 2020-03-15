@@ -46,7 +46,7 @@ class Upgrade
     {
         $this->rootPath = rtrim(str_replace('\\', '/', $path), '/') . '/';
         $this->workspace = $this->rootPath . 'runtime/.tmp/';
-        $this->version = $version;
+        $this->version = ltrim('v', strtolower($version));
 
         if (!class_exists('ZipArchive')) {
             throw new \Exception('无法继续执行, 请确保 ZipArchive 正确安装');

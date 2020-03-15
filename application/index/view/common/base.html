@@ -173,7 +173,7 @@
     });
 
     $('#update').click(function () {
-      app.upgrade(true);
+      app.getLastVer(ver, true);
     });
 
     $('body').on('click', '.markdown-body a', function (e) {
@@ -184,7 +184,7 @@
 </script>
 {if $user and $user.is_admin and !cookie('?no_update')}
 <script>
-  app.upgrade(false);
+  app.getLastVer(ver, false);
 </script>
 {/if}
 {$config.statistics_code|raw}

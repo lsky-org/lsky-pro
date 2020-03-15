@@ -4,7 +4,7 @@
     </a>
 </p>
 
-<p align="center">Lsky Pro - Your photo album on the cloud.</p>
+<p align="center">Your photo album on the cloud.</p>
 
 [官网](https://www.lsky.pro) &nbsp;
 [手册](https://www.kancloud.cn/wispx/lsky-pro) &nbsp;

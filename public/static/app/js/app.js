@@ -120,26 +120,79 @@ var app = {
    */
   bytesToSize: function (bytes) {
     if (bytes === 0) return '0 B';
-    var k = 1024, sizes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'], i = Math.floor(Math.log(bytes) / Math.log(k));
+    var k = 1024, sizes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'],
+      i = Math.floor(Math.log(bytes) / Math.log(k));
     return (bytes / Math.pow(k, i)).toFixed(2) + ' ' + sizes[i];
   },
+  versionCompare: function (ver, newVer) {
+    var sources = ver.split('.');
+    var dests = newVer.split('.');
+    var maxL = Math.max(sources.length, dests.length);
+    var result = 0;
+    for (var i = 0; i < maxL; i++) {
+      let preValue = sources.length > i ? sources[i] : 0;
+      let preNum = isNaN(Number(preValue)) ? preValue.charCodeAt() : Number(preValue);
+      let lastValue = dests.length > i ? dests[i] : 0;
+      let lastNum = isNaN(Number(lastValue)) ? lastValue.charCodeAt() : Number(lastValue);
+      if (preNum < lastNum) {
+        result = -1;
+        break;
+      } else if (preNum > lastNum) {
+        result = 1;
+        break;
+      }
+    }
+    return result;
+  },
   /**
-   * 更新系统
+   * 执行更新
+   */
+  upgrade: function () {
+    var loading = false;
+    if (loading) return;
+    loading = true;
+    $d = mdui.dialog({
+      overlay: true,
+      modal: true,
+      buttons: [],
+      closeOnEsc: false,
+      content: '<div class="mdui-valign"><div class="mdui-spinner mdui-spinner-colorful mr-3"></div> 升级中, 请不要关闭窗口...</div>'
+    });
+    $d.$dialog.css({'max-width': '300px'});
+    mdui.mutation();
+    setTimeout(function () {
+      $.ajax({
+        url: '/admin/system/upgrade.html',
+        success: function (res) {
+          $d.close();
+          mdui.alert(res.msg, '系统提示', function() {
+            res.code && history.go(0);
+          });
+        },
+        complete: function () {
+          loading = false;
+        }
+      });
+    }, 1000)
+  },
+  /**
+   * 检测版本更新
+   * @param ver
    * @param auto
    */
-  upgrade: function (auto) {
+  getLastVer: function (ver, auto) {
     $.ajax({
-      url: '/admin/system/check.html',
+      url: 'https://api.lsky.pro/releases.php?version=last',
       success: function (response) {
-        if (response.code === 0) {
+        if (app.versionCompare(ver, response.version) === 0) {
           // 已经是最新版
           auto && app.msg(true, '已经是最新版本');
         } else {
           var loading = false;
           if (!app.cookie.has('no_update') || auto) {
             mdui.dialog({
-              title: '检测到新版本[' + response.data.version + ']',
-              content: '<div class="markdown-body mdui-p-l-3 mdui-p-r-3">' + marked(response.data.info) + '</div>',
+              title: '检测到新版本[' + response.version + ']',
+              content: '<div class="markdown-body mdui-p-l-3 mdui-p-r-3">' + marked(response.info) + '</div>',
               modal: true,
               history: false,
               buttons: [
@@ -148,35 +201,16 @@ var app = {
                 },
                 {
                   text: '不再提示',
-                  onClick: function() {
+                  onClick: function () {
                     app.cookie.set('no_update', true, 30, '/');
                   }
                 },
                 {
                   text: '立即更新',
                   close: false,
-                  onClick: function(inst) {
-                    if (loading) return;
-                    loading = true;
-                    mdui.dialog({
-                      overlay: true,
-                      modal: true,
-                      buttons: [],
-                      closeOnEsc: false,
-                      content: '<div class="mdui-spinner mdui-spinner-colorful"></div> 更新中, 请不要关闭窗口...'
-                    });
-                    // TODO 请求更新
-                    /*$.ajax({
-                      url: '/admin/system/upgrade.html',
-                      success: function (res) {
-                        mdui.alert(res.msg, '系统提示', function() {
-                          res.code && history.go(0);
-                        });
-                      },
-                      complete: function () {
-                        loading = false;
-                      }
-                    });*/
+                  onClick: function (inst) {
+                    inst.close();
+                    app.upgrade();
                   }
                 }
               ]
