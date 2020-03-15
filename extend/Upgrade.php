@@ -88,7 +88,7 @@ class Upgrade
         curl_setopt($curl, CURLOPT_TIMEOUT, 180);
         curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 180);
         curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($curl, CURLOPT_HEADER, 1);
+        curl_setopt($curl, CURLOPT_HEADER, 0);
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
         $contents = curl_exec($curl);

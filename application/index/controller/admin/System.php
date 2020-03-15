@@ -104,8 +104,10 @@ class System extends Base
             $upgradeFile = app()->getRuntimePath() . 'upgrade.zip';// 判断是否存在安装包
             $file = file_exists($upgradeFile) ? $upgradeFile : $upgrade->download($release->url);
 
+
             // 校验 MD5
             if (md5_file($file) !== $release->md5) {
+                @unlink(app()->getRootPath() . $backup);
                 throw new \Exception('安装包损坏, 请稍后重试');
             }
 

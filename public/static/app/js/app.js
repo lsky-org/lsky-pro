@@ -156,7 +156,7 @@ var app = {
       modal: true,
       buttons: [],
       closeOnEsc: false,
-      content: '<div class="mdui-valign"><div class="mdui-spinner mdui-spinner-colorful mr-3"></div> 升级中, 请不要关闭窗口...</div>'
+      content: '<div class="mdui-valign"><div class="mdui-spinner mdui-spinner-colorful mdui-m-r-3"></div> 升级中, 请不要关闭窗口...</div>'
     });
     $d.$dialog.css({'max-width': '300px'});
     mdui.mutation();
