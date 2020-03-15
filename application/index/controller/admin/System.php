@@ -106,12 +106,12 @@ class System extends Base
 
 
             // 校验 MD5
-            if (md5_file($file) !== $release->md5) {
+            if (strtolower(md5_file($file)) !== strtoupper($release->md5)) {
                 throw new \Exception('安装包损坏, 请稍后重试', 500);
             }
 
             $dir = $upgrade->unzip($file, $upgrade->getWorkspace()); // 解压安装包到工作区目录
-            $path = rtrim($dir . $release->path, '/') . '/'; // 新版本程序解压后的根目录
+            $path = rtrim($dir . strtolower($release->path), '/') . '/'; // 新版本程序解压后的根目录
             $updateSql = $path . $release->sql; // 更新数据库结构 sql 文件路径
             if (!$sql = @file_get_contents($updateSql)) {
                 throw new \Exception('SQL 文件获取失败', 500);
