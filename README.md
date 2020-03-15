@@ -4,7 +4,7 @@
 
 ☁ Your photo album on the cloud.
 
-[![docs](https://img.shields.io/badge/-%E7%9C%8B%E4%BA%91%E6%96%87%E6%A1%A3-red)](https://www.kancloud.cn/wispx/lsky-pro)
+[![docs](https://img.shields.io/badge/-%E7%9C%8B%E4%BA%91%E6%96%87%E6%A1%A3-blue)](https://www.kancloud.cn/wispx/lsky-pro)
 [![PHP](https://img.shields.io/badge/PHP->=5.6-orange.svg)](http://php.net)
 [![Release](https://img.shields.io/github/v/release/wisp-x/lsky-pro)](https://github.com/wisp-x/lsky-pro/releases)
 [![Issues](https://img.shields.io/github/issues/wisp-x/lsky-pro)](https://github.com/wisp-x/lsky-pro/issues)
@@ -13,7 +13,7 @@
 [![Last commit](https://img.shields.io/github/last-commit/wisp-x/lsky-pro/dev)](https://github.com/wisp-x/lsky-pro/commits/dev)
 
 [演示](https://pic.iqy.ink) &nbsp;
-[Chrome 拓展](https://github.com/wisp-x/lsky-pro-chrome-extension)
+[Chrome 拓展](https://github.com/wisp-x/lsky-pro-chrome-extension) &nbsp;
 [Telegram 群组](https://t.me/lsky_pro)
 
 > 下载稳定版请点击[这里](https://github.com/wisp-x/lsky-pro/releases)，发现 bug 可发送邮件至邮箱：i@wispx.cn，或提交 [issues](https://github.com/wisp-x/lsky-pro/issues)  
