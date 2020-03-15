@@ -1,4 +1,4 @@
-<img align="right" width="100" src="https://i.loli.net/2020/03/15/pFEfhJgTbHYq3aG.png" alt="Lsky Pro Logo"/>
+<img align="right" width="100" src="./public/static/app/images/icon.png" alt="Lsky Pro Logo"/>
 
 <h1 align="left"><a href="https://www.lsky.pro">Lsky Pro</a></h1>
 
