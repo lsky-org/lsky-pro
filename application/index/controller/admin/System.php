@@ -92,6 +92,7 @@ class System extends Base
     public function upgrade()
     {
         Db::startTrans();
+        $isBackup = $this->request->request('backup', true); // 是否备份原系统文件
         $backup = 'backups/' . date('YmdHis') . '.zip';
         $upgrade = null;
         try {
@@ -116,7 +117,7 @@ class System extends Base
                 throw new \Exception('SQL 文件获取失败');
             }
 
-            $upgrade->backup($backup); // 备份原系统
+            $isBackup && $upgrade->backup($backup); // 备份原系统
 
             // 复制 env 文件
             $config = \config('database.');

@@ -147,7 +147,7 @@ var app = {
   /**
    * 执行更新
    */
-  upgrade: function () {
+  upgrade: function (backup) {
     var loading = false;
     if (loading) return;
     loading = true;
@@ -164,6 +164,7 @@ var app = {
       $.ajax({
         url: '/admin/system/upgrade.html',
         type: 'POST',
+        data: {backup: backup},
         success: function (res) {
           mdui.alert(res.msg, '系统提示', function() {
             history.go(0);
@@ -177,7 +178,7 @@ var app = {
           loading = false;
         },
         error: function () {
-          mdui.alert('更新失败, 请稍后重试', '系统提示');
+          mdui.alert('升级失败, 请稍后重试', '系统提示');
         }
       });
     }, 1000)
@@ -212,11 +213,26 @@ var app = {
                   }
                 },
                 {
-                  text: '立即更新',
+                  text: '立即升级',
                   close: false,
                   onClick: function (inst) {
                     inst.close();
-                    app.upgrade();
+                    mdui.confirm(
+                      '将会在升级前备份原系统文件, 但不包括 runtime 和 public 目录以及数据库',
+                      '⚠ 是否需要备份原系统?',
+                      function() {
+                        app.upgrade(true);
+                      },
+                      function() {
+                        app.upgrade(false);
+                      },
+                      {
+                        confirmText: '备份',
+                        cancelText: '不备份',
+                        modal: true,
+                        closeOnEsc: false,
+                      }
+                    );
                   }
                 }
               ]
