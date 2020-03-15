@@ -13,7 +13,7 @@
 namespace think;
 
 // 加载基础文件
-require __DIR__ .'/thinkphp/base.php';
+require __DIR__ . '/thinkphp/base.php';
 
 // 应用初始化
 Container::get('app')->path(__DIR__ . '/application/')->initialize();
