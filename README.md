@@ -7,11 +7,11 @@
 [![PHP](https://img.shields.io/badge/PHP->=5.6-orange.svg)](http://php.net)
 [![Release](https://img.shields.io/github/v/release/wisp-x/lsky-pro)](https://github.com/wisp-x/lsky-pro/releases)
 [![Issues](https://img.shields.io/github/issues/wisp-x/lsky-pro)](https://github.com/wisp-x/lsky-pro/issues)
-[![License](https://img.shields.io/badge/license-GPL_V3.0-yellowgreen.svg)](https://github.com/wisp-x/lsky-pro/blob/master/LICENSE)
 [![Code size](https://img.shields.io/github/languages/code-size/wisp-x/lsky-pro?color=blueviolet)](https://github.com/wisp-x/lsky-pro)
 [![Repo size](https://img.shields.io/github/repo-size/wisp-x/lsky-pro?color=eb56fd)](https://github.com/wisp-x/lsky-pro)
 [![Languages](https://img.shields.io/github/languages/count/wisp-x/lsky-pro?color=ff6565)](https://github.com/wisp-x/lsky-pro)
 [![Last commit](https://img.shields.io/github/last-commit/wisp-x/lsky-pro/dev)](https://github.com/wisp-x/lsky-pro/commits/dev)
+[![License](https://img.shields.io/badge/license-GPL_V3.0-yellowgreen.svg)](https://github.com/wisp-x/lsky-pro/blob/master/LICENSE)
 
 [文档](https://www.kancloud.cn/wispx/lsky-pro) &nbsp;
 [演示](https://pic.iqy.ink) &nbsp;
