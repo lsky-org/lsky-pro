@@ -490,8 +490,8 @@ main .mask .content {
 #menu .quota-container progress::-moz-progress-value {
   background-color: #708d9b;
 }
-#fab-buttons > button {
-  margin-bottom: 3.6rem;
+#fab-buttons.mdui-fab-wrapper {
+  margin-bottom: 4rem;
 }
 #search-form .search-input {
   display: inline-block;

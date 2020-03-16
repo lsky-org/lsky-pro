@@ -72,11 +72,6 @@
     <div class="page">
       {$users|raw}
     </div>
-    <select class="operation mdui-select" mdui-select>
-      <option value="">选中项</option>
-      <option value="frozen">冻结</option>
-      <option value="delete">删除</option>
-    </select>
   </main>
   <div class="mdui-dialog" id="edit-dialog">
     <div class="mdui-dialog-content">
@@ -118,41 +113,81 @@
       </form>
     </div>
   </div>
+  <div class="mdui-fab-wrapper" id="fab-buttons" mdui-fab="{trigger: 'hover'}">
+    <button class="mdui-fab mdui-ripple mdui-color-purple mdui-fab-hide" id="settings-btn">
+      <i class="mdui-icon material-icons">&#xe8b8;</i>
+      <i class="mdui-icon mdui-fab-opened material-icons">&#xe8b8;</i>
+    </button>
+    <div class="mdui-fab-dial">
+      <button class="mdui-fab mdui-fab-mini mdui-ripple mdui-color-orange" onclick="settings('frozen')">
+        <i class="mdui-icon material-icons">&#xe14b;</i>
+      </button>
+      <button class="mdui-fab mdui-fab-mini mdui-ripple mdui-color-red" onclick="settings('delete')">
+        <i class="mdui-icon material-icons">&#xe872;</i>
+      </button>
+    </div>
+  </div>
 </div>
 {/block}
 
 {block name="js"}
 <script>
+  var methods = {
+    delete: function (id, batch, callback) {
+      var msg = '确认删除该用户吗？';
+      if (batch) {
+        msg = '确认删除选中项用户吗？';
+      }
+      mdui.confirm(msg, function () {
+        app.request("{:url('admin/users/delete')}", {id: id}, function () {
+          callback && callback();
+        });
+      }, function () {
+
+      }, {confirmText: '确定', cancelText: '取消'});
+    },
+    frozen: function (id, batch, callback) {
+      var msg = '确认冻结该用户吗？';
+      if (batch) {
+        msg = '确认冻结选中项用户吗？';
+      }
+      mdui.confirm(msg, function () {
+        app.request("{:url('admin/users/frozen')}", {id: id}, function () {
+          callback && callback();
+        });
+      }, function () {
+
+      }, {confirmText: '确定', cancelText: '取消'});
+    }
+  };
+
+  function settings(val) {
+    var array = [];
+    var selected = $('tr.mdui-table-row-selected');
+    if (selected.length) {
+      selected.each(function (index, value) {
+        array.push($(value).data('id'));
+      });
+
+      if ('frozen' === val) {
+        methods.frozen(array, true, function () {
+          history.go(0);
+        })
+      } else if ('delete' === val) {
+        methods.delete(array, true, function () {
+          selected.remove();
+        });
+      }
+    } else {
+      mdui.snackbar({
+        message: '至少选择一项数据！'
+      });
+    }
+  }
+
   $(function () {
     var dialog = new mdui.Dialog('#edit-dialog');
-    var methods = {
-      delete: function (id, batch, callback) {
-        var msg = '确认删除该用户吗？';
-        if (batch) {
-          msg = '确认删除选中项用户吗？';
-        }
-        mdui.confirm(msg, function () {
-          app.request("{:url('admin/users/delete')}", {id: id}, function () {
-            callback && callback();
-          });
-        }, function () {
 
-        }, {confirmText: '确定', cancelText: '取消'});
-      },
-      frozen: function (id, batch, callback) {
-        var msg = '确认冻结该用户吗？';
-        if (batch) {
-          msg = '确认冻结选中项用户吗？';
-        }
-        mdui.confirm(msg, function () {
-          app.request("{:url('admin/users/frozen')}", {id: id}, function () {
-            callback && callback();
-          });
-        }, function () {
-
-        }, {confirmText: '确定', cancelText: '取消'});
-      }
-    };
     $('.mdui-select.where').on('close.mdui.select', function () {
       $('#search-form').submit();
     });
@@ -160,31 +195,9 @@
       var tr = $(this).closest('tr');
       app.request("{:url('admin/users/setGroup')}", {id: tr.data('id'), group_id: $(this).val()});
     });
-    $('.mdui-select.operation').on('close.mdui.select', function () {
-      if ($(this).val() !== '') {
-        var selected = $('tr.mdui-table-row-selected');
-        var val = $(this).val();
-        var array = [];
-        if (selected.length) {
-          selected.each(function (index, value) {
-            array.push($(value).data('id'));
-          });
-
-          if ('frozen' === val) {
-            methods.frozen(array, true, function () {
-              history.go(0);
-            })
-          } else if ('delete' === val) {
-            methods.delete(array, true, function () {
-              selected.remove();
-            });
-          }
-        } else {
-          mdui.snackbar({
-            message: '至少选择一项数据！'
-          });
-        }
-      }
+    $('.mdui-checkbox input').change(function () {
+      var selected = $('tr.mdui-table-row-selected');
+      $('#settings-btn')[selected.length > 0 ? 'removeClass' : 'addClass']('mdui-fab-hide');
     });
     // 提交
     $('#edit-dialog form').submit(function (e) {
