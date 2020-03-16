@@ -113,19 +113,19 @@
       </form>
     </div>
   </div>
-  <div class="mdui-fab-wrapper" id="fab-buttons" mdui-fab="{trigger: 'hover'}">
-    <button class="mdui-fab mdui-ripple mdui-color-purple mdui-fab-hide" id="settings-btn">
-      <i class="mdui-icon material-icons">&#xe8b8;</i>
-      <i class="mdui-icon mdui-fab-opened material-icons">&#xe8b8;</i>
+</div>
+<div class="mdui-fab-wrapper" id="fab-buttons" mdui-fab="{trigger: 'hover'}">
+  <button class="mdui-fab mdui-ripple mdui-color-purple mdui-fab-hide" id="settings-btn">
+    <i class="mdui-icon material-icons">&#xe8b8;</i>
+    <i class="mdui-icon mdui-fab-opened material-icons">&#xe8b8;</i>
+  </button>
+  <div class="mdui-fab-dial">
+    <button class="mdui-fab mdui-fab-mini mdui-ripple mdui-color-orange" onclick="settings('frozen')">
+      <i class="mdui-icon material-icons">&#xe14b;</i>
     </button>
-    <div class="mdui-fab-dial">
-      <button class="mdui-fab mdui-fab-mini mdui-ripple mdui-color-orange" onclick="settings('frozen')">
-        <i class="mdui-icon material-icons">&#xe14b;</i>
-      </button>
-      <button class="mdui-fab mdui-fab-mini mdui-ripple mdui-color-red" onclick="settings('delete')">
-        <i class="mdui-icon material-icons">&#xe872;</i>
-      </button>
-    </div>
+    <button class="mdui-fab mdui-fab-mini mdui-ripple mdui-color-red" onclick="settings('delete')">
+      <i class="mdui-icon material-icons">&#xe872;</i>
+    </button>
   </div>
 </div>
 {/block}
@@ -195,6 +195,7 @@
       var tr = $(this).closest('tr');
       app.request("{:url('admin/users/setGroup')}", {id: tr.data('id'), group_id: $(this).val()});
     });
+    // 多选操作
     $('.mdui-checkbox input').change(function () {
       var selected = $('tr.mdui-table-row-selected');
       $('#settings-btn')[selected.length > 0 ? 'removeClass' : 'addClass']('mdui-fab-hide');
