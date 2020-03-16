@@ -118,7 +118,11 @@ function str_rand($length = 16, $char = '0123456789abcdefghijklmnopqrstuvwxyzABC
  */
 function make_token()
 {
-    return md5('LSKY PRO' . uniqid() . time());
+    $token = md5('LSKY PRO' . uniqid() . time());
+    if (\app\common\model\Users::where('token', $token)->count()) {
+        return make_token();
+    }
+    return $token;
 }
 
 /**
