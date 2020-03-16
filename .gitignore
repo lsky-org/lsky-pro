@@ -6,7 +6,7 @@
 .vscode
 *.iml
 runtime/.tmp
-
+/public/20*
 /application/install.lock
 .env
 
