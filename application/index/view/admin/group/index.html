@@ -5,51 +5,52 @@
 {block name="main"}
 <div class="mdui-container">
   <main>
-    <div class="mdui-table-fluid mdui-m-t-2 mdui-m-b-2">
+    <div class="mdui-m-t-2 mdui-m-b-2">
       <div class="mdui-typo">
         <blockquote>
           <p>不同的角色组下的用户，上传图片将使用不同的储存策略。<br>至少有一个默认角色组，新注册用户和访客将会使用默认的角色组。<br>角色组删除后，该组下面的用户将重置默认角色组。</p>
         </blockquote>
       </div>
       <div class="mdui-btn-group mdui-m-a-1">
-        <button type="button" id="add" class="mdui-btn mdui-ripple mdui-btn-raised" mdui-dialog="{target: '#add-dialog'}">添加</button>
       </div>
-      <table class="mdui-table mdui-table-selectable">
-        <thead>
-        <tr>
-          <th>使用策略</th>
-          <th>名称</th>
-          <th>注册默认</th>
-          <th>操作</th>
-        </tr>
-        </thead>
-        <tbody>
-        {foreach $groups as $value}
-        <tr data-id="{$value.id}">
-          <td>
-            <select class="mdui-select strategy">
-              {foreach $strategy_list as $strategy => $val}
-              <option value="{$strategy}" {if $value.strategy eq $strategy} selected{/if}>{$val.name}</option>
-              {/foreach}
-            </select>
-          </td>
-          <td>{$value.name}</td>
-          <td>
-            <label class="mdui-switch">
-              <input type="checkbox" class="default" {if $value.default eq 1}checked{/if}/>
-              <i class="mdui-switch-icon"></i>
-            </label>
-          </td>
-          <td>
-            <div class="mdui-btn-group">
-              <button class="mdui-btn mdui-btn-raised mdui-btn-dense edit">编辑</button>
-              <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-red mdui-btn-dense del">删除</button>
-            </div>
-          </td>
-        </tr>
-        {/foreach}
-        </tbody>
-      </table>
+      <div class="mdui-table-fluid">
+        <table class="mdui-table mdui-table-selectable">
+          <thead>
+          <tr>
+            <th>使用策略</th>
+            <th>名称</th>
+            <th>注册默认</th>
+            <th>操作</th>
+          </tr>
+          </thead>
+          <tbody>
+          {foreach $groups as $value}
+          <tr data-id="{$value.id}">
+            <td>
+              <select class="mdui-select strategy">
+                {foreach $strategy_list as $strategy => $val}
+                <option value="{$strategy}" {if $value.strategy eq $strategy} selected{/if}>{$val.name}</option>
+                {/foreach}
+              </select>
+            </td>
+            <td>{$value.name}</td>
+            <td>
+              <label class="mdui-switch">
+                <input type="checkbox" class="default" {if $value.default eq 1}checked{/if}/>
+                <i class="mdui-switch-icon"></i>
+              </label>
+            </td>
+            <td>
+              <div class="mdui-btn-group">
+                <button class="mdui-btn mdui-btn-raised mdui-btn-dense edit">编辑</button>
+                <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-red mdui-btn-dense del">删除</button>
+              </div>
+            </td>
+          </tr>
+          {/foreach}
+          </tbody>
+        </table>
+      </div>
     </div>
   </main>
   <div class="mdui-dialog" id="add-dialog">
@@ -113,6 +114,11 @@
       </form>
     </div>
   </div>
+</div>
+<div id="fab-buttons">
+  <button class="mdui-fab mdui-fab-fixed mdui-ripple mdui-color-red" mdui-dialog="{target: '#add-dialog'}">
+    <i class="mdui-icon material-icons">add</i>
+  </button>
 </div>
 {/block}
 

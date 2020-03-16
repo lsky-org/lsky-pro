@@ -135,7 +135,7 @@ class System extends Base
                 $config['hostport'],
             ], @file_get_contents($path . '.env.example'));
             if (!@file_put_contents($path . '.env', $env)) {
-                throw new \Exception('配置文件写入失败', 500);
+                throw new \Exception('配置文件写入失败');
             }
 
             // 创建安装锁文件

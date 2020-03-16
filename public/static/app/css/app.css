@@ -490,6 +490,9 @@ main .mask .content {
 #menu .quota-container progress::-moz-progress-value {
   background-color: #708d9b;
 }
+#fab-buttons > button {
+  margin-bottom: 3.6rem;
+}
 #search-form .search-input {
   display: inline-block;
   padding-bottom: 0.6rem;
@@ -504,6 +507,7 @@ footer {
   color: #999;
   text-align: left;
   background-color: #f5f5f5;
+  z-index: -1;
 }
 .pagination {
   display: inline-block;
