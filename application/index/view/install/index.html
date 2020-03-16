@@ -189,8 +189,12 @@
 <script src="https://cdn.jsdelivr.net/npm/mdui@0.4.3/dist/js/mdui.min.js"></script>
 <script>
   $(function () {
+    var loading = false;
+
     $('#configure-mysql-form').submit(function (e) {
       e.preventDefault();
+      if (loading === true) return false;
+      loading = true;
       $.ajax({
         url: "{:url('install/index', ['step' => 2])}",
         data: $(this).serialize(),
@@ -211,12 +215,15 @@
         error: function () {
         },
         complete: function () {
-
+          loading = false;
         }
       });
     });
+
     $('#configure-admin-form').submit(function (e) {
       e.preventDefault();
+      if (loading === true) return false;
+      loading = true;
       $.ajax({
         url: "{:url('install/index', ['step' => 3])}",
         data: $(this).serialize(),
@@ -237,7 +244,7 @@
         error: function () {
         },
         complete: function () {
-
+          loading = false;
         }
       });
     });
