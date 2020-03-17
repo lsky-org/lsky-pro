@@ -607,6 +607,13 @@ body.mdui-theme-layout-dark .mdui-btn,
 body.mdui-theme-layout-dark .mdui-theme-accent-indigo .mdui-dialog-actions .mdui-btn {
   color: white !important;
 }
+body.mdui-theme-layout-dark main .mask {
+  background-color: rgba(47, 45, 45, 0.47058824);
+}
+body.mdui-theme-layout-dark main .mask .content .mdui-color-white {
+  color: white !important;
+  background-color: rgba(76, 76, 76, 0.78) !important;
+}
 body.mdui-theme-layout-dark main .images-container .folders-box .item p.name,
 body.mdui-theme-layout-dark main .images-container .images-box .item p.name {
   color: #a0a0a0;
