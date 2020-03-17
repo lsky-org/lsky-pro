@@ -24,11 +24,11 @@ function format_size($size, $array = false)
     if (0 == $size) {
         return "0.00 Bytes";
     }
-    $unit = ['','K','M','G','T','P'];
+    $unit = ['', 'K', 'M', 'G', 'T', 'P'];
     $base = 1024;
     $i = floor(log($size, $base));
     $n = count($unit);
-    if($i >= $n) {
+    if ($i >= $n) {
         $i = $n - 1;
     }
 
@@ -102,9 +102,10 @@ function get_file_ext($name)
  * @param string $char
  * @return bool|string
  */
-function str_rand($length = 16, $char = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ') {
+function str_rand($length = 16, $char = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ')
+{
     $string = '';
-    for($i = $length; $i > 0; $i--) {
+    for ($i = $length; $i > 0; $i--) {
         $string .= $char[mt_rand(0, strlen($char) - 1)];
     }
 
@@ -138,15 +139,19 @@ function make_url($domain, $pathname = null)
     if (false === strpos($domain, 'https://') && false === strpos($domain, 'http://')) {
         $domain = 'http://' . $domain;
     }
-    return str_replace('\\', '/', $domain . ($pathname ? '/' . $pathname : null));
+    $query = \think\facade\Config::get('system.url_query');
+    $url = str_replace('\\', '/', $domain . ($pathname ? '/' . $pathname : null));
+    if ($query) $url = $url . $query;
+    return $url;
 }
 
 /**
  * @param int $length
  * @return int
  */
-function generate_code($length = 5) {
-    $min = pow(10 , ($length - 1));
+function generate_code($length = 5)
+{
+    $min = pow(10, ($length - 1));
     $max = pow(10, $length) - 1;
     return rand($min, $max);
 }

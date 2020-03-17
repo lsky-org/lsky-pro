@@ -9,4 +9,6 @@
 return [
     // 违规图片是否直接拦截
     'intercept_salacity' => false,
+    // 图片链接额外参数(例: ?test=123)
+    'url_query' => ''
 ];

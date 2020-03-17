@@ -130,7 +130,7 @@ class Upload extends Controller
                 if (0 == $result->error_code) {
                     if ($result->rating_index >= $this->configs['audit_index']) {
                         // 是否直接拦截色情图片
-                        if (Config::get('site.intercept_salacity')) {
+                        if (Config::get('system.intercept_salacity')) {
                             $this->strategy->delete($pathname);
                             throw new Exception('图片[' . $image->getInfo('name') . ']涉嫌违规，禁止上传！');
                         }
@@ -176,6 +176,9 @@ class Upload extends Controller
             $this->strategy->delete($pathname);
             throw new Exception('图片数据保存失败');
         }
+
+        // 追加额外的url参数
+        if ($query = Config::get('system.url_query')) $url = $url.$query;
 
         $data = [
             'name' => $image->getInfo('name'),
