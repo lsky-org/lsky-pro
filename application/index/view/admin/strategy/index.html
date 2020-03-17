@@ -3,7 +3,7 @@
 {block name="title"}储存策略 - {$config.site_name}{/block}
 
 {block name="main"}
-<div class="mdui-container">
+<div class="mdui-container mdui-p-b-5">
   <main>
     <div class="strategy-container">
       <div class="mdui-typo">
@@ -26,6 +26,12 @@
               {switch $val.type}
               {case text}
               <input class="mdui-textfield-input" type="{$val.input_type}" name="{$val.name}" value="{$val.value}" autocomplete="off" placeholder="{$val.title}"/>
+              {/case}
+              {case bool}
+              <label class="mdui-switch">
+                <input type="{$val.input_type}" data-name="{$val.name}" value="1" {if 1 eq $val.value}checked{/if}/>
+                <i class="mdui-switch-icon"></i>
+              </label>
               {/case}
               {case select}
               <select name="{$val.name}" class="mdui-select">
@@ -53,7 +59,11 @@
   $(function () {
     $('form').submit(function (e) {
       e.preventDefault();
-      app.request(this.action, $(this).serialize());
+      var data = $(this).serialize();
+      $(this).find("input[type='checkbox']").each(function (key, value) {
+        data += ("&" + $(value).data('name') + "=") + (value.checked ? value.value : 0);
+      });
+      app.request(this.action, data);
     })
   });
 </script>

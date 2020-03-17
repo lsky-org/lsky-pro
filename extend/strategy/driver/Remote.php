@@ -24,6 +24,7 @@ class Remote implements Driver
             $this->ftp = new \FtpClient\FtpClient();
             $this->ftp->connect($options['remote_host']);
             $this->ftp = $this->ftp->login($options['remote_name'], $options['remote_password']);
+            $this->ftp->pasv($options['remote_pasv'] ? true : false);
         } catch (FtpException $e) {
             $this->error = $e->getMessage();
         }

@@ -157,6 +157,7 @@ INSERT INTO `lsky_config` (`id`, `key`, `type`, `input_type`, `name`, `title`, `
 (NULL, 'basics', 'textarea', 'textarea', 'notice', '系统公告', '支持html', '', ''),
 (NULL, 'remote', 'text', 'text', 'remote_cdn_domain', '域名', NULL, '', ''),
 (NULL, 'remote', 'select', 'text', 'remote_type', '远程储存类型', NULL, 'ftp', '{\"ftp\":\"ftp\"}'),
+(NULL, 'remote', 'bool', 'checkbox', 'remote_pasv', '被动模式', NULL, '0', ''),
 (NULL, 'remote', 'text', 'text', 'remote_host', '连接地址', NULL, '', ''),
 (NULL, 'remote', 'text', 'text', 'remote_name', '登录账号', NULL, '', ''),
 (NULL, 'remote', 'text', 'password', 'remote_password', '登录密码', NULL, '', ''),
@@ -166,6 +167,6 @@ INSERT INTO `lsky_config` (`id`, `key`, `type`, `input_type`, `name`, `title`, `
 (NULL, 'audit', 'text', 'text', 'audit_key', 'Key', NULL, '', ''),
 (NULL, 'audit', 'select', 'text', 'audit_index', '内容评级', '1=所有人，2=少年，3=成人', '3', '{\"1\": \"所有人\", \"2\": \"少年\", \"3\": \"成人\"}'),
 
-(NULL, '', 'text', 'text', 'system_version', '系统版本', NULL, '1.5.8', '');
+(NULL, '', 'text', 'text', 'system_version', '系统版本', NULL, '1.6.0', '');
 
 INSERT INTO `lsky_group` (`id`, `strategy`, `name`, `default`, `update_time`, `create_time`) VALUES (NULL, 'local', '默认组', '1', '0', '0');

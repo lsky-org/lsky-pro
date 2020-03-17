@@ -96,3 +96,8 @@ UPDATE `lsky_config` SET `value` = '1.5.7' WHERE `lsky_config`.`name` = 'system_
 
 -- v1.5.8
 UPDATE `lsky_config` SET `value` = '1.5.8' WHERE `lsky_config`.`name` = 'system_version';
+
+-- v1.6.0
+UPDATE `lsky_config` SET `value` = '1.6.0' WHERE `lsky_config`.`name` = 'system_version';
+INSERT IGNORE INTO `lsky_config` (`id`, `key`, `type`, `input_type`, `name`, `title`, `tip`, `value`, `extend`) VALUES
+(NULL, 'remote', 'bool', 'checkbox', 'remote_pasv', '被动模式', NULL, '0', '');
