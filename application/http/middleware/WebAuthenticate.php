@@ -14,6 +14,7 @@ class WebAuthenticate
      * @var array
      */
     private $paths = [
+        'install/index',
         'index/index',
         'upload/upload',
         'auth/login',
