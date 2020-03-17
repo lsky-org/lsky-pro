@@ -19,8 +19,9 @@ class Image extends Base
     public function initialize()
     {
         parent::initialize();
+        $user = request()->user;
         $this->model = new Images();
-        $this->model = $this->model->where('user_id', $this->user->id)->field(['user_id', 'folder_id'], true);
+        $this->model = $this->model->where('user_id', $user->id)->field(['user_id', 'folder_id'], true);
     }
 
     public function find()
@@ -53,9 +54,9 @@ class Image extends Base
             $data = explode(',', $data);
         }
         if ($user->deleteImages($data)) {
-            return $this->response('删除成功!');
+            $this->response('删除成功!');
         }
-        return $this->response('删除失败!', [], 500);
+        $this->response('删除失败!', [], 500);
     }
 
     private function parseData($data)

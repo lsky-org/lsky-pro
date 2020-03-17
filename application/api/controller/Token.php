@@ -7,10 +7,6 @@ use think\Exception;
 
 class Token extends Base
 {
-    public function initialize()
-    {
-    }
-
     /**
      * @param null $email 邮箱
      * @param null $password 密码
@@ -18,6 +14,7 @@ class Token extends Base
      */
     public function index($email = null, $password = null, $refresh = false)
     {
+        $user = null;
         try {
             if (!$user = Users::get(['email' => $email])) {
                 throw new Exception('账号不存在');
@@ -29,12 +26,12 @@ class Token extends Base
                 $token = make_token();
                 $user->token = $token;
                 if (!$user->save()) {
-                    throw new Exception('Token刷新失败');
+                    throw new Exception('Token 刷新失败');
                 }
             }
         } catch (Exception $e) {
-            return $this->response($e->getMessage(), null, 500);
+            $this->response($e->getMessage(), null, 500);
         }
-        return $this->response('success', ['token' => $user->token]);
+        $this->response('success', ['token' => $user->token]);
     }
 }

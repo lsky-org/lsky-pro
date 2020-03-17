@@ -14,13 +14,13 @@ use think\facade\Route;
 Route::view('compatibility', 'index@tpl/compatibility');
 
 // [Api Route]
-Route::name('api')->group('api', function () {
+Route::group('api', function () {
     Route::any('token', 'api/Token/index');
     Route::any('upload', 'api/Upload/index');
     Route::any('image', 'api/Image/find');
     Route::any('images', 'api/Image/items');
     Route::any('delete', 'api/Image/delete');
-})
+})->middleware(app\http\middleware\ApiAuthenticate::class)
     ->header('Access-Control-Allow-Headers', 'Authorization, Content-Type, If-Match, If-Modified-Since, If-None-Match, If-Unmodified-Since, X-Requested-With, Token')
     ->allowCrossDomain();
 
