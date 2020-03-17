@@ -15,9 +15,10 @@ class WebAuthenticate
      */
     private $paths = [
         'index/index',
+        'upload/upload',
         'auth/login',
         'auth/register',
-        'index/api'
+        'index/api',
     ];
 
     public function handle(Request $request, \Closure $next)
