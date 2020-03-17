@@ -21,11 +21,11 @@ class Images extends Model
     public function getUrlAttr($url, $data)
     {
         // 图片链接
-        $cdnDoamin = Config::where([
+        $cdnDomain = Config::where([
             'key' => $data['strategy'],
             'name' => $data['strategy'] . '_cdn_domain',
         ])->value('value');
-        $domain = $cdnDoamin ? $cdnDoamin : request()->domain();
+        $domain = $cdnDomain ? $cdnDomain : request()->domain();
         return make_url($domain, $data['pathname']);
     }
 
