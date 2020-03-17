@@ -18,6 +18,7 @@ class WebAuthenticate
         'upload/upload',
         'auth/login',
         'auth/register',
+        'auth/forgot',
         'index/api',
     ];
 
