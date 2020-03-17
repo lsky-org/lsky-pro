@@ -26,8 +26,10 @@ class Image extends Base
 
     public function find()
     {
-        $id = $this->request->request('id');
-        $image = $this->model->where(['id' => $id])->find();
+        $id = $this->request->post('id');
+        if (!$image = $this->model->where('id', $id)->find()) {
+            $this->response('未找到该图片数据', [], 500);
+        }
         $this->response('success', $this->parseData($image));
     }
 
