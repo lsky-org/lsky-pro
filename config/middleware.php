@@ -13,6 +13,5 @@
 // | 中间件配置
 // +----------------------------------------------------------------------
 return [
-    'Init' => app\http\middleware\Init::class,
-    'Auth' => app\http\middleware\Auth::class
+    'Initialize' => app\http\middleware\Initialize::class,
 ];

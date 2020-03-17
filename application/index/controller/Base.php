@@ -10,6 +10,7 @@ namespace app\index\controller;
 
 use app\common\model\Group;
 use app\common\model\Users;
+use app\common\traits\Core;
 use PHPMailer\PHPMailer\PHPMailer;
 use think\Controller;
 use think\Exception;
@@ -19,109 +20,21 @@ use think\facade\Env;
 
 class Base extends Controller
 {
-    protected $middleware = ['Auth'];
+    use Core;
 
-    protected $user = null;
-
-    protected $config = null;
-
-    protected $configs = null;
-
-    protected $group = null;
-
-    /**
-     * 当前储存策略配置
-     *
-     * @var null
-     */
-    protected $currentStrategyConfig = null;
+    protected $user;
 
     protected function initialize()
     {
         parent::initialize();
 
-        $configs = \app\common\model\Config::all();
-        foreach ($configs as $key => &$value) {
-            $this->config[$value->name] = $value->value;
-        }
-        $this->configs = $configs;
-        $user = null;
-        if (Session::has('uid')) {
-            $user = Users::get(Session::get('uid'));
-            if (!$user) {
-                Session::delete('uid');
-            }
-        }
-
-        $this->init($user);
+        $this->user = request()->user;
 
         $this->assign([
-            'config'    => $this->config,
+            'config'    => $this->getConfig(),
             'user'      => $this->user,
             'uri'       => strtolower($this->request->controller() . '/' . $this->request->action())
         ]);
-    }
-
-    /**
-     * 初始化基础数据
-     *
-     * @param null $user
-     *
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
-     * @throws \think\exception\DbException
-     */
-    protected function init($user = null)
-    {
-        $this->user = $user;
-
-        // 角色组
-        if ($this->user) {
-            $this->group = $this->user->group;
-        }
-
-        if (!$this->group) {
-            // 默认角色组
-            $this->group = Group::where('default', 1)->find();
-        }
-
-        // 重新设置当前储存策略
-        $this->currentStrategyConfig = $this->getStrategyConfig(strtolower($this->group->strategy));
-    }
-
-    /**
-     * 当前储存策略配置
-     *
-     * @param $strategy
-     * @return array
-     */
-    protected function getStrategyConfig($strategy)
-    {
-        $strategyConfig = [];
-        foreach ($this->configs as $value) {
-            if ($value->key === $strategy) {
-                $strategyConfig[$value->name] = $value->value;
-            }
-        }
-
-        return $strategyConfig;
-    }
-
-    /**
-     * 获取储存策略驱动实例
-     *
-     * @param null $strategy
-     * @return mixed
-     */
-    protected function getStrategyInstance($strategy = null)
-    {
-        $currentStrategy = $strategy ? $strategy : strtolower($this->group->strategy);
-        // 驱动
-        $driver = Config::get('strategy.' . $currentStrategy . '.class');
-        // 获取该储存策略配置
-        $strategyConfig = $this->getStrategyConfig($currentStrategy);
-
-        return new $driver($strategyConfig);
     }
 
     protected function sendMail($email, $subject, $body)

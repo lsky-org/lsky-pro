@@ -8,6 +8,7 @@
 
 namespace app\index\controller\admin;
 
+use app\common\model\Config;
 use app\index\controller\Base as AdminBase;
 
 class Base extends AdminBase
@@ -25,8 +26,9 @@ class Base extends AdminBase
 
     protected function getConfigs($keys)
     {
+        $data = Config::all();
         $configs = [];
-        foreach ($this->configs as &$value) {
+        foreach ($data as &$value) {
             if (in_array($value->key, $keys)) {
                 $configs[$value->key][] = $value;
             }

@@ -21,8 +21,8 @@ interface Driver
     /**
      * 创建文件
      *
-     * @param $pathname
-     * @param $file
+     * @param string $pathname
+     * @param string $file
      * @return mixed
      */
     public function create($pathname, $file);
@@ -30,7 +30,7 @@ interface Driver
     /**
      * 删除单个文件
      *
-     * @param $pathname
+     * @param string $pathname
      * @return mixed
      */
     public function delete($pathname);
@@ -46,7 +46,7 @@ interface Driver
     /**
      * 获取出错信息
      *
-     * @return mixed
+     * @return string
      */
     public function getError();
 }
