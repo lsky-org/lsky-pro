@@ -10,6 +10,7 @@ namespace app\api\controller;
 
 use think\Db;
 use think\Exception;
+use think\exception\ErrorException;
 
 class Upload extends Base
 {
@@ -42,10 +43,16 @@ class Upload extends Base
         Db::startTrans();
         try {
 
-            $data = (new \app\index\controller\Upload)->execute($this->user);
+            $data = (new \app\common\controller\Upload)->exec();
 
             Db::commit();
         } catch (Exception $e) {
+            Db::rollback();
+            return $this->response($e->getMessage(), [], 500);
+        } catch (ErrorException $e) {
+            Db::rollback();
+            return $this->response($e->getMessage(), [], 500);
+        } catch (\Throwable $e) {
             Db::rollback();
             return $this->response($e->getMessage(), [], 500);
         }

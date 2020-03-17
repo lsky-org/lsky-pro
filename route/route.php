@@ -14,7 +14,7 @@ use think\facade\Route;
 Route::view('compatibility', 'index@tpl/compatibility');
 
 // [Api Route]
-Route::group('api', function () {
+Route::name('api')->group('api', function () {
     Route::any('token', 'api/Token/index');
     Route::any('upload', 'api/Upload/index');
     Route::any('image', 'api/Image/find');

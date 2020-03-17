@@ -12,4 +12,7 @@
 // +----------------------------------------------------------------------
 // | 中间件配置
 // +----------------------------------------------------------------------
-return [app\http\middleware\Initialize::class];
+return [
+    app\http\middleware\Initialize::class,
+    app\http\middleware\WebAuthenticate::class
+];
