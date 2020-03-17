@@ -67,32 +67,4 @@ trait Core
 
         throw new HttpResponseException($response);
     }
-
-    /**
-     * 获取客户端传过来的参数
-     *
-     * @param string $name 参数名
-     * @param null   $default 默认值
-     * @param string $filter 过滤方法
-     *
-     * @return mixed|string
-     */
-    protected function param($name = '', $default = null, $filter = '')
-    {
-        $data = request()->param($name, $default, $filter);
-
-        if (is_array($data)) {
-            foreach ($data as &$value) {
-                if (is_string($value)) {
-                    $value = trim($value);
-                }
-            }
-        }
-
-        if (is_string($data)) {
-            return trim($data);
-        }
-
-        return $data;
-    }
 }

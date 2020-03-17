@@ -27,7 +27,7 @@ class ApiAuthenticate
         }
 
         $user = null;
-        $token = $request->header('token', $this->param('token'));
+        $token = $request->header('token', $request->request('token'));
         if ($token) {
             if (!$user = Users::get(['token' => $token])) {
                 $this->response('认证失败', [], 401);

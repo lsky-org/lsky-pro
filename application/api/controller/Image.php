@@ -26,15 +26,15 @@ class Image extends Base
 
     public function find()
     {
-        $id = $this->param('id');
+        $id = $this->request->request('id');
         $image = $this->model->where(['id' => $id])->find();
         $this->response('success', $this->parseData($image));
     }
 
     public function items()
     {
-        $page = $this->param('page', 1);
-        $rows = $this->param('rows', 20);
+        $page = $this->request->request('page', 1);
+        $rows = $this->request->request('rows', 20);
         $images = $this->model->paginate(null, false, [
             'page' => $page,
             'list_rows' => $rows,
@@ -49,7 +49,7 @@ class Image extends Base
     public function delete()
     {
         $user = new User();
-        $data = str_replace('，', ',', $this->param('id'));
+        $data = str_replace('，', ',', $this->request->request('id'));
         if (strpos($data, ',') !== false) {
             $data = explode(',', $data);
         }
