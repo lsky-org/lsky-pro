@@ -22,6 +22,9 @@ class Base extends Controller
 {
     use Core;
 
+    /**
+     * @var Users
+     */
     protected $user;
 
     protected function initialize()
@@ -43,16 +46,16 @@ class Base extends Controller
         try {
             // $mail->SMTPDebug = 2;
             $mail->isSMTP();
-            $mail->Host = $this->config['mail_smtp_host'];
+            $mail->Host = $this->getConfig('mail_smtp_host');
             $mail->CharSet = 'UTF-8';
             $mail->SMTPAuth = true;
-            $mail->Username = $this->config['mail_smtp_username'];
-            $mail->Password = $this->config['mail_smtp_password'];
-            $mail->SMTPSecure = $this->config['mail_smtp_secure'];
-            $mail->Port = $this->config['mail_smtp_port'];
-            $mail->setFrom($this->config['mail_form_email'], $this->config['site_name']);
+            $mail->Username = $this->getConfig('mail_smtp_username');
+            $mail->Password = $this->getConfig('mail_smtp_password');
+            $mail->SMTPSecure = $this->getConfig('mail_smtp_secure');
+            $mail->Port = $this->getConfig('mail_smtp_port');
+            $mail->setFrom($this->getConfig('mail_form_email'), $this->getConfig('site_name'));
             $mail->addAddress($email);
-            $mail->addReplyTo($this->config['mail_form_email'], $this->config['site_name']);
+            $mail->addReplyTo($this->getConfig('mail_form_email'), $this->getConfig('site_name'));
             $mail->isHTML(true);
             $mail->Subject = $subject;
             $mail->Body = $body;

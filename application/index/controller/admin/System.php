@@ -96,7 +96,7 @@ class System extends Base
         $backup = 'backups/' . date('YmdHis') . '.zip';
         $upgrade = null;
         try {
-            $upgrade = new \Upgrade(app()->getRootPath(), $this->config['system_version']);
+            $upgrade = new \Upgrade(app()->getRootPath(), $this->getConfig('system_version'));
             $release = $upgrade->release(); // 获取最新版
             // 判断是否已经是最新版
             if ($upgrade->check($release->version)) {
@@ -203,7 +203,7 @@ class System extends Base
     {
         $release = null;
         try {
-            $upgrade = new \Upgrade(app()->getRootPath(), $this->config['system_version']);
+            $upgrade = new \Upgrade(app()->getRootPath(), $this->getConfig('system_version'));
             $release = $upgrade->release(); // 获取安装包列表
             if (!$release) {
                 throw new \Exception('获取版本时遇到错误');

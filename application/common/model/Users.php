@@ -48,7 +48,7 @@ class Users extends Model
 
     public function getUseQuotaAttr()
     {
-        return sprintf("%.2f", $this->hasMany('Images', 'user_id', 'id')->sum('size'));
+        return sprintf("%.2f", $this->images()->sum('size'));
     }
 
     public static function login($account, $password, $field = 'email')
@@ -76,16 +76,16 @@ class Users extends Model
 
     public function images()
     {
-        return $this->hasMany('Images', 'user_id', 'id');
+        return $this->hasMany(Images::class, 'user_id', 'id');
     }
 
     public function folders()
     {
-        return $this->hasMany('Folders', 'user_id', 'id');
+        return $this->hasMany(Folders::class, 'user_id', 'id');
     }
 
-    public function group()
+    public function role()
     {
-        return $this->hasOne('Group', 'id', 'group_id');
+        return $this->hasOne(Group::class, 'id', 'group_id');
     }
 }

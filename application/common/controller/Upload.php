@@ -55,7 +55,7 @@ class Upload extends Controller
         $this->configs = $this->getConfig();
 
         // 角色组
-        if ($this->user) $this->group = $this->user->group;
+        if ($this->user) $this->group = $this->user->role;
         if (!$this->group) $this->group = Group::where('default', 1)->find();
 
         // 设置当前储存策略

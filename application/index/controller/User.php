@@ -50,7 +50,7 @@ class User extends Base
             $id = $deleteId ? $deleteId : $this->request->post('id');
             $deletes = []; // 需要删除的文件
             if (is_array($id)) {
-                $images = Images::all(['id' => $id, 'user_id' => $this->user->id]);
+                $images = $this->user->images()->where('id', $id)->select();
                 foreach ($images as &$value) {
                     // 查找是否有相同 md5 的文件记录，有的话则只删除记录不删除文件
                     if (!$this->exists($value)) {
@@ -60,7 +60,7 @@ class User extends Base
                     unset($value);
                 }
             } else {
-                $image = Images::get(['id' => $id, 'user_id' => $this->user->id]);
+                $image = $this->user->images()->where('id', $id)->find();
                 if (!$image) {
                     throw new Exception('没有找到该图片数据');
                 }
@@ -70,7 +70,7 @@ class User extends Base
                 $image->delete();
             }
             // 是否开启软删除(开启了只删除记录，不删除文件)
-            if (!$this->config['soft_delete']) {
+            if (!$this->getConfig('soft_delete')) {
                 $strategy = [];
                 // 实例化所有储存策略驱动
                 $strategyAll = array_keys(Config::pull('strategy'));
@@ -156,7 +156,7 @@ class User extends Base
         }
     }
 
-    public function moveImages($ids = [], $folderId)
+    public function moveImages($ids, $folderId)
     {
         if ($this->request->isPost()) {
             $count = $this->user->folders()->where('id', $folderId)->count();
@@ -210,7 +210,7 @@ class User extends Base
                 if (!$validate->check(['name' => $name])) {
                     throw new \Exception($validate->getError());
                 }
-                if (!Images::where('id', $id)->where('user_id', $this->user->id)->update(['alias_name' => $name])) {
+                if (!$this->user->images()->where('id', $id)->update(['alias_name' => $name])) {
                     throw new \Exception('重命名失败');
                 }
             } catch (\Exception $e) {
@@ -233,8 +233,8 @@ class User extends Base
 
     private function getDeleteFoldersAndImages($folderId, &$folders, &$images)
     {
-        $folderList = Folders::where('parent_id', $folderId)->where('user_id', $this->user->id)->column('id');
-        $imagesList = Images::where('folder_id', $folderId)->where('user_id', $this->user->id)->column('id');
+        $folderList = $this->user->folders()->where('parent_id', $folderId)->column('id');
+        $imagesList = $this->user->images()->where('folder_id', $folderId)->column('id');
         if ($imagesList) {
             $images = array_merge($images, $imagesList);
         }

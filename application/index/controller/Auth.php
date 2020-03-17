@@ -32,7 +32,7 @@ class Auth extends Base
     {
         if ($this->request->isPost()) {
             try {
-                if ($this->config['close_register']) {
+                if ($this->getConfig('close_register')) {
                     throw new Exception('站点已关闭注册');
                 }
                 $data = $this->request->post();

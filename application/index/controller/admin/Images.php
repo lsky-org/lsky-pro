@@ -98,7 +98,7 @@ class Images extends Base
                     $image->delete();
                 }
                 // 是否开启软删除(开启了只删除记录，不删除文件)
-                if (!$this->config['soft_delete']) {
+                if (!$this->getConfig('soft_delete')) {
                     $strategy = [];
                     // 实例化所有储存策略驱动
                     $strategyAll = array_keys($this->strategyList);
