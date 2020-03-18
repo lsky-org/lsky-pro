@@ -106,7 +106,7 @@ class Install extends Controller
                         }
                         $data['password'] = md5($data['password']);
                         $data['reg_ip'] = request()->ip();
-                        $data['token'] = make_token();
+                        $data['token'] = make_token(false);
 
                         $config = Session::get('db');
 

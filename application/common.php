@@ -115,13 +115,16 @@ function str_rand($length = 16, $char = '0123456789abcdefghijklmnopqrstuvwxyzABC
 /**
  * Make Token
  *
+ * @param bool $recursion 是否递归检测 Token
  * @return string
  */
-function make_token()
+function make_token($recursion = true)
 {
     $token = md5('LSKY PRO' . uniqid() . time());
-    if (\app\common\model\Users::where('token', $token)->count()) {
-        return make_token();
+    if ($recursion) {
+        if (\app\common\model\Users::where('token', $token)->count()) {
+            return make_token(true);
+        }
     }
     return $token;
 }
