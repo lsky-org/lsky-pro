@@ -46,9 +46,8 @@
 * ZipArchive 支持
 * fileinfo 拓展
 * curl 拓展
-* rewrite
 
-注：如果使用 FTP 功能，需要开启 PHP 的 FTP 拓展
+注：推荐使用 PHP 7.3, 如果使用 FTP 功能，需要开启 PHP 的 FTP 拓展
 
 ### 🔍 安装教程
 1. 下载兰空，上传至 web 运行环境，解压。
