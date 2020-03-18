@@ -52,6 +52,10 @@ class Upgrade
             throw new \Exception('无法继续执行, 请确保 ZipArchive 正确安装');
         }
 
+        set_time_limit(0);
+        ini_set('max_execution_time', 0);
+        ini_set('memory_limit', '256M');
+
         ob_clean();
     }
 
@@ -64,10 +68,6 @@ class Upgrade
      */
     public function download($url)
     {
-        set_time_limit(0);
-        ini_set('max_execution_time', 0);
-        ini_set('memory_limit', '256M');
-
         $ip = $this->getRandIp();
         $headers = [
             'Accept-Encoding: gzip, deflate',
