@@ -176,6 +176,10 @@ class System extends Base
             Db::rollback();
             $upgrade->rmdir($upgrade->getWorkspace());
             $this->error($e->getMessage());
+        } catch (\HttpException $e) {
+            Db::rollback();
+            $upgrade->rmdir($upgrade->getWorkspace());
+            $this->error($e->getMessage());
         } catch (\Throwable $e) {
             Db::rollback();
             $upgrade->rmdir($upgrade->getWorkspace());
