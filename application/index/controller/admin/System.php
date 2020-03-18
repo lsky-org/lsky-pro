@@ -176,6 +176,10 @@ class System extends Base
             Db::rollback();
             $upgrade->rmdir($upgrade->getWorkspace());
             $this->error($e->getMessage());
+        } catch (\Throwable $e) {
+            Db::rollback();
+            $upgrade->rmdir($upgrade->getWorkspace());
+            $this->error($e->getMessage());
         }
         $this->success('升级完成, 文件已备份至: ' . $backup);
     }
