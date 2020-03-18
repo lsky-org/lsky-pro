@@ -113,6 +113,7 @@ body #mask {
   opacity: 0.4;
   background-color: #1b1f23;
   z-index: 1;
+  transition: all 1s;
 }
 #login-box {
   display: flex;
@@ -160,5 +161,8 @@ body.fade #login-box {
 }
 body.fade #bg {
   filter: blur(2px);
+}
+body.fade #mask {
+  opacity: 0.7;
 }
 /*# sourceMappingURL=home.css.map */
