@@ -591,6 +591,9 @@ body.mdui-theme-layout-dark .markdown-body .highlight pre code,
 body.mdui-theme-layout-dark .markdown-body pre code {
   color: #ececec;
 }
+body.mdui-theme-layout-dark .markdown-body p code {
+  background-color: rgba(255, 255, 255, 0.13);
+}
 body.mdui-theme-layout-dark .markdown-body table tr {
   background-color: #4c4c4c;
 }
