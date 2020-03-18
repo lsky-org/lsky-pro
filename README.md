@@ -42,7 +42,7 @@
 ### 🛠 安装要求
 * PHP 版本 &ge; 5.6(&le; 7.3)
 * mysql 版本 &ge; 5.5
-* mysqli 支持
+* PDO 拓展
 * ZipArchive 支持
 * fileinfo 拓展
 * curl 拓展

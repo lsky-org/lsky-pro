@@ -31,7 +31,9 @@ class WebAuthenticate
 
         $user = null;
         if ($uid = Session::get('uid')) {
-            $user = Users::get($uid);
+            if (!$user = Users::get($uid)) {
+                Session::delete('uid');
+            }
         }
 
         if (!in_array($path, $this->paths) && !$user) {

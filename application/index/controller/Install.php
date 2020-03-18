@@ -25,18 +25,18 @@ class Install extends Controller
         $phpVerGt56 = PHP_VERSION >= 5.6;
         $isCurl = function_exists('curl_init');
         $isFileInfo = function_exists('finfo_open');
-        $isMysqli = class_exists('mysqli');
+        $pdo = extension_loaded("pdo_mysql");
         $isZip = class_exists('ZipArchive');
 
         switch ($step) {
             case 1:
                 // 运行环境检测
-                $testing = $phpVerGt56 && $isCurl && $isFileInfo && $isMysqli && $isZip;
+                $testing = $phpVerGt56 && $isCurl && $isFileInfo && $pdo && $isZip;
                 $this->assign([
                     'phpVerGt56' => $phpVerGt56,
                     'isCurl' => $isCurl,
                     'isFileInfo' => $isFileInfo,
-                    'isMysqli' => $isMysqli,
+                    'pdo' => $pdo,
                     'isZip' => $isZip,
                     'testing' => $testing,
                     'dir' => is_writable(app()->getRuntimePath()) && is_writable(app()->getConfigPath()),
