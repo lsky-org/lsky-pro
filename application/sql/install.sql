@@ -133,6 +133,7 @@ INSERT INTO `lsky_config` (`id`, `key`, `type`, `input_type`, `name`, `title`, `
 
 (NULL, 'other', 'bool', 'checkbox', 'soft_delete', '软删除', '删除图片时不删除源文件，不建议开启', '0', ''),
 (NULL, 'other', 'bool', 'checkbox', 'open_api', '开启API', '是否开放接口', '0', ''),
+(NULL, 'other', 'textarea', 'textarea', 'ban_ip', '封禁IP', '封禁IP, 多个使用逗号隔开', '', ''),
 
 (NULL, 'storage_strategy', 'select', 'text', 'storage_strategy', '储存策略', NULL, 'local', ''),
 (NULL, 'local', 'text', 'text', 'local_cdn_domain', '域名', NULL, '', ''),
