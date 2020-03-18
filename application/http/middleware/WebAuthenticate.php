@@ -42,6 +42,13 @@ class WebAuthenticate
 
         $request->user = $user;
 
+        // 单用户模式下, 只允许访问首页(除了接口)
+        if (env('system.single_user_mode') && !$user) {
+            if ($path !== 'index/index') {
+                return redirect(url('/'));
+            }
+        }
+
         return $next($request);
     }
 }

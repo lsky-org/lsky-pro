@@ -18,14 +18,14 @@ class Initialize
             if ($request->controller(true) !== 'install' || $request->action(true) !== 'index') {
                 return redirect(url('install/index'));
             }
-        } else {
-            // 检测封禁IP
-            $banIp = $this->getConfig('ban_ip');
-            if ($banIp) {
-                $ips = explode(',', str_replace('，', ',', $banIp));
-                if (in_array($request->ip(), $ips)) {
-                    throw new HttpResponseException(Response::code(403));
-                }
+        }
+
+        // 检测封禁IP
+        $banIp = $this->getConfig('ban_ip');
+        if ($banIp) {
+            $ips = explode(',', str_replace('，', ',', $banIp));
+            if (in_array($request->ip(), $ips)) {
+                throw new HttpResponseException(Response::code(403));
             }
         }
 
