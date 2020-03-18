@@ -7,6 +7,8 @@
  */
 
 return [
+    // 是否开启单用户模式
+    'single_user_mode' => env('single_user_mode', false),
     // 违规图片是否直接拦截
     'intercept_salacity' => env('system.intercept_salacity', false),
     // 图片链接额外参数(例: ?test=123)
