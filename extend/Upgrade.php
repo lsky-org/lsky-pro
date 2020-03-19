@@ -371,6 +371,6 @@ class Upgrade
 
     public function __destruct()
     {
-        $this->rmdir($this->workspace); // 清除临时工作目录
+        @$this->rmdir($this->workspace); // 清除临时工作目录
     }
 }
