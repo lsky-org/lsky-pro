@@ -471,6 +471,7 @@
       // 清空内容
       foldersBox.html('')
       imagesBox.html('');
+      params.page = 1;
       params.keyword = $(this).find("input[name='keyword']").val();
       methods.getData();
     });
