@@ -155,7 +155,7 @@ var app = {
       '<div class="mdui-spinner mdui-spinner-colorful mdui-m-r-3"></div>' +
       '升级中, 请不要关闭窗口...' +
       '</div>';
-    var error = '升级失败, 请稍后重试(帮助文档: <a target="_blank" href="https://www.wispx.cn">https://www.wispx.cn</a>)';
+    var error = '升级失败, 请稍后重试(帮助文档: <a target="_blank" href="https://www.kancloud.cn/wispx/lsky-pro/1569428">https://www.kancloud.cn/wispx/lsky-pro/1569428</a>)';
 
     $d = mdui.dialog({
       overlay: true,
@@ -199,7 +199,7 @@ var app = {
             upgradeCallback();
           } else {
             mdui.alert(res.msg, '系统提示', function () {
-              // history.go(0);
+              history.go(0);
             }, {
               modal: true,
               closeOnEsc: true,
