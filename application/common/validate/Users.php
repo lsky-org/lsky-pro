@@ -13,7 +13,7 @@ use think\Validate;
 class Users extends Validate
 {
     protected $rule = [
-        'username'          => 'require|max:15|unique:users',
+        'username'          => 'require|min:3|max:15|alphaDash|unique:users',
         'nickname'          => 'max:15',
         'default_folder'    => 'max:30|chsAlphaNum',
         'email'             => 'require|email|max:50|unique:users',
