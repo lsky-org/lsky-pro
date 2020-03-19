@@ -206,9 +206,6 @@ var app = {
             });
           }
         },
-        complete: function () {
-          $d.close();
-        },
         error: function () {
           mdui.alert(error, '系统提示');
         }
