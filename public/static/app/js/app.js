@@ -160,28 +160,57 @@ var app = {
     });
     $d.$dialog.css({'max-width': '300px'});
     mdui.mutation();
-    setTimeout(function () {
+    var upgradeCallback = function () {
+      setTimeout(function () {
+        $.ajax({
+          url: '/admin/system/upgrade.html',
+          type: 'POST',
+          data: {backup: backup},
+          success: function (res) {
+            mdui.alert(res.msg, '系统提示', function () {
+              history.go(0);
+            }, {
+              modal: true,
+              closeOnEsc: true,
+            });
+          },
+          complete: function () {
+            $d.close();
+            loading = false;
+          },
+          error: function () {
+            mdui.alert('升级失败, 请稍后重试', '系统提示');
+          }
+        });
+      }, 1000)
+    };
+
+    if (backup) {
       $.ajax({
-        url: '/admin/system/upgrade.html',
+        url: '/admin/system/backup.html',
         type: 'POST',
-        data: {backup: backup},
         success: function (res) {
-          mdui.alert(res.msg, '系统提示', function() {
-            history.go(0);
-          }, {
-            modal: true,
-            closeOnEsc: true,
-          });
+          if (res.code) {
+            upgradeCallback();
+          } else {
+            mdui.alert(res.msg, '系统提示', function () {
+              // history.go(0);
+            }, {
+              modal: true,
+              closeOnEsc: true,
+            });
+          }
         },
         complete: function () {
           $d.close();
-          loading = false;
         },
         error: function () {
-          mdui.alert('升级失败, 请稍后重试', '系统提示');
+          mdui.alert('备份失败, 请稍后重试', '系统提示');
         }
       });
-    }, 1000)
+    } else {
+      upgradeCallback();
+    }
   },
   /**
    * 检测版本更新
@@ -220,10 +249,10 @@ var app = {
                     mdui.confirm(
                       '将会在升级前备份原系统文件, 但不包括 runtime 和 public 目录以及数据库',
                       '⚠ 是否需要备份原系统?',
-                      function() {
+                      function () {
                         app.upgrade(true);
                       },
-                      function() {
+                      function () {
                         app.upgrade(false);
                       },
                       {

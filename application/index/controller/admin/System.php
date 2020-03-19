@@ -92,10 +92,9 @@ class System extends Base
     public function upgrade()
     {
         Db::startTrans();
-        $isBackup = $this->request->request('backup', true); // 是否备份原系统文件
-        $backup = 'backups/' . date('YmdHis') . '.zip';
         $upgrade = null;
         try {
+
             $upgrade = new \Upgrade(app()->getRootPath(), $this->getConfig('system_version'));
             $release = $upgrade->release(); // 获取最新版
             // 判断是否已经是最新版
@@ -116,8 +115,6 @@ class System extends Base
             if (!$sql = @file_get_contents($updateSql)) {
                 throw new \Exception('SQL 文件获取失败');
             }
-
-            $isBackup && $upgrade->backup($backup); // 备份原系统
 
             // 创建安装锁文件
             if (!@fopen($path . 'application/install.lock', 'w')) {
@@ -185,29 +182,27 @@ class System extends Base
             $upgrade->rmdir($upgrade->getWorkspace());
             $this->error($e->getMessage());
         }
-        $this->success('升级完成, 文件已备份至: ' . $backup);
+        $this->success('升级完成');
     }
 
-    public function check()
+    /**
+     * 备份系统
+     */
+    public function backup()
     {
-        $release = null;
+        $backup = 'backups/' . date('YmdHis') . '.zip';
         try {
             $upgrade = new \Upgrade(app()->getRootPath(), $this->getConfig('system_version'));
-            $release = $upgrade->release(); // 获取安装包列表
-            if (!$release) {
-                throw new \Exception('获取版本时遇到错误');
-            }
-            // 判断是否已经是最新版
-            if ($upgrade->check($release->version)) {
-                throw new \Exception('当前系统已经是最新版');
-            }
+            $upgrade->backup($backup);
         } catch (\Exception $e) {
             $this->error($e->getMessage());
+        } catch (\PDOException $e) {
+            $this->error($e->getMessage());
+        } catch (\HttpException $e) {
+            $this->error($e->getMessage());
+        } catch (\Throwable $e) {
+            $this->error($e->getMessage());
         }
-
-        $this->success('发现新版本', null, [
-            'version' => $release->version,
-            'info' => $release->info,
-        ]);
+        $this->success('备份完成, ' . $backup);
     }
 }

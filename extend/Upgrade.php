@@ -168,9 +168,11 @@ class Upgrade
      */
     public function release()
     {
-        $releases = $this->releases();
+        if (!$release = @file_get_contents(self::RELEASES_URL . '?version=last')) {
+            throw new \Exception('更新服务器异常, 请稍后重试!');
+        }
 
-        return current($releases);
+        return json_decode($release);
     }
 
     /**
