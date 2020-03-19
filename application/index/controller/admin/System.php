@@ -172,19 +172,19 @@ class System extends Base
             Db::commit();
         } catch (\Exception $e) {
             Db::rollback();
-            $upgrade->rmdir($upgrade->getWorkspace());
+            @$upgrade->rmdir($upgrade->getWorkspace());
             $this->error($e->getMessage());
         } catch (\PDOException $e) {
             Db::rollback();
-            $upgrade->rmdir($upgrade->getWorkspace());
+            @$upgrade->rmdir($upgrade->getWorkspace());
             $this->error($e->getMessage());
         } catch (\HttpException $e) {
             Db::rollback();
-            $upgrade->rmdir($upgrade->getWorkspace());
+            @$upgrade->rmdir($upgrade->getWorkspace());
             $this->error($e->getMessage());
         } catch (\Throwable $e) {
             Db::rollback();
-            $upgrade->rmdir($upgrade->getWorkspace());
+            @$upgrade->rmdir($upgrade->getWorkspace());
             $this->error($e->getMessage());
         }
         $this->success('升级完成');
