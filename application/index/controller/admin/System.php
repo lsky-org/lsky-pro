@@ -95,6 +95,11 @@ class System extends Base
         $upgrade = null;
         try {
 
+            ignore_user_abort(true);
+            set_time_limit(0);
+            ini_set('max_execution_time', 0);
+            ini_set('memory_limit', '256M');
+
             $upgrade = new \Upgrade(app()->getRootPath(), $this->getConfig('system_version'));
             $release = $upgrade->release(); // 获取最新版
             // 判断是否已经是最新版

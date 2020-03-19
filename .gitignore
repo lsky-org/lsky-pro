@@ -8,6 +8,7 @@
 runtime/.tmp
 /public/20*
 /application/install.lock
+backups
 .env
 
 # Icon must end with two \r
