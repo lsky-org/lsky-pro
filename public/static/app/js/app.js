@@ -198,6 +198,8 @@ var app = {
           if (res.code) {
             upgradeCallback();
           } else {
+            $d.close();
+            loading = false;
             mdui.alert(res.msg, '系统提示', function () {
               history.go(0);
             }, {
@@ -207,6 +209,8 @@ var app = {
           }
         },
         error: function () {
+          $d.close();
+          loading = false;
           mdui.alert(error, '系统提示');
         }
       });
