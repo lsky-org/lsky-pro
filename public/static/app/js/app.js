@@ -151,12 +151,18 @@ var app = {
     var loading = false;
     if (loading) return;
     loading = true;
+    var content = '<div class="mdui-valign">' +
+      '<div class="mdui-spinner mdui-spinner-colorful mdui-m-r-3"></div>' +
+      '升级中, 请不要关闭窗口...' +
+      '</div>';
+    var error = '升级失败, 请稍后重试(帮助文档: <a target="_blank" href="https://www.wispx.cn">https://www.wispx.cn</a>)';
+
     $d = mdui.dialog({
       overlay: true,
       modal: true,
       buttons: [],
       closeOnEsc: false,
-      content: '<div class="mdui-valign"><div class="mdui-spinner mdui-spinner-colorful mdui-m-r-3"></div> 升级中, 请不要关闭窗口...</div>'
+      content: content
     });
     $d.$dialog.css({'max-width': '300px'});
     mdui.mutation();
@@ -165,7 +171,6 @@ var app = {
         $.ajax({
           url: '/admin/system/upgrade.html',
           type: 'POST',
-          data: {backup: backup},
           success: function (res) {
             mdui.alert(res.msg, '系统提示', function () {
               history.go(0);
@@ -179,7 +184,7 @@ var app = {
             loading = false;
           },
           error: function () {
-            mdui.alert('升级失败, 请稍后重试', '系统提示');
+            mdui.alert(error, '系统提示');
           }
         });
       }, 1000)
@@ -205,7 +210,7 @@ var app = {
           $d.close();
         },
         error: function () {
-          mdui.alert('备份失败, 请稍后重试', '系统提示');
+          mdui.alert(error, '系统提示');
         }
       });
     } else {
