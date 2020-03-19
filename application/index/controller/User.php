@@ -49,25 +49,14 @@ class User extends Base
         try {
             $id = $deleteId ? $deleteId : $this->request->post('id');
             $deletes = []; // 需要删除的文件
-            if (is_array($id)) {
-                $images = $this->user->images()->where('id', $id)->select();
-                foreach ($images as &$value) {
-                    // 查找是否有相同 md5 的文件记录，有的话则只删除记录不删除文件
-                    if (!$this->exists($value)) {
-                        $deletes[$value->strategy][] = $value->pathname;
-                    }
-                    $value->delete();
-                    unset($value);
+            $images = $this->user->images()->where('id', 'in', $id)->select();
+            foreach ($images as &$value) {
+                // 查找是否有相同 md5 的文件记录，有的话则只删除记录不删除文件
+                if (!$this->exists($value)) {
+                    $deletes[$value->strategy][] = $value->pathname;
                 }
-            } else {
-                $image = $this->user->images()->where('id', $id)->find();
-                if (!$image) {
-                    throw new Exception('没有找到该图片数据');
-                }
-                if (!$this->exists($image)) {
-                    $deletes[$image->strategy][] = $image->pathname;
-                }
-                $image->delete();
+                $value->delete();
+                unset($value);
             }
             // 是否开启软删除(开启了只删除记录，不删除文件)
             if (!$this->getConfig('soft_delete')) {
