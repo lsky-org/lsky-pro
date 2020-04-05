@@ -63,6 +63,7 @@ CREATE TABLE IF NOT EXISTS `lsky_group` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci COMMENT='文件夹表';
 INSERT IGNORE INTO `lsky_group` (`id`, `strategy`, `name`, `default`, `create_time`) VALUES ('1', 'local', '默认组', '1', '0');
+ALTER TABLE `lsky_users` ADD `group_id` int(11) NOT NULL DEFAULT '0' COMMENT '角色组ID';
 
 -- v1.5.1
 UPDATE `lsky_config` SET `value` = '1.5.1' WHERE `lsky_config`.`name` = 'system_version';
@@ -102,3 +103,5 @@ UPDATE `lsky_config` SET `value` = '1.6.0' WHERE `lsky_config`.`name` = 'system_
 INSERT IGNORE INTO `lsky_config` (`id`, `key`, `type`, `input_type`, `name`, `title`, `tip`, `value`, `extend`) VALUES
 (NULL, 'other', 'textarea', 'textarea', 'ban_ip', '封禁IP', '封禁IP, 多个使用逗号隔开', '', ''),
 (NULL, 'remote', 'bool', 'checkbox', 'remote_pasv', '被动模式', NULL, '0', '');
+ALTER TABLE `lsky_images` ADD `suspicious` tinyint(1) NOT NULL DEFAULT '0' COMMENT '可疑图片';
+ALTER TABLE `lsky_images` ADD `alias_name` varchar(255) NULL DEFAULT NULL COMMENT '别名';
