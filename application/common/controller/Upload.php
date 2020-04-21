@@ -240,10 +240,10 @@ class Upload extends Controller
             $file = $name;
         } else {
             $file = trim(str_replace(
-                    array_column($naming['file'], 'name'),
-                    array_column($naming['file'], 'value'),
-                    $fileRule
-                ), '/') . '.' . get_file_ext($name);
+                array_column($naming['file'], 'name'),
+                array_column($naming['file'], 'value'),
+                $fileRule
+            ), '/') . '.' . get_file_ext($name);
         }
         return $path . '/' . $file;
     }
