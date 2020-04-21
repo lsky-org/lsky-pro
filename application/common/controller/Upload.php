@@ -177,9 +177,6 @@ class Upload extends Controller
             throw new Exception('图片数据保存失败');
         }
 
-        // 追加额外的url参数
-        if ($query = Config::get('system.url_query')) $url = $url.$query;
-
         $data = [
             'name' => $image->getInfo('name'),
             'url' => $url,
