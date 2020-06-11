@@ -79,6 +79,7 @@ class Upload extends Controller
         $mime = $image->getMime();
         $sha1 = $image->hash('sha1');
         $md5 = $image->hash('md5');
+        $alias_name = $image->getInfo()['name'];
 
         if ($this->user) {
             if (($this->user->use_quota + $size) > $this->user->quota) {
@@ -153,6 +154,7 @@ class Upload extends Controller
             'mime' => $mime,
             'sha1' => $sha1,
             'md5' => $md5,
+            'alias_name' => $alias_name,
             'suspicious' => $suspicious
         ];
 
@@ -172,7 +174,6 @@ class Upload extends Controller
             $imageData['folder_id'] = $folderId;
         }
 
-        // 修改重复插入数据库问题
         if (!Images::where('md5', $md5)->where('strategy', $currentStrategy)->find()) {
             if (!Images::create($imageData)) {
                 $this->strategy->delete($pathname);
