@@ -87,6 +87,12 @@ return [
             'explain' => '16位随机字符串',
             'value' => str_rand(),
         ],
+        [
+            'name' => '{rend-character-8}',
+            'example' => 'HgTLmGcD',
+            'explain' => '8位随机字符串',
+            'value' => str_rand(8),
+        ],
     ],
     'file' => [
         [
@@ -160,6 +166,12 @@ return [
             'example' => 'HgTLmGcDceplMduF',
             'explain' => '16位随机字符串',
             'value' => str_rand(),
+        ],
+        [
+            'name' => '{rend-character-8}',
+            'example' => 'HgTLmGcD',
+            'explain' => '8位随机字符串',
+            'value' => str_rand(8),
         ],
         [
             'name' => '{original}',
