@@ -350,6 +350,12 @@
               $('#copy-url').attr('data-clipboard-text', data.url).click();
             }
           },
+          {text: '复制Markdown链接', action: function (e) {
+              e.preventDefault();
+              $alias_name = (data.alias_name == null ? '' : data.alias_name);
+              $('#copy-url').attr('data-clipboard-text', '![' + $alias_name + '](' + data.url +')').click();
+            }
+          },
           {
             text: '删除', action: function (e) {
               e.preventDefault();
