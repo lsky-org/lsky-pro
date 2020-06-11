@@ -172,9 +172,12 @@ class Upload extends Controller
             $imageData['folder_id'] = $folderId;
         }
 
-        if (!Images::create($imageData)) {
-            $this->strategy->delete($pathname);
-            throw new Exception('图片数据保存失败');
+        // 修改重复插入数据库问题
+        if (!Images::where('md5', $md5)->where('strategy', $currentStrategy)->find()) {
+            if (!Images::create($imageData)) {
+                $this->strategy->delete($pathname);
+                throw new Exception('图片数据保存失败');
+            }
         }
 
         // 追加额外的url参数
