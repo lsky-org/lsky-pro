@@ -15,15 +15,16 @@
       <a href="" class="mdui-chip-delete" mdui-tooltip="{content: '刷新', position: 'right'}"><i class="mdui-icon material-icons">&#xe863;</i></a>
     </div>
     <div class="mdui-clearfix mdui-m-t-1"></div>
-    <form action="" method="post" id="search-form">
-      <select class="where mdui-select mdui-float-left" name="where" mdui-select>
-        <option value="">全部</option>
+    <form action="" method="get" id="search-form">
+      <select class="where mdui-select mdui-float-left" mdui-select>
+        <option value="{}">全部</option>
         {foreach $strategyList as $key => $value}
         <option value='{"strategy": "{$key}"}' {if $key eq $strategy}selected{/if}>{$value.name}</option>
         {/foreach}
         <option value='{"user_id": "0"}' {eq name="user_id" value="0"} selected{/eq}>访客图片</option>
         <option value='{"suspicious": "1"}' {eq name="suspicious" value="1"} selected{/eq}>可疑图片</option>
       </select>
+      <input type="hidden" name="" id="search-input">
       <input type="hidden" name="page" value="1">
       <input class="mdui-textfield-input search-input mdui-float-left" type="text" name="keyword" placeholder="回车搜索..." value="{$keyword}" autocomplete="off"/>
     </form>
@@ -122,6 +123,13 @@
     });
 
     $('.mdui-select.where').on('close.mdui.select', function () {
+      var params = JSON.parse($(this).find('option:selected').val());
+      var name, value;
+      for (var key in params) {
+        name = key;
+        value = params[name];
+      }
+      $('#search-input').attr('name', name).val(value)
       $('#search-form').submit();
     });
     // 多选操作

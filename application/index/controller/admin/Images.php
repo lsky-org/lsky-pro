@@ -33,17 +33,15 @@ class Images extends Base
         $this->assign('strategy_list', $this->strategyList);
     }
 
-    public function index($where = '', $keyword = '', $limit = 15)
+    public function index($strategy = '', $user_id = '', $suspicious = 0, $keyword = '', $limit = 15)
     {
-        $where = json_decode($where, true);
-        if (null == $where) {
-            $where = [
-                'suspicious' => 0,
-            ];
-        }
         $model = new ImagesModel();
-        foreach ($where as $field => $value) {
-            $model = $model->where($field, $value);
+        $model = $model->where('suspicious', $suspicious);
+        if ($strategy) {
+            $model = $model->where('strategy', $strategy);
+        }
+        if ($user_id) {
+            $model = $model->where('user_id', $user_id);
         }
         if (!empty($keyword)) {
             $model = $model->where('pathname|alias_name|sha1|md5|ip', 'like', "%{$keyword}%");
@@ -62,9 +60,9 @@ class Images extends Base
             'images' => $images,
             'keyword' => $keyword,
             'strategyList' => $this->strategyList,
-            'strategy' => isset($where['strategy']) ? $where['strategy'] : '',
-            'suspicious' => isset($where['suspicious']) ? $where['suspicious'] : 0,
-            'user_id' => isset($where['user_id']) ? $where['user_id'] : null,
+            'strategy' => $strategy,
+            'suspicious' => $suspicious,
+            'user_id' => $user_id,
         ]);
 
         return $this->fetch();
