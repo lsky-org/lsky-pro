@@ -1,0 +1,44 @@
+{extend name="common:base" /}
+
+{block name="title"}Token - {$config.site_name}{/block}
+
+{block name="main"}
+<div class="mdui-container">
+  <main>
+    <div class="mdui-col-sm-8 mdui-col-md-8">
+      <div class="mdui-textfield">
+        <label class="mdui-textfield-label">Token</label>
+        <input class="mdui-textfield-input" type="text" value="{$user.token}" name="token" id="token" disabled/>
+      </div>
+      <div class="mdui-textfield">
+        <button type="button" id="tokenBtn" onclick="refreshToken();" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent">重置Token</button>
+		<button type="button" id="tokenBtn_d" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" style="display:none;" disabled>重置Token</button>
+      </div>
+    </div>
+  </main>
+</div>
+{/block}
+{block name="js"}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert@2.1.2/dist/sweetalert.min.js"></script>
+<script>
+    function refreshToken(){
+	    $.ajax({
+            url:'{:url('user/refreshToken')}',
+            type:'get',
+            dataType:'json',
+            success: function(data){
+			    if(data.code == 200){
+                    $("#token").val(data.token);
+					$('#tokenBtn').attr('style', 'display:none;');
+					$('#tokenBtn_d').attr('style', 'display:block;');
+				}else{
+				    swal("Error", "Msg:"+data.msg, "error");
+				}
+            },
+            error: function(){
+                swal("Error", "Msg:刷新Token出错", "error");
+            }
+        });
+	}
+</script>
+{/block}

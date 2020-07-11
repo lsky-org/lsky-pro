@@ -37,6 +37,7 @@
     <ul class="mdui-menu" id="user">
       <li class="mdui-menu-item">
         <a href="{:url('user/images')}" class="mdui-ripple">我的图片</a>
+        <a href="{:url('user/token')}" class="mdui-ripple">Token</a>
         <a href="{:url('user/settings')}" class="mdui-ripple">设置</a>
       </li>
       <li class="mdui-divider"></li>
@@ -69,6 +70,10 @@
     <a class="mdui-list-item mdui-ripple {if $uri eq 'user/images'}mdui-list-item-active{/if}" href="{:url('user/images')}">
       <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-deep-orange">&#xe251;</i>
       <div class="mdui-list-item-content">我的图片</div>
+    </a>
+    <a class="mdui-list-item mdui-ripple {if $uri eq 'user/token'}mdui-list-item-active{/if}" href="{:url('user/token')}">
+      <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-purple">&#xe0da;</i>
+      <div class="mdui-list-item-content">Token</div>
     </a>
     <a class="mdui-list-item mdui-ripple {if $uri eq 'user/settings'}mdui-list-item-active{/if}" href="{:url('user/settings')}">
       <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-theme">&#xe8b8;</i>

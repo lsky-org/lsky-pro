@@ -18,6 +18,30 @@ use think\Validate;
 
 class User extends Base
 {
+    public function token()
+    {
+        return $this->fetch();
+    }
+
+    function refreshToken()
+    {
+        $token = make_token();
+        $this->user->token = $token;
+        if (!$this->user->save()) {
+            $data= [
+                'code' => false,
+                'msg' => '刷新Token失败'
+            ];
+        }else{
+            $data= [
+                'code' => 200,
+                'msg' => '刷新Token成功',
+                'token' => $this->user->token
+            ];
+        }
+        exit(json_encode($data));
+    }
+
     public function images($keyword = '', $folderId = 0, $limit = 60)
     {
         $images = $folders = [];
