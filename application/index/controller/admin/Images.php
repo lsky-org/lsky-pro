@@ -33,7 +33,7 @@ class Images extends Base
         $this->assign('strategy_list', $this->strategyList);
     }
 
-    public function index($strategy = '', $user_id = '', $suspicious = 0, $keyword = '', $limit = 15)
+    public function index($strategy = '', $user_id = '', $suspicious = 0, $keyword = '', $limit = 25)
     {
         $model = new ImagesModel();
         $model = $model->where('suspicious', $suspicious);
