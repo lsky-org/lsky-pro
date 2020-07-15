@@ -133,6 +133,9 @@ class Install extends Controller
                     } catch (Exception $e) {
                         @unlink(app()->getAppPath() . 'install.lock');
                         $this->error($e->getMessage());
+                    } catch (\Exception $e) {
+                        @unlink(app()->getAppPath() . 'install.lock');
+                        $this->error($e->getMessage());
                     } catch (\PDOException $e) {
                         @unlink(app()->getAppPath() . 'install.lock');
                         $this->error($e->getMessage());
