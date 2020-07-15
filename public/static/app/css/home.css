@@ -116,7 +116,7 @@ body #mask {
   transition: all 1s;
 }
 #login-box {
-  display: flex;
+  display: none;
   flex-direction: column;
   max-width: 500px;
   max-height: 300px;

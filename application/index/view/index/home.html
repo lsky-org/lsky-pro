@@ -24,8 +24,11 @@
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
 <script>
   $('#login-btn').click(function () {
-    $(this).hide();
-    $('body').addClass('fade')
+    $('#login-box').css('display', 'flex')
+    setTimeout(function () {
+      $(this).hide();
+      $('body').addClass('fade')
+    }.bind(this), 60)
   });
   $('#login').click(function () {
     $.ajax({
