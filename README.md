@@ -19,7 +19,6 @@
 [Telegram 群组](https://t.me/lsky_pro)
 
 > 下载稳定版请点击[这里](https://github.com/wisp-x/lsky-pro/releases)，发现 bug 可发送邮件至邮箱：i@wispx.cn，或提交 [issues](https://github.com/wisp-x/lsky-pro/issues)  
-> 下载速度慢的可以移步 Coding https://wispx.coding.net/p/lsky-pro-releases/d/lsky-pro-releases/git
 
 ![homepage.png](./public/static/app/images/demo/1.png)
 ![homepage.png](./public/static/app/images/demo/2.png)
