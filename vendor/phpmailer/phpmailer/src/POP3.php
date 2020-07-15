@@ -45,7 +45,7 @@ class POP3
      *
      * @var string
      */
-    const VERSION = '6.1.4';
+    const VERSION = '6.1.7';
 
     /**
      * Default POP3 port number.
@@ -230,6 +230,8 @@ class POP3
         }
 
         //  connect to the POP3 server
+        $errno = 0;
+        $errstr = '';
         $this->pop_conn = fsockopen(
             $host, //  POP3 Host
             $port, //  Port #

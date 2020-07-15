@@ -87,4 +87,9 @@ class Util
         );
         return strtr(rawurlencode($url), array_merge($reserved, $unescaped, $score));
     }
+
+    public static function isSuccess($code)
+    {
+        return $code >= 200 && $code < 300;
+    }
 }

@@ -28,12 +28,13 @@ namespace FtpClient;
  * @method bool login(string $username, string $password) Logs in to an FTP connection
  * @method int mdtm(string $remote_file) Returns the last modified time of the given file
  * @method string mkdir(string $directory) Creates a directory
+ * @method array mlsd(string $remote_dir) Returns a list of files in the given directory
  * @method int nb_continue() Continues retrieving/sending a file (non-blocking)
  * @method int nb_fget(resource $handle, string $remote_file, int $mode, int $resumepos = 0) Retrieves a file from the FTP server and writes it to an open file (non-blocking)
  * @method int nb_fput(string $remote_file, resource $handle, int $mode, int $startpos = 0) Stores a file from an open file to the FTP server (non-blocking)
  * @method int nb_get(string $local_file, string $remote_file, int $mode, int $resumepos = 0) Retrieves a file from the FTP server and writes it to a local file (non-blocking)
  * @method int nb_put(string $remote_file, string $local_file, int $mode, int $startpos = 0) Stores a file on the FTP server (non-blocking)
- * @method array nlist(string $directory) Returns a list of files in the given directory
+ * @method array nlist(string $directory) Returns a list of file names in the given directory; remote_dir parameter may also include arguments
  * @method bool pasv(bool $pasv) Turns passive mode on or off
  * @method bool put(string $remote_file, string $local_file, int $mode, int $startpos = 0) Uploads a file to the FTP server
  * @method string pwd() Returns the current directory name

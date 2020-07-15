@@ -295,6 +295,42 @@ class Upyun
     }
 
     /**
+     * 复制文件。只能操作文件，不能操作文件夹。
+     *
+     * @param string $source 源文件地址
+     * @param string $target 目标文件地址
+     * @return bool 复制成功返回 true，否则 false
+     * @throws \Exception
+     */
+    public function copy($source, $target)
+    {
+        $source = '/' . $this->config->serviceName . '/' . ltrim($source, '/');
+        $req = new Rest($this->config);
+        $response = $req->request('PUT', $target)
+            ->withHeader('X-Upyun-Copy-Source', $source)
+            ->send();
+        return util::isSuccess($response->getStatusCode());
+    }
+
+    /**
+     * 移动文件。可以进行文件重命名、文件移动，只能操作文件，不能操作文件夹。
+     *
+     * @param string $source 源文件地址
+     * @param string $target 目标文件地址
+     * @return bool 移动成功返回 true，否则 false
+     * @throws \Exception
+     */
+    public function move($source, $target)
+    {
+        $source = '/' . $this->config->serviceName . '/' . ltrim($source, '/');
+        $req = new Rest($this->config);
+        $response = $req->request('PUT', $target)
+            ->withHeader('X-Upyun-Move-Source', $source)
+            ->send();
+        return util::isSuccess($response->getStatusCode());
+    }
+
+    /**
      * 刷新缓存
      *
      * @param array|string $urls 需要刷新的文件 url 列表
