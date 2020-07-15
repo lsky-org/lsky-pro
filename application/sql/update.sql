@@ -102,3 +102,6 @@ UPDATE `lsky_config` SET `value` = '1.6.0' WHERE `lsky_config`.`name` = 'system_
 INSERT IGNORE INTO `lsky_config` (`id`, `key`, `type`, `input_type`, `name`, `title`, `tip`, `value`, `extend`) VALUES
 (NULL, 'other', 'textarea', 'textarea', 'ban_ip', '封禁IP', '封禁IP, 多个使用逗号隔开', '', ''),
 (NULL, 'remote', 'bool', 'checkbox', 'remote_pasv', '被动模式', NULL, '0', '');
+
+-- v1.6.1
+UPDATE `lsky_config` SET `value` = '1.6.1' WHERE `lsky_config`.`name` = 'system_version';
