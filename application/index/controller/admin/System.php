@@ -52,12 +52,12 @@ class System extends Base
     public function console()
     {
         $storage = Images::sum('size');
-        $imagesCount = Images::count();
+        $imagesCount = Images::count('*');
         $suspiciousImagesCount = Images::where('suspicious', 1)->count();
-        $users_count = \app\common\model\Users::count();
-        $today = Images::whereTime('create_time', 'today')->count();
-        $yesterday = Images::whereTime('create_time', 'yesterday')->count();
-        $month = Images::whereTime('create_time', 'month')->count();
+        $users_count = \app\common\model\Users::count('*');
+        $today = Images::whereTime('create_time', 'today')->count('*');
+        $yesterday = Images::whereTime('create_time', 'yesterday')->count('*');
+        $month = Images::whereTime('create_time', 'month')->count('*');
         $tourists = Images::where('user_id', 0)->count();
 
         $this->assign([
@@ -91,9 +91,11 @@ class System extends Base
      */
     public function upgrade()
     {
-        Db::startTrans();
         $upgrade = null;
         try {
+            if (!class_exists('ZipArchive')) {
+                throw new \Exception('无法继续执行, 请确保 ZipArchive 正确安装');
+            }
 
             ignore_user_abort(true);
             set_time_limit(0);
@@ -125,6 +127,8 @@ class System extends Base
             if (!@fopen($path . 'application/install.lock', 'w')) {
                 throw new \Exception('安装锁文件创建失败');
             }
+
+            Db::startTrans();
 
             // 检测新增表字段
             if (!$tableFields = @include($path . 'config/table.php')) {
