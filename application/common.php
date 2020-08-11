@@ -74,7 +74,7 @@ function format_time($unixTime)
 /**
  * 过滤逗号(去除字符串两边的逗号，并将中文逗号转换成英文逗号)
  *
- * @param $str  字符串
+ * @param string $str  字符串
  *
  * @return string
  */
@@ -86,7 +86,7 @@ function filter_comma($str)
 /**
  * 获取文件后缀
  *
- * @param $name 文件名
+ * @param string $name 文件名
  *
  * @return mixed
  */
