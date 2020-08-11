@@ -92,8 +92,7 @@ class Upload extends Controller
 
         // 当前储存策略
         $currentStrategy = strtolower($this->group->strategy);
-        // 获取当前储存策略配置
-        $pathname = strtolower($this->makePathname($image->getInfo('name')));
+        $pathname = $this->makePathname($image->getInfo('name'));
 
         $cdnDomain = $currentStrategy . '_cdn_domain';
         $domain = $this->request->domain();
@@ -236,15 +235,20 @@ class Upload extends Controller
             array_column($naming['path'], 'value'),
             $pathRule
         ), '/');
-        if ($fileRule === '{original}') {
-            $file = $name;
-        } else {
-            $file = trim(str_replace(
-                array_column($naming['file'], 'name'),
-                array_column($naming['file'], 'value'),
-                $fileRule
-            ), '/') . '.' . get_file_ext($name);
+
+        // 原始文件名单独处理
+        foreach ($naming['file'] as &$item) {
+            if ($item['name'] === '{original}') {
+                $item['value'] = pathinfo($name, PATHINFO_FILENAME);
+            }
         }
+
+        $file = trim(str_replace(
+            array_column($naming['file'], 'name'),
+            array_column($naming['file'], 'value'),
+            $fileRule
+        ), '/') . '.' . get_file_ext($name);
+
         return $path ? ($path . '/' . $file) : trim($file, '/');
     }
 }
