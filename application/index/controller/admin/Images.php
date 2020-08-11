@@ -123,7 +123,10 @@ class Images extends Base
      */
     private function exists(ImagesModel $image)
     {
-        return ImagesModel::where('id', 'neq', $image->id)->where('md5', $image->md5)->count();
+        return ImagesModel::where('id', 'neq', $image->id)
+            ->where('md5', $image->md5)
+            ->where('sha1', $image->sha1)
+            ->count();
     }
 
     public function getIpInfo()

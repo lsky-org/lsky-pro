@@ -217,7 +217,10 @@ class User extends Base
      */
     private function exists(Images $image)
     {
-        return Images::where('id', 'neq', $image->id)->where('md5', $image->md5)->count();
+        return Images::where('id', 'neq', $image->id)
+            ->where('md5', $image->md5)
+            ->where('sha1', $image->sha1)
+            ->count();
     }
 
     private function getDeleteFoldersAndImages($folderId, &$folders, &$images)

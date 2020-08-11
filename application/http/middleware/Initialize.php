@@ -39,7 +39,7 @@ class Initialize
      * @param array $ips
      * @return bool
      */
-    private function banIp(string $ip, array $ips)
+    private function banIp($ip, array $ips)
     {
         $parts = explode('.', $ip); // 分段当前 IP
         $ban = false;
