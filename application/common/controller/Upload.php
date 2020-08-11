@@ -245,6 +245,6 @@ class Upload extends Controller
                 $fileRule
             ), '/') . '.' . get_file_ext($name);
         }
-        return trim($path . '/' . $file, '/');
+        return $path ? ($path . '/' . $file) : trim($file, '/');
     }
 }
