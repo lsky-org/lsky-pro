@@ -105,7 +105,7 @@ class Upload extends Controller
         $url = make_url($domain, $pathname);
 
         // 检测是否存在该图片，有则直接返回
-        if ($oldImage = Images::where('md5', $md5)->where('strategy', $currentStrategy)->find()) {
+        if ($oldImage = Images::where('md5', $md5)->where('sha1', $sha1)->where('strategy', $currentStrategy)->find()) {
             $pathname = $oldImage->pathname;
             $url = make_url($domain, $pathname);
             goto exist;
