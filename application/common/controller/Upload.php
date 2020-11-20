@@ -171,12 +171,13 @@ class Upload extends Controller
             $imageData['folder_id'] = $folderId;
         }
 
-        if (!Images::create($imageData)) {
+        if (!$img = Images::create($imageData)) {
             $this->strategy->delete($pathname);
             throw new Exception('图片数据保存失败');
         }
 
         $data = [
+            'id' => $img->id,
             'name' => $image->getInfo('name'),
             'url' => $url,
             'size' => $size,
