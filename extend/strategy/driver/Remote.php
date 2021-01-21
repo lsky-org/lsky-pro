@@ -22,7 +22,7 @@ class Remote implements Driver
     {
         try {
             $this->ftp = new \FtpClient\FtpClient();
-            $this->ftp->connect($options['remote_host']);
+            $this->ftp->connect($options['remote_host'], false, $options['remote_port']);
             $this->ftp = $this->ftp->login($options['remote_name'], $options['remote_password']);
             $this->ftp->pasv($options['remote_pasv'] ? true : false);
         } catch (FtpException $e) {
