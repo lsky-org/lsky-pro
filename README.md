@@ -39,14 +39,14 @@
 ...
 
 ### 🛠 安装要求
-* PHP 版本 &ge; 5.6(&le; 7.3)
+* PHP 版本 &ge; 5.6
 * mysql 版本 &ge; 5.5
 * PDO 拓展
 * ZipArchive 支持
 * fileinfo 拓展
 * curl 拓展
 
-注：推荐使用 PHP 7.3, 如果使用 FTP 功能，需要开启 PHP 的 FTP 拓展
+注：如果使用 FTP 功能，需要开启 PHP 的 FTP 拓展
 
 ### 🔍 安装教程
 1. 下载兰空，上传至 web 运行环境，解压。
