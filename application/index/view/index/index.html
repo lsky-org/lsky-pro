@@ -162,7 +162,10 @@
         for (var i = 0; i < len; i++) {
           if (items[i].type.indexOf("image") !== -1) {
             blob = items[i].getAsFile();
-            images.push(blob);
+            var ext = blob.name.substr(blob.name.lastIndexOf(".") + 1)
+            images.push(new File([blob], new Date().getTime() + "." + ext, {
+              type: blob.type
+            }));
           }
         }
         if(images.length > 0) {
