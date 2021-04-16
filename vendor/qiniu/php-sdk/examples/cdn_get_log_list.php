@@ -2,23 +2,25 @@
 
 require_once __DIR__ . '/../autoload.php';
 
-use \Qiniu\Cdn\CdnManager;
+use Qiniu\Auth;
+use Qiniu\Cdn\CdnManager;
 
+// 控制台获取密钥：https://portal.qiniu.com/user/key
 $accessKey = getenv('QINIU_ACCESS_KEY');
 $secretKey = getenv('QINIU_SECRET_KEY');
 
-$auth = new Qiniu\Auth($accessKey, $secretKey);
+$auth = new Auth($accessKey, $secretKey);
 $cdnManager = new CdnManager($auth);
+
+// 获取日志下载链接
+// 参考文档：https://developer.qiniu.com/fusion/api/1226/download-the-log
 
 $domains = array(
     "javasdk.qiniudn.com",
     "phpsdk.qiniudn.com"
 );
 
-$logDate = '2017-08-20';
-
-//获取日志下载链接
-//参考文档：http://developer.qiniu.com/article/fusion/api/log.html
+$logDate = '2020-08-05';
 
 list($logListData, $getLogErr) = $cdnManager->getCdnLogList($domains, $logDate);
 if ($getLogErr != null) {

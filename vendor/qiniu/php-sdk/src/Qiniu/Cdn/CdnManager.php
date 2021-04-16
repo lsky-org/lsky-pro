@@ -64,6 +64,45 @@ final class CdnManager
     }
 
     /**
+     * 查询 CDN 刷新记录
+     *
+     * @param string $requestId 指定要查询记录所在的刷新请求id
+     * @param string $isDir 指定是否查询目录，取值为 yes/no，默认不填则为两种类型记录都查询
+     * @param array $urls 要查询的url列表，每个url可以是文件url，也可以是目录url
+     * @param string $state 指定要查询记录的状态，取值processing／success／failure
+     * @param int $pageNo 要求返回的页号，默认为0
+     * @param int $pageSize 要求返回的页长度，默认为100
+     * @param string $startTime 指定查询的开始日期，格式2006-01-01
+     * @param string $endTime 指定查询的结束日期，格式2006-01-01
+     * @return array
+     * @link https://developer.qiniu.com/fusion/api/1229/cache-refresh#4
+     */
+    public function getCdnRefreshList(
+        $requestId = null,
+        $isDir = null,
+        $urls = array(),
+        $state = null,
+        $pageNo = 0,
+        $pageSize = 100,
+        $startTime = null,
+        $endTime = null
+    ) {
+        $req = array();
+        \Qiniu\setWithoutEmpty($req, 'requestId', $requestId);
+        \Qiniu\setWithoutEmpty($req, 'isDir', $isDir);
+        \Qiniu\setWithoutEmpty($req, 'urls', $urls);
+        \Qiniu\setWithoutEmpty($req, 'state', $state);
+        \Qiniu\setWithoutEmpty($req, 'pageNo', $pageNo);
+        \Qiniu\setWithoutEmpty($req, 'pageSize', $pageSize);
+        \Qiniu\setWithoutEmpty($req, 'startTime', $startTime);
+        \Qiniu\setWithoutEmpty($req, 'endTime', $endTime);
+
+        $body = json_encode($req);
+        $url = $this->server . '/v2/tune/refresh/list';
+        return $this->post($url, $body);
+    }
+
+    /**
      * @param array $urls 待预取的文件链接数组
      *
      * @return array 预取的请求回复和错误，参考 examples/cdn_manager.php 代码
@@ -78,6 +117,42 @@ final class CdnManager
 
         $url = $this->server . '/v2/tune/prefetch';
         $body = json_encode($req);
+        return $this->post($url, $body);
+    }
+
+    /**
+     * 查询 CDN 预取记录
+     *
+     * @param string $requestId 指定要查询记录所在的刷新请求id
+     * @param array $urls 要查询的url列表，每个url可以是文件url，也可以是目录url
+     * @param string $state 指定要查询记录的状态，取值processing／success／failure
+     * @param int $pageNo 要求返回的页号，默认为0
+     * @param int $pageSize 要求返回的页长度，默认为100
+     * @param string $startTime 指定查询的开始日期，格式2006-01-01
+     * @param string $endTime 指定查询的结束日期，格式2006-01-01
+     * @return array
+     * @link https://developer.qiniu.com/fusion/api/1227/file-prefetching#4
+     */
+    public function getCdnPrefetchList(
+        $requestId = null,
+        $urls = array(),
+        $state = null,
+        $pageNo = 0,
+        $pageSize = 100,
+        $startTime = null,
+        $endTime = null
+    ) {
+        $req = array();
+        \Qiniu\setWithoutEmpty($req, 'requestId', $requestId);
+        \Qiniu\setWithoutEmpty($req, 'urls', $urls);
+        \Qiniu\setWithoutEmpty($req, 'state', $state);
+        \Qiniu\setWithoutEmpty($req, 'pageNo', $pageNo);
+        \Qiniu\setWithoutEmpty($req, 'pageSize', $pageSize);
+        \Qiniu\setWithoutEmpty($req, 'startTime', $startTime);
+        \Qiniu\setWithoutEmpty($req, 'endTime', $endTime);
+
+        $body = json_encode($req);
+        $url = $this->server . '/v2/tune/prefetch/list';
         return $this->post($url, $body);
     }
 

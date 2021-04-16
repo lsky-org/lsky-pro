@@ -2,29 +2,32 @@
 
 require_once __DIR__ . '/../autoload.php';
 
-use \Qiniu\Cdn\CdnManager;
+use Qiniu\Auth;
+use Qiniu\Cdn\CdnManager;
 
+// 控制台获取密钥：https://portal.qiniu.com/user/key
 $accessKey = getenv('QINIU_ACCESS_KEY');
 $secretKey = getenv('QINIU_SECRET_KEY');
 
-$auth = new Qiniu\Auth($accessKey, $secretKey);
+$auth = new Auth($accessKey, $secretKey);
 
-//待刷新的文件列表和目录，文件列表最多一次100个，目录最多一次10个
-//参考文档：http://developer.qiniu.com/article/fusion/api/refresh.html
+//---------------------------------------- demo1 ----------------------------------------
+// 刷新文件和目录
+// 文件列表一次最多提交 60 个，目录一次最多提交 10 个
+// 参考文档：https://developer.qiniu.com/fusion/api/1229/cache-refresh
+
 $urls = array(
     "http://phpsdk.qiniudn.com/qiniu.jpg",
     "http://phpsdk.qiniudn.com/qiniu2.jpg",
 );
 
-//刷新目录需要联系七牛技术支持开通账户权限
 $dirs = array(
     "http://phpsdk.qiniudn.com/test/"
 );
 
 $cdnManager = new CdnManager($auth);
 
-// 目前客户默认没有目录刷新权限，刷新会有400038报错，参考：https://developer.qiniu.com/fusion/api/1229/cache-refresh
-// 需要刷新目录请工单联系技术支持 https://support.qiniu.com/tickets/category
+// 如果刷新返回 400038 报错，则需要联系七牛技术支持开通刷新目录权限，参考：https://developer.qiniu.com/fusion/api/1229/cache-refresh，
 list($refreshResult, $refreshErr) = $cdnManager->refreshUrlsAndDirs($urls, $dirs);
 if ($refreshErr != null) {
     var_dump($refreshErr);
@@ -33,20 +36,24 @@ if ($refreshErr != null) {
     print_r($refreshResult);
 }
 
-//如果只有刷新链接或者目录的需求，可以分布使用
+//---------------------------------------- demo2 ----------------------------------------
+// 刷新文件
 
 list($refreshResult, $refreshErr) = $cdnManager->refreshUrls($urls);
 if ($refreshErr != null) {
     var_dump($refreshErr);
 } else {
-    echo "refresh request sent\n";
+    echo "refresh urls request sent\n";
     print_r($refreshResult);
 }
+
+//---------------------------------------- demo3 ----------------------------------------
+// 刷新目录
 
 list($refreshResult, $refreshErr) = $cdnManager->refreshDirs($dirs);
 if ($refreshErr != null) {
     var_dump($refreshErr);
 } else {
-    echo "refresh request sent\n";
+    echo "refresh dirs request sent\n";
     print_r($refreshResult);
 }

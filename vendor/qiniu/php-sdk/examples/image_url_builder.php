@@ -6,7 +6,7 @@ use Qiniu\Processing\ImageUrlBuilder;
 
 $imageUrlBuilder = new ImageUrlBuilder();
 
-// 要处理图片
+// 要处理的图片
 $url = 'http://78re52.com1.z0.glb.clouddn.com/resource/gogopher.jpg';
 $url2 = 'http://78re52.com1.z0.glb.clouddn.com/resource/gogopher.jpg?watermark/1/gravity/SouthEast/dx/0/dy/0/image/'
     . 'aHR0cDovL2Fkcy1jZG4uY2h1Y2h1amllLmNvbS9Ga1R6bnpIY2RLdmRBUFc5cHZZZ3pTc21UY0tB';
@@ -38,12 +38,12 @@ var_dump($thumbLink, $thumbLink2);
  *
  * @param  string $url 图片链接
  * @param  string $image 水印图片链接
- * @param  numeric $dissolve 透明度 [可选]
+ * @param  int $dissolve 透明度 [可选]
  * @param  string $gravity 水印位置 [可选]
- * @param  numeric $dx 横轴边距 [可选]
- * @param  numeric $dy 纵轴边距 [可选]
- * @param  numeric $watermarkScale 自适应原图的短边比例 [可选]
- * @link   http://developer.qiniu.com/code/v6/api/kodo-api/image/watermark.html
+ * @param  int $dx 横轴边距 [可选]
+ * @param  int $dy 纵轴边距 [可选]
+ * @param  int $watermarkScale 自适应原图的短边比例 [可选]
+ * @link   https://developer.qiniu.com/dora/api/1316/image-watermarking-processing-watermark
  * @return string
  * @author Sherlock Ren <sherlock_ren@icloud.com>
  */
@@ -60,10 +60,10 @@ var_dump($waterLink);
  * @param  string $font 文字字体
  * @param  string $fontSize 文字字号
  * @param  string $fontColor 文字颜色 [可选]
- * @param  numeric $dissolve 透明度 [可选]
+ * @param  int $dissolve 透明度 [可选]
  * @param  string $gravity 水印位置 [可选]
- * @param  numeric $dx 横轴边距 [可选]
- * @param  numeric $dy 纵轴边距 [可选]
+ * @param  int $dx 横轴边距 [可选]
+ * @param  int $dy 纵轴边距 [可选]
  * @link   http://developer.qiniu.com/code/v6/api/kodo-api/image/watermark.html#text-watermark
  * @return string
  * @author Sherlock Ren <sherlock_ren@icloud.com>

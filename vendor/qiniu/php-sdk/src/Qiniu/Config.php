@@ -3,7 +3,7 @@ namespace Qiniu;
 
 final class Config
 {
-    const SDK_VER = '7.2.10';
+    const SDK_VER = '7.3.0';
 
     const BLOCK_SIZE = 4194304; //4*1024*1024 分块上传块大小，该参数为接口规格，不能修改
 
@@ -12,7 +12,7 @@ final class Config
     const RS_HOST = 'rs.qiniu.com';      //RS Host
     const UC_HOST = 'uc.qbox.me';              //UC Host
     const RTCAPI_HOST = 'http://rtc.qiniuapi.com';
-    const ARGUS_HOST = 'argus.atlab.ai';
+    const ARGUS_HOST = 'ai.qiniuapi.com';
     const CASTER_HOST = 'pili-caster.qiniuapi.com';
     const SMS_HOST="https://sms.qiniuapi.com";
     const RTCAPI_VERSION = 'v3';

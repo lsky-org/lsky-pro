@@ -186,8 +186,16 @@ class MorphTo extends Relation
             foreach ($range as $key => $val) {
                 // 多态类型映射
                 $model = $this->parseModel($key);
-                $obj   = new $model;
+                $obj   = (new $model)->db();
                 $pk    = $obj->getPk();
+                // 预载入关联查询 支持嵌套预载入
+                if ($closure instanceof \Closure) {
+                    $closure($obj);
+
+                    if ($field = $obj->getOptions('with_field')) {
+                        $obj->field($field)->removeOption('with_field');
+                    }
+                }
                 $list  = $obj->all($val, $subRelation);
                 $data  = [];
 

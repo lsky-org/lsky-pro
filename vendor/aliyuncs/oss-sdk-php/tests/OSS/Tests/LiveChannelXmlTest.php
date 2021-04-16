@@ -4,11 +4,13 @@ namespace OSS\Tests;
 
 require_once __DIR__ . '/Common.php';
 
+use OSS\Core\OssException;
 use OSS\Model\LiveChannelInfo;
 use OSS\Model\LiveChannelListInfo;
 use OSS\Model\LiveChannelConfig;
 use OSS\Model\GetLiveChannelStatus;
 use OSS\Model\GetLiveChannelHistory;
+use OSS\Model\LiveChannelHistory;
 
 class LiveChannelXmlTest extends \PHPUnit_Framework_TestCase
 {
@@ -139,7 +141,7 @@ BBBB;
 
     }
 
-    public function testLiveChannelHistory()
+    public function testGetLiveChannelHistory()
     {
         $history = new GetLiveChannelHistory();
         $history->parseFromXml($this->history);
@@ -244,6 +246,32 @@ BBBB;
         $plays = $chan2->getPlayUrls();
         $this->assertEquals(1, count($plays));
         $this->assertEquals('http://bucket.oss-cn-hangzhou.aliyuncs.com/2/播放列表.m3u8', $plays[0]);
+    }
+
+    public function testLiveChannelHistory()
+    {
+        $xml = "<LiveRecord><StartTime>2013-11-24T14:25:31.000Z</StartTime><EndTime>2013-11-24T15:25:31.000Z</EndTime><RemoteAddr>10.101.194.148:56861</RemoteAddr></LiveRecord>";
+        $history = new LiveChannelHistory();
+        $history->parseFromXml($xml);
+
+        $this->assertEquals('2013-11-24T14:25:31.000Z', $history->getStartTime());
+        $this->assertEquals('2013-11-24T15:25:31.000Z', $history->getEndTime());
+        $this->assertEquals('10.101.194.148:56861', $history->getRemoteAddr());
+    }
+
+    public function testGetLiveChannelHistorySerializeToXml()
+    {
+        try {
+          $history = new GetLiveChannelHistory ();
+          $history->serializeToXml();
+            $this->assertTrue(false);
+      } catch (OssException $e) {
+          $this->assertTrue(true);
+          if (strpos($e, "Not implemented.") == false)
+          {
+              $this->assertTrue(false);
+          }
+      }
     }
 
 }

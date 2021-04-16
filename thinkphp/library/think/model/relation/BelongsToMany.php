@@ -19,6 +19,7 @@ use think\Loader;
 use think\Model;
 use think\model\Pivot;
 use think\model\Relation;
+use think\Paginator;
 
 class BelongsToMany extends Relation
 {
@@ -582,7 +583,7 @@ class BelongsToMany extends Relation
      * 判断是否存在关联数据
      * @access public
      * @param  mixed $data  数据 可以使用关联模型对象 或者 关联对象的主键
-     * @return Pivot
+     * @return Pivot|false
      * @throws Exception
      */
     public function attached($data)

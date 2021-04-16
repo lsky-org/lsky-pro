@@ -103,6 +103,7 @@ final class Auth
 
         'endUser',
         'saveKey',
+        'forceSaveKey',
         'insertOnly',
 
         'detectMime',

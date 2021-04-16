@@ -1,4 +1,4 @@
-﻿# Alibaba Cloud OSS SDK for PHP
+# Alibaba Cloud OSS SDK for PHP
 
 [![Latest Stable Version](https://poser.pugx.org/aliyuncs/oss-sdk-php/v/stable)](https://packagist.org/packages/aliyuncs/oss-sdk-php)
 [![Build Status](https://travis-ci.org/aliyun/aliyun-oss-php-sdk.svg?branch=master)](https://travis-ci.org/aliyun/aliyun-oss-php-sdk)
@@ -50,12 +50,12 @@ Tips:
 
 | Class | Explanation |
 |:------------------|:------------------------------------|
-|OSS\OSSClient | OSS client class. An OSSClient instance can be used to call the interface.  |
-|OSS\Core\OSSException |OSS Exception class . You only need to pay attention to this exception when you use the OSSClient. |
+|OSS\OssClient | OSS client class. An OssClient instance can be used to call the interface.  |
+|OSS\Core\OssException |OSS Exception class . You only need to pay attention to this exception when you use the OssClient. |
 
-### Initialize an OSSClient
+### Initialize an OssClient
 
-The SDK's operations for the OSS are performed through the OSSClient class. The code below creates an OSSClient object:
+The SDK's operations for the OSS are performed through the OssClient class. The code below creates an OssClient object:
 
 ```php
 <?php
@@ -101,7 +101,7 @@ try {
 
 ### Handle returned results
 
-The OSSClient provides the following two types of returned data from interfaces:
+The OssClient provides the following two types of returned data from interfaces:
 
 - Put and Delete interfaces: The *PUT* and *DELETE* operations are deemed successful if *null* is returned by the interfaces without *OSSException*.
 - Get and List interfaces: The *GET* and *LIST* operations are deemed successful if the desired data is returned by the interfaces without *OSSException*. For example, 
@@ -111,7 +111,7 @@ The OSSClient provides the following two types of returned data from interfaces:
     $bucketListInfo = $ossClient->listBuckets();
     $bucketList = $bucketListInfo->getBucketList();
     foreach($bucketList as $bucket) {
-        print($bucket->getLocation() . "\t" . $bucket->getName() . "\t" . $bucket->getCreatedate() . "\n");
+        print($bucket->getLocation() . "\t" . $bucket->getName() . "\t" . $bucket->getCreateDate() . "\n");
     }
     ```
 In the above code, $bucketListInfo falls into the 'OSS\Model\BucketListInfo' data type.

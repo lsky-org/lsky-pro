@@ -20,10 +20,10 @@ class TestOssClientBase extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->bucket = Common::getBucketName() . rand(100000, 999999);
+        $this->bucket = Common::getBucketName() .'-'. time();
         $this->ossClient = Common::getOssClient();
         $this->ossClient->createBucket($this->bucket);
-	Common::waitMetaSync();
+        Common::waitMetaSync();
     }
 
     public function tearDown()

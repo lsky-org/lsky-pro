@@ -408,6 +408,7 @@ class Validate
         foreach ($this->append as $key => $rule) {
             if (!isset($rules[$key])) {
                 $rules[$key] = $rule;
+                unset($this->append[$key]);
             }
         }
 
@@ -520,6 +521,7 @@ class Validate
         if (isset($this->append[$field])) {
             // 追加额外的验证规则
             $rules = array_unique(array_merge($rules, $this->append[$field]), SORT_REGULAR);
+            unset($this->append[$field]);
         }
 
         $i      = 0;

@@ -1800,7 +1800,7 @@ class Request
     public function host($strict = false)
     {
         if (!$this->host) {
-            $this->host = $this->server('HTTP_X_REAL_HOST') ?: $this->server('HTTP_HOST');
+            $this->host = $this->server('HTTP_X_REAL_HOST') ?: $this->server('HTTP_X_FORWARDED_HOST') ?: $this->server('HTTP_HOST');
         }
 
         return true === $strict && strpos($this->host, ':') ? strstr($this->host, ':', true) : $this->host;

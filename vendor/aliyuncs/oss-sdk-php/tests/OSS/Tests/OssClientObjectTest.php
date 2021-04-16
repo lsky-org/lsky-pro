@@ -88,7 +88,6 @@ class OssClientObjectTest extends TestOssClientBase
                 'Expires' => 'Fri, 28 Feb 2020 05:38:42 GMT',
                 'Cache-Control' => 'no-cache',
                 'Content-Disposition' => 'attachment;filename=oss_download.log',
-                'Content-Encoding' => 'utf-8',
                 'Content-Language' => 'zh-CN',
                 'x-oss-server-side-encryption' => 'AES256',
                 'x-oss-meta-self-define-title' => 'user define meta info',
@@ -328,12 +327,18 @@ class OssClientObjectTest extends TestOssClientBase
             $this->assertTrue($this->ossClient->doesObjectExist($this->bucket, $object2));
             
             $result = $this->ossClient->deleteObjects($this->bucket, $list);
-            $this->assertEquals($list[1], $result[0]);
-            $this->assertEquals($list[0], $result[1]);
+            $this->assertEquals($list[0], $result[0]);
+            $this->assertEquals($list[1], $result[1]);
             
             $result = $this->ossClient->deleteObjects($this->bucket, $list, array('quiet' => 'true'));
             $this->assertEquals(array(), $result);
             $this->assertFalse($this->ossClient->doesObjectExist($this->bucket, $object2));
+
+            $this->ossClient->putObject($this->bucket, $object, $content);
+            $this->assertTrue($this->ossClient->doesObjectExist($this->bucket, $object));
+            $result = $this->ossClient->deleteObjects($this->bucket, $list, array('quiet' => true));
+            $this->assertEquals(array(), $result);
+            $this->assertFalse($this->ossClient->doesObjectExist($this->bucket, $object));
         } catch (OssException $e) {
             $this->assertFalse(true);
         }
@@ -352,8 +357,8 @@ class OssClientObjectTest extends TestOssClientBase
             $this->assertEquals($position, strlen($content_array[0]));
             $position = $this->ossClient->appendObject($this->bucket, $object, $content_array[1], $position);
             $this->assertEquals($position, strlen($content_array[0]) + strlen($content_array[1]));
-            $position = $this->ossClient->appendObject($this->bucket, $object, $content_array[2], $position);
-            $this->assertEquals($position, strlen($content_array[0]) + strlen($content_array[1]) + strlen($content_array[1]));
+            $position = $this->ossClient->appendObject($this->bucket, $object, $content_array[2], $position, array(OssClient::OSS_LENGTH => strlen($content_array[2])));
+            $this->assertEquals($position, strlen($content_array[0]) + strlen($content_array[1]) + strlen($content_array[2]));
         } catch (OssException $e) {
             $this->assertFalse(true);
         }
@@ -378,6 +383,16 @@ class OssClientObjectTest extends TestOssClientBase
             $this->assertFalse(true);
         }
         
+        /**
+         * Append the upload of invalid local files
+         */
+        try {
+            $position = $this->ossClient->appendFile($this->bucket, $object, "invalid-file-path", 0);
+            $this->assertTrue(false);
+        } catch (OssException $e) {
+            $this->assertTrue(true);
+        }
+
         /**
          * Append the upload of local files
          */
@@ -590,6 +605,65 @@ class OssClientObjectTest extends TestOssClientBase
         }
     }
 
+    public function testGetSimplifiedObjectMeta()
+    {
+        $object = "oss-php-sdk-test/upload-test-object-name.txt";
+
+        try {
+            $objectMeta = $this->ossClient->getSimplifiedObjectMeta($this->bucket, $object);
+            $this->assertEquals(false, array_key_exists(strtolower('Content-Disposition'), $objectMeta));
+            $this->assertEquals(strlen(file_get_contents(__FILE__)), $objectMeta[strtolower('Content-Length')]);
+            $this->assertEquals(true, array_key_exists(strtolower('ETag'), $objectMeta));
+            $this->assertEquals(true, array_key_exists(strtolower('Last-Modified'), $objectMeta));
+        } catch (OssException $e) {
+            $this->assertFalse(true);
+        }
+    }
+
+    public function testUploadStream()
+    {
+    	$object = "oss-php-sdk-test/put-from-stream.txt";
+    	$options = array(OssClient::OSS_CHECK_MD5 => true);
+        $handle = fopen(__FILE__, 'rb');
+    	/**
+    	 * Upload data to start MD5
+    	 */
+    	try {
+    		$this->ossClient->uploadStream($this->bucket, $object, $handle, $options);
+    	} catch (OssException $e) {
+    		$this->assertFalse(true);
+    	}
+    	
+    	/**
+    	 * Check if the replication is the same
+    	 */
+    	try {
+    		$content = $this->ossClient->getObject($this->bucket, $object);
+    		$this->assertEquals($content, file_get_contents(__FILE__));
+    	} catch (OssException $e) {
+    		$this->assertFalse(true);
+    	}
+
+    	$object = "oss-php-sdk-test/put-from-stream-without-md5.txt";
+        $handle = fopen(__FILE__, 'rb');
+    	try {
+    		$this->ossClient->uploadStream($this->bucket, $object, $handle);
+    	} catch (OssException $e) {
+    		$this->assertFalse(true);
+    	}
+    	
+    	/**
+    	 * Check if the replication is the same
+    	 */
+    	try {
+    		$content = $this->ossClient->getObject($this->bucket, $object);
+    		$this->assertEquals($content, file_get_contents(__FILE__));
+    	} catch (OssException $e) {
+    		$this->assertFalse(true);
+    	}
+
+    }
+    
     public function setUp()
     {
         parent::setUp();

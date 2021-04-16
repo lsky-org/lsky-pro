@@ -23,8 +23,8 @@ final class Operation
     /**
      * 对资源文件进行处理
      *
-     * @param $key   待处理的资源文件名
-     * @param $fops   string|array  fop操作，多次fop操作以array的形式传入。
+     * @param string $key 待处理的资源文件名
+     * @param string $fops string|array  fop操作，多次fop操作以array的形式传入。
      *                eg. imageView2/1/w/200/h/200, imageMogr2/thumbnail/!75px
      *
      * @return array 文件处理后的结果及错误。

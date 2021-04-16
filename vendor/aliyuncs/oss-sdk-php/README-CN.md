@@ -111,7 +111,7 @@ OssClient提供的接口返回返回数据分为两种：
 $bucketListInfo = $ossClient->listBuckets();
 $bucketList = $bucketListInfo->getBucketList();
 foreach($bucketList as $bucket) {
-    print($bucket->getLocation() . "\t" . $bucket->getName() . "\t" . $bucket->getCreatedate() . "\n");
+    print($bucket->getLocation() . "\t" . $bucket->getName() . "\t" . $bucket->getCreateDate() . "\n");
 }
 ```
 上面代码中的$bucketListInfo的数据类型是 `OSS\Model\BucketListInfo`

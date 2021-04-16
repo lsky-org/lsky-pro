@@ -71,15 +71,15 @@ BBBB;
         );
 
         $errorBody = <<< BBBB
-<?xml version="1.0" encoding="UTF-8"?>
-<Error>
-  <Code>NoSuchBucket</Code>
-  <Message>The specified bucket does not exist.</Message>
-  <RequestId>566B870D207FB3044302EB0A</RequestId>
-  <HostId>hello.oss-test.aliyun-inc.com</HostId>
-  <BucketName>hello</BucketName>
-</Error>
-BBBB;
+        <?xml version="1.0" encoding="UTF-8"?>
+        <Error>
+          <Code>NoSuchBucket</Code>
+          <Message>The specified bucket does not exist.</Message>
+          <RequestId>566B870D207FB3044302EB0A</RequestId>
+          <HostId>hello.oss-test.aliyun-inc.com</HostId>
+          <BucketName>hello</BucketName>
+        </Error>
+        BBBB;
         $response = new ResponseCore($errorHeader, $errorBody, 403);
         try {
             new ListBucketsResult($response);
@@ -94,4 +94,74 @@ BBBB;
             $this->assertEquals($e->getDetails(), $errorBody);
         }
     }
+
+    public function testParseXml2()
+    {
+      $xml = <<<BBBB
+      <?xml version="1.0" encoding="UTF-8"?>
+      <ListAllMyBucketsResult>
+        <Owner>
+          <ID>ut_test_put_bucket</ID>
+          <DisplayName>ut_test_put_bucket</DisplayName>
+        </Owner>
+        <Buckets>
+          <Bucket>
+            <CreationDate>2015-12-17T18:12:43.000Z</CreationDate>
+            <ExtranetEndpoint>oss-cn-shanghai.aliyuncs.com</ExtranetEndpoint>
+            <IntranetEndpoint>oss-cn-shanghai-internal.aliyuncs.com</IntranetEndpoint>
+            <Location>oss-cn-shanghai</Location>
+            <Name>app-base-oss</Name>
+            <Region>cn-shanghai</Region>
+            <StorageClass>Standard</StorageClass>
+          </Bucket>
+          <Bucket>
+            <CreationDate>2014-12-25T11:21:04.000Z</CreationDate>
+            <ExtranetEndpoint>oss-cn-hangzhou.aliyuncs.com</ExtranetEndpoint>
+            <IntranetEndpoint>oss-cn-hangzhou-internal.aliyuncs.com</IntranetEndpoint>
+            <Location>oss-cn-hangzhou</Location>
+            <Name>atestleo23</Name>
+            <Region>cn-hangzhou</Region>
+            <StorageClass>IA</StorageClass>
+          </Bucket>
+          <Bucket>
+            <CreationDate>2014-12-25T11:21:04.000Z</CreationDate>
+            <Location>oss-cn-hangzhou</Location>
+            <Name>atestleo23</Name>
+          </Bucket>
+        </Buckets>
+      </ListAllMyBucketsResult>
+      BBBB;
+
+        $response = new ResponseCore(array(), $xml, 200);
+        $result = new ListBucketsResult($response);
+        $this->assertTrue($result->isOK());
+        $this->assertNotNull($result->getData());
+        $this->assertNotNull($result->getRawResponse());
+        $bucketListInfo = $result->getData();
+        $this->assertEquals(3, count($bucketListInfo->getBucketList()));
+        $this->assertEquals("2015-12-17T18:12:43.000Z", $bucketListInfo->getBucketList()[0]->getCreateDate());
+        $this->assertEquals("oss-cn-shanghai", $bucketListInfo->getBucketList()[0]->getLocation());
+        $this->assertEquals("app-base-oss", $bucketListInfo->getBucketList()[0]->getName());
+        $this->assertEquals("oss-cn-shanghai.aliyuncs.com", $bucketListInfo->getBucketList()[0]->getExtranetEndpoint());
+        $this->assertEquals("oss-cn-shanghai-internal.aliyuncs.com", $bucketListInfo->getBucketList()[0]->getIntranetEndpoint());
+        $this->assertEquals("cn-shanghai", $bucketListInfo->getBucketList()[0]->getRegion());
+        $this->assertEquals("Standard", $bucketListInfo->getBucketList()[0]->getStorageClass());
+    
+        $this->assertEquals("2014-12-25T11:21:04.000Z", $bucketListInfo->getBucketList()[1]->getCreateDate());
+        $this->assertEquals("oss-cn-hangzhou", $bucketListInfo->getBucketList()[1]->getLocation());
+        $this->assertEquals("atestleo23", $bucketListInfo->getBucketList()[1]->getName());
+        $this->assertEquals("oss-cn-hangzhou.aliyuncs.com", $bucketListInfo->getBucketList()[1]->getExtranetEndpoint());
+        $this->assertEquals("oss-cn-hangzhou-internal.aliyuncs.com", $bucketListInfo->getBucketList()[1]->getIntranetEndpoint());
+        $this->assertEquals("cn-hangzhou", $bucketListInfo->getBucketList()[1]->getRegion());
+        $this->assertEquals("IA", $bucketListInfo->getBucketList()[1]->getStorageClass());
+
+        $this->assertEquals("2014-12-25T11:21:04.000Z", $bucketListInfo->getBucketList()[2]->getCreateDate());
+        $this->assertEquals("oss-cn-hangzhou", $bucketListInfo->getBucketList()[2]->getLocation());
+        $this->assertEquals("atestleo23", $bucketListInfo->getBucketList()[2]->getName());
+        $this->assertEquals(null, $bucketListInfo->getBucketList()[2]->getExtranetEndpoint());
+        $this->assertEquals(null, $bucketListInfo->getBucketList()[2]->getIntranetEndpoint());
+        $this->assertEquals(null, $bucketListInfo->getBucketList()[2]->getRegion());
+        $this->assertEquals(null, $bucketListInfo->getBucketList()[2]->getStorageClass());
+
+      }
 }

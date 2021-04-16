@@ -6,7 +6,7 @@ require_once __DIR__ . '/Common.php';
 
 use OSS\OssClient;
 
-class OssClinetImageTest extends \PHPUnit_Framework_TestCase
+class OssClinetImageTest extends TestOssClientBase
 {
     private $bucketName;
     private $client;
@@ -16,21 +16,22 @@ class OssClinetImageTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->client = Common::getOssClient();
-        $this->bucketName = 'php-sdk-test-bucket-image-' . strval(rand(0, 10000));
-        $this->client->createBucket($this->bucketName);
-        Common::waitMetaSync();
+        parent::setUp();
+
+        $this->client = $this->ossClient;
+        $this->bucketName = $this->bucket;
         $this->local_file = "example.jpg";
         $this->object = "oss-example.jpg";
         $this->download_file = "image.jpg";
 
+        Common::waitMetaSync();
         $this->client->uploadFile($this->bucketName, $this->object, $this->local_file);
     }
 
     public function tearDown()
     {
-        $this->client->deleteObject($this->bucketName, $this->object);     
-        $this->client->deleteBucket($this->bucketName);
+        parent::tearDown();
+        unlink($this->download_file);
     }
     
     public function testImageResize()
@@ -89,6 +90,47 @@ class OssClinetImageTest extends \PHPUnit_Framework_TestCase
         $this->check($options, 100, 100, 3267, 'jpg');
     }
 
+    public function testProcesObject()
+    {
+        $object = 'process-object.jpg';
+        $process = 'image/resize,m_fixed,w_100,h_100'.
+                   '|sys/saveas'.
+                   ',o_'.$this->base64url_encode($object).
+                   ',b_'.$this->base64url_encode($this->bucketName);
+        $result = $this->client->processObject($this->bucketName, $this->object, $process);
+        $this->assertTrue(stripos($result, '"object": "process-object.jpg",') > 0);
+        $this->assertTrue(stripos($result, '"status": "OK"') > 0);
+
+        
+        $options = array(
+            OssClient::OSS_FILE_DOWNLOAD => $this->download_file,
+        );
+        $this->client->getObject($this->bucketName, $object, $options);
+        $array = getimagesize($this->download_file);
+        $this->assertEquals(100, $array[0]);
+        $this->assertEquals(100, $array[1]);
+        $this->assertEquals(2, $array[2]);
+
+        //without bucket
+        $object = 'process-object-1.jpg';
+        $process = 'image/watermark,text_SGVsbG8g5Zu-54mH5pyN5YqhIQ'.
+                   '|sys/saveas'.
+                   ',o_'.$this->base64url_encode($object);
+        $result = $this->client->processObject($this->bucketName, $this->object, $process);
+        $this->assertTrue(stripos($result, '"object": "process-object-1.jpg",') > 0);
+        $this->assertTrue(stripos($result, '"status": "OK"') > 0);
+
+        
+        $options = array(
+            OssClient::OSS_FILE_DOWNLOAD => $this->download_file,
+        );
+        $this->client->getObject($this->bucketName, $object, $options);
+        $array = getimagesize($this->download_file);
+        $this->assertEquals(400, $array[0]);
+        $this->assertEquals(267, $array[1]);
+        $this->assertEquals(2, $array[2]);
+    }
+
     private function check($options, $width, $height, $size, $type)
     {
         $this->client->getObject($this->bucketName, $this->object, $options);
@@ -96,5 +138,10 @@ class OssClinetImageTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($width, $array[0]);
         $this->assertEquals($height, $array[1]);
         $this->assertEquals($type === 'jpg' ? 2 : 3, $array[2]);//2 <=> jpg
+    }
+
+    private function base64url_encode($data)
+    {
+        return rtrim(strtr(base64_encode($data), '+/', '-_'), '='); 
     }
 }

@@ -1,10 +1,10 @@
 <?php
+
 namespace Qiniu\Processing;
 
 use Qiniu\Config;
-use Qiniu\Http\Client;
 use Qiniu\Http\Error;
-use Qiniu\Processing\Operation;
+use Qiniu\Http\Client;
 
 /**
  * 持久化处理类,该类用于主动触发异步持久化操作.
@@ -36,13 +36,13 @@ final class PersistentFop
 
     /**
      * 对资源文件进行异步持久化处理
-     * @param $bucket     资源所在空间
-     * @param $key        待处理的源文件
-     * @param $fops       string|array  待处理的pfop操作，多个pfop操作以array的形式传入。
+     * @param string $bucket 资源所在空间
+     * @param string $key 待处理的源文件
+     * @param string $fops string|array  待处理的pfop操作，多个pfop操作以array的形式传入。
      *                    eg. avthumb/mp3/ab/192k, vframe/jpg/offset/7/w/480/h/360
-     * @param $pipeline   资源处理队列
-     * @param $notify_url 处理结果通知地址
-     * @param $force      是否强制执行一次新的指令
+     * @param string $pipeline 资源处理队列
+     * @param string $notify_url 处理结果通知地址
+     * @param bool $force 是否强制执行一次新的指令
      *
      *
      * @return array 返回持久化处理的persistentId, 和返回的错误。

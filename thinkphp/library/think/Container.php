@@ -461,6 +461,25 @@ class Container implements ArrayAccess, IteratorAggregate, Countable
         $type   = key($vars) === 0 ? 1 : 0;
         $params = $reflect->getParameters();
 
+        if (PHP_VERSION > 8.0) {
+            $args = $this->parseParamsForPHP8($params, $vars, $type);
+        } else {
+            $args = $this->parseParams($params, $vars, $type);
+        }
+
+        return $args;
+    }
+
+    /**
+     * 解析参数
+     * @access protected
+     * @param  array $params 参数列表
+     * @param  array $vars 参数数据
+     * @param  int   $type 参数类别
+     * @return array
+     */
+    protected function parseParams($params, $vars, $type)
+    {
         foreach ($params as $param) {
             $name      = $param->getName();
             $lowerName = Loader::parseName($name);
@@ -480,7 +499,38 @@ class Container implements ArrayAccess, IteratorAggregate, Countable
                 throw new InvalidArgumentException('method param miss:' . $name);
             }
         }
+        return $args;
+    }
 
+    /**
+     * 解析参数
+     * @access protected
+     * @param  array $params 参数列表
+     * @param  array $vars 参数数据
+     * @param  int   $type 参数类别
+     * @return array
+     */
+    protected function parseParamsForPHP8($params, $vars, $type)
+    {
+        foreach ($params as $param) {
+            $name           = $param->getName();
+            $lowerName      = Loader::parseName($name);
+            $reflectionType = $param->getType();
+
+            if ($reflectionType && $reflectionType->isBuiltin() === false) {
+                $args[] = $this->getObjectParam($reflectionType->getName(), $vars);
+            } elseif (1 == $type && !empty($vars)) {
+                $args[] = array_shift($vars);
+            } elseif (0 == $type && array_key_exists($name, $vars)) {
+                $args[] = $vars[$name];
+            } elseif (0 == $type && array_key_exists($lowerName, $vars)) {
+                $args[] = $vars[$lowerName];
+            } elseif ($param->isDefaultValueAvailable()) {
+                $args[] = $param->getDefaultValue();
+            } else {
+                throw new InvalidArgumentException('method param miss:' . $name);
+            }
+        }
         return $args;
     }
 

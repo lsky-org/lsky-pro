@@ -125,7 +125,13 @@ class Mysql extends Builder
 
         $key = trim($key);
 
-        if (strpos($key, '->') && false === strpos($key, '(')) {
+        if(strpos($key, '->>') && false === strpos($key, '(')){
+            // JSON字段支持
+            list($field, $name) = explode('->>', $key, 2);
+
+            return $this->parseKey($query, $field, true) . '->>\'$' . (strpos($name, '[') === 0 ? '' : '.') . str_replace('->>', '.', $name) . '\'';
+        }
+        elseif (strpos($key, '->') && false === strpos($key, '(')) {
             // JSON字段支持
             list($field, $name) = explode('->', $key, 2);
 

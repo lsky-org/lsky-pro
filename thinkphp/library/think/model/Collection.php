@@ -33,6 +33,22 @@ class Collection extends BaseCollection
     }
 
     /**
+     * 绑定（一对一）关联属性到当前模型
+     * @access protected
+     * @param  string $relation 关联名称
+     * @param  array  $attrs    绑定属性
+     * @return $this
+     */
+    public function bindAttr($relation, array $attrs = [])
+    {
+        $this->each(function (Model $model) use ($relation, $attrs) {
+            $model->bindAttr($relation, $attrs);
+        });
+
+        return $this;
+    }
+
+    /**
      * 设置需要隐藏的输出属性
      * @access public
      * @param  array $hidden   属性列表

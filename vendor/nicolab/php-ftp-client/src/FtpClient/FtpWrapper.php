@@ -27,7 +27,7 @@ namespace FtpClient;
  * @method bool get(string $local_file, string $remote_file, int $mode, int $resumepos = 0) Downloads a file from the FTP server
  * @method bool login(string $username, string $password) Logs in to an FTP connection
  * @method int mdtm(string $remote_file) Returns the last modified time of the given file
- * @method string mkdir(string $directory) Creates a directory
+ * @method bool mkdir(string $directory) Creates a directory
  * @method array mlsd(string $remote_dir) Returns a list of files in the given directory
  * @method int nb_continue() Continues retrieving/sending a file (non-blocking)
  * @method int nb_fget(resource $handle, string $remote_file, int $mode, int $resumepos = 0) Retrieves a file from the FTP server and writes it to an open file (non-blocking)

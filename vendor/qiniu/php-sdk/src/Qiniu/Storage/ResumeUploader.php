@@ -1,4 +1,5 @@
 <?php
+
 namespace Qiniu\Storage;
 
 use Qiniu\Config;
@@ -28,12 +29,13 @@ final class ResumeUploader
     /**
      * 上传二进制流到七牛
      *
-     * @param $upToken    上传凭证
-     * @param $key        上传文件名
-     * @param $inputStream 上传二进制流
-     * @param $size       上传流的大小
-     * @param $params     自定义变量
-     * @param $mime       上传数据的mimeType
+     * @param string $upToken 上传凭证
+     * @param string $key 上传文件名
+     * @param string $inputStream 上传二进制流
+     * @param string $size 上传流的大小
+     * @param string $params 自定义变量
+     * @param string $mime 上传数据的mimeType
+     * @param string $config
      *
      * @link http://developer.qiniu.com/docs/v6/api/overview/up/response/vars.html#xvar
      */

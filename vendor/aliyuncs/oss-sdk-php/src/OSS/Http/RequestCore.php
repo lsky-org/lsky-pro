@@ -713,6 +713,8 @@ class RequestCore
                 $temp_headers[] = $k . ': ' . $v;
             }
 
+            // fix "Expect: 100-continue"
+            $temp_headers[] = 'Expect:';
             curl_setopt($curl_handle, CURLOPT_HTTPHEADER, $temp_headers);
         }
 

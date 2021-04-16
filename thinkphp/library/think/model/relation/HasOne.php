@@ -144,7 +144,7 @@ class HasOne extends OneToOne
 
         return $this->parent->db()
             ->alias($model)
-            ->whereExists(function ($query) use ($table, $model, $relation, $localKey, $foreignKey) {
+            ->whereExists(function ($query) use ($table, $model, $relation, $localKey, $foreignKey, $softDelete) {
                 $query->table([$table => $relation])
                     ->field($relation . '.' . $foreignKey)
                     ->whereExp($model . '.' . $localKey, '=' . $relation . '.' . $foreignKey)

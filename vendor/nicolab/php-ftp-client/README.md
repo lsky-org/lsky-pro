@@ -218,7 +218,7 @@ $ftp->connect($host);
 $ftp->login($login, $password);
 
 // remove the old files
-$ftp->removeByTime('/www/mysite.com/demo', time() - 86400));
+$ftp->removeByTime('/www/mysite.com/demo', time() - 86400);
 
 // search PNG files
 $ftp->search('/(.*)\.png$/i');

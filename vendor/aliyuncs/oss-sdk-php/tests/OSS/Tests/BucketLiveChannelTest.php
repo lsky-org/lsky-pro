@@ -195,6 +195,39 @@ class BucketLiveChannelTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('playlist.m3u8', $query['playlistName']);
     }
 
+    public function testGetgenPreSignedRtmpUrlVsSignedRtmpUrl()
+    {
+        $channelName = '90475';
+        $bucket = 'douyu';
+        $url1 = '245';
+        $url2 = '123';
+        $expiration = 0;
+
+        do {
+            $begin = time();
+            $expiration = time() + 900;
+            $url1 = $this->client->generatePresignedRtmpUrl($bucket, $channelName, $expiration, array(
+                'params' => array(
+                    'playlistName' => 'playlist.m3u8'
+                )
+            ));
+
+            $url2 = $this->client->signRtmpUrl($bucket, $channelName, 900, array(
+                'params' => array(
+                    'playlistName' => 'playlist.m3u8'
+                )
+            ));
+
+            $end = time();
+
+            if ($begin == $end)
+                break;
+            usleep(500000);
+        } while (true);
+        $this->assertEquals($url1, $url1);
+        $this->assertTrue(strpos($url1, 'Expires='.$expiration) !== false);
+    }
+
     public function testLiveChannelInfo()
     {
         $channelName = 'live-to-put-status';

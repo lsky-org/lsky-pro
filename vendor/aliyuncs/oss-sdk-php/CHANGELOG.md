@@ -1,6 +1,32 @@
 # ChangeLog - Aliyun OSS SDK for PHP
 
-## v2.3.1 / 2019-011-15
+## v2.4.1 / 2020-09-29
+* Fixed: the getBucketPolicy bug.
+
+
+## v2.4.0 / 2020-08-31
+
+* Added: disable Expect: 100-continue
+* Added: support getBucketInfo
+* Added: support getBucketStat
+* Added: support bucket policy
+* Added: support bucket encryption
+* Added: support bucket tagging
+* Added: support bucket  worm
+* Added: support versioning
+* Added: support request payment
+* Added: support object tagging
+* Added: support code archive
+* Added: support process object 
+* Added: support traffic limit paramter 
+* Added: support upload object from file handle
+* Added: support getSimplifiedObjectMeta
+* Fixed: the object name can not be '0' stirng.
+* Update: endpoint validity check
+* Update: add new pre-signed url api
+
+
+## v2.3.1 / 2019-01-15
 
 * translate chinese comments into english
 * Added: endpoint validity check

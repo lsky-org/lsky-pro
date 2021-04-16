@@ -3,17 +3,16 @@
 require_once __DIR__ . '/../autoload.php';
 
 use Qiniu\Auth;
+use Qiniu\Config;
 use Qiniu\Processing\PersistentFop;
 
-$accessKey = 'Access_Key';
-$secretKey = 'Secret_Key';
+// 控制台获取密钥：https://portal.qiniu.com/user/key
+$accessKey = getenv('QINIU_ACCESS_KEY');
+$secretKey = getenv('QINIU_SECRET_KEY');
 $auth = new Auth($accessKey, $secretKey);
 
-// 要转码的文件所在的空间。
-$bucket = 'Bucket_Name';
-
-// 转码是使用的队列名称。 https://portal.qiniu.com/mps/pipeline
-$pipeline = 'pipeline_name';
+$config = new Config();
+$config->useHTTPS=true;
 
 // 初始化
-$pfop = new PersistentFop($auth, $bucket, $pipeline);
+$pfop = new PersistentFop($auth, $config);

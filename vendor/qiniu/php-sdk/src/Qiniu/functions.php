@@ -108,8 +108,8 @@ if (!defined('QINIU_FUNCTIONS_VERSION')) {
     /**
      * 计算七牛API中的数据格式
      *
-     * @param $bucket 待操作的空间名
-     * @param $key 待操作的文件名
+     * @param string $bucket 待操作的空间名
+     * @param string $key 待操作的文件名
      *
      * @return string  符合七牛API规格的数据格式
      * @link http://developer.qiniu.com/docs/v6/api/reference/data-formats.html
@@ -126,9 +126,9 @@ if (!defined('QINIU_FUNCTIONS_VERSION')) {
     /**
      * array 辅助方法，无值时不set
      *
-     * @param $array 待操作array
-     * @param $key key
-     * @param $value value 为null时 不设置
+     * @param array $array 待操作array
+     * @param string $key key
+     * @param string $value value 为null时 不设置
      *
      * @return array 原来的array，便于连续操作
      */

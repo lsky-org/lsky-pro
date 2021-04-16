@@ -35,7 +35,7 @@ ThinkPHP5.1对底层架构做了进一步的改进，减少依赖，其主要特
  + 内置控制器扩展类
  + 模型自动验证
 
-> ThinkPHP5.1的运行环境要求PHP5.6+。
+> ThinkPHP5.1的运行环境要求PHP5.6+ 兼容PHP8.0。
 
 
 ## 安装
@@ -69,6 +69,12 @@ composer update topthink/framework
 
 + [完全开发手册](https://www.kancloud.cn/manual/thinkphp5_1/content)
 + [升级指导](https://www.kancloud.cn/manual/thinkphp5_1/354155) 
+
+
+## 官方服务
+
++ [应用服务市场](https://market.topthink.com/)
++ [ThinkAPI——统一API服务](https://docs.topthink.com/think-api) 
 
 ## 命名规范
 

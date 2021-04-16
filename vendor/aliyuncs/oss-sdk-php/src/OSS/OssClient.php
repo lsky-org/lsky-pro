@@ -50,6 +50,28 @@ use OSS\Model\RefererConfig;
 use OSS\Model\WebsiteConfig;
 use OSS\Core\OssUtil;
 use OSS\Model\ListPartsInfo;
+use OSS\Result\GetBucketInfoResult;
+use OSS\Model\BucketStat;
+use OSS\Result\GetBucketStatResult;
+use OSS\Model\ServerSideEncryptionConfig;
+use OSS\Result\GetBucketEncryptionResult;
+use OSS\Model\RequestPaymentConfig;
+use OSS\Result\GetBucketRequestPaymentResult;
+use OSS\Model\Tag;
+use OSS\Model\TaggingConfig;
+use OSS\Result\GetBucketTagsResult;
+use OSS\Model\VersioningConfig;
+use OSS\Result\GetBucketVersioningResult;
+use OSS\Model\InitiateWormConfig;
+use OSS\Result\InitiateBucketWormResult;
+use OSS\Model\ExtendWormConfig;
+use OSS\Result\GetBucketWormResult;
+use OSS\Model\RestoreConfig;
+use OSS\Model\ObjectVersionListInfo;
+use OSS\Result\ListObjectVersionsResult;
+use OSS\Model\DeleteObjectInfo;
+use OSS\Model\DeletedObjectInfo;
+use OSS\Result\DeleteObjectVersionsResult;
 
 /**
  * Class OssClient
@@ -273,12 +295,12 @@ class OssClient
      *
      * @param string $bucket
      * @param string $object
+     * @param array $options
      * @throws OssException
      * @return string
      */
-    public function getObjectAcl($bucket, $object)
+    public function getObjectAcl($bucket, $object, $options = NULL)
     {
-        $options = array();
         $this->precheckCommon($bucket, $object, $options, true);
         $options[self::OSS_METHOD] = self::OSS_HTTP_GET;
         $options[self::OSS_BUCKET] = $bucket;
@@ -295,10 +317,11 @@ class OssClient
      * @param string $bucket bucket name
      * @param string $object object name
      * @param string $acl access permissions, valid values are ['default', 'private', 'public-read', 'public-read-write']
+     * @param array $options
      * @throws OssException
      * @return null
      */
-    public function putObjectAcl($bucket, $object, $acl)
+    public function putObjectAcl($bucket, $object, $acl, $options = NULL)
     {
         $this->precheckCommon($bucket, $object, $options, true);
         $options[self::OSS_BUCKET] = $bucket;
@@ -685,7 +708,7 @@ class OssClient
      * @throws OssException
      * @return GetLiveChannelHistory
      */
-   public function getLiveChannelHistory($bucket, $channelName, $options = NULL)
+    public function getLiveChannelHistory($bucket, $channelName, $options = NULL)
     {
         $this->precheckCommon($bucket, NULL, $options, false);
         $options[self::OSS_BUCKET] = $bucket;
@@ -805,6 +828,41 @@ class OssClient
 
         $query_items[] = 'OSSAccessKeyId=' . rawurlencode($this->accessKeyId);
         $query_items[] = 'Expires=' . rawurlencode($expires);
+        $query_items[] = 'Signature=' . rawurlencode($signature);
+
+        return $proto . $hostname . '/live/' . $channelName . '?' . implode('&', $query_items);
+    }
+
+    /**
+     * Generates the signed pushing streaming url
+     *
+     * @param string $bucket bucket name
+     * @param string $channelName channel name
+     * @param int $expiration expiration time of the Url, unix epoch, since 1970.1.1 00.00.00 UTC
+     * @param array $options
+     * @throws OssException
+     * @return The signed pushing streaming url
+     */
+    public function generatePresignedRtmpUrl($bucket, $channelName, $expiration, $options = NULL)
+    {
+        $this->precheckCommon($bucket, $channelName, $options, false);
+        $proto = 'rtmp://';
+        $hostname = $this->generateHostname($bucket);
+        $cano_params = '';
+        $query_items = array();
+        $params = isset($options['params']) ? $options['params'] : array();
+        uksort($params, 'strnatcasecmp');
+        foreach ($params as $key => $value) {
+            $cano_params = $cano_params . $key . ':' . $value . "\n";
+            $query_items[] = rawurlencode($key) . '=' . rawurlencode($value);
+        }
+        $resource = '/' . $bucket . '/' . $channelName;
+
+        $string_to_sign = $expiration . "\n" . $cano_params . $resource;
+        $signature = base64_encode(hash_hmac('sha1', $string_to_sign, $this->accessKeySecret, true));
+
+        $query_items[] = 'OSSAccessKeyId=' . rawurlencode($this->accessKeyId);
+        $query_items[] = 'Expires=' . rawurlencode($expiration);
         $query_items[] = 'Signature=' . rawurlencode($signature);
 
         return $proto . $hostname . '/live/' . $channelName . '?' . implode('&', $query_items);
@@ -950,7 +1008,6 @@ class OssClient
         return $result->getData();
     }
 
-
     /**
      * Set the size of the bucket,the unit is GB
      * When the capacity of the bucket is bigger than the set, it's forbidden to continue writing
@@ -996,6 +1053,445 @@ class OssClient
         return $result->getData();
     }
 
+    /**
+     * Get the information of the bucket
+     *
+     * @param string $bucket bucket name
+     * @param array $options
+     * @throws OssException
+     * @return BucketInfo
+     */
+    public function getBucketInfo($bucket, $options = NULL)
+    {
+        $this->precheckCommon($bucket, NULL, $options, false);
+        $options[self::OSS_BUCKET] = $bucket;
+        $options[self::OSS_METHOD] = self::OSS_HTTP_GET;
+        $options[self::OSS_OBJECT] = '/';
+        $options[self::OSS_SUB_RESOURCE] = 'bucketInfo';
+        $response = $this->auth($options);
+        $result = new GetBucketInfoResult($response);
+        return $result->getData();
+    }
+
+     /**
+     * Get the stat of the bucket
+     *
+     * @param string $bucket bucket name
+     * @param array $options
+     * @throws OssException
+     * @return BucketStat
+     */
+    public function getBucketStat($bucket, $options = NULL)
+    {
+        $this->precheckCommon($bucket, NULL, $options, false);
+        $options[self::OSS_BUCKET] = $bucket;
+        $options[self::OSS_METHOD] = self::OSS_HTTP_GET;
+        $options[self::OSS_OBJECT] = '/';
+        $options[self::OSS_SUB_RESOURCE] = 'stat';
+        $response = $this->auth($options);
+        $result = new GetBucketStatResult($response);
+        return $result->getData();
+    }
+
+    /**
+     * Sets the bucket's policy
+     *
+     * @param string $bucket bucket name
+     * @param string $policy policy json format content
+     * @param array $options
+     * @throws OssException
+     * @return null
+     */
+    public function putBucketPolicy($bucket, $policy, $options = NULL)
+    {
+        $this->precheckCommon($bucket, NULL, $options, false);
+        $options[self::OSS_BUCKET] = $bucket;
+        $options[self::OSS_METHOD] = self::OSS_HTTP_PUT;
+        $options[self::OSS_OBJECT] = '/';
+        $options[self::OSS_SUB_RESOURCE] = 'policy';
+        $options[self::OSS_CONTENT_TYPE] = 'application/json';
+        $options[self::OSS_CONTENT] = $policy;
+        $response = $this->auth($options);
+        $result = new PutSetDeleteResult($response);
+        return $result->getData();
+    }
+
+    /**
+     * Gets bucket's policy
+     *
+     * @param string $bucket bucket name
+     * @param array $options
+     * @throws OssException
+     * @return string policy json content
+     */
+    public function getBucketPolicy($bucket, $options = NULL)
+    {
+        $this->precheckCommon($bucket, NULL, $options, false);
+        $options[self::OSS_BUCKET] = $bucket;
+        $options[self::OSS_METHOD] = self::OSS_HTTP_GET;
+        $options[self::OSS_OBJECT] = '/';
+        $options[self::OSS_SUB_RESOURCE] = 'policy';
+        $response = $this->auth($options);
+        $result = new BodyResult($response);
+        return $result->getData();
+    }
+
+    /**
+     * Deletes the bucket's policy
+     *
+     * @param string $bucket bucket name
+     * @param array $options
+     * @throws OssException
+     * @return null
+     */
+    public function deleteBucketPolicy($bucket, $options = NULL)
+    {
+        $this->precheckCommon($bucket, NULL, $options, false);
+        $options[self::OSS_BUCKET] = $bucket;
+        $options[self::OSS_METHOD] = self::OSS_HTTP_DELETE;
+        $options[self::OSS_OBJECT] = '/';
+        $options[self::OSS_SUB_RESOURCE] = 'policy';
+        $response = $this->auth($options);
+        $result = new PutSetDeleteResult($response);
+        return $result->getData();
+    }
+
+    /**
+     * Sets the bucket's encryption
+     *
+     * @param string $bucket bucket name
+     * @param ServerSideEncryptionConfig $sseConfig
+     * @param array $options
+     * @throws OssException
+     * @return null
+     */
+    public function putBucketEncryption($bucket, $sseConfig, $options = NULL)
+    {
+        $this->precheckCommon($bucket, NULL, $options, false);
+        $options[self::OSS_BUCKET] = $bucket;
+        $options[self::OSS_METHOD] = self::OSS_HTTP_PUT;
+        $options[self::OSS_OBJECT] = '/';
+        $options[self::OSS_SUB_RESOURCE] = 'encryption';
+        $options[self::OSS_CONTENT_TYPE] = 'application/xml';
+        $options[self::OSS_CONTENT] = $sseConfig->serializeToXml();
+        $response = $this->auth($options);
+        $result = new PutSetDeleteResult($response);
+        return $result->getData();
+    }
+
+    /**
+     * Gets bucket's encryption
+     *
+     * @param string $bucket bucket name
+     * @param array $options
+     * @throws OssException
+     * @return ServerSideEncryptionConfig
+     */
+    public function getBucketEncryption($bucket, $options = NULL)
+    {
+        $this->precheckCommon($bucket, NULL, $options, false);
+        $options[self::OSS_BUCKET] = $bucket;
+        $options[self::OSS_METHOD] = self::OSS_HTTP_GET;
+        $options[self::OSS_OBJECT] = '/';
+        $options[self::OSS_SUB_RESOURCE] = 'encryption';
+        $response = $this->auth($options);
+        $result = new GetBucketEncryptionResult($response);
+        return $result->getData();
+    }
+
+    /**
+     * Deletes the bucket's encryption
+     *
+     * @param string $bucket bucket name
+     * @param array $options
+     * @throws OssException
+     * @return null
+     */
+    public function deleteBucketEncryption($bucket, $options = NULL)
+    {
+        $this->precheckCommon($bucket, NULL, $options, false);
+        $options[self::OSS_BUCKET] = $bucket;
+        $options[self::OSS_METHOD] = self::OSS_HTTP_DELETE;
+        $options[self::OSS_OBJECT] = '/';
+        $options[self::OSS_SUB_RESOURCE] = 'encryption';
+        $response = $this->auth($options);
+        $result = new PutSetDeleteResult($response);
+        return $result->getData();
+    }
+
+    /**
+     * Set the request playment of the bucket, Can be BucketOwner and Requester
+     *
+     * @param string $bucket bucket name
+     * @param string $payer
+     * @param array $options
+     * @return ResponseCore
+     * @throws null
+     */
+    public function putBucketRequestPayment($bucket, $payer, $options = NULL)
+    {
+        $this->precheckCommon($bucket, NULL, $options, false);
+        $options[self::OSS_BUCKET] = $bucket;
+        $options[self::OSS_METHOD] = self::OSS_HTTP_PUT;
+        $options[self::OSS_OBJECT] = '/';
+        $options[self::OSS_SUB_RESOURCE] = 'requestPayment';
+        $options[self::OSS_CONTENT_TYPE] = 'application/xml';
+        $config = new RequestPaymentConfig($payer);
+        $options[self::OSS_CONTENT] = $config->serializeToXml();
+        $response = $this->auth($options);
+        $result = new PutSetDeleteResult($response);
+        return $result->getData();
+    }
+
+    /**
+     * Get the request playment of the bucket
+     *
+     * @param string $bucket bucket name
+     * @param array $options
+     * @throws OssException
+     * @return string
+     */
+    public function getBucketRequestPayment($bucket, $options = NULL)
+    {
+        $this->precheckCommon($bucket, NULL, $options, false);
+        $options[self::OSS_BUCKET] = $bucket;
+        $options[self::OSS_METHOD] = self::OSS_HTTP_GET;
+        $options[self::OSS_OBJECT] = '/';
+        $options[self::OSS_SUB_RESOURCE] = 'requestPayment';
+        $response = $this->auth($options);
+        $result = new GetBucketRequestPaymentResult($response);
+        return $result->getData();
+    }
+
+    /**
+     * Sets the bucket's tags
+     *
+     * @param string $bucket bucket name
+     * @param TaggingConfig $taggingConfig
+     * @param array $options
+     * @throws OssException
+     * @return null
+     */
+    public function putBucketTags($bucket, $taggingConfig, $options = NULL)
+    {
+        $this->precheckCommon($bucket, NULL, $options, false);
+        $options[self::OSS_BUCKET] = $bucket;
+        $options[self::OSS_METHOD] = self::OSS_HTTP_PUT;
+        $options[self::OSS_OBJECT] = '/';
+        $options[self::OSS_SUB_RESOURCE] = self::OSS_TAGGING;
+        $options[self::OSS_CONTENT_TYPE] = 'application/xml';
+        $options[self::OSS_CONTENT] = $taggingConfig->serializeToXml();
+        $response = $this->auth($options);
+        $result = new PutSetDeleteResult($response);
+        return $result->getData();
+    }
+
+    /**
+     * Gets bucket's tags
+     *
+     * @param string $bucket bucket name
+     * @param array $options
+     * @throws OssException
+     * @return TaggingConfig
+     */
+    public function getBucketTags($bucket, $options = NULL)
+    {
+        $this->precheckCommon($bucket, NULL, $options, false);
+        $options[self::OSS_BUCKET] = $bucket;
+        $options[self::OSS_METHOD] = self::OSS_HTTP_GET;
+        $options[self::OSS_OBJECT] = '/';
+        $options[self::OSS_SUB_RESOURCE] = self::OSS_TAGGING;
+        $response = $this->auth($options);
+        $result = new GetBucketTagsResult($response);
+        return $result->getData();
+    }
+
+    /**
+     * Deletes the bucket's tags
+     * If want to delete specified tags for a bucket, please set the $tags
+     *
+     * @param string $bucket bucket name
+     * @param tag[] $tags (optional)
+     * @param array $options
+     * @throws OssException
+     * @return null
+     */
+    public function deleteBucketTags($bucket, $tags = NULL, $options = NULL)
+    {
+        $this->precheckCommon($bucket, NULL, $options, false);
+        $options[self::OSS_BUCKET] = $bucket;
+        $options[self::OSS_METHOD] = self::OSS_HTTP_DELETE;
+        $options[self::OSS_OBJECT] = '/';
+        if (empty($tags)) {
+            $options[self::OSS_SUB_RESOURCE] = self::OSS_TAGGING;
+        } else {
+            $value = '';
+            foreach ($tags as $tag ) {
+                $value .= $tag->getKey().',';
+            }
+            $value = rtrim($value, ',');
+            $options[self::OSS_TAGGING] = $value;
+        }
+        $response = $this->auth($options);
+        $result = new PutSetDeleteResult($response);
+        return $result->getData();
+    }
+
+    /**
+     * Set the versioning of the bucket, Can be BucketOwner and Requester
+     *
+     * @param string $bucket bucket name
+     * @param string $status
+     * @param array $options
+     * @return ResponseCore
+     * @throws null
+     */
+    public function putBucketVersioning($bucket, $status, $options = NULL)
+    {
+        $this->precheckCommon($bucket, NULL, $options, false);
+        $options[self::OSS_BUCKET] = $bucket;
+        $options[self::OSS_METHOD] = self::OSS_HTTP_PUT;
+        $options[self::OSS_OBJECT] = '/';
+        $options[self::OSS_SUB_RESOURCE] = 'versioning';
+        $options[self::OSS_CONTENT_TYPE] = 'application/xml';
+        $config = new VersioningConfig($status);
+        $options[self::OSS_CONTENT] = $config->serializeToXml();
+        $response = $this->auth($options);
+        $result = new PutSetDeleteResult($response);
+        return $result->getData();
+    }
+
+    /**
+     * Get the versioning of the bucket
+     *
+     * @param string $bucket bucket name
+     * @param array $options
+     * @throws OssException
+     * @return string
+     */
+    public function getBucketVersioning($bucket, $options = NULL)
+    {
+        $this->precheckCommon($bucket, NULL, $options, false);
+        $options[self::OSS_BUCKET] = $bucket;
+        $options[self::OSS_METHOD] = self::OSS_HTTP_GET;
+        $options[self::OSS_OBJECT] = '/';
+        $options[self::OSS_SUB_RESOURCE] = 'versioning';
+        $response = $this->auth($options);
+        $result = new GetBucketVersioningResult($response);
+        return $result->getData();
+    }
+
+    /**
+     * Initialize a bucket's worm
+     *
+     * @param string $bucket bucket name
+     * @param int $day
+     * @param array $options
+     * @throws OssException
+     * @return string returns uploadid
+     */
+    public function initiateBucketWorm($bucket, $day, $options = NULL)
+    {
+        $this->precheckCommon($bucket, NULL, $options, false);
+        $options[self::OSS_METHOD] = self::OSS_HTTP_POST;
+        $options[self::OSS_BUCKET] = $bucket;
+        $options[self::OSS_OBJECT] = '/';
+        $options[self::OSS_SUB_RESOURCE] = 'worm';
+        $options[self::OSS_CONTENT_TYPE] = 'application/xml';
+        $config = new InitiateWormConfig($day);
+        $options[self::OSS_CONTENT] = $config->serializeToXml();
+        $response = $this->auth($options);
+        $result = new InitiateBucketWormResult($response);
+        return $result->getData();
+    }
+
+    /**
+     * Aborts the bucket's worm
+     *
+     * @param string $bucket bucket name
+     * @param array $options
+     * @throws OssException
+     * @return null
+     */
+    public function abortBucketWorm($bucket, $options = NULL)
+    {
+        $this->precheckCommon($bucket, NULL, $options, false);
+        $options[self::OSS_BUCKET] = $bucket;
+        $options[self::OSS_METHOD] = self::OSS_HTTP_DELETE;
+        $options[self::OSS_OBJECT] = '/';
+        $options[self::OSS_SUB_RESOURCE] = 'worm';
+        $response = $this->auth($options);
+        $result = new PutSetDeleteResult($response);
+        return $result->getData();
+    }
+
+     /**
+     * Complete a bucket's worm
+     *
+     * @param string $bucket bucket name
+     * @param string $wormId
+     * @param array $options
+     * @throws OssException
+     * @return string returns uploadid
+     */
+    public function completeBucketWorm($bucket, $wormId, $options = NULL)
+    {
+        $this->precheckCommon($bucket, NULL, $options, false);
+        $options[self::OSS_METHOD] = self::OSS_HTTP_POST;
+        $options[self::OSS_BUCKET] = $bucket;
+        $options[self::OSS_OBJECT] = '/';
+        $options[self::OSS_WORM_ID] = $wormId;
+        $options[self::OSS_CONTENT] = '';
+        $response = $this->auth($options);
+        $result = new PutSetDeleteResult($response);
+        return $result->getData();
+    }
+
+    /**
+     * Extend a bucket's worm
+     *
+     * @param string $bucket bucket name
+     * @param string $wormId
+     * @param int $day
+     * @param array $options
+     * @throws OssException
+     * @return string returns uploadid
+     */
+    public function extendBucketWorm($bucket, $wormId, $day, $options = NULL)
+    {
+        $this->precheckCommon($bucket, NULL, $options, false);
+        $options[self::OSS_METHOD] = self::OSS_HTTP_POST;
+        $options[self::OSS_BUCKET] = $bucket;
+        $options[self::OSS_OBJECT] = '/';
+        $options[self::OSS_WORM_ID] = $wormId;
+        $options[self::OSS_SUB_RESOURCE] = 'wormExtend';
+        $options[self::OSS_CONTENT_TYPE] = 'application/xml';
+        $config = new ExtendWormConfig($day);
+        $options[self::OSS_CONTENT] = $config->serializeToXml();
+        $response = $this->auth($options);
+        $result = new PutSetDeleteResult($response);
+        return $result->getData();
+    }
+
+    /**
+     * Get a bucket's worm
+     *
+     * @param string $bucket bucket name
+     * @param array $options
+     * @throws OssException
+     * @return string
+     */
+    public function getBucketWorm($bucket, $options = NULL)
+    {
+        $this->precheckCommon($bucket, NULL, $options, false);
+        $options[self::OSS_BUCKET] = $bucket;
+        $options[self::OSS_METHOD] = self::OSS_HTTP_GET;
+        $options[self::OSS_OBJECT] = '/';
+        $options[self::OSS_SUB_RESOURCE] = 'worm';
+        $response = $this->auth($options);
+        $result = new GetBucketWormResult($response);
+        return $result->getData();
+    }
 
     /**
      * Lists the bucket's object list (in ObjectListInfo)
@@ -1018,20 +1514,57 @@ class OssClient
         $options[self::OSS_BUCKET] = $bucket;
         $options[self::OSS_METHOD] = self::OSS_HTTP_GET;
         $options[self::OSS_OBJECT] = '/';
-        $options[self::OSS_HEADERS] = array(
-            self::OSS_DELIMITER => isset($options[self::OSS_DELIMITER]) ? $options[self::OSS_DELIMITER] : '/',
-            self::OSS_PREFIX => isset($options[self::OSS_PREFIX]) ? $options[self::OSS_PREFIX] : '',
-            self::OSS_MAX_KEYS => isset($options[self::OSS_MAX_KEYS]) ? $options[self::OSS_MAX_KEYS] : self::OSS_MAX_KEYS_VALUE,
-            self::OSS_MARKER => isset($options[self::OSS_MARKER]) ? $options[self::OSS_MARKER] : '',
-        );
         $query = isset($options[self::OSS_QUERY_STRING]) ? $options[self::OSS_QUERY_STRING] : array();
         $options[self::OSS_QUERY_STRING] = array_merge(
             $query,
-            array(self::OSS_ENCODING_TYPE => self::OSS_ENCODING_TYPE_URL)
+            array(self::OSS_ENCODING_TYPE => self::OSS_ENCODING_TYPE_URL,
+                  self::OSS_DELIMITER => isset($options[self::OSS_DELIMITER]) ? $options[self::OSS_DELIMITER] : '/',
+                  self::OSS_PREFIX => isset($options[self::OSS_PREFIX]) ? $options[self::OSS_PREFIX] : '',
+                  self::OSS_MAX_KEYS => isset($options[self::OSS_MAX_KEYS]) ? $options[self::OSS_MAX_KEYS] : self::OSS_MAX_KEYS_VALUE,
+                  self::OSS_MARKER => isset($options[self::OSS_MARKER]) ? $options[self::OSS_MARKER] : '')
         );
 
         $response = $this->auth($options);
         $result = new ListObjectsResult($response);
+        return $result->getData();
+    }
+
+    /**
+     * Lists the bucket's object with version information (in ObjectListInfo)
+     *
+     * @param string $bucket
+     * @param array $options are defined below:
+     * $options = array(
+     *      'max-keys'   => specifies max object count to return. By default is 100 and max value could be 1000.
+     *      'prefix'     => specifies the key prefix the returned objects must have. Note that the returned keys still contain the prefix.
+     *      'delimiter'  => The delimiter of object name for grouping object. When it's specified, listObjectVersions will differeniate the object and folder. And it will return subfolder's objects.
+     *      'key-marker' => The key of returned object must be greater than the 'key-marker'.
+     *      'version-id-marker' => The version id of returned object must be greater than the 'version-id-marker'.
+     *)
+     * Prefix and marker are for filtering and paging. Their length must be less than 256 bytes
+     * @throws OssException
+     * @return ObjectListInfo
+     */
+    public function listObjectVersions($bucket, $options = NULL)
+    {
+        $this->precheckCommon($bucket, NULL, $options, false);
+        $options[self::OSS_BUCKET] = $bucket;
+        $options[self::OSS_METHOD] = self::OSS_HTTP_GET;
+        $options[self::OSS_OBJECT] = '/';
+        $options[self::OSS_SUB_RESOURCE] = 'versions';
+        $query = isset($options[self::OSS_QUERY_STRING]) ? $options[self::OSS_QUERY_STRING] : array();
+        $options[self::OSS_QUERY_STRING] = array_merge(
+            $query,
+            array(self::OSS_ENCODING_TYPE => self::OSS_ENCODING_TYPE_URL,
+                  self::OSS_DELIMITER => isset($options[self::OSS_DELIMITER]) ? $options[self::OSS_DELIMITER] : '/',
+                  self::OSS_PREFIX => isset($options[self::OSS_PREFIX]) ? $options[self::OSS_PREFIX] : '',
+                  self::OSS_MAX_KEYS => isset($options[self::OSS_MAX_KEYS]) ? $options[self::OSS_MAX_KEYS] : self::OSS_MAX_KEYS_VALUE,
+                  self::OSS_KEY_MARKER => isset($options[self::OSS_KEY_MARKER]) ? $options[self::OSS_KEY_MARKER] : '',
+                  self::OSS_VERSION_ID_MARKER => isset($options[self::OSS_VERSION_ID_MARKER]) ? $options[self::OSS_VERSION_ID_MARKER] : '')
+        );
+
+        $response = $this->auth($options);
+        $result = new ListObjectVersionsResult($response);
         return $result->getData();
     }
 
@@ -1127,11 +1660,12 @@ class OssClient
 
     /**
      * gets symlink
-     *@param string $bucket bucket name
+     * @param string $bucket bucket name
      * @param string $symlink symlink name
+     * @param array $options
      * @return null
      */
-    public function getSymlink($bucket, $symlink)
+    public function getSymlink($bucket, $symlink, $options = NULL)
     {
         $this->precheckCommon($bucket, $symlink, $options);
 
@@ -1177,6 +1711,45 @@ class OssClient
         $options[self::OSS_BUCKET] = $bucket;
         $options[self::OSS_OBJECT] = $object;
         $options[self::OSS_CONTENT_LENGTH] = $file_size;
+        $response = $this->auth($options);
+        $result = new PutSetDeleteResult($response);
+        return $result->getData();
+    }
+
+    /**
+     * Uploads object from file handle
+     *
+     * @param string $bucket bucket name
+     * @param string $object object name
+     * @param resource $handle file handle
+     * @param array $options
+     * @return null
+     * @throws OssException
+     */
+    public function uploadStream($bucket, $object, $handle, $options = NULL)
+    {
+        $this->precheckCommon($bucket, $object, $options);
+        if (!is_resource($handle)) {
+            throw new OssException("The handle must be an opened stream");
+        }
+        $options[self::OSS_FILE_UPLOAD] = $handle;
+        if ($this->isCheckMD5($options)) {
+            rewind($handle);
+            $ctx = hash_init('md5');
+            hash_update_stream($ctx, $handle);
+            $content_md5 = base64_encode(hash_final($ctx, true));
+            rewind($handle);
+            $options[self::OSS_CONTENT_MD5] = $content_md5;
+        }
+        if (!isset($options[self::OSS_CONTENT_TYPE])) {
+            $options[self::OSS_CONTENT_TYPE] = $this->getMimeType($object);
+        }
+        $options[self::OSS_METHOD] = self::OSS_HTTP_PUT;
+        $options[self::OSS_BUCKET] = $bucket;
+        $options[self::OSS_OBJECT] = $object;
+        if (!isset($options[self::OSS_CONTENT_LENGTH])) {
+            $options[self::OSS_CONTENT_LENGTH] = fstat($handle)[self::OSS_SIZE];
+        }
         $response = $this->auth($options);
         $result = new PutSetDeleteResult($response);
         return $result->getData();
@@ -1283,10 +1856,15 @@ class OssClient
         $options[self::OSS_BUCKET] = $toBucket;
         $options[self::OSS_METHOD] = self::OSS_HTTP_PUT;
         $options[self::OSS_OBJECT] = $toObject;
+        $param = '/' . $fromBucket . '/' . rawurlencode($fromObject);
+        if (isset($options[self::OSS_VERSION_ID])) {
+            $param = $param . '?versionId='.$options[self::OSS_VERSION_ID];
+            unset($options[self::OSS_VERSION_ID]);
+        }
         if (isset($options[self::OSS_HEADERS])) {
-            $options[self::OSS_HEADERS][self::OSS_OBJECT_COPY_SOURCE] = '/' . $fromBucket . '/' . $fromObject;
+            $options[self::OSS_HEADERS][self::OSS_OBJECT_COPY_SOURCE] = $param;
         } else {
-            $options[self::OSS_HEADERS] = array(self::OSS_OBJECT_COPY_SOURCE => '/' . $fromBucket . '/' . $fromObject);
+            $options[self::OSS_HEADERS] = array(self::OSS_OBJECT_COPY_SOURCE => $param);
         }
         $response = $this->auth($options);
         $result = new CopyObjectResult($response);
@@ -1307,6 +1885,27 @@ class OssClient
         $options[self::OSS_BUCKET] = $bucket;
         $options[self::OSS_METHOD] = self::OSS_HTTP_HEAD;
         $options[self::OSS_OBJECT] = $object;
+        $response = $this->auth($options);
+        $result = new HeaderResult($response);
+        return $result->getData();
+    }
+
+     /**
+     * Gets the simplified metadata of a object. 
+     * Simplified metadata includes ETag, Size, LastModified.
+     *
+     * @param string $bucket bucket name
+     * @param string $object object name
+     * @param string $options Checks out the SDK document for the detail
+     * @return array
+     */
+    public function getSimplifiedObjectMeta($bucket, $object, $options = NULL)
+    {
+        $this->precheckCommon($bucket, $object, $options);
+        $options[self::OSS_BUCKET] = $bucket;
+        $options[self::OSS_METHOD] = self::OSS_HTTP_HEAD;
+        $options[self::OSS_OBJECT] = $object;
+        $options[self::OSS_SUB_RESOURCE] = 'objectMeta';
         $response = $this->auth($options);
         $result = new HeaderResult($response);
         return $result->getData();
@@ -1363,6 +1962,41 @@ class OssClient
         $options[self::OSS_CONTENT] = $xmlBody;
         $response = $this->auth($options);
         $result = new DeleteObjectsResult($response);
+        return $result->getData();
+    }
+
+    /**
+     * Deletes multiple objects with version id in a bucket
+     *
+     * @param string $bucket bucket name
+     * @param array $objects DeleteObjectInfo list
+     * @param array $options
+     * @return ResponseCore
+     * @throws null
+     */
+    public function deleteObjectVersions($bucket, $objects, $options = null)
+    {
+        $this->precheckCommon($bucket, NULL, $options, false);
+        if (!is_array($objects) || !$objects) {
+            throw new OssException('objects must be array');
+        }
+        $options[self::OSS_METHOD] = self::OSS_HTTP_POST;
+        $options[self::OSS_BUCKET] = $bucket;
+        $options[self::OSS_OBJECT] = '/';
+        $options[self::OSS_SUB_RESOURCE] = 'delete';
+        $options[self::OSS_CONTENT_TYPE] = 'application/xml';
+        $quiet = 'false';
+        if (isset($options['quiet'])) {
+            if (is_bool($options['quiet'])) { //Boolean
+                $quiet = $options['quiet'] ? 'true' : 'false';
+            } elseif (is_string($options['quiet'])) { // string
+                $quiet = ($options['quiet'] === 'true') ? 'true' : 'false';
+            }
+        }
+        $xmlBody = OssUtil::createDeleteObjectVersionsXmlBody($objects, $quiet);
+        $options[self::OSS_CONTENT] = $xmlBody;
+        $response = $this->auth($options);
+        $result = new DeleteObjectVersionsResult($response);
         return $result->getData();
     }
 
@@ -1434,8 +2068,98 @@ class OssClient
         $options[self::OSS_METHOD] = self::OSS_HTTP_POST;
         $options[self::OSS_OBJECT] = $object;
         $options[self::OSS_SUB_RESOURCE] = self::OSS_RESTORE;
+        if (isset($options[self::OSS_RESTORE_CONFIG])) {
+            $config = $options[self::OSS_RESTORE_CONFIG];
+            $options[self::OSS_CONTENT_TYPE] = 'application/xml';
+            $options[self::OSS_CONTENT] = $config->serializeToXml();
+        }
         $response = $this->auth($options);
         $result = new PutSetDeleteResult($response);
+        return $result->getData();
+    }
+
+    /**
+     * Sets the object tagging
+     *
+     * @param string $bucket bucket name
+     * @param string $object object name
+     * @param TaggingConfig $taggingConfig
+     * @throws OssException
+     * @return null
+     */
+    public function putObjectTagging($bucket, $object, $taggingConfig, $options = NULL)
+    {
+        $this->precheckCommon($bucket, $object, $options, true);
+        $options[self::OSS_BUCKET] = $bucket;
+        $options[self::OSS_METHOD] = self::OSS_HTTP_PUT;
+        $options[self::OSS_OBJECT] = $object;
+        $options[self::OSS_SUB_RESOURCE] = self::OSS_TAGGING;
+        $options[self::OSS_CONTENT_TYPE] = 'application/xml';
+        $options[self::OSS_CONTENT] = $taggingConfig->serializeToXml();
+        $response = $this->auth($options);
+        $result = new PutSetDeleteResult($response);
+        return $result->getData();
+    }
+
+    /**
+     * Gets the object tagging
+     *
+     * @param string $bucket
+     * @param string $object
+     * @throws OssException
+     * @return TaggingConfig
+     */
+    public function getObjectTagging($bucket, $object, $options = NULL)
+    {
+        $this->precheckCommon($bucket, $object, $options, true);
+        $options[self::OSS_METHOD] = self::OSS_HTTP_GET;
+        $options[self::OSS_BUCKET] = $bucket;
+        $options[self::OSS_OBJECT] = $object;
+        $options[self::OSS_SUB_RESOURCE] = self::OSS_TAGGING;
+        $response = $this->auth($options);
+        $result = new GetBucketTagsResult($response);
+        return $result->getData();
+    }
+
+    /**
+     * Deletes the object tagging
+     *
+     * @param string $bucket
+     * @param string $object
+     * @throws OssException
+     * @return TaggingConfig
+     */
+    public function deleteObjectTagging($bucket, $object, $options = NULL)
+    {
+        $this->precheckCommon($bucket, $object, $options, true);
+        $options[self::OSS_METHOD] = self::OSS_HTTP_DELETE;
+        $options[self::OSS_BUCKET] = $bucket;
+        $options[self::OSS_OBJECT] = $object;
+        $options[self::OSS_SUB_RESOURCE] = self::OSS_TAGGING;
+        $response = $this->auth($options);
+        $result = new PutSetDeleteResult($response);
+        return $result->getData();
+    }
+
+    /**
+     * Processes the object
+     *
+     * @param string $bucket bucket name
+     * @param string $object object name
+     * @param string $process process script
+     * @return string process result, json format
+     */
+    public function processObject($bucket, $object, $process, $options = NULL)
+    {
+        $this->precheckCommon($bucket, $object, $options);
+        $options[self::OSS_BUCKET] = $bucket;
+        $options[self::OSS_METHOD] = self::OSS_HTTP_POST;
+        $options[self::OSS_OBJECT] = $object;
+        $options[self::OSS_SUB_RESOURCE] = 'x-oss-process';
+        $options[self::OSS_CONTENT_TYPE] = 'application/octet-stream';
+        $options[self::OSS_CONTENT] = 'x-oss-process='.$process;
+        $response = $this->auth($options);
+        $result = new BodyResult($response);
         return $result->getData();
     }
 
@@ -1693,7 +2417,13 @@ class OssClient
             $options[self::OSS_HEADERS] = array();
         }
 
-        $options[self::OSS_HEADERS][self::OSS_OBJECT_COPY_SOURCE] = '/' . $fromBucket . '/' . $fromObject;
+        $param = '/' . $fromBucket . '/' . rawurlencode($fromObject);
+        if (isset($options[self::OSS_VERSION_ID])) {
+            $param = $param . '?versionId='.$options[self::OSS_VERSION_ID];
+            unset($options[self::OSS_VERSION_ID]);
+        }
+
+        $options[self::OSS_HEADERS][self::OSS_OBJECT_COPY_SOURCE] = $param;
         $options[self::OSS_HEADERS][self::OSS_OBJECT_COPY_SOURCE_RANGE] = "bytes=" . $start_range . "-" . $end_range;
         $response = $this->auth($options);
         $result = new UploadPartResult($response);
@@ -1732,7 +2462,7 @@ class OssClient
         } else {
             $upload_file_size = filesize($uploadFile);
             if ($upload_file_size !== false) {
-                $upload_file_size -= $upload_position;
+                $upload_file_size -= $upload_position;  
             }
         }
 
@@ -1787,7 +2517,16 @@ class OssClient
                 'ETag' => $etag,
             );
         }
-        return $this->completeMultipartUpload($bucket, $object, $uploadId, $uploadParts);
+
+        //build complete options
+        $cmp_options = null;
+        if (isset($options[self::OSS_HEADERS]) && isset($options[self::OSS_HEADERS][self::OSS_REQUEST_PAYER])) {
+            $cmp_options = array(
+                OssClient::OSS_HEADERS => array(
+                    OssClient::OSS_REQUEST_PAYER => $options[self::OSS_HEADERS][self::OSS_REQUEST_PAYER],
+            ));
+        }
+        return $this->completeMultipartUpload($bucket, $object, $uploadId, $uploadParts, $cmp_options);
     }
 
     /**
@@ -1872,6 +2611,37 @@ class OssClient
     }
 
     /**
+     * Sign URL with specified expiration time in seconds and HTTP method.
+     * The signed URL could be used to access the object directly.
+     *
+     * @param string $bucket
+     * @param string $object
+     * @param int $expiration expiration time of the Url, unix epoch, since 1970.1.1 00.00.00 UTC
+     * @param string $method
+     * @param array $options Key-Value array
+     * @return string
+     * @throws OssException
+     */
+    public function generatePresignedUrl($bucket, $object, $expiration, $method = self::OSS_HTTP_GET, $options = NULL)
+    {
+        $this->precheckCommon($bucket, $object, $options);
+        //method
+        if (self::OSS_HTTP_GET !== $method && self::OSS_HTTP_PUT !== $method) {
+            throw new OssException("method is invalid");
+        }
+        $options[self::OSS_BUCKET] = $bucket;
+        $options[self::OSS_OBJECT] = $object;
+        $options[self::OSS_METHOD] = $method;
+        if (!isset($options[self::OSS_CONTENT_TYPE])) {
+            $options[self::OSS_CONTENT_TYPE] = '';
+        }
+        $options[self::OSS_PREAUTH] = $expiration;
+        $options[self::OSS_DATE] = $expiration;
+        $this->setSignStsInUrl(true);
+        return $this->auth($options);
+    }
+
+    /**
      * validates options. Create a empty array if it's NULL.
      *
      * @param array $options
@@ -1923,6 +2693,8 @@ class OssClient
                 case self::OSS_STORAGE_IA:
                     return;
                 case self::OSS_STORAGE_STANDARD:
+                    return;
+                case self::OSS_STORAGE_COLDARCHIVE:
                     return;
                 default:
                     break;
@@ -2159,10 +2931,13 @@ class OssClient
         }
         // Generates the signable_resource
         $signable_resource = $this->generateSignableResource($options);
-        $string_to_sign .= rawurldecode($signable_resource) . urldecode($signable_query_string);
+        $signable_resource = rawurldecode($signable_resource) . urldecode($signable_query_string);
+        $string_to_sign_ordered = $string_to_sign;
+        $string_to_sign .= $signable_resource;
 
         // Sort the strings to be signed.
-        $string_to_sign_ordered = $this->stringToSignSorted($string_to_sign);
+        $string_to_sign_ordered .= $this->stringToSignSorted($signable_resource);
+
 
         $signature = base64_encode(hash_hmac('sha1', $string_to_sign_ordered, $this->accessKeySecret, true));
         $request->add_header('Authorization', 'OSS ' . $this->accessKeyId . ':' . $signature);
@@ -2400,6 +3175,10 @@ class OssClient
             self::OSS_POSITION,
             self::OSS_SYMLINK,
             self::OSS_RESTORE,
+            self::OSS_TAGGING,
+            self::OSS_WORM_ID,
+            self::OSS_TRAFFIC_LIMIT,
+            self::OSS_VERSION_ID,
         );
 
         foreach ($signableList as $item) {
@@ -2670,6 +3449,14 @@ class OssClient
     const OSS_STORAGE_STANDARD = 'Standard';
     const OSS_STORAGE_IA = 'IA';
     const OSS_STORAGE_ARCHIVE = 'Archive';
+    const OSS_STORAGE_COLDARCHIVE = 'ColdArchive';
+    const OSS_TAGGING = 'tagging';
+    const OSS_WORM_ID = 'wormId';
+    const OSS_RESTORE_CONFIG = 'restore-config';
+    const OSS_KEY_MARKER = 'key-marker';
+    const OSS_VERSION_ID_MARKER = 'version-id-marker';
+    const OSS_VERSION_ID = 'versionId';
+    const OSS_HEADER_VERSION_ID = 'x-oss-version-id';
 
     //private URLs
     const OSS_URL_ACCESS_KEY_ID = 'OSSAccessKeyId';
@@ -2693,6 +3480,8 @@ class OssClient
     const OSS_PROCESS = "x-oss-process";
     const OSS_CALLBACK = "x-oss-callback";
     const OSS_CALLBACK_VAR = "x-oss-callback-var";
+    const OSS_REQUEST_PAYER = "x-oss-request-payer";
+    const OSS_TRAFFIC_LIMIT = "x-oss-traffic-limit";
     //Constants for STS SecurityToken
     const OSS_SECURITY_TOKEN = "x-oss-security-token";
     const OSS_ACL_TYPE_PRIVATE = 'private';
@@ -2714,8 +3503,8 @@ class OssClient
     );
     // OssClient version information
     const OSS_NAME = "aliyun-sdk-php";
-    const OSS_VERSION = "2.3.1";
-    const OSS_BUILD = "20191115";
+    const OSS_VERSION = "2.4.1";
+    const OSS_BUILD = "20200929";
     const OSS_AUTHOR = "";
     const OSS_OPTIONS_ORIGIN = 'Origin';
     const OSS_OPTIONS_REQUEST_METHOD = 'Access-Control-Request-Method';

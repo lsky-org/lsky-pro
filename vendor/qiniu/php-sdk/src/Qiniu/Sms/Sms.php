@@ -1,10 +1,11 @@
 <?php
+
 namespace Qiniu\Sms;
 
-use Qiniu\Http\Client;
-use Qiniu\Http\Error;
-use Qiniu\Config;
 use Qiniu\Auth;
+use Qiniu\Config;
+use Qiniu\Http\Error;
+use Qiniu\Http\Client;
 
 class Sms
 {
@@ -18,192 +19,186 @@ class Sms
         $this->baseURL = sprintf("%s/%s/", Config::SMS_HOST, Config::SMS_VERSION);
     }
 
-    /*
+    /**
      * 创建签名
-     * signature: string 类型，必填，【长度限制8个字符内】超过长度会报错
-     * source: string   类型，必填，申请签名时必须指定签名来源。取值范围为：
-        nterprises_and_institutions 企事业单位的全称或简称
-        website 工信部备案网站的全称或简称
-        app APP应用的全称或简称
-        public_number_or_small_program 公众号或小程序的全称或简称
-        store_name 电商平台店铺名的全称或简称
-        trade_name 商标名的全称或简称，
-     * pics: 本地的图片路径 string 类型，可选
-     *@return: 类型array {
-        "signature_id": <signature_id>
-        }
+     *
+     * @param string $signature 签名
+     * @param string $source 签名来源，申请签名时必须指定签名来源
+     * @param string $pics 签名对应的资质证明图片进行 base64 编码格式转换后的字符串，可选
+     * @return array
+     *
+     * @link https://developer.qiniu.com/sms/api/5844/sms-api-create-signature
      */
     public function createSignature($signature, $source, $pics = null)
     {
+        $params = array();
         $params['signature'] = $signature;
         $params['source'] = $source;
         if (!empty($pics)) {
-            $params['pics'] = $this->imgToBase64($pics);
+            $params['pics'] = array($this->imgToBase64($pics));
         }
         $body = json_encode($params);
-        $url =$this->baseURL.'signature';
-        $ret = $this->post($url, $body);
-        return $ret;
+        $url = $this->baseURL . 'signature';
+        return $this->post($url, $body);
     }
 
-    /*
-    * 编辑签名
-    *  id 签名id : string 类型，必填，
-    * signature: string 类型，必填，
-    * source: string    类型，必填，申请签名时必须指定签名来源。取值范围为：
-        enterprises_and_institutions 企事业单位的全称或简称
-        website 工信部备案网站的全称或简称
-        app APP应用的全称或简称
-        public_number_or_small_program 公众号或小程序的全称或简称
-        store_name 电商平台店铺名的全称或简称
-        trade_name 商标名的全称或简称，
-    * pics: 本地的图片路径 string   类型，可选，
-    * @return: 类型array {
-        "signature": string
-        }
-    */
+    /**
+     * 编辑签名
+     *
+     * @param string $id 签名 ID
+     * @param string $signature 签名
+     * @param string $source 签名来源
+     * @param string $pics 签名对应的资质证明图片进行 base64 编码格式转换后的字符串，可选
+     * @return array
+     * @link https://developer.qiniu.com/sms/api/5890/sms-api-edit-signature
+     */
     public function updateSignature($id, $signature, $source, $pics = null)
     {
+        $params = array();
         $params['signature'] = $signature;
         $params['source'] = $source;
         if (!empty($pics)) {
-            $params['pics'] = $this->imgToBase64($pics);
+            $params['pics'] = array($this->imgToBase64($pics));
         }
         $body = json_encode($params);
-        $url =$this->baseURL.'signature/'.$id;
-        $ret = $this->PUT($url, $body);
-        return $ret;
+        $url = $this->baseURL . 'signature/' . $id;
+        return $this->PUT($url, $body);
     }
 
-    /*
- * 查询签名
- * audit_status: 审核状态 string 类型，可选，
-   取值范围为: "passed"(通过), "rejected"(未通过), "reviewing"(审核中)
- * page:页码 int  类型，
- * page_size: 分页大小 int 类型，可选， 默认为20
- *@return: 类型array {
-    "items": [{
-        "id": string,
-        "signature": string,
-        "source": string,
-        "audit_status": string,
-        "reject_reason": string,
-        "created_at": int64,
-        "updated_at": int64
-            }...],
-    "total": int,
-    "page": int,
-    "page_size": int,
-    }
- */
-    public function checkSignature($audit_status = null, $page = 1, $page_size = 20)
+    /**
+     * 列出签名
+     *
+     * @param string $audit_status 审核状态："passed"(通过), "rejected"(未通过), "reviewing"(审核中)
+     * @param int $page 页码。默认为 1
+     * @param int $page_size 分页大小。默认为 20
+     * @return array
+     * @link https://developer.qiniu.com/sms/api/5889/sms-api-query-signature
+     */
+    public function querySignature($audit_status = null, $page = 1, $page_size = 20)
     {
 
         $url = sprintf(
             "%s?audit_status=%s&page=%s&page_size=%s",
-            $this->baseURL.'signature',
+            $this->baseURL . 'signature',
             $audit_status,
             $page,
             $page_size
         );
-        $ret  = $this->get($url);
-        return $ret;
+        return $this->get($url);
     }
 
-
-    /*
- * 删除签名
- * id 签名id string 类型，必填，
- * @retrun : 请求成功 HTTP 状态码为 200
- */
-    public function deleteSignature($id)
+    /**
+     * 查询单个签名
+     *
+     * @param string $signature_id
+     * @return array
+     * @link https://developer.qiniu.com/sms/api/5970/query-a-single-signature
+     */
+    public function checkSingleSignature($signature_id)
     {
-        $url = $this->baseURL . 'signature/' . $id;
-        list(, $err)  = $this->delete($url);
-        return $err;
+
+        $url = sprintf(
+            "%s/%s",
+            $this->baseURL . 'signature',
+            $signature_id
+        );
+        return $this->get($url);
     }
 
+    /**
+     * 删除签名
+     *
+     * @param string $signature_id 签名 ID
+     * @return array
+     * @link https://developer.qiniu.com/sms/api/5891/sms-api-delete-signature
+     */
+    public function deleteSignature($signature_id)
+    {
+        $url = $this->baseURL . 'signature/' . $signature_id;
+        return $this->delete($url);
+    }
 
-
-
-    /*
-    * 创建模板
-    * name  : 模板名称 string 类型 ，必填
-    * template:  模板内容 string  类型，必填
-    * type: 模板类型 string 类型，必填，
-      取值范围为: notification (通知类短信), verification (验证码短信), marketing (营销类短信)
-    * description:  申请理由简述 string  类型，必填
-    * signature_id:  已经审核通过的签名 string  类型，必填
-    * @return: 类型 array {
-        "template_id": string
-                }
-    */
+    /**
+     * 创建模板
+     *
+     * @param string $name 模板名称
+     * @param string $template 模板内容 可设置自定义变量，发送短信时候使用，参考:${code}
+     * @param string $type notification：通知类,verification：验证码,marketing：营销类,voice：语音类
+     * @param string $description 申请理由简述
+     * @param string $signature_id 已经审核通过的签名
+     * @return array array
+     * @link https://developer.qiniu.com/sms/api/5893/sms-api-create-template
+     */
     public function createTemplate(
         $name,
         $template,
         $type,
         $description,
-        $signture_id
+        $signature_id
     ) {
+        $params = array();
         $params['name'] = $name;
         $params['template'] = $template;
         $params['type'] = $type;
         $params['description'] = $description;
-        $params['signature_id'] = $signture_id;
+        $params['signature_id'] = $signature_id;
 
         $body = json_encode($params);
-        $url =$this->baseURL.'template';
-        $ret = $this->post($url, $body);
-        return $ret;
+        $url = $this->baseURL . 'template';
+        return $this->post($url, $body);
     }
 
-    /*
-  * 查询模板
-  * audit_status: 审核状态 string 类型 ，可选，
-    取值范围为: passed (通过), rejected (未通过), reviewing (审核中)
-  * page:  页码 int  类型，可选，默认为 1
-  * page_size: 分页大小 int 类型，可选，默认为 20
-  * @return: 类型array{
-      "items": [{
-            "id": string,
-            "name": string,
-            "template": string,
-            "audit_status": string,
-            "reject_reason": string,
-            "type": string,
-            "signature_id": string, // 模版绑定的签名ID
-            "signature_text": string, // 模版绑定的签名内容
-            "created_at": int64,
-            "updated_at": int64
-        }...],
-        "total": int,
-        "page": int,
-        "page_size": int
-        }
-  */
+    /**
+     * 列出模板
+     *
+     * @param string $audit_status 审核状态：passed (通过), rejected (未通过), reviewing (审核中)
+     * @param int $page 页码。默认为 1
+     * @param int $page_size 分页大小。默认为 20
+     * @return array
+     * @link https://developer.qiniu.com/sms/api/5894/sms-api-query-template
+     */
     public function queryTemplate($audit_status = null, $page = 1, $page_size = 20)
     {
 
         $url = sprintf(
             "%s?audit_status=%s&page=%s&page_size=%s",
-            $this->baseURL.'template',
+            $this->baseURL . 'template',
             $audit_status,
             $page,
             $page_size
         );
-        $ret  = $this->get($url);
-        return $ret;
+        return $this->get($url);
     }
 
-    /*
-    * 编辑模板
-    * id :模板id
-    * name  : 模板名称 string 类型 ，必填
-    * template:  模板内容 string  类型，必填
-    * description:  申请理由简述 string  类型，必填
-    * signature_id:  已经审核通过的签名 string  类型，必填
-    * @retrun : 请求成功 HTTP 状态码为 200
-    */
+    /**
+     * 查询单个模版
+     *
+     * @param string $template_id 模版ID
+     * @return array
+     * @link https://developer.qiniu.com/sms/api/5969/query-a-single-template
+     */
+    public function querySingleTemplate($template_id)
+    {
+
+        $url = sprintf(
+            "%s/%s",
+            $this->baseURL . 'template',
+            $template_id
+        );
+        return $this->get($url);
+    }
+
+    /**
+     * 编辑模板
+     *
+     * @param string $id 模板 ID
+     * @param string $name 模板名称
+     * @param string $template 模板内容
+     * @param string $description 申请理由简述
+     * @param string $signature_id 已经审核通过的签名 ID
+     * @return array
+     * @link https://developer.qiniu.com/sms/api/5895/sms-api-edit-template
+     */
     public function updateTemplate(
         $id,
         $name,
@@ -211,50 +206,95 @@ class Sms
         $description,
         $signature_id
     ) {
+        $params = array();
         $params['name'] = $name;
         $params['template'] = $template;
         $params['description'] = $description;
         $params['signature_id'] = $signature_id;
         $body = json_encode($params);
-        $url =$this->baseURL.'template/'.$id;
-        $ret = $this->PUT($url, $body);
-        return $ret;
-    }
-
-    /*
-    * 删除模板
-    * id :模板id string 类型，必填，
-    * @retrun : 请求成功 HTTP 状态码为 200
-    */
-    public function deleteTemplate($id)
-    {
         $url = $this->baseURL . 'template/' . $id;
-        list(, $err)  = $this->delete($url);
-        return $err;
+        return $this->PUT($url, $body);
     }
 
-    /*
-    * 发送短信
-    * 编辑模板
-    * template_id :模板id string类型，必填
-    * mobiles   : 手机号数组 []string 类型 ，必填
-    * parameters:  模板内容 map[string]string     类型，可选
-    * @return: 类型json {
-        "job_id": string
-        }
-    */
+    /**
+     * 删除模板
+     *
+     * @param string $template_id 模板 ID
+     * @return array
+     * @link https://developer.qiniu.com/sms/api/5896/sms-api-delete-template
+     */
+    public function deleteTemplate($template_id)
+    {
+        $url = $this->baseURL . 'template/' . $template_id;
+        return $this->delete($url);
+    }
+
+    /**
+     * 发送短信
+     *
+     * @param string $template_id 模板 ID
+     * @param array $mobiles 手机号
+     * @param array $parameters 自定义模板变量，变量设置在创建模板时，参数template指定
+     * @return array
+     * @link https://developer.qiniu.com/sms/api/5897/sms-api-send-message
+     */
     public function sendMessage($template_id, $mobiles, $parameters = null)
     {
+        $params = array();
         $params['template_id'] = $template_id;
         $params['mobiles'] = $mobiles;
         if (!empty($parameters)) {
             $params['parameters'] = $parameters;
         }
         $body = json_encode($params);
-        $url =$this->baseURL.'message';
-        $ret = $this->post($url, $body);
-        return $ret;
+        $url = $this->baseURL . 'message';
+        return $this->post($url, $body);
     }
+
+    /**
+     * 查询发送记录
+     *
+     * @param string $job_id 发送任务返回的 id
+     * @param string $message_id 单条短信发送接口返回的 id
+     * @param string $mobile 接收短信的手机号码
+     * @param string $status sending: 发送中，success: 发送成功，failed: 发送失败，waiting: 等待发送
+     * @param string $template_id 模版 id
+     * @param string $type marketing:营销，notification:通知，verification:验证码，voice:语音
+     * @param string $start 开始时间，timestamp，例如: 1563280448
+     * @param int $end 结束时间，timestamp，例如: 1563280471
+     * @param int $page 页码，默认为 1
+     * @param int $page_size 每页返回的数据条数，默认20，最大200
+     * @return array
+     * @link https://developer.qiniu.com/sms/api/5852/query-send-sms
+     */
+    public function querySendSms(
+        $job_id = null,
+        $message_id = null,
+        $mobile = null,
+        $status = null,
+        $template_id = null,
+        $type = null,
+        $start = null,
+        $end = null,
+        $page = 1,
+        $page_size = 20
+    ) {
+        $query = array();
+        \Qiniu\setWithoutEmpty($query, 'job_id', $job_id);
+        \Qiniu\setWithoutEmpty($query, 'message_id', $message_id);
+        \Qiniu\setWithoutEmpty($query, 'mobile', $mobile);
+        \Qiniu\setWithoutEmpty($query, 'status', $status);
+        \Qiniu\setWithoutEmpty($query, 'template_id', $template_id);
+        \Qiniu\setWithoutEmpty($query, 'type', $type);
+        \Qiniu\setWithoutEmpty($query, 'start', $start);
+        \Qiniu\setWithoutEmpty($query, 'end', $end);
+        \Qiniu\setWithoutEmpty($query, 'page', $page);
+        \Qiniu\setWithoutEmpty($query, 'page_size', $page_size);
+
+        $url = $this->baseURL . 'messages?' . http_build_query($query);
+        return $this->get($url);
+    }
+
 
     public function imgToBase64($img_file)
     {
@@ -265,9 +305,10 @@ class Sms
             $fp = fopen($app_img_file, "r"); // 图片是否可读权限
             if ($fp) {
                 $filesize = filesize($app_img_file);
-                if ($filesize > 5*1024*1024) {
+                if ($filesize > 5 * 1024 * 1024) {
                     die("pic size < 5M !");
                 }
+                $img_type = null;
                 $content = fread($fp, $filesize);
                 $file_content = chunk_split(base64_encode($content)); // base64编码
                 switch ($img_info[2]) {           //判读图片类型
@@ -290,11 +331,11 @@ class Sms
         return $img_base64;
     }
 
-    private function get($url, $cType = null)
+    private function get($url, $contentType = 'application/x-www-form-urlencoded')
     {
-        $rtcToken = $this->auth->authorizationV2($url, "GET", null, $cType);
-        $rtcToken['Content-Type'] = $cType;
-        $ret = Client::get($url, $rtcToken);
+        $headers = $this->auth->authorizationV2($url, "GET", null, $contentType);
+        $headers['Content-Type'] = $contentType;
+        $ret = Client::get($url, $headers);
         if (!$ret->ok()) {
             return array(null, new Error($url, $ret));
         }
@@ -303,9 +344,9 @@ class Sms
 
     private function delete($url, $contentType = 'application/json')
     {
-        $rtcToken = $this->auth->authorizationV2($url, "DELETE", null, $contentType);
-        $rtcToken['Content-Type'] = $contentType;
-        $ret = Client::delete($url, $rtcToken);
+        $headers = $this->auth->authorizationV2($url, "DELETE", null, $contentType);
+        $headers['Content-Type'] = $contentType;
+        $ret = Client::delete($url, $headers);
         if (!$ret->ok()) {
             return array(null, new Error($url, $ret));
         }
@@ -314,20 +355,22 @@ class Sms
 
     private function post($url, $body, $contentType = 'application/json')
     {
-        $rtcToken = $this->auth->authorizationV2($url, "POST", $body, $contentType);
-        $rtcToken['Content-Type'] = $contentType;
-        $ret = Client::post($url, $body, $rtcToken);
+        $headers = $this->auth->authorizationV2($url, "POST", $body, $contentType);
+
+        $headers['Content-Type'] = $contentType;
+        $ret = Client::post($url, $body, $headers);
         if (!$ret->ok()) {
             return array(null, new Error($url, $ret));
         }
         $r = ($ret->body === null) ? array() : $ret->json();
         return array($r, null);
     }
+
     private function PUT($url, $body, $contentType = 'application/json')
     {
-        $rtcToken = $this->auth->authorizationV2($url, "PUT", $body, $contentType);
-        $rtcToken['Content-Type'] = $contentType;
-        $ret = Client::put($url, $body, $rtcToken);
+        $headers = $this->auth->authorizationV2($url, "PUT", $body, $contentType);
+        $headers['Content-Type'] = $contentType;
+        $ret = Client::put($url, $body, $headers);
         if (!$ret->ok()) {
             return array(null, new Error($url, $ret));
         }

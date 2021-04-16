@@ -17,6 +17,7 @@ use \Countable;
  * The FTP and SSL-FTP client for PHP.
  *
  * @method bool alloc(int $filesize, string &$result = null) Allocates space for a file to be uploaded
+ * @method bool append(string $remote_file, string $local_file, int $mode = FTP_BINARY) Append the contents of a file to another file on the FTP server
  * @method bool cdup() Changes to the parent directory
  * @method bool chdir(string $directory) Changes the current directory on a FTP server
  * @method int chmod(int $mode, string $filename) Set permissions on a file via FTP
@@ -33,7 +34,6 @@ use \Countable;
  * @method int nb_fput(string $remote_file, resource $handle, int $mode, int $startpos = 0) Stores a file from an open file to the FTP server (non-blocking)
  * @method int nb_get(string $local_file, string $remote_file, int $mode, int $resumepos = 0) Retrieves a file from the FTP server and writes it to a local file (non-blocking)
  * @method int nb_put(string $remote_file, string $local_file, int $mode, int $startpos = 0) Stores a file on the FTP server (non-blocking)
- * @method array nlist(string $remote_dir) Returns a list of file names in the given directory; remote_dir parameter may also include arguments
  * @method bool pasv(bool $pasv) Turns passive mode on or off
  * @method bool put(string $remote_file, string $local_file, int $mode, int $startpos = 0) Uploads a file to the FTP server
  * @method string pwd() Returns the current directory name
@@ -356,7 +356,7 @@ class FtpClient implements Countable
      *
      * @param  string $directory The directory
      * @param  bool   $recursive
-     * @return array
+     * @return bool
      */
     public function mkdir($directory, $recursive = false)
     {
@@ -453,8 +453,19 @@ class FtpClient implements Countable
 
         try {
             if (@$this->ftp->delete($path)
-            or ($this->isDir($path) and $this->rmdir($path, $recursive))) {
+            or ($this->isDir($path) 
+            and $this->rmdir($path, $recursive))) {
                 return true;
+            } else {
+                // in special cases the delete can fail (for example, at Symfony's "r+e.gex[c]a(r)s" directory)
+                $newPath = preg_replace('/[^A-Za-z0-9\/]/', '', $path);
+                if ($this->rename($path, $newPath)) {
+                    if (@$this->ftp->delete($newPath) 
+                    or ($this->isDir($newPath) 
+                    and $this->rmdir($newPath, $recursive))) {
+                        return true;
+                    }
+                }
             }
 
             return false;
@@ -569,7 +580,7 @@ class FtpClient implements Countable
     {
         $handle = fopen('php://temp', 'r+');
 
-        if ($this->fget($handle, $remote_file, $mode, $resumepos)) {
+        if ($this->ftp->fget($handle, $remote_file, $mode, $resumepos)) {
             rewind($handle);
             return stream_get_contents($handle);
         }
@@ -641,7 +652,6 @@ class FtpClient implements Countable
 
                 // do the following if it is a directory
                 if (is_dir($source_directory.'/'.$file)) {
-
                     if (!$this->isDir($target_directory.'/'.$file)) {
 
                         // create directories that do not yet exist
@@ -744,7 +754,7 @@ class FtpClient implements Countable
                 $chunks = preg_split("/\s+/", $item);
 
                 // if not "name"
-                if (empty($chunks[8]) || $chunks[8] == '.' || $chunks[8] == '..') {
+                if (!isset($chunks[8]) || strlen($chunks[8]) === 0 || $chunks[8] == '.' || $chunks[8] == '..') {
                     continue;
                 }
 
@@ -789,7 +799,7 @@ class FtpClient implements Countable
             $chunks = preg_split("/\s+/", $item);
 
             // if not "name"
-            if (empty($chunks[8]) || $chunks[8] == '.' || $chunks[8] == '..') {
+            if (!isset($chunks[8]) || strlen($chunks[8]) === 0 || $chunks[8] == '.' || $chunks[8] == '..') {
                 continue;
             }
 

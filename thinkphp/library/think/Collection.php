@@ -400,7 +400,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
      */
     public function column($columnKey, $indexKey = null)
     {
-        return array_column($this->items, $columnKey, $indexKey);
+        return array_column($this->toArray(), $columnKey, $indexKey);
     }
 
     /**

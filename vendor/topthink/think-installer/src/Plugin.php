@@ -3,7 +3,6 @@
 namespace think\composer;
 
 use Composer\Composer;
-use Composer\Installer;
 use Composer\IO\IOInterface;
 use Composer\Plugin\PluginInterface;
 
@@ -21,6 +20,15 @@ class Plugin implements PluginInterface
 
         //扩展
         $manager->addInstaller(new ThinkExtend($io, $composer));
+    }
+
+    public function deactivate(Composer $composer, IOInterface $io)
+    {
+
+    }
+
+    public function uninstall(Composer $composer, IOInterface $io)
+    {
 
     }
 }

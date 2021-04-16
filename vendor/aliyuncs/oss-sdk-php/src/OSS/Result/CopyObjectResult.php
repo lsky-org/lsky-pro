@@ -25,6 +25,6 @@ class CopyObjectResult extends Result
             $result[] = $xml->ETag;
         }
 
-         return $result;
+        return array_merge($result, $this->rawResponse->header);
     }
 }

@@ -1,6 +1,9 @@
 <?php
 
 namespace OSS\Model;
+
+use OSS\Core\OssException;
+
 /**
  * Class GetLiveChannelHistory
  * @package OSS\Model

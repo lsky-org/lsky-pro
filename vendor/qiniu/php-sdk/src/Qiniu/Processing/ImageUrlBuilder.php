@@ -1,4 +1,5 @@
 <?php
+
 namespace Qiniu\Processing;
 
 use Qiniu;
@@ -29,20 +30,29 @@ final class ImageUrlBuilder
      *
      * @var array
      */
-    protected $gravityArr = array('NorthWest', 'North', 'NorthEast',
-        'West', 'Center', 'East', 'SouthWest', 'South', 'SouthEast');
+    protected $gravityArr = array(
+        'NorthWest',
+        'North',
+        'NorthEast',
+        'West',
+        'Center',
+        'East',
+        'SouthWest',
+        'South',
+        'SouthEast'
+    );
 
     /**
      * 缩略图链接拼接
      *
-     * @param  string $url 图片链接
-     * @param  int $mode 缩略模式
-     * @param  int $width 宽度
-     * @param  int $height 长度
-     * @param  string $format 输出类型
-     * @param  int $quality 图片质量
-     * @param  int $interlace 是否支持渐进显示
-     * @param  int $ignoreError 忽略结果
+     * @param string $url 图片链接
+     * @param int $mode 缩略模式
+     * @param int $width 宽度
+     * @param int $height 长度
+     * @param string $format 输出类型
+     * @param int $quality 图片质量
+     * @param int $interlace 是否支持渐进显示
+     * @param int $ignoreError 忽略结果
      * @return string
      * @link http://developer.qiniu.com/code/v6/api/kodo-api/image/imageview2.html
      * @author Sherlock Ren <sherlock_ren@icloud.com>
@@ -105,15 +115,15 @@ final class ImageUrlBuilder
     /**
      * 图片水印
      *
-     * @param  string $url 图片链接
-     * @param  string $image 水印图片链接
-     * @param  numeric $dissolve 透明度
-     * @param  string $gravity 水印位置
-     * @param  numeric $dx 横轴边距
-     * @param  numeric $dy 纵轴边距
-     * @param  numeric $watermarkScale 自适应原图的短边比例
-     * @link   http://developer.qiniu.com/code/v6/api/kodo-api/image/watermark.html
+     * @param string $url 图片链接
+     * @param string $image 水印图片链接
+     * @param int $dissolve 透明度
+     * @param string $gravity 水印位置
+     * @param int $dx 横轴边距
+     * @param int $dy 纵轴边距
+     * @param int $watermarkScale 自适应原图的短边比例
      * @return string
+     * @link   http://developer.qiniu.com/code/v6/api/kodo-api/image/watermark.html
      * @author Sherlock Ren <sherlock_ren@icloud.com>
      */
     public function waterImg(
@@ -174,17 +184,17 @@ final class ImageUrlBuilder
     /**
      * 文字水印
      *
-     * @param  string $url 图片链接
-     * @param  string $text 文字
-     * @param  string $font 文字字体
-     * @param  string $fontSize 文字字号
-     * @param  string $fontColor 文字颜色
-     * @param  numeric $dissolve 透明度
-     * @param  string $gravity 水印位置
-     * @param  numeric $dx 横轴边距
-     * @param  numeric $dy 纵轴边距
-     * @link   http://developer.qiniu.com/code/v6/api/kodo-api/image/watermark.html#text-watermark
+     * @param string $url 图片链接
+     * @param string $text 文字
+     * @param string $font 文字字体
+     * @param string $fontSize 文字字号
+     * @param string $fontColor 文字颜色
+     * @param int $dissolve 透明度
+     * @param string $gravity 水印位置
+     * @param int $dx 横轴边距
+     * @param int $dy 纵轴边距
      * @return string
+     * @link   http://developer.qiniu.com/code/v6/api/kodo-api/image/watermark.html#text-watermark
      * @author Sherlock Ren <sherlock_ren@icloud.com>
      */
     public function waterText(
@@ -252,7 +262,7 @@ final class ImageUrlBuilder
     /**
      * 效验url合法性
      *
-     * @param  string $url url链接
+     * @param string $url url链接
      * @return string
      * @author Sherlock Ren <sherlock_ren@icloud.com>
      */
@@ -261,15 +271,15 @@ final class ImageUrlBuilder
         $urlArr = parse_url($url);
 
         return $urlArr['scheme']
-        && in_array($urlArr['scheme'], array('http', 'https'))
-        && $urlArr['host']
-        && $urlArr['path'];
+            && in_array($urlArr['scheme'], array('http', 'https'))
+            && $urlArr['host']
+            && $urlArr['path'];
     }
 
     /**
      * 检测是否有query
      *
-     * @param  string $url url链接
+     * @param string $url url链接
      * @return string
      * @author Sherlock Ren <sherlock_ren@icloud.com>
      */

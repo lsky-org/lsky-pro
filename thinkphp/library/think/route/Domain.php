@@ -13,6 +13,7 @@ namespace think\route;
 
 use think\Container;
 use think\Loader;
+use think\Request;
 use think\Route;
 use think\route\dispatch\Callback as CallbackDispatch;
 use think\route\dispatch\Controller as ControllerDispatch;

@@ -27,7 +27,7 @@ use think\Facade;
  * @method void import(array $rules, string $type = '*') static 导入配置文件的路由规则
  * @method \think\route\RuleItem rule(string $rule, mixed $route, string $method = '*', array $option = [], array $pattern = []) static 注册路由规则
  * @method void rules(array $rules, string $method = '*', array $option = [], array $pattern = []) static 批量注册路由规则
- * @method \think\route\RuleGroup group(string|array $name, mixed $route, string $method = '*', array $option = [], array $pattern = []) static 注册路由分组
+ * @method \think\route\RuleGroup group(string|array $name, array|\Closure $route, array $method = '*', array $option = [], array $pattern = []) static 注册路由分组
  * @method \think\route\RuleItem any(string $rule, mixed $route, array $option = [], array $pattern = []) static 注册路由
  * @method \think\route\RuleItem get(string $rule, mixed $route, array $option = [], array $pattern = []) static 注册路由
  * @method \think\route\RuleItem post(string $rule, mixed $route, array $option = [], array $pattern = []) static 注册路由
