@@ -136,7 +136,7 @@ class Images extends Base
                 $data = null;
                 $ip = $this->request->post('ip');
                 $client = new Client();
-                $response = $client->get('http://ip.taobao.com/service/getIpInfo.php?ip=' . $ip);
+                $response = $client->get("https://ip.taobao.com/outGetIpInfo?ip={$ip}&accessKey=alibaba-inc");
                 if ($response->getStatusCode() == 200) {
                     $data = json_decode($response->getBody()->getContents(), true);
                     if (isset($data['code']) && $data['code'] == 0) {
@@ -146,7 +146,7 @@ class Images extends Base
             } catch (Exception $e) {
                 $this->error('获取失败');
             } catch (RequestException $e) {
-                $this->error('淘宝接口发生异常，状态码：' . $response->getStatusCode());
+                $this->error('接口发生异常，' . $e->getMessage());
             }
             $this->success('获取成功', null, $data);
         }
