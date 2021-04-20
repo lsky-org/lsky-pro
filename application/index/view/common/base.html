@@ -59,6 +59,12 @@
       <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-blue">&#xe88a;</i>
       <div class="mdui-list-item-content">首页</div>
     </a>
+    {if $config.open_gallery}
+    <a class="mdui-list-item mdui-ripple {if $uri eq 'index/gallery'}mdui-list-item-active{/if}" href="{:url('index/gallery')}">
+      <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-teal">&#xe8aa;</i>
+      <div class="mdui-list-item-content">画廊</div>
+    </a>
+    {/if}
     {if $config.open_api}
     <a class="mdui-list-item mdui-ripple {if $uri eq 'index/api'}mdui-list-item-active{/if}" href="{:url('index/api')}">
       <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-blue">&#xe157;</i>

@@ -10,6 +10,7 @@ namespace app\index\controller;
 
 use app\common\model\Images;
 use app\common\model\Users;
+use think\Collection;
 use think\Exception;
 
 class Index extends Base
@@ -36,8 +37,32 @@ class Index extends Base
         return $this->fetch();
     }
 
+    public function gallery()
+    {
+        if (!$this->getConfig('open_gallery')) {
+            abort(404, "画廊功能已关闭");
+        }
+        $images = [];
+        Images::order('id', 'desc')
+            ->paginate($this->request->limit ? $this->request->limit : 30)
+            ->each(function (Images $item) use (&$images) {
+            $images[] = [
+               'url' => $item->url,
+               'date' => $item->date,
+            ];
+        });
+        if ($this->request->isPost()) {
+            $this->success('success', null, $images);
+        }
+        $this->assign('images', $images);
+        return $this->fetch();
+    }
+
     public function api()
     {
+        if (!$this->getConfig('open_api')) {
+            abort(404, "API 接口已关闭");
+        }
         $this->assign('domain', $this->request->domain());
         return $this->fetch();
     }

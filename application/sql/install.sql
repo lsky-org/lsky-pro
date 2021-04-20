@@ -132,6 +132,7 @@ INSERT INTO `lsky_config` (`id`, `key`, `type`, `input_type`, `name`, `title`, `
 (NULL, 'mail', 'text', 'email', 'mail_form_email', '发件人邮箱', NULL, '', ''),
 
 (NULL, 'other', 'bool', 'checkbox', 'soft_delete', '软删除', '删除图片时不删除源文件，不建议开启', '0', ''),
+(NULL, 'other', 'bool', 'checkbox', 'open_gallery', '开启画廊', '开启画廊功能，游客上传的图片将会出现在画廊中', '0', ''),
 (NULL, 'other', 'bool', 'checkbox', 'open_api', '开启API', '是否开放接口', '0', ''),
 (NULL, 'other', 'textarea', 'textarea', 'ban_ip', '封禁IP', '封禁IP, 多个使用逗号隔开', '', ''),
 
