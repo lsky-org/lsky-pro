@@ -44,6 +44,7 @@ class Index extends Base
         }
         $images = [];
         Images::order('id', 'desc')
+            ->where('user_id', 0)
             ->paginate($this->request->limit ? $this->request->limit : 30)
             ->each(function (Images $item) use (&$images) {
             $images[] = [
