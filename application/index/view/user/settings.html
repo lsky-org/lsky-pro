@@ -16,6 +16,11 @@
           <input class="mdui-textfield-input" type="email" value="{$user.email}" disabled/>
         </div>
         <div class="mdui-textfield">
+          <label class="mdui-textfield-label">Token</label>
+          <input class="mdui-textfield-input" type="text" value="{$user.token}" disabled/>
+          <div class="mdui-textfield-helper">注意：Token具有管理图片权限，请不要随意泄漏。</div>
+        </div>
+        <div class="mdui-textfield">
           <label class="mdui-textfield-label">昵称</label>
           <input class="mdui-textfield-input" type="text" name="nickname" value="{$user.nickname}" maxlength="15" placeholder="昵称"/>
         </div>
