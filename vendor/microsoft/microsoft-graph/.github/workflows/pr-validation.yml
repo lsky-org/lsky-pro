@@ -1,0 +1,28 @@
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+
+name: "validate pull request"
+
+on:
+  push:
+    branches: [ main, dev ]
+  pull_request:
+    branches: [ main, dev ]
+
+jobs:
+  validate-pull-request:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: composer validate
+      shell: bash
+      run: |
+        composer validate
+    - name: composer install
+      shell: bash
+      run: |
+        composer install
+    - name: run tests
+      shell: bash
+      run : |
+        vendor/bin/phpunit --exclude-group functional

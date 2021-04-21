@@ -19,7 +19,7 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => '1a4a317fafac750db4742672a1501a2476d219c9',
+    'reference' => '5231f8d54187df93aacf8508c61b72d9d97ac76d',
     'name' => 'wisp-x/lsky-pro',
   ),
   'versions' => 
@@ -372,7 +372,7 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => '1a4a317fafac750db4742672a1501a2476d219c9',
+      'reference' => '5231f8d54187df93aacf8508c61b72d9d97ac76d',
     ),
   ),
 );

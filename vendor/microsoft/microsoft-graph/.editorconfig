@@ -1,0 +1,27 @@
+# top-most EditorConfig file
+root = true
+
+# All PHP files MUST use the Unix LF (linefeed) line ending.
+# Code MUST use an indent of 4 spaces, and MUST NOT use tabs for indenting.
+# All PHP files MUST end with a single blank line.
+# There MUST NOT be trailing whitespace at the end of non-blank lines.
+[*]
+charset = utf-8
+end_of_line = crlf
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+# PHP-Files, Composer.json, MD-Files
+[{*.php,composer.json,*.md}]
+indent_style = space
+indent_size = 4
+
+# HTML-Files LESS-Files SASS-Files CSS-Files JS-Files JSON-Files
+[{*.html,*.less,*.sass,*.css,*.js,*.json}]
+indent_style = tab
+indent_size = 4
+
+# Gitlab-CI, Travis-CI
+[*.yml]
+indent_style = space
+indent_size = 2
