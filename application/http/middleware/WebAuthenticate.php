@@ -21,6 +21,7 @@ class WebAuthenticate
         'auth/register',
         'auth/forgot',
         'index/api',
+        'index/gallery'
     ];
 
     public function handle(Request $request, \Closure $next)
