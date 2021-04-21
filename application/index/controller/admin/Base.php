@@ -26,7 +26,7 @@ class Base extends AdminBase
 
     protected function getConfigs($keys)
     {
-        $data = Config::all();
+        $data = Config::order('type', 'asc')->all();
         $configs = [];
         foreach ($data as &$value) {
             if (in_array($value->key, $keys)) {
