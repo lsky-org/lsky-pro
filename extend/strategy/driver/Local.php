@@ -61,7 +61,7 @@ class Local implements Driver
     {
         $path = $this->rootPath . dirname($pathname) . DIRECTORY_SEPARATOR;
         if (true === $this->checkPath($path)) {
-            if (move_uploaded_file($file, $pathname)) {
+            if (rename($file, $pathname)) {
                 return true;
             }
         }

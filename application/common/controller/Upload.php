@@ -15,6 +15,7 @@ use GuzzleHttp\Client;
 use think\Controller;
 use think\Exception;
 use think\facade\Config;
+use think\Image;
 
 class Upload extends Controller
 {
@@ -90,6 +91,8 @@ class Upload extends Controller
             }
         }
 
+        $temp = $image->getPathname();
+
         // 当前储存策略
         $currentStrategy = strtolower($this->group->strategy);
         $pathname = $this->makePathname($image->getInfo('name'));
@@ -103,6 +106,45 @@ class Upload extends Controller
         }
         $url = make_url($domain, $pathname);
 
+        // 自动水印
+        if (Config::get('system.watermark') && $watermarkConfig = config("watermark.{$currentStrategy}")) {
+            if ($watermarkConfig['enable']) {
+                $watermarkImage = app()->getRuntimePath() . 'temp/' . md5($sha1.$md5);
+                $locates = [
+                    1 => Image::WATER_NORTHWEST, 2 => Image::WATER_NORTH, 3 => Image::WATER_NORTHEAST,
+                    4 => Image::WATER_WEST, 5 => Image::WATER_CENTER, 6 => Image::WATER_EAST,
+                    7 => Image::WATER_SOUTHWEST, 8 => Image::WATER_SOUTH, 9 => Image::WATER_SOUTHEAST,
+                ];
+                switch ($watermarkConfig['type']) {
+                    case 1:
+                        $watermark = Image::open($image)->text(
+                            $watermarkConfig['text'],
+                            $watermarkConfig['font'],
+                            $watermarkConfig['size'],
+                            $watermarkConfig['color'],
+                            $locates[$watermarkConfig['locate']],
+                            $watermarkConfig['offset'],
+                            $watermarkConfig['angle']
+                        );
+                        break;
+                    case 2:
+                        $watermark = Image::open($image)->water(
+                            $watermarkConfig['source'],
+                            $watermarkConfig['locate'],
+                            $watermarkConfig['alpha']
+                        );
+                        break;
+                    default:
+                        throw new Exception('自动水印功能配置异常');
+                }
+                $watermark->save($watermarkImage);
+                $temp = $watermarkImage;
+                $sha1 = sha1_file($temp);
+                $md5 = md5_file($temp);
+                $size = filesize($temp);
+            }
+        }
+
         // 检测是否存在该图片，有则直接返回
         if ($oldImage = Images::where('md5', $md5)->where('sha1', $sha1)->where('strategy', $currentStrategy)->find()) {
             $pathname = $oldImage->pathname;
@@ -110,12 +152,14 @@ class Upload extends Controller
             goto exist;
         }
 
-        if (!$this->strategy->create($pathname, $image->getPathname())) {
+        if (!$this->strategy->create($pathname, $temp)) {
             if (Config::get('app.app_debug')) {
                 throw new Exception($this->strategy->getError());
             }
             throw new Exception('上传失败，请检查策略配置是否正确！');
         }
+
+        isset($watermarkImage) && @unlink($watermarkImage);
 
         exist:
 

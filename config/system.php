@@ -12,5 +12,7 @@ return [
     // 违规图片是否直接拦截
     'intercept_salacity' => env('system.intercept_salacity', false),
     // 图片链接额外参数(例: ?test=123)
-    'url_query' => env('system.url_query', '')
+    'url_query' => env('system.url_query', ''),
+    // 是否开启策略自动水印功能
+    'watermark' => env('system.watermark')
 ];
