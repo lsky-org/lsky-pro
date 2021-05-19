@@ -167,7 +167,7 @@ INSERT INTO `lsky_config` (`id`, `key`, `type`, `input_type`, `name`, `title`, `
 
 (NULL, 'audit', 'bool', 'checkbox', 'open_audit', '开启图片鉴黄', '接口申请地址：<a href="https://www.moderatecontent.com" target="_blank">https://www.moderatecontent.com</a>', '0', ''),
 (NULL, 'audit', 'text', 'text', 'audit_key', 'Key', NULL, '', ''),
-(NULL, 'audit', 'select', 'text', 'audit_index', '内容评级', '1=所有人，2=少年，3=成人', '3', '{\"1\": \"所有人\", \"2\": \"少年\", \"3\": \"成人\"}'),
+(NULL, 'audit', 'select', 'text', 'audit_index', '内容评级', '1=非常严格，2=严格，3=一般', '3', '{\"1\": \"非常严格\", \"2\": \"严格\", \"3\": \"一般\"}'),
 
 (NULL, '', 'text', 'text', 'system_version', '系统版本', NULL, '1.6.3', '');
 
