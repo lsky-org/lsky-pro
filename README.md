@@ -67,6 +67,12 @@
 4. 访问首页，未安装自动跳转至安装页面，根据页面提示安装即可。
 5. 安装完成以后请设置 runtime 目录 0755 权限，如果你使用本地存储，public 目录也需要设置为 0755 权限
 
+### ☁️ 一键部署
+
+兰空图床支持一键部署至 [腾讯云云开发](https://docs.cloudbase.net/) 详细配置可参考[文档](https://github.com/Handsomedoggy/lsky-pro/blob/master/cloudbase/tcb_doc.md)
+
+[![](https://main.qcloudimg.com/raw/67f5a389f1ac6f3b4d04c7256438e44f.svg)](https://console.cloud.tencent.com/tcb/env/index?action=CreateAndDeployCloudBaseProject&appUrl=https%3A%2F%2Fgithub.com%2FHandsomedoggy%2Flsky-pro&branch=master)
+
 ### 📧 联系我
 - Email: i@wispx.cn
 
