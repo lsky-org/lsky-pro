@@ -75,6 +75,16 @@ class Upload extends Controller
             throw new Exception('管理员关闭了游客上传！');
         }
 
+        $sameIpDayMaxUploadCount = $this->getConfig('same_ip_day_max_upload');
+        if ($sameIpDayMaxUploadCount > 0) {
+            $startTimestamp = strtotime(date('Y-m-d'));
+            $ipUploadCount = Images::where('ip', '=', request()->ip())->where('create_time', '>=', $startTimestamp)
+                ->count();
+            if ($ipUploadCount >= $sameIpDayMaxUploadCount) {
+                throw new Exception('今日图片上传数量已达到上限');
+            }
+        }
+
         $image = $this->getImage();
         $size = $image->getSize();
         $mime = $image->getMime();
@@ -109,7 +119,7 @@ class Upload extends Controller
         // 自动水印
         if (Config::get('system.watermark') && $watermarkConfig = config("watermark.{$currentStrategy}")) {
             if ($watermarkConfig['enable']) {
-                $watermarkImage = app()->getRuntimePath() . 'temp/' . md5($sha1.$md5);
+                $watermarkImage = app()->getRuntimePath() . 'temp/' . md5($sha1 . $md5);
                 $locates = [
                     1 => Image::WATER_NORTHWEST, 2 => Image::WATER_NORTH, 3 => Image::WATER_NORTHEAST,
                     4 => Image::WATER_WEST, 5 => Image::WATER_CENTER, 6 => Image::WATER_EAST,
@@ -289,10 +299,10 @@ class Upload extends Controller
         }
 
         $file = trim(str_replace(
-            array_column($naming['file'], 'name'),
-            array_column($naming['file'], 'value'),
-            $fileRule
-        ), '/') . '.' . get_file_ext($name);
+                array_column($naming['file'], 'name'),
+                array_column($naming['file'], 'value'),
+                $fileRule
+            ), '/') . '.' . get_file_ext($name);
 
         return $path ? ($path . '/' . $file) : trim($file, '/');
     }
