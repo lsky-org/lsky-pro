@@ -119,6 +119,7 @@ INSERT INTO `lsky_config` (`id`, `key`, `type`, `input_type`, `name`, `title`, `
 (NULL, 'upload', 'bool', 'checkbox', 'allowed_tourist_upload', '允许游客上传', '是否允许游客上传', '1', ''),
 (NULL, 'upload', 'text', 'text', 'upload_max_size', '最大上传大小', '单位：b，默认5242880：5M', '5242880', ''),
 (NULL, 'upload', 'text', 'number', 'upload_single_num', '单次同时上传数量', NULL, '10', ''),
+(NULL, 'upload', 'text', 'number', 'same_ip_day_max_upload', '相同ip一天内最大上传限制', '为0则不限制', '0', ''),
 (NULL, 'upload', 'text', 'text', 'upload_allowed_exts', '允许上传的文件后缀', '逗号隔开', 'jpg,jpeg,gif,png,ico', ''),
 (NULL, 'upload', 'text', 'text', 'path_naming_rule', '文件路径命名规则', '<a href="javascript:void(0)" mdui-dialog="{target: \'#path-var\'}">路径命名变量对照表</a>', '{Y}/{m}/{d}', ''),
 (NULL, 'upload', 'text', 'text', 'file_naming_rule', '文件命名规则', '<a href="javascript:void(0)" mdui-dialog="{target: \'#file-var\'}">文件命名变量对照表</a>', '{uniqid}', ''),
