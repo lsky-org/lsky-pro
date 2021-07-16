@@ -117,6 +117,7 @@ INSERT INTO `lsky_config` (`id`, `key`, `type`, `input_type`, `name`, `title`, `
 (NULL, 'basics', 'textarea', 'textarea', 'statistics_code', '统计代码', NULL, '<script>\r\n// js统计代码</script>', ''),
 (NULL, 'basics', 'text', 'text', 'icp_number', '备案号', NULL, '', ''),
 (NULL, 'upload', 'bool', 'checkbox', 'allowed_tourist_upload', '允许游客上传', '是否允许游客上传', '1', ''),
+(NULL, 'upload', 'bool', 'checkbox', 'exist_same_img_return', '存在相同MD5值的图片直接返回', '若用户上传的图片md5值在记录中已存在，则直接返回已存在的图片信息', '0', ''),
 (NULL, 'upload', 'text', 'text', 'upload_max_size', '最大上传大小', '单位：b，默认5242880：5M', '5242880', ''),
 (NULL, 'upload', 'text', 'number', 'upload_single_num', '单次同时上传数量', NULL, '10', ''),
 (NULL, 'upload', 'text', 'text', 'upload_allowed_exts', '允许上传的文件后缀', '逗号隔开', 'jpg,jpeg,gif,png,ico', ''),

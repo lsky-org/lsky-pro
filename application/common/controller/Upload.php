@@ -76,10 +76,18 @@ class Upload extends Controller
         }
 
         $image = $this->getImage();
+        $md5 = $image->hash('md5');
+
+        if ($this->getConfig('exist_same_img_return')) {
+            $existMd5Image = Images::where('md5', '=', $md5)->find();
+            if ($existMd5Image) {
+                return (array)$existMd5Image;
+            }
+        }
+
         $size = $image->getSize();
         $mime = $image->getMime();
         $sha1 = $image->hash('sha1');
-        $md5 = $image->hash('md5');
 
         if ($this->user) {
             if (($this->user->use_quota + $size) > $this->user->quota) {
@@ -109,7 +117,7 @@ class Upload extends Controller
         // 自动水印
         if (Config::get('system.watermark') && $watermarkConfig = config("watermark.{$currentStrategy}")) {
             if ($watermarkConfig['enable']) {
-                $watermarkImage = app()->getRuntimePath() . 'temp/' . md5($sha1.$md5);
+                $watermarkImage = app()->getRuntimePath() . 'temp/' . md5($sha1 . $md5);
                 $locates = [
                     1 => Image::WATER_NORTHWEST, 2 => Image::WATER_NORTH, 3 => Image::WATER_NORTHEAST,
                     4 => Image::WATER_WEST, 5 => Image::WATER_CENTER, 6 => Image::WATER_EAST,
@@ -289,10 +297,10 @@ class Upload extends Controller
         }
 
         $file = trim(str_replace(
-            array_column($naming['file'], 'name'),
-            array_column($naming['file'], 'value'),
-            $fileRule
-        ), '/') . '.' . get_file_ext($name);
+                array_column($naming['file'], 'name'),
+                array_column($naming['file'], 'value'),
+                $fileRule
+            ), '/') . '.' . get_file_ext($name);
 
         return $path ? ($path . '/' . $file) : trim($file, '/');
     }

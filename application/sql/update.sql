@@ -110,3 +110,8 @@ UPDATE `lsky_config` SET `value` = '1.6.1' WHERE `lsky_config`.`name` = 'system_
 UPDATE `lsky_config` SET `value` = '1.6.3' WHERE `lsky_config`.`name` = 'system_version';
 INSERT IGNORE INTO `lsky_config` (`id`, `key`, `type`, `input_type`, `name`, `title`, `tip`, `value`, `extend`) VALUES
 (NULL, 'other', 'bool', 'checkbox', 'open_gallery', '开启画廊', '开启画廊功能，游客上传的图片将会出现在画廊中', '', '');
+
+-- v1.6.4
+UPDATE `lsky_config` SET `value` = '1.6.4' WHERE `lsky_config`.`name` = 'system_version';
+INSERT IGNORE INTO `lsky_config` (`id`, `key`, `type`, `input_type`, `name`, `title`, `tip`, `value`, `extend`) VALUES
+(NULL, 'upload', 'bool', 'checkbox', 'exist_same_img_return', '存在相同MD5值的图片直接返回', '若用户上传的图片md5值在记录中已存在，则直接返回已存在的图片信息', '0', ''),
