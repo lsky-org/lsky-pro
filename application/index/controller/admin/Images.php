@@ -33,7 +33,7 @@ class Images extends Base
         $this->assign('strategy_list', $this->strategyList);
     }
 
-    public function index($strategy = '', $user_id = '', $suspicious = 0, $keyword = '', $limit = 25)
+    public function index($strategy = '', $user_id = '', $suspicious = 0, $keyword = '', $limit = 30)
     {
         $model = new ImagesModel();
         $model = $model->where('suspicious', $suspicious);
@@ -48,6 +48,7 @@ class Images extends Base
         }
         $images = $model->order('id', 'desc')->paginate($limit, false, [
             'query' => [
+                'strategy' => $strategy,
                 'keyword' => $keyword
             ]
         ])->each(function ($item) {
