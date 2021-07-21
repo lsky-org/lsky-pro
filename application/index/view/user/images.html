@@ -402,6 +402,7 @@
     // 文件夹点击操作
     $('.folders-box').on('click', '.mdui-col', function (e) {
       var $that = $(e.target), $item = $that.closest('.item');
+      if ($item.length === 0) return false;
       $('.screen-box ul.breadcrumb li:last-child').removeClass('active');
       $('.screen-box ul.breadcrumb').append(
         '<li class="active">' +
