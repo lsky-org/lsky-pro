@@ -131,13 +131,13 @@ class OssClientSignatureTest extends TestOssClientBase
         $this->assertTrue(strpos($signedUrl1, 'Expires='.$expiration) !== false);
     }
 
-    public function tearDown()
+    protected function tearDown(): void
     {
         $this->ossClient->deleteObject($this->bucket, "a.file");
         parent::tearDown();
     }
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         /**

@@ -7,7 +7,7 @@ use OSS\Core\OssException;
 use OSS\Result\GetCorsResult;
 use OSS\Http\ResponseCore;
 
-class GetCorsResultTest extends \PHPUnit_Framework_TestCase
+class GetCorsResultTest extends \PHPUnit\Framework\TestCase
 {
     private $validXml = <<<BBBB
 <?xml version="1.0" encoding="utf-8"?>
@@ -58,10 +58,10 @@ BBBB;
     {
         $response = new ResponseCore(array(), $this->validXml, 300);
         try {
-            new GetCorsResult($response);
+            $result = new GetCorsResult($response);
             $this->assertTrue(false);
         } catch (OssException $e) {
-
+            $this->assertTrue(true);
         }
     }
 }

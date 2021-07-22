@@ -7,7 +7,7 @@ use OSS\Http\ResponseCore;
 use OSS\Http\RequestCore_Exception;
 use Symfony\Component\Config\Definition\Exception\Exception;
 
-class HttpTest extends \PHPUnit_Framework_TestCase
+class HttpTest extends \PHPUnit\Framework\TestCase
 {
 
     public function testResponseCore()
@@ -33,7 +33,7 @@ class HttpTest extends \PHPUnit_Framework_TestCase
             $httpResponse = $httpCore->send_request();
             $this->assertTrue(false);
         } catch (RequestCore_Exception $e) {
-
+            $this->assertTrue(true);
         }
     }
 

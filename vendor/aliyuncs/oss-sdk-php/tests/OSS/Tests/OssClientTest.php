@@ -111,7 +111,7 @@ class OssClientTest extends TestOssClientBase
             $ossClient->listBuckets();
             $this->assertFalse(true);
         } catch (OssException $e) {
-
+            $this->assertFalse(false);
         }
     }
 
@@ -123,6 +123,7 @@ class OssClientTest extends TestOssClientBase
             $endpoint = ' ' . getenv('OSS_ENDPOINT') . '/ ';
             $ossClient = new OssClient($accessKeyId, $accessKeySecret, $endpoint, false);
             $ossClient->listBuckets();
+            $this->assertTrue(true);
         } catch (OssException $e) {
             $this->assertFalse(true);
         }
@@ -196,6 +197,7 @@ class OssClientTest extends TestOssClientBase
         try {
             $object='test-dir';
             $ossClient->createObjectDir($bucket,$object);
+            $this->assertTrue(true);
         } catch (OssException $e) {
             $this->assertFalse(true);
         }
@@ -204,6 +206,7 @@ class OssClientTest extends TestOssClientBase
             $object='0';
             $ossClient->createObjectDir($bucket,$object);
             $ossClient->putObject($bucket,$object, '');
+            $this->assertTrue(true);
         } catch (OssException $e) {
             var_dump($e);
             $this->assertFalse(true);
@@ -219,6 +222,7 @@ class OssClientTest extends TestOssClientBase
             $bucket = getenv('OSS_BUCKET');
             $ossClient = new OssClient($accessKeyId, $accessKeySecret, $endpoint, false);
             $ossClient->getBucketCors($bucket);
+            $this->assertTrue(true);
         } catch (OssException $e) {
             $this->assertFalse(true);
         }
@@ -233,6 +237,7 @@ class OssClientTest extends TestOssClientBase
             $bucket = $this->bucket;
             $ossClient = new OssClient($accessKeyId, $accessKeySecret, $endpoint, false);
             $ossClient->getBucketCname($bucket);
+            $this->assertTrue(true);
         } catch (OssException $e) {
             $this->assertFalse(true);
         }

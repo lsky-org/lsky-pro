@@ -439,7 +439,8 @@ BBB;
             $sub_object = $xml->addChild('Object');
             $key = OssUtil::sReplace($object->getKey());
             $sub_object->addChild('Key', $key);
-            if (!empty($object->getVersionId())) {
+            $versionId = $object->getVersionId();
+            if (!empty($versionId)) {
                 $sub_object->addChild('VersionId', $object->getVersionId());
             }
         }

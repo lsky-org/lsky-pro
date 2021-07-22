@@ -6,7 +6,7 @@ use OSS\Result\GetBucketStatResult;
 use OSS\Core\OssException;
 use OSS\Http\ResponseCore;
 
-class GetBucketStatResultTest extends \PHPUnit_Framework_TestCase
+class GetBucketStatResultTest extends \PHPUnit\Framework\TestCase
 {
 
     private $validXml = <<<BBBB

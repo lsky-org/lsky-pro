@@ -4,7 +4,7 @@ namespace OSS\Tests;
 
 use OSS\Model\LoggingConfig;
 
-class LoggingConfigTest extends \PHPUnit_Framework_TestCase
+class LoggingConfigTest extends \PHPUnit\Framework\TestCase
 {
     private $validXml = <<<BBBB
 <?xml version="1.0" encoding="utf-8"?>

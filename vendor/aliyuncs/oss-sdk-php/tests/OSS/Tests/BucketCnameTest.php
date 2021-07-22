@@ -6,19 +6,19 @@ require_once __DIR__ . '/Common.php';
 
 use OSS\Model\CnameConfig;
 
-class BucketCnameTest extends \PHPUnit_Framework_TestCase
+class BucketCnameTest extends \PHPUnit\Framework\TestCase
 {
     private $bucketName;
     private $client;
 
-    public function setUp()
+    protected function setUp(): void
     {
         $this->client = Common::getOssClient();
         $this->bucketName = 'php-sdk-test-bucket-' . strval(rand(0, 10000));
         $this->client->createBucket($this->bucketName);
     }
 
-    public function tearDown()
+    protected function tearDown(): void
     {
         $this->client->deleteBucket($this->bucketName);
     }

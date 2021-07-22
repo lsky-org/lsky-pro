@@ -330,6 +330,7 @@ class OssClientMultipartUploadTest extends TestOssClientBase
 
         try {
             $this->ossClient->multiuploadFile($this->bucket, $object, $file, $options);
+            $this->assertFalse(false);
         } catch (OssException $e) {
             $this->assertFalse(true);
         }
@@ -343,6 +344,7 @@ class OssClientMultipartUploadTest extends TestOssClientBase
     
     	try {
     		$this->ossClient->multiuploadFile($this->bucket, $object, $file, $options);
+            $this->assertFalse(false);
     	} catch (OssException $e) {
     		$this->assertFalse(true);
     	}
@@ -385,6 +387,7 @@ class OssClientMultipartUploadTest extends TestOssClientBase
     
     	try {
             $this->ossClient->multiuploadFile($this->bucket, $object, $file);
+            $this->assertTrue(false);
     	} catch (OssException $e) {
             $this->assertTrue(true);
             if (strpos($e, "parameter invalid, file is empty") == false)

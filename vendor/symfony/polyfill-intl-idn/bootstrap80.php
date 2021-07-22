@@ -74,9 +74,6 @@ if (!defined('IDNA_NONTRANSITIONAL_TO_ASCII')) {
 if (!defined('IDNA_NONTRANSITIONAL_TO_UNICODE')) {
     define('IDNA_NONTRANSITIONAL_TO_UNICODE', 32);
 }
-if (!defined('INTL_IDNA_VARIANT_2003')) {
-    define('INTL_IDNA_VARIANT_2003', 0);
-}
 if (!defined('INTL_IDNA_VARIANT_UTS46')) {
     define('INTL_IDNA_VARIANT_UTS46', 1);
 }
