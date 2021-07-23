@@ -1,6 +1,6 @@
 {extend name="common:base" /}
 
-{block name="title"}画廊 - {$config.site_name}{/block}
+{block name="title"}{:lang('Gallery')} - {$config.site_name}{/block}
 
 {block name="css"}
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/viewerjs@1.5.0/dist/viewer.min.css">
@@ -43,7 +43,7 @@
       </div>
       {/foreach}
     </div>
-    <button class="mdui-btn mdui-m-t-2 mdui-center mdui-ripple" id="more">查看更多</button>
+    <button class="mdui-btn mdui-m-t-2 mdui-center mdui-ripple" id="more">{:lang('See more')}</button>
   </main>
 </div>
 {/block}
@@ -64,12 +64,12 @@
   $more.click(function () {
     if (loading) return;
     loading = true;
-    $more.attr('disabled', true).text("加载中...");
+    $more.attr('disabled', true).text(lang('Loading...'));
     app.ajax("", {page: page, limit: limit}, function (response) {
       if (response.code) {
         var data = response.data;
         if (data.length === 0) {
-          $more.text("我也是有底线的~");
+          $more.text(lang('No more'));
         } else {
           var html = '';
           for (var key in data) {
@@ -89,9 +89,9 @@
           $viewer.data('viewer').update();
           loading = false;
           if (data.length < limit) {
-            $more.text("我也是有底线的~");
+            $more.text(lang('No more'));
           } else {
-            $more.attr('disabled', false).text("查看更多");
+            $more.attr('disabled', false).text(lang('See more'));
             page++;
           }
         }

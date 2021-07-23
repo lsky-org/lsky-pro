@@ -1,4 +1,12 @@
 var app = {
+  sprintf: function () {
+    var args = arguments, string = args[0];
+    for (var i = 1; i < args.length; i++) {
+      var item = arguments[i];
+      string = string.replace('%s', item);
+    }
+    return string;
+  },
   /**
    * ajax
    * @param url
@@ -286,3 +294,15 @@ var app = {
     $('#set-theme i').html(theme === 'dark' ? '&#xe3ac;' : '&#xe3a9;');
   }
 };
+
+window.lang = function (name, vars) {
+  vars = vars || [];
+  var k = name.toLowerCase();
+  for (var key in languages) {
+    if (k === key) {
+      return app.sprintf(languages[k], ...vars);
+    }
+  }
+  return name;
+};
+
