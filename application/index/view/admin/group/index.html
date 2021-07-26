@@ -29,7 +29,7 @@
             <td>
               <select class="mdui-select strategy">
                 {foreach $strategy_list as $strategy => $val}
-                <option value="{$strategy}" {if $value.strategy eq $strategy} selected{/if}>{$val.name}</option>
+                <option value="{$strategy}" {if $value.strategy eq $strategy} selected{/if}>{:lang($val.name)}</option>
                 {/foreach}
               </select>
             </td>
@@ -65,7 +65,7 @@
           <label class="mdui-textfield-label">{:lang('Strategy used')}</label>
           <select class="mdui-select" name="strategy">
             {foreach $strategy_list as $strategy => $val}
-            <option value="{$strategy}">{$val.name}</option>
+            <option value="{$strategy}">{:lang($val.name)}</option>
             {/foreach}
           </select>
         </div>
@@ -95,7 +95,7 @@
           <label class="mdui-textfield-label">{:lang('Strategy used')}</label>
           <select class="mdui-select" name="strategy">
             {foreach $strategy_list as $strategy => $val}
-            <option value="{$strategy}">{$val.name}</option>
+            <option value="{$strategy}">{:lang($val.name)}</option>
             {/foreach}
           </select>
         </div>

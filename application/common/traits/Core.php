@@ -37,7 +37,7 @@ trait Core
     {
         $configs = [];
         $data = \app\common\model\Config::all();
-        foreach ($data as $key => &$value) {
+        foreach ($data as &$value) {
             $configs[$value->name] = $value->value;
         }
         if ($name) {
@@ -63,7 +63,7 @@ trait Core
             'msg' => $msg,
             'data' => $data ?: new \stdClass(),
             'time' => time()
-        ], $type, 200);
+        ], $type);
 
         throw new HttpResponseException($response);
     }

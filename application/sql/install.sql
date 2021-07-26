@@ -130,7 +130,7 @@ INSERT INTO `lsky_config` (`id`, `key`, `type`, `input_type`, `name`, `title`, `
 (NULL, 'mail', 'text', 'text', 'mail_smtp_username', 'Mail smtp username', NULL, '', ''),
 (NULL, 'mail', 'text', 'password', 'mail_smtp_password', 'Mail smtp password', NULL, '', ''),
 (NULL, 'mail', 'text', 'number', 'mail_smtp_port', 'Mail smtp port', '25/465', '25', ''),
-(NULL, 'mail', 'text', 'email', 'mail_form_email', 'Mail form email', NULL, '', ''),
+(NULL, 'mail', 'text', 'email', 'mail_form_email', 'Mail form mailbox', NULL, '', ''),
 
 (NULL, 'other', 'bool', 'checkbox', 'soft_delete', 'Soft delete', 'Soft delete tip', '0', ''),
 (NULL, 'other', 'bool', 'checkbox', 'open_gallery', 'Open gallery', 'Open gallery tip', '0', ''),

@@ -28,7 +28,7 @@
           <th>{:lang('User name')}</th>
           <th>{:lang('Role group')}</th>
           <th>{:lang('Nickname')}</th>
-          <th>{:lang('Email')}</th>
+          <th>{:lang('Mailbox')}</th>
           <th>{:lang('Used capacity')}</th>
           <th>{:lang('Total capacity')}</th>
           <th>{:lang('Account status')}</th>
@@ -43,7 +43,7 @@
           <td>
             <select class="mdui-select group">
               {foreach $groups as $group}
-              <option value="{$group.id}" {if $value.group_id eq $group.id}selected{/if}>{$group.name}</option>
+              <option value="{$group.id}" {if $value.group_id eq $group.id}selected{/if}>{:lang($group.name)}</option>
               {/foreach}
             </select>
           </td>
@@ -82,8 +82,8 @@
           <input class="mdui-textfield-input" type="text" name="username" value="" placeholder="{:lang('User name')}" autocomplete="off"/>
         </div>
         <div class="mdui-textfield">
-          <label class="mdui-textfield-label">{:lang('Email')}</label>
-          <input class="mdui-textfield-input" type="email" name="email" value="" placeholder="{:lang('Email')}" autocomplete="off"/>
+          <label class="mdui-textfield-label">{:lang('Mailbox')}</label>
+          <input class="mdui-textfield-input" type="email" name="email" value="" placeholder="{:lang('Mailbox')}" autocomplete="off"/>
         </div>
         <div class="mdui-textfield">
           <label class="mdui-textfield-label">{:lang('Nickname')}</label>

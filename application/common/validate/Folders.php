@@ -18,11 +18,11 @@ class Folders extends Validate
     ];
 
     protected $message = [
-        'parent_id.require' => '没有找到上级文件夹',
-        'parent_id.number'  => '上级文件夹异常',
-        'parent_id.integer' => '上级文件夹异常',
-        'name.require'      => '文件夹名称不能为空',
-        'name.max'          => '文件夹名称长度最大30个字符',
-        'name.chsAlphaNum'  => '文件夹名称只能是汉字、字母和数字'
+        'parent_id.require' => '{%Parent folder not found}',
+        'parent_id.number'  => '{%Parent folder exception}',
+        'parent_id.integer' => '{%Parent folder exception}',
+        'name.require'      => '{%Folder name cannot be empty}',
+        'name.max'          => '{%Folder name length max. 30 characters}',
+        'name.chsAlphaNum'  => '{%Folder names can only be Chinese characters, letters and numbers}'
     ];
 }

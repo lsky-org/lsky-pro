@@ -19,7 +19,7 @@ class Install extends Controller
     {
         // 检测是否已安装
         if (file_exists(app()->getAppPath() . 'install.lock') && !Session::has('install_success')) {
-            exit('你已安装成功，需要重新安装请删除 install.lock 文件');
+            exit(lang('Installed tips'));
         }
 
         $phpVerGt56 = PHP_VERSION >= 5.6;
@@ -53,7 +53,7 @@ class Install extends Controller
                     try {
                         $installSql = app()->getAppPath() . 'sql/install.sql';
                         if (!is_file($installSql)) {
-                            throw new Exception('数据库 SQL 文件不存在');
+                            throw new Exception(lang('The database SQL file does not exist'));
                         }
                         $db = Db::connect(array_merge(\config('database.'), [
                             'hostname' => $hostname,
@@ -88,7 +88,7 @@ class Install extends Controller
                     } catch (\PDOException $e) {
                         $this->error($e->getMessage());
                     }
-                    $this->success('数据写入成功');
+                    $this->success(lang('Data written successfully'));
                 }
                 break;
             case 3:
@@ -102,7 +102,7 @@ class Install extends Controller
                         $data['update_time'] = time();
                         $data['create_time'] = time();
                         if ($data['password'] != $data['password_confirm']) {
-                            throw new Exception('两次输入的密码不一致！');
+                            throw new Exception(lang('The passwords entered twice are inconsistent!'));
                         }
                         $data['password'] = md5($data['password']);
                         $data['reg_ip'] = request()->ip();
@@ -119,7 +119,7 @@ class Install extends Controller
                             '{hostport}',
                         ], $config, @file_get_contents(app()->getRootPath() . '.env.example'));
                         if (!@file_put_contents(app()->getRootPath() . '.env', $env)) {
-                            throw new \Exception('配置文件写入失败');
+                            throw new \Exception(lang('Configuration file write failed'));
                         }
 
                         $db = Db::connect(array_merge(\config('database.'), $config));
@@ -128,7 +128,7 @@ class Install extends Controller
 
                         // 创建安装锁文件
                         if (!@fopen(app()->getAppPath() . 'install.lock', 'w')) {
-                            throw new \Exception('安装锁文件创建失败');
+                            throw new \Exception(lang('Setup lock file creation failed'));
                         }
                     } catch (Exception $e) {
                         @unlink(app()->getAppPath() . 'install.lock');
@@ -143,7 +143,7 @@ class Install extends Controller
                     Session::flash('install_success', true);
                     // 删除session
                     Session::delete('db');
-                    $this->success('设置成功');
+                    $this->success(lang('Set successfully'));
                 }
                 break;
         }

@@ -69,7 +69,9 @@ body {
 .mdui-drawer-body-left footer {
   width: calc(100% - 240px);
 }
-.mdui-tab a {
+.mdui-tab a,
+.mdui-btn,
+.mdui-fab {
   text-transform: capitalize;
 }
 main {

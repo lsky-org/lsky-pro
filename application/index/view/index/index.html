@@ -74,11 +74,11 @@
   });
 
   clipboard.on('success', function(e) {
-    app.msg(true, lang('Copy success'));
+    app.msg(true, lang('Copy successful'));
   });
 
   clipboard.on('error', function(e) {
-    app.msg(false, lang('Copy fail'));
+    app.msg(false, lang('Copy failed'));
   });
 
   var sort = function (uls) {

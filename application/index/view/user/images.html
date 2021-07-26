@@ -253,14 +253,14 @@
     // 监听复制操作
     var clipboard = new ClipboardJS('.copy-url');
     clipboard.on('success', function(e) {
-      app.msg(true, lang('Copy success'));
+      app.msg(true, lang('Copy successful'));
       e.clearSelection();
     });
 
     clipboard.on('error', function(e) {
       console.error('Action:', e.action);
       console.error('Trigger:', e.trigger);
-      app.msg(false, lang('Copy fail'));
+      app.msg(false, lang('Copy failed'));
     });
 
     // Context Start

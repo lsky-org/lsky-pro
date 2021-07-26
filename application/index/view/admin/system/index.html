@@ -78,8 +78,8 @@
           {foreach $naming.path as $value}
           <tr>
             <td>{$value.name}</td>
-            <td>{$value.example}</td>
-            <td>{$value.explain}</td>
+            <td>{:lang($value.example)}</td>
+            <td>{:lang($value.explain)}</td>
           </tr>
           {/foreach}
           </tbody>
@@ -102,8 +102,8 @@
           {foreach $naming.file as $value}
           <tr>
             <td>{$value.name}</td>
-            <td>{$value.example}</td>
-            <td>{$value.explain}</td>
+            <td>{:lang($value.example)}</td>
+            <td>{:lang($value.explain)}</td>
           </tr>
           {/foreach}
           </tbody>
@@ -127,7 +127,7 @@
     });
 
     $('#test-send-mail').click(function () {
-      mdui.prompt(lang('Please input email'),
+      mdui.prompt(lang('Please input mailbox'),
         function (value) {
           app.request("{:url('admin/system/testMail')}", {email: value});
         },

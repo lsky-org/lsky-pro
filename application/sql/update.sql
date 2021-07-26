@@ -62,7 +62,7 @@ CREATE TABLE IF NOT EXISTS `lsky_group` (
   `create_time` int(11) DEFAULT NULL COMMENT '添加时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci COMMENT='文件夹表';
-INSERT IGNORE INTO `lsky_group` (`id`, `strategy`, `name`, `default`, `create_time`) VALUES ('1', 'local', '默认组', '1', '0');
+INSERT IGNORE INTO `lsky_group` (`id`, `strategy`, `name`, `default`, `create_time`) VALUES ('1', 'local', 'Default group', '1', '0');
 
 -- v1.5.1
 UPDATE `lsky_config` SET `value` = '1.5.1' WHERE `lsky_config`.`name` = 'system_version';

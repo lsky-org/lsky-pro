@@ -17,8 +17,8 @@ class Group extends Validate
     ];
 
     protected $message = [
-        'name.require'      => '角色组名称不能为空',
-        'name.max'          => '角色组名称长度最大30个字符',
-        'name.chsAlphaNum'  => '角色组名称只能是汉字、字母和数字'
+        'name.require'      => '{%Role group name cannot be empty}',
+        'name.max'          => '{%The maximum length of the role group name is 30 characters}',
+        'name.chsAlphaNum'  => '{%The role group name can only be Chinese characters, letters and numbers}'
     ];
 }
