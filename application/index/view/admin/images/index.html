@@ -19,7 +19,7 @@
       <select class="where mdui-select mdui-float-left" mdui-select>
         <option value="{}">{:lang('All')}</option>
         {foreach $strategyList as $key => $value}
-        <option value='{"strategy": "{$key}"}' {if $key eq $strategy}selected{/if}>{$value.name}</option>
+        <option value='{"strategy": "{$key}"}' {if $key eq $strategy}selected{/if}>{:lang($value.name)}</option>
         {/foreach}
         <option value='{"user_id": "0"}' {eq name="user_id" value="0"} selected{/eq}>{:lang('Visitor picture')}</option>
         <option value='{"suspicious": "1"}' {eq name="suspicious" value="1"} selected{/eq}>{:lang('Suspicious picture')}</option>
@@ -33,22 +33,22 @@
       <table class="mdui-table mdui-table-selectable">
         <thead>
         <tr>
-          <th>所属用户</th>
-          <th>储存策略</th>
-          <th>别名</th>
-          <th>路径</th>
-          <th>大小</th>
-          <th>类型</th>
-          <th>上传IP</th>
-          <th>上传时间</th>
-          <th>操作</th>
+          <th>{:lang('User')}</th>
+          <th>{:lang('Storage strategy')}</th>
+          <th>{:lang('Alias')}</th>
+          <th>{:lang('Route')}</th>
+          <th>{:lang('Size')}</th>
+          <th>{:lang('Type')}</th>
+          <th>{:lang('Upload IP')}</th>
+          <th>{:lang('Upload time')}</th>
+          <th>{:lang('Operation')}</th>
         </tr>
         </thead>
         <tbody>
         {foreach $images as $key => $value}
         <tr data-id="{$value.id}">
           <td>{$value.username}</td>
-          <td>{$value.strategyStr}</td>
+          <td>{:lang($value.strategyStr)}</td>
           <td>{$value.alias_name ?: '-'}</td>
           <td>{$value.pathname}</td>
           <td class="mdui-text-color-light-blue">{$value.size|format_size}</td>
@@ -58,8 +58,8 @@
           <td>
             <img class="none" data-original="{$value.url}" src="{$value.url}">
             <div class="mdui-btn-group">
-              <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-btn-dense see" data-key="{$key}">查看</button>
-              <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-red mdui-btn-dense del">删除</button>
+              <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-btn-dense see" data-key="{$key}">{:lang('See')}</button>
+              <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-red mdui-btn-dense del">{:lang('Delete')}</button>
             </div>
           </td>
         </tr>
@@ -85,9 +85,9 @@
 <script>
   var methods = {
     delete: function (id, batch, callback) {
-      var msg = '确认删除该图片吗？';
+      var msg = lang('Are you sure to delete this picture?');
       if (batch) {
-        msg = '确认删除选中项图片吗？';
+        msg = lang('Are you sure to delete the selected picture?');
       }
       mdui.confirm(msg, function () {
         app.request("{:url('admin/images/delete')}", {id: id}, function () {
@@ -95,7 +95,7 @@
         });
       }, function () {
 
-      }, {confirmText: '确定', cancelText: '取消'});
+      }, {confirmText: lang('Confirm'), cancelText: lang('Cancel')});
     }
   };
 
@@ -112,7 +112,7 @@
       });
     } else {
       mdui.snackbar({
-        message: '至少选择一项数据！'
+        message: lang('Select at least one data!')
       });
     }
   }
@@ -153,11 +153,11 @@
       app.ajax("{:url('admin/images/getIpInfo')}", {ip: $(this).text()}, function (response) {
         if (response.code) {
           mdui.alert(
-            '国家：' + response.data.country +
-            '<br />地区：' + response.data.area +
-            '<br />区域：' + response.data.region +
-            '<br />城市：' + response.data.city +
-            '<br />县：' + response.data.county +
+            lang('Country:') + response.data.country +
+            '<br />' + lang('Region:') + response.data.area +
+            '<br />' + lang('Area:') + response.data.region +
+            '<br />' + lang('City:') + response.data.city +
+            '<br />' + lang('County:') + response.data.county +
             '<br />ISP：' + response.data.isp
             , 'IP：' + response.data.ip
           );
