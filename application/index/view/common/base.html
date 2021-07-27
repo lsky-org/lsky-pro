@@ -46,13 +46,15 @@
     </ul>
     {/if}
     <!-- Language -->
+    {if config('app.lang_switch_on')}
     <a href="javascript:void(0)" mdui-menu="{target: '#language'}" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">&#xe894;</i></a>
     <ul class="mdui-menu" id="language">
       <li class="mdui-menu-item">
-        <a href="{:url('', 'lang=zh-cn')}" class="mdui-ripple">简体中文</a>
-        <a href="{:url('', 'lang=en')}" class="mdui-ripple">English</a>
+        <a href="{:url(request()->path(), 'lang=zh-cn')}" class="mdui-ripple">简体中文</a>
+        <a href="{:url(request()->path(), 'lang=en')}" class="mdui-ripple">English</a>
       </li>
     </ul>
+    {/if}
     <!-- Theme -->
     <a id="set-theme" href="javascript:app.toggleTheme()" class="mdui-btn mdui-btn-icon">
       <i class="mdui-icon material-icons">{if cookie('theme') eq 'dark'}&#xe3ac;{else/}&#xe3a9;{/if}</i>
