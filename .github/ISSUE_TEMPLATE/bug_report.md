@@ -1,5 +1,5 @@
 ---
-name: Bug report
+name: 反馈 BUG
 about: Create a report to help us improve
 title: ''
 labels: ''
@@ -8,9 +8,9 @@ assignees: ''
 ---
 
 **选项**
-[ ] 是否有阅读文档？
-[ ] Github issues 中是否存在相关问题？
-[ ] 有没有尝试打开调试模式定位错误?
+* [ ] 是否有阅读文档？
+* [ ] Github issues 中是否存在相关问题？
+* [ ] 有没有尝试打开调试模式定位错误?
 
 **描述问题**
 对 bug 清晰而简洁的描述。
