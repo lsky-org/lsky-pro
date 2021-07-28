@@ -16,13 +16,6 @@
           <div class="panel-body-box">
             <form action="{:url('auth/login')}" method="post">
               {include file="common:alert"}
-              <div class="mt-3">
-                <label class="mdui-textfield-label">{:lang('Login mode')}</label>
-                <select class="mdui-select" mdui-select name="type">
-                  <option value="email" {if input('post.type') === 'email'} selected{/if}>{:lang('Mailbox')}</option>
-                  <option value="username" {if input('post.type') === 'username'} selected{/if}>{:lang('User name')}</option>
-                </select>
-              </div>
               <div class="mdui-textfield mdui-textfield-floating-label">
                 <label class="mdui-textfield-label">{:lang('Account')}</label>
                 <input class="mdui-textfield-input" type="text" name="account" value="{:input('post.account')}"/>
