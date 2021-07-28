@@ -42,13 +42,6 @@ class Upload extends Controller
      */
     private $strategy;
 
-    /**
-     * 系统配置
-     *
-     * @var array
-     */
-    protected $configs = [];
-
     protected function initialize()
     {
         parent::initialize();
