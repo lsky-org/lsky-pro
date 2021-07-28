@@ -120,10 +120,12 @@
       <i class="mdui-list-item-icon mdui-icon material-icons iconfont icon-login mdui-text-color-teal"></i>
       <div class="mdui-list-item-content">{:lang('Sign In')}</div>
     </a>
+    {if !$config.close_register}
     <a class="mdui-list-item mdui-ripple {if $uri eq 'auth/register'}mdui-list-item-active{/if}" href="{:url('auth/register')}">
       <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-purple">&#xe7f0;</i>
       <div class="mdui-list-item-content">{:lang('Sign Up')}</div>
     </a>
+    {/if}
     {/if}
   </div>
 </div>

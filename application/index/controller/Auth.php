@@ -48,6 +48,10 @@ class Auth extends Base
             Session::flash('success', lang('Registration successful'));
             $this->redirect(url('auth/login'));
         }
+
+        if ($this->getConfig('close_register')) {
+            abort(404, lang('Site registration closed'));
+        }
         return $this->fetch();
     }
 
