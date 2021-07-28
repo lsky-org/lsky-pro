@@ -324,6 +324,8 @@ return [
     'The maximum length of the role group name is 30 characters' => '角色组名称长度最大30个字符',
     'The role group name can only be Chinese characters, letters and numbers' => '角色组名称只能是汉字、字母和数字',
     'User name cannot be empty' => '用户名不能为空',
+    'The user name cannot be less than three characters' => '用户名不能少于三个字符',
+    'User names can only be letters, numbers, and underscores_ And dash-' => '用户名只能是字母、数字和下划线_及破折号-',
     'The user name character length exceeds the limit' => '用户名字符长度超出',
     'User name already exists, please replace' => '用户名已存在，请更换',
     'The length of nickname characters exceeds the limit' => '昵称字符长度超出',

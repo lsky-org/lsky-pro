@@ -23,7 +23,9 @@ class Users extends Validate
 
     protected $message = [
         'username.require'          => '{%User name cannot be empty}',
+        'username.min'              => '{%The user name cannot be less than three characters}',
         'username.max'              => '{%The user name character length exceeds the limit}',
+        'username.alphaDash'        => '{%User names can only be letters, numbers, and underscores_ And dash-}',
         'username.unique'           => '{%User name already exists, please replace}',
         'nickname.max'              => '{%The length of nickname characters exceeds the limit}',
         'default_folder.max'        => '{%Default upload folder name length exceeds limit}',

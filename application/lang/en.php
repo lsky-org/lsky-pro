@@ -324,6 +324,8 @@ return [
     'The maximum length of the role group name is 30 characters' => 'The maximum length of the role group name is 30 characters',
     'The role group name can only be Chinese characters, letters and numbers' => 'The role group name can only be Chinese characters, letters and numbers',
     'User name cannot be empty' => 'User name cannot be empty',
+    'The user name cannot be less than three characters' => 'The user name cannot be less than three characters',
+    'User names can only be letters, numbers, and underscores_ And dash-' => 'User names can only be letters, numbers, and underscores_ And dash-',
     'The user name character length exceeds the limit' => 'User name character length exceeds',
     'User name already exists, please replace' => 'User name already exists, please replace',
     'The length of nickname characters exceeds the limit' => 'Nickname character length exceeds',
