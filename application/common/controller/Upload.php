@@ -47,7 +47,7 @@ class Upload extends Controller
      *
      * @var array
      */
-    private $configs = [];
+    protected $configs = [];
 
     protected function initialize()
     {
