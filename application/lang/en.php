@@ -120,6 +120,7 @@ return [
     'System management tips' => 'In system configuration, pay attention to using the &lt;script&gt;&lt;/script&gt; label in the statistics code. If it is not necessary, it can be set to blank. <br> If the basic configuration cannot be saved, please check whether the request is blocked by the firewall.',
     'Basic configuration' => 'Basic configuration',
     'Upload configuration' => 'Upload configuration',
+    'User configuration' => 'User configuration',
     'Mail configuration' => 'Mail configuration',
     'Other configuration' => 'Other configuration',
     'Picture identification yellow' => 'Picture identification yellow',

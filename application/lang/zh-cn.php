@@ -120,6 +120,7 @@ return [
     'System management tips' => '系统配置，统计代码中注意要使用&lt;script&gt;&lt;/script&gt;标签，不设置可为空。<br>基础配置如果出现无法保存的情况请检查请求是否被防火墙拦截。',
     'Basic configuration' => '基础配置',
     'Upload configuration' => '上传配置',
+    'User configuration' => '用户配置',
     'Mail configuration' => '邮件配置',
     'Other configuration' => '其他配置',
     'Picture identification yellow' => '图片鉴黄',
