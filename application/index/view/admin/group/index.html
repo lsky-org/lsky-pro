@@ -1,6 +1,6 @@
 {extend name="common:base" /}
 
-{block name="title"}角色组 - {$config.site_name}{/block}
+{block name="title"}{:lang('Role group')} - {$config.site_name}{/block}
 
 {block name="main"}
 <div class="mdui-container">
@@ -8,7 +8,7 @@
     <div class="mdui-m-t-2 mdui-m-b-2">
       <div class="mdui-typo">
         <blockquote>
-          <p>不同的角色组下的用户，上传图片将使用不同的储存策略。<br>至少有一个默认角色组，新注册用户和访客将会使用默认的角色组。<br>角色组删除后，该组下面的用户将重置默认角色组。</p>
+          <p>{:lang('Role group tips')}</p>
         </blockquote>
       </div>
       <div class="mdui-btn-group mdui-m-a-1">
@@ -17,10 +17,10 @@
         <table class="mdui-table mdui-table-selectable">
           <thead>
           <tr>
-            <th>使用策略</th>
-            <th>名称</th>
-            <th>注册默认</th>
-            <th>操作</th>
+            <th>{:lang('Strategy used')}</th>
+            <th>{:lang('Name')}</th>
+            <th>{:lang('Register default')}</th>
+            <th>{:lang('Operation')}</th>
           </tr>
           </thead>
           <tbody>
@@ -29,7 +29,7 @@
             <td>
               <select class="mdui-select strategy">
                 {foreach $strategy_list as $strategy => $val}
-                <option value="{$strategy}" {if $value.strategy eq $strategy} selected{/if}>{$val.name}</option>
+                <option value="{$strategy}" {if $value.strategy eq $strategy} selected{/if}>{:lang($val.name)}</option>
                 {/foreach}
               </select>
             </td>
@@ -42,8 +42,8 @@
             </td>
             <td>
               <div class="mdui-btn-group">
-                <button class="mdui-btn mdui-btn-raised mdui-btn-dense edit">编辑</button>
-                <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-red mdui-btn-dense del">删除</button>
+                <button class="mdui-btn mdui-btn-raised mdui-btn-dense edit">{:lang('Edit')}</button>
+                <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-red mdui-btn-dense del">{:lang('Delete')}</button>
               </div>
             </td>
           </tr>
@@ -56,29 +56,29 @@
   <div class="mdui-dialog" id="add-dialog">
     <div class="mdui-dialog-content">
       <form action="{:url('admin/group/edit')}" method="post">
-        <div class="mdui-dialog-title">添加角色组</div>
+        <div class="mdui-dialog-title">{:lang('Add role group')}</div>
         <div class="mdui-textfield">
-          <label class="mdui-textfield-label">组名称</label>
-          <input class="mdui-textfield-input" type="text" name="name" value="" placeholder="组名称" autocomplete="off"/>
+          <label class="mdui-textfield-label">{:lang('Group name')}</label>
+          <input class="mdui-textfield-input" type="text" name="name" value="" placeholder="{:lang('Group name')}" autocomplete="off"/>
         </div>
         <div class="mdui-textfield">
-          <label class="mdui-textfield-label">使用策略</label>
+          <label class="mdui-textfield-label">{:lang('Strategy used')}</label>
           <select class="mdui-select" name="strategy">
             {foreach $strategy_list as $strategy => $val}
-            <option value="{$strategy}">{$val.name}</option>
+            <option value="{$strategy}">{:lang($val.name)}</option>
             {/foreach}
           </select>
         </div>
         <div class="mdui-textfield">
-          <label class="mdui-textfield-label">是否默认</label>
+          <label class="mdui-textfield-label">{:lang('Is default')}</label>
           <label class="mdui-switch">
             <input type="checkbox" name="default" value="1"/>
             <i class="mdui-switch-icon"></i>
           </label>
         </div>
         <div class="mdui-dialog-actions">
-          <button type="button" class="mdui-btn mdui-ripple" mdui-dialog-cancel>取消</button>
-          <button class="mdui-btn mdui-ripple">确定</button>
+          <button type="button" class="mdui-btn mdui-ripple" mdui-dialog-cancel>{:lang('Cancel')}</button>
+          <button class="mdui-btn mdui-ripple">{:lang('Confirm')}</button>
         </div>
       </form>
     </div>
@@ -86,21 +86,21 @@
   <div class="mdui-dialog" id="edit-dialog">
     <div class="mdui-dialog-content">
       <form action="{:url('admin/group/edit')}" method="post">
-        <div class="mdui-dialog-title">编辑角色组</div>
+        <div class="mdui-dialog-title">{:lang('Edit role group')}</div>
         <div class="mdui-textfield">
-          <label class="mdui-textfield-label">组名称</label>
-          <input class="mdui-textfield-input" type="text" name="name" value="" placeholder="组名称" autocomplete="off"/>
+          <label class="mdui-textfield-label">{:lang('Group name')}</label>
+          <input class="mdui-textfield-input" type="text" name="name" value="" placeholder="{:lang('Group name')}" autocomplete="off"/>
         </div>
         <div class="mdui-textfield">
-          <label class="mdui-textfield-label">使用策略</label>
+          <label class="mdui-textfield-label">{:lang('Strategy used')}</label>
           <select class="mdui-select" name="strategy">
             {foreach $strategy_list as $strategy => $val}
-            <option value="{$strategy}">{$val.name}</option>
+            <option value="{$strategy}">{:lang($val.name)}</option>
             {/foreach}
           </select>
         </div>
         <div class="mdui-textfield">
-          <label class="mdui-textfield-label">是否默认</label>
+          <label class="mdui-textfield-label">{:lang('Is default')}</label>
           <label class="mdui-switch">
             <input type="checkbox" name="default" value="1"/>
             <i class="mdui-switch-icon"></i>
@@ -108,8 +108,8 @@
         </div>
         <input type="hidden" name="id" value="">
         <div class="mdui-dialog-actions">
-          <button type="button" class="mdui-btn mdui-ripple" mdui-dialog-cancel>取消</button>
-          <button class="mdui-btn mdui-ripple">修改</button>
+          <button type="button" class="mdui-btn mdui-ripple" mdui-dialog-cancel>{:lang('Cancel')}</button>
+          <button class="mdui-btn mdui-ripple">{:lang('Modify')}</button>
         </div>
       </form>
     </div>
@@ -128,9 +128,9 @@
     var editDialog = new mdui.Dialog('#edit-dialog');
     var methods = {
       delete: function (id, batch, callback) {
-        var msg = '确认删除该角色组吗？';
+        var msg = lang('Are you sure to delete this role group?');
         if (batch) {
-          msg = '确认删除选中项角色组吗？';
+          msg = lang('Are you sure to delete the selected item role group?');
         }
         mdui.confirm(msg, function () {
           app.request("{:url('admin/group/del')}", {id: id}, function () {
@@ -138,7 +138,7 @@
           });
         }, function () {
 
-        }, {confirmText: '确定', cancelText: '取消'});
+        }, {confirmText: lang('Confirm'), cancelText: lang('Cancel')});
       },
     };
     // 编辑提交

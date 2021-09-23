@@ -10,27 +10,27 @@
 
 return [
     'local'     => [
-        'name'  => '本地',
+        'name'  => 'Local',
         'class' => \strategy\driver\Local::class
     ],
     'oss'       => [
-        'name'  => '阿里云OSS',
+        'name'  => 'Aliyun OSS',
         'class' => \strategy\driver\Oss::class
     ],
     'cos'       => [
-        'name'  => '腾讯云COS',
+        'name'  => 'Tencent COS',
         'class' => \strategy\driver\Cos::class
     ],
     'kodo'     => [
-        'name'  => '七牛云KODO',
+        'name'  => 'Qiniu KODO',
         'class' => \strategy\driver\Kodo::class
     ],
     'uss'     => [
-        'name'  => '又拍云USS',
+        'name'  => 'Upyun USS',
         'class' => \strategy\driver\Uss::class
     ],
     'remote'  => [
-        'name'  => '远程',
+        'name'  => 'Remote',
         'class' => \strategy\driver\Remote::class
     ],
 ];

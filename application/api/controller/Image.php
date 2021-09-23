@@ -28,7 +28,7 @@ class Image extends Base
     {
         $id = $this->request->post('id');
         if (!$image = $this->model->where('id', $id)->find()) {
-            $this->response('未找到该图片数据', [], 500);
+            $this->response(lang('The picture data was not found'), [], 500);
         }
         $this->response('success', $this->parseData($image));
     }
@@ -56,9 +56,9 @@ class Image extends Base
             $data = explode(',', $data);
         }
         if ($user->deleteImages($data)) {
-            $this->response('删除成功!');
+            $this->response(lang('Delete succeeded!'));
         }
-        $this->response('删除失败!', [], 500);
+        $this->response(lang('Deletion failed!'), [], 500);
     }
 
     private function parseData($data)

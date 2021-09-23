@@ -7,12 +7,12 @@ require_once __DIR__ . '/Common.php';
 use OSS\Model\LiveChannelConfig;
 use OSS\Core\OssException;
 
-class BucketLiveChannelTest extends \PHPUnit_Framework_TestCase
+class BucketLiveChannelTest extends \PHPUnit\Framework\TestCase
 {
     private $bucketName;
     private $client;
 
-    public function setUp()
+    protected function setUp(): void
     {
         $this->client = Common::getOssClient();
         $this->bucketName = 'php-sdk-test-rtmp-bucket-name-' . strval(rand(0, 10000));
@@ -20,7 +20,7 @@ class BucketLiveChannelTest extends \PHPUnit_Framework_TestCase
         Common::waitMetaSync();
     }
 
-    public function tearDown()
+    protected function tearDown(): void
     {
     ////to delete created bucket
     //1. delele live channel

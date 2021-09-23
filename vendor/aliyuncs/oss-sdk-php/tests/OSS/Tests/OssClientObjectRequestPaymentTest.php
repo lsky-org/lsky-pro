@@ -426,6 +426,7 @@ class OssClientObjectRequestPaymentTest extends TestOssClientBase
         $object = 'mpu/multipart-bigfile-test.tmp';
         try {
             $this->ossClient->multiuploadFile($this->bucket, $object, $bigFileName, $options);
+            $this->assertTrue(true);
         } catch (OssException $e) {
             $this->assertFalse(true);
         }
@@ -446,7 +447,7 @@ class OssClientObjectRequestPaymentTest extends TestOssClientBase
         unlink($bigFileName);
     }
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->payerClient = new OssClient(
@@ -464,7 +465,7 @@ class OssClientObjectRequestPaymentTest extends TestOssClientBase
         $this->ossClient->putSymlink($this->bucket, "default-symlink", "default-object");
     }
 
-    public function tearDown()
+    protected function tearDown(): void
     {
         parent::tearDown();
     }

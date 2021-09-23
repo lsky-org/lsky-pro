@@ -8,7 +8,7 @@ use OSS\Model\BucketInfo;
  * Class BucketInfoTest
  * @package OSS\Tests
  */
-class BucketInfoTest extends \PHPUnit_Framework_TestCase
+class BucketInfoTest extends \PHPUnit\Framework\TestCase
 {
     public function testConstruct()
     {

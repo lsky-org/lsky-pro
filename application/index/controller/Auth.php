@@ -14,11 +14,11 @@ use think\facade\Session;
 
 class Auth extends Base
 {
-    public function login($type = null, $account = null, $password = null)
+    public function login($account = null, $password = null)
     {
         if ($this->request->isPost()) {
             try {
-                Users::login($account, $password, $type);
+                Users::login($account, $password, filter_var($account, FILTER_VALIDATE_EMAIL) ? 'email' : 'username');
             } catch (Exception $e) {
                 Session::flash('error', $e->getMessage());
                 return $this->fetch();
@@ -33,7 +33,7 @@ class Auth extends Base
         if ($this->request->isPost()) {
             try {
                 if ($this->getConfig('close_register')) {
-                    throw new Exception('站点已关闭注册');
+                    throw new Exception(lang('Site registration closed'));
                 }
                 $data = $this->request->post();
                 $validate = $this->validate($data, 'Users');
@@ -45,8 +45,12 @@ class Auth extends Base
                 Session::flash('error', $e->getMessage());
                 return $this->fetch();
             }
-            Session::flash('success', '注册成功');
+            Session::flash('success', lang('Registration successful'));
             $this->redirect(url('auth/login'));
+        }
+
+        if ($this->getConfig('close_register')) {
+            abort(404, lang('Site registration closed'));
         }
         return $this->fetch();
     }
@@ -61,16 +65,16 @@ class Auth extends Base
             try {
                 $data = $this->request->post();
                 $validate = $this->validate($data, [
-                    'password|密码' => 'require|confirm',
+                    'password|'.lang('Password') => 'require|confirm',
                 ]);
                 if (true !== $validate) {
                     $this->error($validate);
                 }
                 if ($data['code'] != Session::get('code', 'forgot_')) {
-                    throw new Exception('验证码不正确');
+                    throw new Exception(lang('Incorrect verification code'));
                 }
                 if (!$user = Users::get(['email' => Session::get('email', 'forgot_')])) {
-                    throw new Exception('用户不存在');
+                    throw new Exception(lang('User does not exist'));
                 }
                 $user->password = $data['password'];
                 $user->save();
@@ -78,7 +82,7 @@ class Auth extends Base
                 $this->error($e->getMessage());
             }
             $delSession();
-            $this->success('重置成功');
+            $this->success(lang('Reset successful'));
         }
         $delSession();
         return $this->fetch();
@@ -89,19 +93,23 @@ class Auth extends Base
         if ($this->request->isPost()) {
             $data = $this->request->post();
             $validate = $this->validate($data, [
-                'email|邮箱' => 'require|email',
-                'captcha|验证码' => 'require|captcha'
+                'email|'.lang('Mailbox') => 'require|email',
+                'captcha|'.lang('Verification Code') => 'require|captcha'
             ]);
             if (true !== $validate) {
                 $this->error($validate);
             }
 
             if (!$user = Users::get(['email' => $data['email']])) {
-                $this->error('账号不存在');
+                $this->error(lang('Account does not exist'));
             }
 
             $code = generate_code();
-            $err = $this->sendMail($data['email'], '找回密码', "尊敬的 {$user->username}， 您好，您正在申请重置密码操作，本次的验证码是 <b>{$code}</b>，如果不是您本人操作请忽略！");
+            $err = $this->sendMail(
+                $data['email'],
+                lang('Retrieve password'),
+                lang('Retrieve password mail content', [$user->username, $code])
+            );
 
             if (true !== $err) {
                 $this->error($err);
@@ -109,7 +117,7 @@ class Auth extends Base
 
             Session::set('code', $code, 'forgot_');
             Session::set('email', $data['email'], 'forgot_');
-            $this->success('发送成功');
+            $this->success(lang('Sent successfully'));
         }
     }
 }

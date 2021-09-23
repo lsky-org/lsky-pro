@@ -69,6 +69,11 @@ body {
 .mdui-drawer-body-left footer {
   width: calc(100% - 240px);
 }
+.mdui-tab a,
+.mdui-btn,
+.mdui-fab {
+  text-transform: capitalize;
+}
 main {
   position: relative;
   top: 0;
@@ -310,7 +315,7 @@ main ul.breadcrumb li.active a {
 }
 main .mdui-table td,
 main .mdui-table th {
-  padding: 0 10px;
+  padding: 7px 10px;
 }
 main .mask {
   position: absolute;

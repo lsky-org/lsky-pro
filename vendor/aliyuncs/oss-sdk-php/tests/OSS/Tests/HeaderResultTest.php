@@ -9,7 +9,7 @@ use OSS\Http\ResponseCore;
  * Class HeaderResultTest
  * @package OSS\Tests
  */
-class HeaderResultTest extends \PHPUnit_Framework_TestCase
+class HeaderResultTest extends \PHPUnit\Framework\TestCase
 {
     public function testGetHeader()
     {

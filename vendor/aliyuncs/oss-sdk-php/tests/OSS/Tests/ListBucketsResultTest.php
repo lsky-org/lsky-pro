@@ -6,7 +6,7 @@ use OSS\Core\OssException;
 use OSS\Http\ResponseCore;
 use OSS\Result\ListBucketsResult;
 
-class ListBucketsResultTest extends \PHPUnit_Framework_TestCase
+class ListBucketsResultTest extends \PHPUnit\Framework\TestCase
 {
     private $validXml = <<<BBBB
 <?xml version="1.0" encoding="UTF-8"?>

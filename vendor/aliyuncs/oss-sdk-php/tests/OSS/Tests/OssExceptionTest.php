@@ -4,7 +4,7 @@ namespace OSS\Tests;
 
 use OSS\Core\OssException;
 
-class OssExceptionTest extends \PHPUnit_Framework_TestCase
+class OssExceptionTest extends \PHPUnit\Framework\TestCase
 {
     public function testOSS_exception()
     {

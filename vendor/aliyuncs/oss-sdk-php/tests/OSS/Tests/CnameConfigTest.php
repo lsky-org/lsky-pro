@@ -6,7 +6,7 @@ namespace OSS\Tests;
 use OSS\Model\CnameConfig;
 use OSS\Core\OssException;
 
-class CnameConfigTest extends \PHPUnit_Framework_TestCase
+class CnameConfigTest extends \PHPUnit\Framework\TestCase
 {
     private $xml1 = <<<BBBB
 <?xml version="1.0" encoding="utf-8"?>

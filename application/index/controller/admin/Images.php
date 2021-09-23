@@ -33,7 +33,7 @@ class Images extends Base
         $this->assign('strategy_list', $this->strategyList);
     }
 
-    public function index($strategy = '', $user_id = '', $suspicious = 0, $keyword = '', $limit = 25)
+    public function index($strategy = '', $user_id = '', $suspicious = 0, $keyword = '', $limit = 30)
     {
         $model = new ImagesModel();
         $model = $model->where('suspicious', $suspicious);
@@ -48,12 +48,13 @@ class Images extends Base
         }
         $images = $model->order('id', 'desc')->paginate($limit, false, [
             'query' => [
+                'strategy' => $strategy,
                 'keyword' => $keyword
             ]
         ])->each(function ($item) {
             $username = Users::where('id', $item->user_id)->value('username');
-            $item->username = $username ? $username : '访客';
-            $item->strategyStr = isset($this->strategyList[$item->strategy]) ? $this->strategyList[$item->strategy]['name'] : '未知';
+            $item->username = $username ? $username : lang('Visitor');
+            $item->strategyStr = isset($this->strategyList[$item->strategy]) ? $this->strategyList[$item->strategy]['name'] : lang('Unknown');
             return $item;
         });
         $this->assign([
@@ -97,11 +98,11 @@ class Images extends Base
                     foreach ($deletes as $key => $val) {
                         if (1 === count($val)) {
                             if (!$strategy[$key]->delete(isset($val[0]) ? $val[0] : null)) {
-                                // throw new Exception('删除失败');
+                                // throw new Exception(lang('Deletion failed'));
                             }
                         } else {
                             if (!$strategy[$key]->deletes($val)) {
-                                //  throw new Exception('批量删除失败');
+                                //  throw new Exception(lang('Batch deletion failed'));
                             }
                         }
                     }
@@ -111,7 +112,7 @@ class Images extends Base
                 Db::rollback();
                 $this->error($e->getMessage());
             }
-            $this->success('删除成功');
+            $this->success(lang('Delete succeeded'));
         }
     }
 
@@ -144,11 +145,11 @@ class Images extends Base
                     }
                 }
             } catch (Exception $e) {
-                $this->error('获取失败');
+                $this->error(lang('Acquisition failed'));
             } catch (RequestException $e) {
-                $this->error('接口发生异常，' . $e->getMessage());
+                $this->error(lang('The interface is abnormal, %s', [$e->getMessage()]));
             }
-            $this->success('获取成功', null, $data);
+            $this->success(lang('Get success'), null, $data);
         }
     }
 }

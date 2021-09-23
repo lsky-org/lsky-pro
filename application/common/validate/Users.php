@@ -22,20 +22,22 @@ class Users extends Validate
     ];
 
     protected $message = [
-        'username.require'          => '用户名不能为空',
-        'username.max'              => '用户名字符长度超出',
-        'username.unique'           => '用户名已存在，请更换',
-        'nickname.max'              => '昵称字符长度超出',
-        'default_folder.max'        => '默认上传文件夹名称长度超出',
-        'default_folder.chsAlphaNum'=> '默认上传文件夹名称只能是汉字、字母和数字',
-        'email.require'             => '邮箱不能为空',
-        'email.email'               => '邮箱格式不正确',
-        'email.max'                 => '邮箱字符长度超出',
-        'email.unique'              => '邮箱已存在',
-        'password.require'          => '密码不能为空',
-        'password.confirm'          => '两次输入的密码不一致',
-        'captcha.require'           => '请输入验证码',
-        'captcha.captcha'           => '验证码错误',
+        'username.require'          => '{%User name cannot be empty}',
+        'username.min'              => '{%The user name cannot be less than three characters}',
+        'username.max'              => '{%The user name character length exceeds the limit}',
+        'username.alphaDash'        => '{%User names can only be letters, numbers, and underscores_ And dash-}',
+        'username.unique'           => '{%User name already exists, please replace}',
+        'nickname.max'              => '{%The length of nickname characters exceeds the limit}',
+        'default_folder.max'        => '{%Default upload folder name length exceeds limit}',
+        'default_folder.chsAlphaNum'=> '{%The default upload folder name can only be Chinese characters, letters and numbers}',
+        'email.require'             => '{%Mailbox cannot be empty}',
+        'email.email'               => '{%The mailbox format is incorrect}',
+        'email.max'                 => '{%Mailbox character length exceeds the limit}',
+        'email.unique'              => '{%Mailbox already exists}',
+        'password.require'          => '{%Password cannot be empty}',
+        'password.confirm'          => '{%The passwords entered twice are inconsistent}',
+        'captcha.require'           => '{%Please enter the verification code}',
+        'captcha.captcha'           => '{%Verification code error}',
     ];
 
     public function sceneEdit()

@@ -42,13 +42,6 @@ class Upload extends Controller
      */
     private $strategy;
 
-    /**
-     * 系统配置
-     *
-     * @var array
-     */
-    private $configs = [];
-
     protected function initialize()
     {
         parent::initialize();
@@ -72,7 +65,7 @@ class Upload extends Controller
     public function exec()
     {
         if (!$this->configs['allowed_tourist_upload'] && !$this->user) {
-            throw new Exception('管理员关闭了游客上传！');
+            throw new Exception(lang('The administrator turned off the tourist upload!'));
         }
 
         $sameIpDayMaxUploadCount = $this->getConfig('same_ip_day_max_upload');
@@ -81,7 +74,7 @@ class Upload extends Controller
             $ipUploadCount = Images::where('ip', '=', request()->ip())->where('create_time', '>=', $startTimestamp)
                 ->count();
             if ($ipUploadCount >= $sameIpDayMaxUploadCount) {
-                throw new Exception('今日图片上传数量已达到上限');
+                throw new Exception(lang('The number of pictures uploaded today has reached the maximum'));
             }
         }
 
@@ -93,11 +86,11 @@ class Upload extends Controller
 
         if ($this->user) {
             if (($this->user->use_quota + $size) > $this->user->quota) {
-                throw new Exception('保存失败！您的储存容量不足，请联系管理员！');
+                throw new Exception(lang('Save failed! Your storage capacity is insufficient, please contact the administrator!'));
             }
 
             if (!$this->user->state) {
-                throw new Exception('你的账号被冻结，请联系管理员！');
+                throw new Exception(lang('Your account is frozen, please contact the administrator!'));
             }
         }
 
@@ -145,7 +138,7 @@ class Upload extends Controller
                         );
                         break;
                     default:
-                        throw new Exception('自动水印功能配置异常');
+                        throw new Exception(lang('Abnormal configuration of automatic watermark function'));
                 }
                 $watermark->save($watermarkImage);
                 $temp = $watermarkImage;
@@ -166,7 +159,7 @@ class Upload extends Controller
             if (Config::get('app.app_debug')) {
                 throw new Exception($this->strategy->getError());
             }
-            throw new Exception('上传失败，请检查策略配置是否正确！');
+            throw new Exception(lang('Upload failed. Please check whether the policy configuration is correct!'));
         }
 
         isset($watermarkImage) && @unlink($watermarkImage);
@@ -185,7 +178,7 @@ class Upload extends Controller
                         // 是否直接拦截色情图片
                         if (Config::get('system.intercept_salacity')) {
                             $this->strategy->delete($pathname);
-                            throw new Exception('图片[' . $image->getInfo('name') . ']涉嫌违规，禁止上传！');
+                            throw new Exception(lang('The picture %s is suspected of violation. Uploading is prohibited!', [$image->getInfo('name')]));
                         }
                         $suspicious = 1;
                     }
@@ -218,7 +211,7 @@ class Upload extends Controller
                     'parent_id' => 0,
                     'name' => $this->user->default_folder
                 ])) {
-                    throw new Exception('文件夹创建失败！');
+                    throw new Exception(lang('Folder creation failed!'));
                 }
             }
 
@@ -227,7 +220,7 @@ class Upload extends Controller
 
         if (!$model = Images::create($imageData)) {
             $this->strategy->delete($pathname);
-            throw new Exception('图片数据保存失败');
+            throw new Exception(lang('Failed to save picture data'));
         }
 
         $data = [
@@ -258,7 +251,7 @@ class Upload extends Controller
     {
         $image = $this->request->file('image');
         if (null === $image) {
-            throw new Exception('图片资源获取失败');
+            throw new Exception(lang('Picture resource acquisition failed'));
         }
         if (!is_uploaded_file($image->getPathname())) {
             throw new Exception('file is not uploaded via HTTP POST');

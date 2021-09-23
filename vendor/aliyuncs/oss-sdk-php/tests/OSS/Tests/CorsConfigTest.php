@@ -7,7 +7,7 @@ use OSS\Model\CorsConfig;
 use OSS\Model\CorsRule;
 use OSS\Core\OssException;
 
-class CorsConfigTest extends \PHPUnit_Framework_TestCase
+class CorsConfigTest extends \PHPUnit\Framework\TestCase
 {
     private $validXml = <<<BBBB
 <?xml version="1.0" encoding="utf-8"?>

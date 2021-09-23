@@ -7,7 +7,7 @@ use OSS\Core\OssException;
 use OSS\Core\OssUtil;
 use OSS\OssClient;
 
-class OssUtilTest extends \PHPUnit_Framework_TestCase
+class OssUtilTest extends \PHPUnit\Framework\TestCase
 {
     public function testIsChinese()
     {
@@ -147,10 +147,10 @@ BBBB;
         $this->assertNotNull($list);
     }
 
-    public function testIsWin()
-    {
-        //$this->assertTrue(OssUtil::isWin());
-    }
+    //public function testIsWin()
+    //{
+    //    //$this->assertTrue(OssUtil::isWin());
+    //}
 
     public function testGetMd5SumForFile()
     {

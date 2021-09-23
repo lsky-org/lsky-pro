@@ -9,7 +9,7 @@ use OSS\Http\ResponseCore;
  * Class ListPartsResultTest
  * @package OSS\Tests
  */
-class ListPartsResultTest extends \PHPUnit_Framework_TestCase
+class ListPartsResultTest extends \PHPUnit\Framework\TestCase
 {
     private $validXml = <<<BBBB
 <?xml version="1.0" encoding="UTF-8"?>

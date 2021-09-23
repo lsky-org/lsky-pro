@@ -6,7 +6,7 @@ use OSS\Result\GetBucketEncryptionResult;
 use OSS\Core\OssException;
 use OSS\Http\ResponseCore;
 
-class GetBucketEncryptionResultTest extends \PHPUnit_Framework_TestCase
+class GetBucketEncryptionResultTest extends \PHPUnit\Framework\TestCase
 {
 
     private $validXml = <<<BBBB

@@ -5,7 +5,7 @@ namespace OSS\Tests;
 
 use OSS\Model\RefererConfig;
 
-class RefererConfigTest extends \PHPUnit_Framework_TestCase
+class RefererConfigTest extends \PHPUnit\Framework\TestCase
 {
 
     private $validXml = <<<BBBB

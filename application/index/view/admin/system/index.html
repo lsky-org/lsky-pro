@@ -1,6 +1,6 @@
 {extend name="common:base" /}
 
-{block name="title"}系统管理 - {$config.site_name}{/block}
+{block name="title"}{:lang('System management')} - {$config.site_name}{/block}
 
 {block name="main"}
 <div class="mdui-container">
@@ -9,18 +9,17 @@
       <div class="mdui-typo">
         <blockquote class="mdui-m-l-0">
           <p>
-            系统配置，统计代码中注意要使用&lt;script&gt;&lt;/script&gt;标签，不设置可为空。<br>
-            基础配置如果出现无法保存的情况请检查请求是否被防火墙拦截。
+            {:lang('System management tips')}
           </p>
         </blockquote>
       </div>
       <div class="mdui-tab mdui-tab-scrollable" mdui-tab>
-        <a href="#tab-basics" class="mdui-ripple">基础配置</a>
-        <a href="#tab-upload" class="mdui-ripple">上传配置</a>
-        <a href="#tab-user" class="mdui-ripple">用户配置</a>
-        <a href="#tab-mail" class="mdui-ripple">邮件配置</a>
-        <a href="#tab-other" class="mdui-ripple">其他配置</a>
-        <a href="#tab-audit" class="mdui-ripple">图片鉴黄</a>
+        <a href="#tab-basics" class="mdui-ripple">{:lang('Basic configuration')}</a>
+        <a href="#tab-upload" class="mdui-ripple">{:lang('Upload configuration')}</a>
+        <a href="#tab-user" class="mdui-ripple">{:lang('User configuration')}</a>
+        <a href="#tab-mail" class="mdui-ripple">{:lang('Mail configuration')}</a>
+        <a href="#tab-other" class="mdui-ripple">{:lang('Other configuration')}</a>
+        <a href="#tab-audit" class="mdui-ripple">{:lang('Picture identification yellow')}</a>
       </div>
       <div class="tabs mdui-col-sm-8 mdui-col-md-8">
         {foreach $configs as $key => $value}
@@ -28,13 +27,13 @@
           <form action="{:url('admin/system/index')}" method="post">
             {foreach $value as $val}
             <div class="mdui-textfield">
-              <label class="mdui-textfield-label">{$val.title}{$val.tip ? '(' . $val.tip . ')' : ''}</label>
+              <label class="mdui-textfield-label">{:lang($val.title)}{$val.tip ? '(' . lang($val.tip) . ')' : ''}</label>
               {switch $val.type}
               {case text}
-              <input class="mdui-textfield-input" type="{$val.input_type}" name="{$val.name}" value="{$val.value}" autocomplete="off" placeholder="{$val.title}"/>
+              <input class="mdui-textfield-input" type="{$val.input_type}" name="{$val.name}" value="{$val.value}" autocomplete="off" placeholder="{:lang($val.title)}"/>
               {/case}
               {case textarea}
-              <textarea class="mdui-textfield-input" rows="6" name="{$val.name}" autocomplete="off" placeholder="{$val.title}">{$val.value}</textarea>
+              <textarea class="mdui-textfield-input" rows="6" name="{$val.name}" autocomplete="off" placeholder="{:lang($val.title)}">{$val.value}</textarea>
               {/case}
               {case bool}
               <label class="mdui-switch">
@@ -45,18 +44,18 @@
               {case select}
               <select name="{$val.name}" class="mdui-select" mdui-select>
                 {foreach $val.extend as $k => $v}
-                <option value="{$k}" {if $k eq $val.value}selected{/if}>{$v}</option>
+                <option value="{$k}" {if $k eq $val.value}selected{/if}>{:lang($v)}</option>
                 {/foreach}
               </select>
               {/case}
               {/switch}
             </div>
             {/foreach}
-            <button type="submit" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent">保存</button>
-            <button type="reset" class="mdui-btn mdui-btn-raised mdui-ripple">重置</button>
+            <button type="submit" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent">{:lang('Save')}</button>
+            <button type="reset" class="mdui-btn mdui-btn-raised mdui-ripple">{:lang('Reset')}</button>
             {if 'mail' eq $key}
             <!-- 测试邮件发送 -->
-            <button type="button" id="test-send-mail" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-cyan-600 mdui-text-color-white">测试邮件发送</button>
+            <button type="button" id="test-send-mail" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-cyan-600 mdui-text-color-white">{:lang('Test mail sending')}</button>
             {/if}
           </form>
         </div>
@@ -70,17 +69,17 @@
         <table class="mdui-table mdui-table-hoverable">
           <thead>
           <tr>
-            <th>变量名</th>
-            <th>示例</th>
-            <th>说明</th>
+            <th>{:lang('Variable name')}</th>
+            <th>{:lang('Example')}</th>
+            <th>{:lang('Explain')}</th>
           </tr>
           </thead>
           <tbody>
           {foreach $naming.path as $value}
           <tr>
             <td>{$value.name}</td>
-            <td>{$value.example}</td>
-            <td>{$value.explain}</td>
+            <td>{:lang($value.example)}</td>
+            <td>{:lang($value.explain)}</td>
           </tr>
           {/foreach}
           </tbody>
@@ -94,17 +93,17 @@
         <table class="mdui-table mdui-table-hoverable">
           <thead>
           <tr>
-            <th>变量名</th>
-            <th>示例</th>
-            <th>说明</th>
+            <th>{:lang('Variable name')}</th>
+            <th>{:lang('Example')}</th>
+            <th>{:lang('Explain')}</th>
           </tr>
           </thead>
           <tbody>
           {foreach $naming.file as $value}
           <tr>
             <td>{$value.name}</td>
-            <td>{$value.example}</td>
-            <td>{$value.explain}</td>
+            <td>{:lang($value.example)}</td>
+            <td>{:lang($value.explain)}</td>
           </tr>
           {/foreach}
           </tbody>
@@ -128,7 +127,7 @@
     });
 
     $('#test-send-mail').click(function () {
-      mdui.prompt('请输入邮箱',
+      mdui.prompt(lang('Please input mailbox'),
         function (value) {
           app.request("{:url('admin/system/testMail')}", {email: value});
         },
@@ -136,8 +135,8 @@
 
         },
         {
-          confirmText: '确定',
-          cancelText: '取消'
+          confirmText: lang('Confirm'),
+          cancelText: lang('Cancel')
         }
       );
     });

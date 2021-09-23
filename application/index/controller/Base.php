@@ -15,6 +15,8 @@ use PHPMailer\PHPMailer\PHPMailer;
 use think\Controller;
 use think\Exception;
 use think\facade\Config;
+use think\facade\Cookie;
+use think\facade\Lang;
 use think\facade\Session;
 use think\facade\Env;
 
@@ -33,10 +35,16 @@ class Base extends Controller
 
         $this->user = request()->user;
 
+        if ($this->request->has('lang')) {
+            Cookie::set('think_var', $this->request->get('lang'));
+        }
+
         $this->assign([
             'config'    => $this->getConfig(),
             'user'      => $this->user,
-            'uri'       => strtolower($this->request->controller() . '/' . $this->request->action())
+            'uri'       => strtolower($this->request->controller() . '/' . $this->request->action()),
+            'lang'      => Lang::range(),
+            'languages' => json_encode(Lang::get()),
         ]);
     }
 

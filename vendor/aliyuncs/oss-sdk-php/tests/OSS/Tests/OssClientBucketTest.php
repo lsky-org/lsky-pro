@@ -98,7 +98,7 @@ class OssClientBucketTest extends TestOssClientBase
         }
     }
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -125,7 +125,7 @@ class OssClientBucketTest extends TestOssClientBase
         $this->ossClient->createBucket($this->standardBucket, OssClient::OSS_ACL_TYPE_PRIVATE, $options);
     }
 
-    public function tearDown()
+    protected function tearDown(): void
     {
         parent::tearDown();
 

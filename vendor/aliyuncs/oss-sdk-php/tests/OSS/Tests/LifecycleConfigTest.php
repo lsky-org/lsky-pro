@@ -7,7 +7,7 @@ use OSS\Model\LifecycleAction;
 use OSS\Model\LifecycleConfig;
 use OSS\Model\LifecycleRule;
 
-class LifecycleConfigTest extends \PHPUnit_Framework_TestCase
+class LifecycleConfigTest extends \PHPUnit\Framework\TestCase
 {
 
     private $validLifecycle = <<<BBBB

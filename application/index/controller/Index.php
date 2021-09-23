@@ -28,7 +28,7 @@ class Index extends Base
                 } catch (Exception $e) {
                     $this->error($e->getMessage());
                 }
-                $this->success('欢迎回来');
+                $this->success(lang('Welcome back'));
             }
             return view('index/home');
         }
@@ -40,7 +40,7 @@ class Index extends Base
     public function gallery()
     {
         if (!$this->getConfig('open_gallery')) {
-            abort(404, "画廊功能已关闭");
+            abort(404, lang('Gallery feature is off'));
         }
         $images = [];
         Images::order('id', 'desc')
@@ -62,7 +62,7 @@ class Index extends Base
     public function api()
     {
         if (!$this->getConfig('open_api')) {
-            abort(404, "API 接口已关闭");
+            abort(404, lang('API interface closed'));
         }
         $this->assign('domain', $this->request->domain());
         return $this->fetch();

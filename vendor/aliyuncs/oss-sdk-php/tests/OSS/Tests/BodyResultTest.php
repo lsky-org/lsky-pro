@@ -6,7 +6,7 @@ use OSS\Http\ResponseCore;
 use OSS\Result\BodyResult;
 
 
-class BodyResultTest extends \PHPUnit_Framework_TestCase
+class BodyResultTest extends \PHPUnit\Framework\TestCase
 {
     public function testParseValid200()
     {

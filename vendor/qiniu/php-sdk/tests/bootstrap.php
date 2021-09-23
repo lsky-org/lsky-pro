@@ -8,7 +8,7 @@ $accessKey = getenv('QINIU_ACCESS_KEY');
 $secretKey = getenv('QINIU_SECRET_KEY');
 $testAuth = new Auth($accessKey, $secretKey);
 
-$bucketName = 'phpsdk';
+$bucketName = getenv('QINIU_TEST_BUCKET');
 $key = 'php-logo.png';
 $key2 = 'niu.jpg';
 

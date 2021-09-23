@@ -1,6 +1,6 @@
 {extend name="common:base" /}
 
-{block name="title"}图片管理 - {$config.site_name}{/block}
+{block name="title"}{:lang('Picture management')} - {$config.site_name}{/block}
 
 {block name="css"}
 <link rel="stylesheet" href="/static/contextjs/css/context.standalone.css">
@@ -14,20 +14,20 @@
       <div class="screen-box mdui-m-b-1">
         <div class="mdui-chip">
           <span class="mdui-chip-icon"><i class="mdui-icon material-icons">&#xe88e;</i></span>
-          <span class="mdui-chip-title">共有 <small class="mdui-text-color-red num">0</small> 张图片</span>
-          <span id="reset" class="mdui-chip-delete" mdui-tooltip="{content: '重置数据', position: 'right'}"><i class="mdui-icon material-icons">&#xe863;</i></span>
+          <span class="mdui-chip-title">{:lang('There are %s pictures in total', ['<small class="mdui-text-color-red num">0</small>'])}</span>
+          <span id="reset" class="mdui-chip-delete" mdui-tooltip="{content: '{:lang('Reset data')}', position: 'right'}"><i class="mdui-icon material-icons">&#xe863;</i></span>
         </div>
         <div class="mdui-clearfix mdui-m-t-1"></div>
         <form action="" method="post" id="search-form">
           <select class="operation mdui-select" name="state" mdui-select>
-            <option value="">选中项</option>
-            <option value="move">移动</option>
-            <option value="delete">删除</option>
+            <option value="">{:lang('Selected items')}</option>
+            <option value="move">{:lang('Move')}</option>
+            <option value="delete">{:lang('Delete')}</option>
           </select>
           <div class="mdui-btn-group mdui-m-r-1 mdui-float-left">
-            <button type="button" id="all" class="mdui-btn mdui-ripple mdui-color-theme-accent mdui-float-right">全选</button>
+            <button type="button" id="all" class="mdui-btn mdui-ripple mdui-color-theme-accent mdui-float-right">{:lang('Select all')}</button>
           </div>
-          <input class="mdui-textfield-input search-input mdui-float-right" type="text" name="keyword" placeholder="回车搜索..." value="" autocomplete="off"/>
+          <input class="mdui-textfield-input search-input mdui-float-right" type="text" name="keyword" placeholder="{:lang('Enter search...')}" value="" autocomplete="off"/>
         </form>
         <div class="mdui-clearfix"></div>
         <ul class="breadcrumb mdui-m-t-1">
@@ -54,29 +54,29 @@
               <table>
                 <tbody>
                 <tr class="alias_name">
-                  <td align="right">别名：</td>
+                  <td align="right">{:lang('Alias:')}</td>
                   <td align="left"></td>
                 </tr>
                 <tr class="url">
-                  <td align="right">链接：</td>
+                  <td align="right">{:lang('Link:')}</td>
                   <td align="left">
-                    <input class="mdui-textfield-input" type="text" placeholder="图片外链" value=""/>
+                    <input class="mdui-textfield-input" type="text" placeholder="{:lang('Picture link')}" value=""/>
                   </td>
                 </tr>
                 <tr class="pathname">
-                  <td align="right">位置：</td>
+                  <td align="right">{:lang('Position:')}</td>
                   <td align="left"></td>
                 </tr>
                 <tr class="size">
-                  <td align="right">大小：</td>
+                  <td align="right">{:lang('Size:')}</td>
                   <td align="left"></td>
                 </tr>
                 <tr class="md5">
-                  <td align="right">MD5：</td>
+                  <td align="right">{:lang('MD5:')}</td>
                   <td align="left"></td>
                 </tr>
                 <tr class="mime">
-                  <td align="right">类型：</td>
+                  <td align="right">{:lang('Type:')}</td>
                   <td align="left"></td>
                 </tr>
                 </tbody>
@@ -86,10 +86,10 @@
         </div>
         <div class="mdui-dialog-actions">
           <div class="mdui-btn-group">
-            <a href="" target="_blank" class="open-url mdui-btn mdui-color-theme-accent mdui-ripple mdui-btn-dense">打开链接</a>
-            <button data-clipboard-action="copy" data-clipboard-text="" class="copy-url mdui-btn mdui-color-teal mdui-ripple mdui-btn-dense">复制链接</button>
-            <button data-id="" class="delete-image mdui-btn mdui-color-red mdui-ripple mdui-btn-dense">删除</button>
-            <button class="mdui-btn mdui-ripple mdui-color-grey-600 mdui-btn-dense" mdui-dialog-cancel>关闭</button>
+            <a href="" target="_blank" class="open-url mdui-btn mdui-color-theme-accent mdui-ripple mdui-btn-dense">{:lang('Open link')}</a>
+            <button data-clipboard-action="copy" data-clipboard-text="" class="copy-url mdui-btn mdui-color-teal mdui-ripple mdui-btn-dense">{:lang('Copy link')}</button>
+            <button data-id="" class="delete-image mdui-btn mdui-color-red mdui-ripple mdui-btn-dense">{:lang('Delete')}</button>
+            <button class="mdui-btn mdui-ripple mdui-color-grey-600 mdui-btn-dense" mdui-dialog-cancel>{:lang('Close')}</button>
           </div>
         </div>
       </div>
@@ -104,8 +104,8 @@
           </ul>
         </div>
         <div class="mdui-dialog-actions">
-          <button class="mdui-btn mdui-ripple" mdui-dialog-close>取消</button>
-          <button class="mdui-btn mdui-ripple" mdui-dialog-confirm>确定</button>
+          <button class="mdui-btn mdui-ripple" mdui-dialog-close>{:lang('Cancel')}</button>
+          <button class="mdui-btn mdui-ripple" mdui-dialog-confirm>{:lang('Confirm')}</button>
         </div>
       </div>
     </div>
@@ -141,7 +141,7 @@
       getData: function (options) {
         params = options || params;
         var more = $(".more");
-        more.attr('disabled', true).text('加载中...');
+        more.attr('disabled', true).text(lang('Loading...'));
         app.ajax("{:url('user/images')}", params, function (response) {
           if (response.code) {
             var images = response.data.images.data;
@@ -190,12 +190,12 @@
               }
 
               if (response.data.images.current_page == response.data.images.last_page) {
-                return more.attr('disabled', true).text('我也是有底线的~');
+                return more.attr('disabled', true).text(lang('No more'));
               }
               params.page++;
-              return more.attr('disabled', false).text('加载更多');
+              return more.attr('disabled', false).text(lang('Loading more'));
             } else {
-              more.attr('disabled', true).text('暂无数据');
+              more.attr('disabled', true).text(lang('No data available'));
             }
           }
         });
@@ -207,9 +207,9 @@
       },
       // 删除
       delete: function (id, batch, callback) {
-        var msg = '确认删除该图片吗？';
+        var msg = lang('Are you sure to delete this picture?');
         if (batch) {
-          msg = '确认删除选中项图片吗？';
+          msg = lang('Are you sure to delete the selected picture?');
         }
         mdui.confirm(msg, function () {
           app.request("{:url('user/deleteImages')}", {id: id}, function () {
@@ -217,7 +217,7 @@
           });
         }, function () {
 
-        }, {confirmText: '确定', cancelText: '取消'});
+        }, {confirmText: lang('Confirm'), cancelText: lang('Cancel')});
       },
       getFolders: function (options, openDialog, callback) {
         openDialog = openDialog || false;
@@ -238,7 +238,7 @@
                 );
               }
             } else {
-              $('#folders ul.mdui-list').html('<li class="mdui-text-center mdui-text-color-black-secondary">没有找到文件夹</li>');
+              $('#folders ul.mdui-list').html('<li class="mdui-text-center mdui-text-color-black-secondary">' + lang('Folder not found') + '</li>');
             }
             foldersDialog.handleUpdate();
             openDialog && foldersDialog.open();
@@ -253,14 +253,14 @@
     // 监听复制操作
     var clipboard = new ClipboardJS('.copy-url');
     clipboard.on('success', function(e) {
-      app.msg(true, '复制成功！');
+      app.msg(true, lang('Copy successful'));
       e.clearSelection();
     });
 
     clipboard.on('error', function(e) {
       console.error('Action:', e.action);
       console.error('Trigger:', e.trigger);
-      app.msg(false, '复制失败！');
+      app.msg(false, lang('Copy failed'));
     });
 
     // Context Start
@@ -278,13 +278,13 @@
       if ($that.parents().hasClass('folders-box')) {
         context.attach('.folders-box .item', [
           {header: 'Compressed Menu'},
-          {text: '打开', action: function (e) {
+          {text: lang('Open'), action: function (e) {
               $item.click();
             }
           },
-          {text: '重新命名', action: function (e) {
+          {text: lang('Rename'), action: function (e) {
             e.preventDefault();
-              mdui.prompt('请输入文件夹名称',
+              mdui.prompt(lang('Please enter a folder name'),
                 function (value) {
                   app.ajax("{:url('user/renameFolder')}", {
                     id: $item.data('id'),
@@ -302,9 +302,9 @@
             }
           },
           {divider: true},
-          {text: '删除', action: function (e) {
+          {text: lang('Delete'), action: function (e) {
               e.preventDefault();
-              mdui.confirm('确认删除该文件夹吗？', function() {
+              mdui.confirm(lang('Are you sure to delete this folder?'), function() {
                 app.ajax("{:url('user/deleteFolder')}", {id: $item.data('id')}, function (response) {
                   if (response.code) {
                     $item.parent().remove();
@@ -320,16 +320,16 @@
         var $item = $that.closest('.item'), data = $item.data('json');
         context.attach('.images-box .item', [
           {header: 'Compressed Menu'},
-          {text: '查看图片', action: function (e) {
+          {text: lang('See picture'), action: function (e) {
               e.preventDefault();
               $item.find('img').click();
             }
           },
-          {text: '新窗口打开图片', href: data.url, target: '_blank'},
+          {text: lang('Open picture in new window'), href: data.url, target: '_blank'},
           {divider: true},
-          {text: '重命名', action: function (e) {
+          {text: lang('Rename'), action: function (e) {
               e.preventDefault();
-              mdui.prompt('请输入图片名称',
+              mdui.prompt(lang('Please enter a picture name'),
                 function (value) {
                   app.ajax("{:url('user/renameImage')}", {
                     id: data.id,
@@ -345,13 +345,13 @@
               );
             }
           },
-          {text: '复制链接', action: function (e) {
+          {text: lang('Copy link'), action: function (e) {
               e.preventDefault();
               $('#copy-url').attr('data-clipboard-text', data.url).click();
             }
           },
           {
-            text: '删除', action: function (e) {
+            text: lang('Delete'), action: function (e) {
               e.preventDefault();
               methods.delete(data.id, false, function () {
                 $item.parent().remove();
@@ -360,7 +360,7 @@
             }
           },
           {
-            text: '属性', action: function (e) {
+            text: lang('Attribute'), action: function (e) {
               e.preventDefault();
               $item.find('i.info').click();
             }
@@ -369,9 +369,9 @@
       } else {
         context.attach('.box', [
           {header: 'Compressed Menu'},
-          {text: '新建文件夹', action: function (e) {
+          {text: lang('New folder'), action: function (e) {
             e.preventDefault();
-              mdui.prompt('请输入文件夹名称',
+              mdui.prompt(lang('Please enter a folder name'),
                 function (value) {
                   app.ajax("{:url('user/createFolder')}", {
                     parent_id: $('ul.breadcrumb li.active:last-child a').data('id'),
@@ -388,7 +388,7 @@
             }
           },
           {divider: true},
-          {text: '刷新', action: function (e) {
+          {text: lang('Refresh'), action: function (e) {
               // e.preventDefault();
               methods.resetData();
             }
@@ -402,6 +402,7 @@
     // 文件夹点击操作
     $('.folders-box').on('click', '.mdui-col', function (e) {
       var $that = $(e.target), $item = $that.closest('.item');
+      if ($item.length === 0) return false;
       $('.screen-box ul.breadcrumb li:last-child').removeClass('active');
       $('.screen-box ul.breadcrumb').append(
         '<li class="active">' +
@@ -501,7 +502,7 @@
           }
 
         } else {
-          app.msg(false, '至少选择一项数据！')
+          app.msg(false, lang('Select at least one data!'))
         }
       }
     });
@@ -513,16 +514,16 @@
       if (0 === item.length) {
         return mdui.snackbar({
           position: 'right-top',
-          message: '暂无数据！'
+          message: lang('No data available!')
         });
       }
       if (all) {
         item.removeClass('choice');
-        $(this).text('全选');
+        $(this).text(lang('Select all'));
         all = false;
       } else {
         item.removeClass('choice').addClass('choice');
-        $(this).text('取消全选');
+        $(this).text(lang('Deselect all'));
         all = true;
       }
     });
@@ -562,7 +563,7 @@
         infoDialog.find('.delete-image').attr('data-id', data.id);
         info.open();
       } else {
-        app.msg(false, '数据异常！');
+        app.msg(false, lang('Data exception!'));
       }
     });
 
@@ -576,7 +577,7 @@
           totalBox.text(parseInt(totalBox.text()) - 1);
         });
       } else {
-        app.msg(false, '数据异常！');
+        app.msg(false, lang('Data exception!'));
       }
     });
 

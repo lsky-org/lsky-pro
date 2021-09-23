@@ -145,7 +145,7 @@ class OssClientListObjectsTest extends TestOssClientBase
         $this->assertEquals("true", $listObjectInfo->getIsTruncated());
     }
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         //folder 
@@ -177,7 +177,7 @@ class OssClientListObjectsTest extends TestOssClientBase
 
     }
 
-    public function tearDown()
+    protected function tearDown(): void
     {
         parent::tearDown();
     }

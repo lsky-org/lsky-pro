@@ -1,6 +1,6 @@
 {extend name="common:base" /}
 
-{block name="title"}设置 - {$config.site_name}{/block}
+{block name="title"}{:lang('Setting')} - {$config.site_name}{/block}
 
 {block name="main"}
 <div class="mdui-container">
@@ -8,11 +8,11 @@
     <div class="mdui-col-sm-8 mdui-col-md-8">
       <form action="{:url('user/settings')}" method="post">
         <div class="mdui-textfield">
-          <label class="mdui-textfield-label">用户名</label>
+          <label class="mdui-textfield-label">{:lang('User name')}</label>
           <input class="mdui-textfield-input" type="text" value="{$user.username}" disabled/>
         </div>
         <div class="mdui-textfield">
-          <label class="mdui-textfield-label">邮箱</label>
+          <label class="mdui-textfield-label">{:lang('Mailbox')}</label>
           <input class="mdui-textfield-input" type="email" value="{$user.email}" disabled/>
         </div>
         <div class="mdui-textfield">
@@ -22,31 +22,31 @@
         <div class="mdui-textfield">
           <label class="mdui-textfield-label">Token</label>
           <input class="mdui-textfield-input" type="text" value="{$user.token}" disabled/>
-          <div class="mdui-textfield-helper">注意：Token 具有管理图片权限，请不要随意泄漏。</div>
+          <div class="mdui-textfield-helper">{:lang('Token tip')}</div>
         </div>
         <div class="mdui-textfield">
-          <label class="mdui-textfield-label">昵称</label>
-          <input class="mdui-textfield-input" type="text" name="nickname" value="{$user.nickname}" maxlength="15" placeholder="昵称"/>
+          <label class="mdui-textfield-label">{:lang('Nickname')}</label>
+          <input class="mdui-textfield-input" type="text" name="nickname" value="{$user.nickname}" maxlength="15" placeholder="{:lang('Nickname')}"/>
         </div>
         <div class="mdui-textfield">
-          <label class="mdui-textfield-label">默认上传文件夹</label>
-          <input class="mdui-textfield-input" type="text" name="default_folder" value="{$user.default_folder}" maxlength="30" placeholder="默认上传文件夹名(不存在上传时自动创建)"/>
+          <label class="mdui-textfield-label">{:lang('Default upload folder')}</label>
+          <input class="mdui-textfield-input" type="text" name="default_folder" value="{$user.default_folder}" maxlength="30" placeholder="{:lang('Default upload folder tip')}"/>
         </div>
         <div class="mdui-textfield">
-          <label class="mdui-textfield-label">原密码</label>
-          <input class="mdui-textfield-input" type="password" name="password_old" placeholder="原密码，不修改请留空"/>
+          <label class="mdui-textfield-label">{:lang('Old password')}</label>
+          <input class="mdui-textfield-input" type="password" name="password_old" placeholder="{:lang('Old password tip')}"/>
         </div>
         <div class="mdui-textfield">
-          <label class="mdui-textfield-label">密码</label>
-          <input class="mdui-textfield-input" type="password" name="password" placeholder="密码，不修改请留空"/>
+          <label class="mdui-textfield-label">{:lang('Password')}</label>
+          <input class="mdui-textfield-input" type="password" name="password" placeholder="{:lang('Password tip')}"/>
         </div>
         <div class="mdui-textfield">
-          <label class="mdui-textfield-label">确认密码</label>
-          <input class="mdui-textfield-input" type="password" name="password_confirm" placeholder="确认密码"/>
+          <label class="mdui-textfield-label">{:lang('Confirm password')}</label>
+          <input class="mdui-textfield-input" type="password" name="password_confirm" placeholder="{:lang('Confirm password')}"/>
         </div>
         <div class="mdui-textfield">
-          <button type="submit" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent">保存</button>
-          <button type="reset" class="mdui-btn mdui-btn-raised mdui-ripple">重置</button>
+          <button type="submit" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent">{:lang('Save')}</button>
+          <button type="reset" class="mdui-btn mdui-btn-raised mdui-ripple">{:lang('Reset')}</button>
         </div>
       </form>
     </div>
