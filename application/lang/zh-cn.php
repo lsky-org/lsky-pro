@@ -226,6 +226,7 @@ return [
     'Route' => '路径',
     'Size' => '大小',
     'Type' => '类型',
+    'Create time' => '创建时间',
     'Upload time' => '上传时间',
     'See' => '查看',
     'Country:' => '国家：',

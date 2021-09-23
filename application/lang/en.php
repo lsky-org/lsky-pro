@@ -226,6 +226,7 @@ return [
     'Route' => 'Route',
     'Size' => 'Size',
     'Type' => 'Type',
+    'Create time' => 'Create time',
     'Upload time' => 'Upload time',
     'See' => 'See',
     'Country:' => 'Country: ',
