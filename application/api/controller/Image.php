@@ -26,7 +26,7 @@ class Image extends Base
 
     public function find()
     {
-        $id = $this->request->post('id');
+        $id = $this->request->request('id');
         if (!$image = $this->model->where('id', $id)->find()) {
             $this->response(lang('The picture data was not found'), [], 500);
         }
