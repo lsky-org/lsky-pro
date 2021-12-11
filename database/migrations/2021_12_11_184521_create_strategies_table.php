@@ -20,7 +20,7 @@ class CreateStrategiesTable extends Migration
 
             $table->id();
             $table->foreignId('group_id')->comment('角色组')->constrained('groups')->onDelete('cascade');
-            $table->enum('key', ['local'])->default('local');
+            $table->unsignedTinyInteger('key');
             $table->string('name', 64)->comment('策略名称');
             $table->string('intro', 255)->default('')->comment('简介');
             $table->json('configs')->comment('策略配置');

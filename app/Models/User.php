@@ -2,12 +2,36 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Collection;
 use Laravel\Sanctum\HasApiTokens;
 
+/**
+ * @property int $id
+ * @property int $group_id
+ * @property string $name
+ * @property string $email
+ * @property string $password
+ * @property string $remember_token
+ * @property boolean $is_adminer
+ * @property float $capacity
+ * @property Collection $configs
+ * @property int $image_num
+ * @property int $album_num
+ * @property string $registered_ip
+ * @property string $status
+ * @property Carbon $email_verified_at
+ * @property Carbon $updated_at
+ * @property Carbon $created_at
+ * @property-read Group $group
+ * @property-read Album[] $albums
+ * @property-read Image[] $images
+ */
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
@@ -21,6 +45,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'configs',
+        'registered_ip',
     ];
 
     /**
@@ -44,6 +70,34 @@ class User extends Authenticatable
      * @var array<string, string>
      */
     protected $casts = [
+        'capacity' => 'float',
+        'is_adminer' => 'bool',
+        'configs' => 'collection',
         'email_verified_at' => 'datetime',
     ];
+
+    protected static function booted()
+    {
+        static::creating(function (self $user) {
+            $user->configs = collect([
+                'default_album' => 0,
+                'default_strategy' => 0,
+            ])->merge($user->configs ?: []);
+        });
+    }
+
+    public function group(): BelongsTo
+    {
+        return $this->belongsTo(Group::class, 'group_id', 'id');
+    }
+
+    public function album(): HasMany
+    {
+        return $this->hasMany(Album::class, 'user_id', 'id');
+    }
+
+    public function images(): HasMany
+    {
+        return $this->hasMany(Image::class, 'user_id', 'id');
+    }
 }

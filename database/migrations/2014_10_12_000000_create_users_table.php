@@ -30,7 +30,7 @@ class CreateUsersTable extends Migration
             $table->unsignedBigInteger('image_num')->default(0)->comment('图片数量');
             $table->unsignedBigInteger('album_num')->default(0)->comment('相册数量');
             $table->string('registered_ip')->default('')->comment('注册IP');
-            $table->enum('status', ['normal', 'frozen'])->default('normal');
+            $table->unsignedTinyInteger('status')->default(1)->comment('状态');
             $table->timestamp('email_verified_at')->nullable();
             $table->timestamps();
         });
