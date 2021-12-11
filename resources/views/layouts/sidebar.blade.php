@@ -22,7 +22,7 @@
                     <x-slot name="icon"><i class="fas fa-cloud-upload-alt text-blue-500"></i></x-slot>
                     <x-slot name="name">上传图片</x-slot>
                 </x-nav-link>
-                <x-nav-link :active="request()->routeIs('pictures')">
+                <x-nav-link :active="request()->routeIs('images')">
                     <x-slot name="icon"><i class="fas fa-images text-blue-500"></i></x-slot>
                     <x-slot name="name">图片</x-slot>
                 </x-nav-link>
@@ -56,7 +56,7 @@
                     <x-slot name="icon"><i class="fas fa-users-cog text-blue-500"></i></x-slot>
                     <x-slot name="name">用户管理</x-slot>
                 </x-nav-link>
-                <x-nav-link :active="request()->routeIs('admin/pictures')">
+                <x-nav-link :active="request()->routeIs('admin/images')">
                     <x-slot name="icon"><i class="fas fa-images text-blue-500"></i></x-slot>
                     <x-slot name="name">图片管理</x-slot>
                 </x-nav-link>

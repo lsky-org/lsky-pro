@@ -14,12 +14,24 @@ class CreateUsersTable extends Migration
     public function up()
     {
         Schema::create('users', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
+            $table->charset = 'utf8mb4';
+            $table->collation = 'utf8mb4_unicode_ci';
+
             $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
+            $table->foreignId('group_id')->nullable()->comment('角色组')->constrained('groups')->onDelete('set null');
+            $table->string('name')->comment('姓名');
+            $table->string('email')->unique()->comment('邮箱');
+            $table->string('password')->comment('密码');
             $table->rememberToken();
+            $table->boolean('is_adminer')->default(false)->comment('是否为管理员');
+            $table->decimal('capacity', 20)->default(0)->comment('总容量(kb)');
+            $table->json('configs')->comment('配置');
+            $table->unsignedBigInteger('image_num')->default(0)->comment('图片数量');
+            $table->unsignedBigInteger('album_num')->default(0)->comment('相册数量');
+            $table->string('registered_ip')->default('')->comment('注册IP');
+            $table->enum('status', ['normal', 'frozen'])->default('normal');
+            $table->timestamp('email_verified_at')->nullable();
             $table->timestamps();
         });
     }

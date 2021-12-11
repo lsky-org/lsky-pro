@@ -31,6 +31,11 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'registered_ip',
+        'configs',
+        'status',
+        'group_id',
+        'is_adminer',
     ];
 
     /**
