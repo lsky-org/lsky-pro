@@ -1,4 +1,4 @@
-<header class="pl-0 sm:pl-64 transition-all duration-300 w-full h-14 bg-gray-700 text-white flex justify-center fixed">
+<header class="pl-0 sm:pl-64 transition-all duration-300 w-full h-14 bg-gray-700 text-white flex justify-center fixed z-[9]">
     <div class="container mx-auto px-5 sm:px-10 md:px-10 lg:px-10 xl:px-10 2xl:px-60 flex justify-between items-center">
         <div class="flex justify-start items-center max-w-[70%]">
             <a href="javascript:void(0)" @click="sidebarOpened = ! sidebarOpened" class="w-6 h-6 p-4 rounded-full sm:hidden -ml-1 mr-4 flex justify-center items-center">
@@ -21,6 +21,7 @@
                 <!-- Authentication -->
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
+                    <x-dropdown-link :href="''">快速上传</x-dropdown-link>
                     <x-dropdown-link :href="''">上传图片</x-dropdown-link>
                     <x-dropdown-link :href="''">设置</x-dropdown-link>
                     <x-dropdown-link :href="route('logout')" onclick="event.preventDefault(); this.closest('form').submit();">
