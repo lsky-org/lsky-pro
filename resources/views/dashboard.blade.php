@@ -1,3 +1,3 @@
 <x-app-layout>
-    11
+    <x-upload/>
 </x-app-layout>

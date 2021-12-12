@@ -15,4 +15,6 @@ mix.js('resources/js/app.js', 'public/js').postCss('resources/css/app.css', 'pub
     require('postcss-import'),
     require('tailwindcss'),
     require('autoprefixer'),
-]).less('resources/css/fonts.less', 'public/css');
+]).less('resources/css/fonts.less', 'public/css')
+    .less('resources/css/upload.less', 'public/css');
+
