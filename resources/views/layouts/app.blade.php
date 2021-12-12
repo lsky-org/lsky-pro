@@ -25,7 +25,7 @@
             @include('layouts.sidebar')
             @include('layouts.header')
             <div
-                 class="z-[1] bg-black opacity-50 h-full w-full fixed left-0 right-0 bottom-0 top-0"
+                 class="z-[1] bg-black opacity-50 h-full w-full fixed left-0 right-0 bottom-0 top-0 sm:hidden"
                  x-show="sidebarOpened"
                  @click.outside="sidebarOpened = false"
                  @close.stop="sidebarOpened = false"
