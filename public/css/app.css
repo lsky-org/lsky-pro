@@ -1109,6 +1109,9 @@ select {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+.whitespace-nowrap {
+  white-space: nowrap;
+}
 .break-all {
   word-break: break-all;
 }
@@ -1161,6 +1164,12 @@ select {
 }
 .border-dotted {
   border-style: dotted;
+}
+.border-hidden {
+  border-style: hidden;
+}
+.border-none {
+  border-style: none;
 }
 .border-gray-300 {
   --tw-border-opacity: 1;

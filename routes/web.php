@@ -18,7 +18,13 @@ Route::get('/', function () {
 });
 
 Route::post('/upload', function () {
-    return [];
+    return [
+        'url' => 'https://pic.iqy.ink/2021/12/12/e8cfd03eb787f.png',
+        'html' => '&lt;img src="https://pic.iqy.ink/2021/12/12/e8cfd03eb787f.png" alt="e212bc43771ad6d391952732a1713e31.png" title="e212bc43771ad6d391952732a1713e31.png" /&gt;',
+        'bbcode' => '[img]https://pic.iqy.ink/2021/12/12/e8cfd03eb787f.png[/img]',
+        'markdown' => '![e212bc43771ad6d391952732a1713e31.png](https://pic.iqy.ink/2021/12/12/e8cfd03eb787f.png)',
+        'markdown_with_link' => '[![e212bc43771ad6d391952732a1713e31.png](https://pic.iqy.ink/2021/12/12/e8cfd03eb787f.png)](https://pic.iqy.ink/2021/12/12/e8cfd03eb787f.png)',
+    ];
 });
 
 Route::get('/dashboard', function () {

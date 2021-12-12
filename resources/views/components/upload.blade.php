@@ -23,17 +23,24 @@
         </div>
     </div>
 
-    <div class="mb-4 p-4 bg-white rounded-md relative group">
-        <span id="copy-all" class="absolute top-2 right-2 px-2 py-1 rounded-md text-xs text-gray-800 bg-gray-100 cursor-pointer hidden group-hover:block">复制全部</span>
-        <div id="link-tabs" class="flex flex-nowrap overflow-scroll scrollbar-none text-sm">
-            <a href="javascript:void(0)" class="flex justify-center items-center px-8 py-2 border-b-2 border-indigo-500">URL</a>
-            <a href="javascript:void(0)" class="flex justify-center items-center px-8 py-2 border-indigo-500">HTML</a>
-            <a href="javascript:void(0)" class="flex justify-center items-center px-8 py-2 border-indigo-500">BBCode</a>
-            <a href="javascript:void(0)" class="flex justify-center items-center px-8 py-2 border-indigo-500">Markdown</a>
-            <a href="javascript:void(0)" class="flex justify-center items-center px-8 py-2 border-indigo-500" style="white-space: nowrap">Markdown with link</a>
+    <div id="links-container" class="hidden mb-4 p-4 bg-white rounded-md relative group">
+        <div class="absolute top-2 right-2 flex">
+            <span id="copy-all" class="px-2 py-1 rounded-md text-xs text-gray-800 bg-gray-100 cursor-pointer hidden group-hover:block">复制全部</span>
+            <span id="clear-all" class="ml-1 px-2 py-1 rounded-md text-xs text-gray-800 bg-gray-100 cursor-pointer hidden group-hover:block">清除</span>
         </div>
-        <div id="links" class="mt-2 space-y-2">
-            <p class="select-all hover:bg-gray-100 text-gray-600 rounded px-2 py-1 cursor-pointer overflow-scroll scrollbar-none">https://www.baidu.com/asdqwfdvergfweqwfwefw4gtwdvweqwd.jpg</p>
+        <div id="link-tabs" class="flex flex-nowrap overflow-scroll scrollbar-none text-sm">
+            <a href="javascript:void(0)" data-tab-name="url" class="hover:bg-gray-100 flex justify-center items-center px-8 py-2 border-b-2 border-indigo-500">URL</a>
+            <a href="javascript:void(0)" data-tab-name="html" class="hover:bg-gray-100 flex justify-center items-center px-8 py-2 border-b-2 border-transparent">HTML</a>
+            <a href="javascript:void(0)" data-tab-name="bbcode" class="hover:bg-gray-100 flex justify-center items-center px-8 py-2 border-b-2 border-transparent">BBCode</a>
+            <a href="javascript:void(0)" data-tab-name="markdown" class="hover:bg-gray-100 flex justify-center items-center px-8 py-2 border-b-2 border-transparent">Markdown</a>
+            <a href="javascript:void(0)" data-tab-name="markdown_with_link" class="hover:bg-gray-100 flex justify-center items-center px-8 py-2 border-b-2 border-transparent whitespace-nowrap">Markdown with link</a>
+        </div>
+        <div id="links" class="mt-2">
+            <div data-tab="url" class="space-y-2"></div>
+            <div data-tab="html" class="hidden space-y-2"></div>
+            <div data-tab="bbcode" class="hidden space-y-2"></div>
+            <div data-tab="markdown" class="hidden space-y-2"></div>
+            <div data-tab="markdown_with_link" class="hidden space-y-2"></div>
         </div>
     </div>
 </div>
@@ -85,6 +92,7 @@
             }
         });
         var $previews = $('#upload-preview');
+        var $links = $('#links-container');
         // 获取某个预览图片dom
         var $preview = function (id) {
             return $previews.find('[data-id="' + id + '"]');
@@ -120,6 +128,11 @@
         });
         uploader.on('uploadSuccess', function (file, response) {
             $preview(file.id).attr('uploaded', true).find('.upload-info').text('上传成功').addClass('text-green-800');
+            // 追加链接
+            for (var key in response) {
+                $('#links [data-tab="' + key + '"]').append('<p class="whitespace-nowrap select-all mt-1 bg-gray-50 hover:bg-gray-200 text-gray-600 rounded px-2 py-1 cursor-pointer overflow-scroll scrollbar-none">' + response[key].toString() + '</p>')
+            }
+            $links.show();
         });
         uploader.on('uploadComplete', function (file) {
         });
@@ -162,6 +175,21 @@
             if (method === 'upload') {
                 uploader.upload(id);
             }
+        });
+
+        $('[data-tab-name]').click(function () {
+            $(this).removeClass('border-transparent')
+                .addClass('border-indigo-500')
+                .siblings()
+                .removeClass('border-indigo-500')
+                .addClass('border-transparent');
+            $('[data-tab]').hide();
+            $('[data-tab="' + $(this).data('tab-name') + '"]').show()
+        });
+
+        $('#clear-all').click(function () {
+            $('[data-tab]').html('')
+            $links.hide();
         });
 
     </script>
