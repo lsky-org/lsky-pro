@@ -18,7 +18,7 @@
             </div>
             <div class="flex flex-col space-y-2 mb-5">
                 <p class="text-gray-400 text-sm mx-4">我的</p>
-                <x-nav-link :active="request()->routeIs('upload')">
+                <x-nav-link :href="route('upload')" :active="request()->routeIs('upload')">
                     <x-slot name="icon"><i class="fas fa-cloud-upload-alt text-blue-500"></i></x-slot>
                     <x-slot name="name">上传图片</x-slot>
                 </x-nav-link>

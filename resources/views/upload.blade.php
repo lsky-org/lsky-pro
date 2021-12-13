@@ -1,3 +1,3 @@
 <x-app-layout>
-    仪表盘
+    <x-upload/>
 </x-app-layout>

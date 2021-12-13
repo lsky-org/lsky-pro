@@ -13,25 +13,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('/');
+use App\Http\Controllers\Controller;
+use App\Http\Controllers\User\UserController;
 
-Route::post('/upload', function () {
-    $data = [
-        'url' => 'https://pic.iqy.ink/2021/12/12/e8cfd03eb787f.png',
-        'html' => '&lt;img src="https://pic.iqy.ink/2021/12/12/e8cfd03eb787f.png" alt="e212bc43771ad6d391952732a1713e31.png" title="e212bc43771ad6d391952732a1713e31.png" /&gt;',
-        'bbcode' => '[img]https://pic.iqy.ink/2021/12/12/e8cfd03eb787f.png[/img]',
-        'markdown' => '![e212bc43771ad6d391952732a1713e31.png](https://pic.iqy.ink/2021/12/12/e8cfd03eb787f.png)',
-        'markdown_with_link' => '[![e212bc43771ad6d391952732a1713e31.png](https://pic.iqy.ink/2021/12/12/e8cfd03eb787f.png)](https://pic.iqy.ink/2021/12/12/e8cfd03eb787f.png)',
-    ];
-    $status = true;
-    $message = '上传失败，储存空间不足';
-    return compact('status', 'data', 'message');
+Route::get('/', fn () => view('welcome'))->name('/');
+Route::post('/upload', [Controller::class, 'upload']);
+Route::group(['middleware' => ['auth'],], function () {
+    Route::get('/dashboard', [UserController::class, 'dashboard'])->name('dashboard');
+    Route::get('/upload', fn () => view('upload'))->name('upload');
 });
-
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
 
 require __DIR__.'/auth.php';
