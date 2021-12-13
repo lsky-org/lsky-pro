@@ -54,7 +54,7 @@
             <div class="w-10 h-10 bg-gray-200 rounded-lg cursor-pointer overflow-hidden">
                 <img class="w-full h-full" src="__src__">
             </div>
-            <div class="flex justify-end flex-col ml-2 w-[80%] opacity-50">
+            <div class="flex justify-end flex-col ml-2 w-[80%] opacity-70">
                 <p class="text-sm truncate">__name__</p>
                 <p class="text-xs truncate">
                     <span>__info__</span>, <span class="upload-info">等待上传</span>
@@ -137,31 +137,38 @@
             $getPreview(file.id).find('[data-operate="upload"]').hide();
         });
         uploader.on('uploadAccept', function (object, ret) {
-            console.log('uploadAccept', object, ret)
         });
         uploader.on('uploadProgress', function (file, percentage) {
             var $preview = $getPreview(file.id);
             var $uploadInfo = $preview.find('.upload-info');
             var $uploadProgress = $preview.find('.upload-progress');
             var rate = (percentage * 100).toFixed(2) + '%';
-            $uploadInfo.text('正在上传...' + rate);
+            $uploadInfo.text('上传中...' + rate);
             $uploadProgress.css('width', rate);
         });
         uploader.on('uploadError', function (file, reason) {
+            // Status Code: 400 ~ 400
             if (reason === 'http') {
-                // 400 ~ 400
-                $setPreviewStatus($getPreview(file.id), UPLOAD_ERROR, '服务异常，请刷新重试')
             }
+            if (reason === 'server') {
+            }
+            $setPreviewStatus($getPreview(file.id), UPLOAD_ERROR, '服务异常，请刷新重试')
         });
         uploader.on('uploadSuccess', function (file, response) {
             var $preview = $getPreview(file.id);
-            $preview.attr('uploaded', true);
-            $setPreviewStatus($preview, UPLOAD_SUCCESS);
-            // 追加链接
-            for (var key in response) {
-                $('#links [data-tab="' + key + '"]').append('<p class="whitespace-nowrap select-all mt-1 bg-gray-50 hover:bg-gray-200 text-gray-600 rounded px-2 py-1 cursor-pointer overflow-scroll scrollbar-none">' + response[key].toString() + '</p>')
+            if (response.status) {
+                $preview.attr('uploaded', true);
+                $setPreviewStatus($preview, UPLOAD_SUCCESS);
+                // 追加链接
+                for (var key in response.data) {
+                    $('#links [data-tab="' + key + '"]').append('<p class="whitespace-nowrap select-all mt-1 bg-gray-50 hover:bg-gray-200 text-gray-600 rounded px-2 py-1 cursor-pointer overflow-scroll scrollbar-none">' + response.data[key].toString() + '</p>')
+                }
+                $links.show();
+            } else {
+                $setPreviewStatus($preview, UPLOAD_ERROR, response.message);
+                // 重新显示上传按钮
+                $preview.find('[data-operate="upload"]').show();
             }
-            $links.show();
         });
         uploader.on('uploadComplete', function (file) {
             console.log('uploadComplete', file)
@@ -180,7 +187,8 @@
             if (uploader.isInProgress()) {
                 return false;
             }
-           uploader.upload();
+            // 上传队列中状态正常的文件，上传失败的需要传指定文件重新上传
+            uploader.upload();
         });
 
         $previews.click(function (e) {
