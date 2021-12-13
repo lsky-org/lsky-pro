@@ -7,7 +7,7 @@
             <a href="" class="text-xl truncate">仪表盘</a>
         </div>
         <div class="flex justify-end items-center">
-            @include('layouts.user-dropdown')
+            @include('layouts.user-nav')
         </div>
     </div>
 </header>

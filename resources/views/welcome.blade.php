@@ -7,7 +7,7 @@
                 </div>
                 <div class="flex justify-end items-center space-x-3">
                     @if(Auth::check())
-                        @include('layouts.user-dropdown')
+                        @include('layouts.user-nav')
                     @else
                         <a href="{{ route('login') }}" class="text-gray-300 hover:bg-gray-600 hover:text-white px-3 py-2 rounded-md text-sm font-medium">登录</a>
                         <a href="{{ route('register') }}" class="text-gray-300 hover:bg-gray-600 hover:text-white px-3 py-2 rounded-md text-sm font-medium">注册</a>

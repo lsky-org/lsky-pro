@@ -12,9 +12,9 @@
         <!-- Authentication -->
         <form method="POST" action="{{ route('logout') }}">
             @csrf
-            <x-dropdown-link :href="''">快速上传</x-dropdown-link>
-            <x-dropdown-link :href="''">上传图片</x-dropdown-link>
-            <x-dropdown-link :href="''">设置</x-dropdown-link>
+            <x-dropdown-link href="{{ route('/') }}">上传图片</x-dropdown-link>
+            <x-dropdown-link href="{{ route('/') }}">仪表盘</x-dropdown-link>
+            <x-dropdown-link href="{{ route('/') }}">设置</x-dropdown-link>
             <x-dropdown-link :href="route('logout')" onclick="event.preventDefault(); this.closest('form').submit();">
                 {{ __('Log Out') }}
             </x-dropdown-link>
