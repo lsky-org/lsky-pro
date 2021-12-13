@@ -70,6 +70,9 @@
 
 @push('scripts')
     <script>
+        const UPLOAD_WAITING = 0; // 等待上传
+        const UPLOAD_SUCCESS = 1; // 上传成功
+        const UPLOAD_ERROR = 2; // 上传失败
         var uploader = WebUploader.create({
             server: '/upload',
             dnd: '#picker-dnd',
@@ -82,9 +85,7 @@
             // fileNumLimit: 10,
             // fileSizeLimit: 20,
             // fileSingleSizeLimit: 10,
-            formData: {
-                "_token": $('meta[name="csrf-token"]').attr('content'),
-            },
+            formData: {},
             accept: {
                 title: 'Images',
                 extensions: 'gif,jpg,jpeg,bmp,png',
@@ -94,9 +95,29 @@
         var $previews = $('#upload-preview');
         var $links = $('#links-container');
         // 获取某个预览图片dom
-        var $preview = function (id) {
+        var $getPreview = function (id) {
             return $previews.find('[data-id="' + id + '"]');
         }
+        // 设置某个预览片上传状态
+        var $setPreviewStatus = function ($preview, status, msg) {
+            var $info = $preview.find('.upload-info');
+            $info.removeClass('text-green-800 text-red-500');
+            switch (status) {
+                case UPLOAD_WAITING:
+                    $info.text('等待上传');
+                    break;
+                case UPLOAD_SUCCESS:
+                    $info.addClass('text-green-800').text('上传成功');
+                    break;
+                case UPLOAD_ERROR:
+                    $info.addClass('text-red-500').text('上传失败');
+                    break;
+            }
+            if (msg) $info.text(msg);
+        };
+        uploader.on('uploadBeforeSend', function (object, data, headers) {
+            headers['X-CSRF-TOKEN'] = $('meta[name="csrf-token"]').attr('content');
+        });
         uploader.on('fileQueued', function(file) {
             // 创建缩略图
             uploader.makeThumb(file, function(error, src) {
@@ -113,21 +134,29 @@
             }, 100, 100);
         });
         uploader.on('uploadStart', function (file) {
-            $preview(file.id).find('[data-operate="upload"]').hide();
+            $getPreview(file.id).find('[data-operate="upload"]').hide();
         });
         uploader.on('uploadAccept', function (object, ret) {
+            console.log('uploadAccept', object, ret)
         });
         uploader.on('uploadProgress', function (file, percentage) {
-            var $uploadInfo = $preview(file.id).find('.upload-info');
-            var $uploadProgress = $preview(file.id).find('.upload-progress');
+            var $preview = $getPreview(file.id);
+            var $uploadInfo = $preview.find('.upload-info');
+            var $uploadProgress = $preview.find('.upload-progress');
             var rate = (percentage * 100).toFixed(2) + '%';
-            $uploadInfo.text(rate);
+            $uploadInfo.text('正在上传...' + rate);
             $uploadProgress.css('width', rate);
         });
         uploader.on('uploadError', function (file, reason) {
+            if (reason === 'http') {
+                // 400 ~ 400
+                $setPreviewStatus($getPreview(file.id), UPLOAD_ERROR, '服务异常，请刷新重试')
+            }
         });
         uploader.on('uploadSuccess', function (file, response) {
-            $preview(file.id).attr('uploaded', true).find('.upload-info').text('上传成功').addClass('text-green-800');
+            var $preview = $getPreview(file.id);
+            $preview.attr('uploaded', true);
+            $setPreviewStatus($preview, UPLOAD_SUCCESS);
             // 追加链接
             for (var key in response) {
                 $('#links [data-tab="' + key + '"]').append('<p class="whitespace-nowrap select-all mt-1 bg-gray-50 hover:bg-gray-200 text-gray-600 rounded px-2 py-1 cursor-pointer overflow-scroll scrollbar-none">' + response[key].toString() + '</p>')
@@ -135,9 +164,10 @@
             $links.show();
         });
         uploader.on('uploadComplete', function (file) {
+            console.log('uploadComplete', file)
         });
-        uploader.on('error', function (type) {
-            console.log(type)
+        uploader.on('error', function (type, f) {
+            console.log('error', type, f)
         });
 
         $('#upload-all').click(function (e) {
@@ -164,13 +194,13 @@
         });
 
         $previews.on('click', '[data-operate]', function () {
-            var $preview = $(this).closest('[data-id]');
+            var $getPreview = $(this).closest('[data-id]');
             var method = $(this).data('operate');
-            var id = $preview.data('id');
+            var id = $getPreview.data('id');
             if (method === 'remove') {
                 uploader.cancelFile(id);
                 uploader.removeFile(id, true);
-                $preview.remove();
+                $getPreview.remove();
             }
             if (method === 'upload') {
                 uploader.upload(id);
