@@ -30,6 +30,7 @@ class CreateImagesTable extends Migration
             $table->string('mimetype', 32)->comment('文件类型');
             $table->string('md5', 32)->comment('文件MD5');
             $table->string('sha1')->comment('文件SHA1');
+            $table->tinyInteger('permission')->default(0)->comment('访问权限');
             $table->boolean('is_unhealthy')->default(false)->comment('是否为不健康的');
             $table->string('uploaded_ip')->default('')->comment('上传IP');
             $table->timestamps();

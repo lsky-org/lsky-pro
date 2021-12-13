@@ -20,6 +20,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string $mimetype
  * @property string $md5
  * @property string $sha1
+ * @property int $permission
  * @property boolean $is_unhealthy
  * @property string $uploaded_ip
  * @property Carbon $updated_at
@@ -44,6 +45,7 @@ class Image extends Model
         'mimetype',
         'md5',
         'sha1',
+        'permission',
         'is_unhealthy',
         'uploaded_ip',
     ];
@@ -54,6 +56,7 @@ class Image extends Model
         'strategy_id',
         'uploaded_ip',
         'is_unhealthy',
+        'permission',
     ];
 
     protected $casts = [
