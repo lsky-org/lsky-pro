@@ -80,8 +80,10 @@ class User extends Authenticatable
     {
         static::creating(function (self $user) {
             $user->configs = collect([
-                'default_album' => 0,
-                'default_strategy' => 0,
+                'upload_default_album' => 0, // 默认上传文件夹
+                'upload_default_strategy' => 0, // 默认上传策略
+                'is_upload_show_preview', // 是否显示上传预览
+                'is_upload_auto_clear_preview', // 上传成功是否自动删除预览图
             ])->merge($user->configs ?: []);
         });
     }
