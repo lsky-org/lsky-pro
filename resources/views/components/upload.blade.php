@@ -5,6 +5,7 @@
 @push('scripts')
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/webuploader@0.1.8/dist/webuploader.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js"></script>
 @endpush
 
 <div class="pb-6 h-full">
@@ -29,7 +30,7 @@
             <span id="clear-all" class="ml-1 px-2 py-1 rounded-md text-xs text-gray-800 bg-gray-100 cursor-pointer hidden group-hover:block">清除</span>
         </div>
         <div id="link-tabs" class="flex flex-nowrap overflow-scroll scrollbar-none text-sm">
-            <a href="javascript:void(0)" data-tab-name="url" class="hover:bg-gray-100 flex justify-center items-center px-8 py-2 border-b-2 border-indigo-500">URL</a>
+            <a href="javascript:void(0)" data-tab-name="url" class="hover:bg-gray-100 flex justify-center items-center px-8 py-2 border-b-2 border-indigo-500 active">URL</a>
             <a href="javascript:void(0)" data-tab-name="html" class="hover:bg-gray-100 flex justify-center items-center px-8 py-2 border-b-2 border-transparent">HTML</a>
             <a href="javascript:void(0)" data-tab-name="bbcode" class="hover:bg-gray-100 flex justify-center items-center px-8 py-2 border-b-2 border-transparent">BBCode</a>
             <a href="javascript:void(0)" data-tab-name="markdown" class="hover:bg-gray-100 flex justify-center items-center px-8 py-2 border-b-2 border-transparent">Markdown</a>
@@ -69,6 +70,28 @@
 </script>
 
 @push('scripts')
+    <script>
+        (new ClipboardJS('#copy-all', {
+            text: function(trigger) {
+                var text = '';
+                $('[data-tab="' + $('#link-tabs a.active').data('tab-name') + '"] p').each(function (i) {
+                    if (i !== 0) {
+                        text += '\r\n';
+                    }
+                    text += $(this).text();
+                });
+                return text;
+            }
+        })).on('success', function(e) {
+            if (! $(e.trigger).attr('disabled')) {
+                var text = $(e.trigger).text();
+                $(e.trigger).attr('disabled', true).text('复制成功');
+                setTimeout(function () {
+                    $(e.trigger).attr('disabled', false).text(text);
+                }, 1000);
+            }
+        }).on('error', function(e) {});
+    </script>
     <script>
         const UPLOAD_WAITING = 0; // 等待上传
         const UPLOAD_SUCCESS = 1; // 上传成功
@@ -216,10 +239,10 @@
         });
 
         $('[data-tab-name]').click(function () {
-            $(this).removeClass('border-transparent')
-                .addClass('border-indigo-500')
+            $(this).removeClass('active border-transparent')
+                .addClass('active border-indigo-500')
                 .siblings()
-                .removeClass('border-indigo-500')
+                .removeClass('active border-indigo-500')
                 .addClass('border-transparent');
             $('[data-tab]').hide();
             $('[data-tab="' + $(this).data('tab-name') + '"]').show()
