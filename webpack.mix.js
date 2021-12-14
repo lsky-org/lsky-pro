@@ -18,3 +18,9 @@ mix.js('resources/js/app.js', 'public/js').postCss('resources/css/app.css', 'pub
 ]);
 mix.less('resources/css/fontawesome.less', 'public/css');
 mix.less('resources/css/common.less', 'public/css');
+
+mix.copy('node_modules/blueimp-file-upload/js/vendor/jquery.ui.widget.js', 'public/js');
+mix.copy('node_modules/blueimp-file-upload/js/jquery.iframe-transport.js', 'public/js');
+mix.copy('node_modules/blueimp-file-upload/js/jquery.fileupload.js', 'public/js');
+mix.copy('node_modules/blueimp-load-image/js/load-image.all.min.js', 'public/js')
+

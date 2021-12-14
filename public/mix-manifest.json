@@ -2,5 +2,9 @@
     "/js/app.js": "/js/app.js",
     "/css/app.css": "/css/app.css",
     "/css/common.css": "/css/common.css",
-    "/css/fontawesome.css": "/css/fontawesome.css"
+    "/css/fontawesome.css": "/css/fontawesome.css",
+    "/js/jquery.ui.widget.js": "/js/jquery.ui.widget.js",
+    "/js/jquery.iframe-transport.js": "/js/jquery.iframe-transport.js",
+    "/js/jquery.fileupload.js": "/js/jquery.fileupload.js",
+    "/js/load-image.all.min.js": "/js/load-image.all.min.js"
 }

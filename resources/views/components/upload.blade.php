@@ -1,5 +1,8 @@
 @push('scripts')
-    <script src="https://cdn.jsdelivr.net/npm/webuploader@0.1.8/dist/webuploader.js"></script>
+    <script src="{{ asset('js/jquery.ui.widget.js') }}"></script>
+    <script src="{{ asset('js/jquery.iframe-transport.js') }}"></script>
+    <script src="{{ asset('js/jquery.fileupload.js') }}"></script>
+    <script src="{{ asset('js/load-image.all.min.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js"></script>
 @endpush
 
@@ -9,7 +12,7 @@
     <div class="mb-4 p-4 bg-white rounded-md">
         <h1 class="tracking-wider text-2xl text-gray-700 mb-2" style="text-shadow: -4px 4px 0 rgb(0 0 0 / 10%);">Image Upload</h1>
         <p class="text-gray-500 text-sm">最大可上传 1.00 MB 的图片，单次同时可选择 3 张。本站已托管 3267 张图片。</p>
-        <div class="mt-3 rounded-md border-2 border-dotted border-stone-300 w-full h-full" id="picker-dnd" onclick="$('#picker input').click()">
+        <div class="mt-3 rounded-md border-2 border-dotted border-stone-300 w-full h-full" id="picker-dnd" onclick="$('#picker').click()">
             <div id="upload-container" class="relative group flex flex-col justify-center items-center p-2 w-full h-full min-h-[150px] sm:min-h-[340px] space-y-4 text-gray-500 cursor-pointer">
                 <i id="clear" class="fas fa-times absolute top-1 right-1 w-8 h-8 flex justify-center items-center cursor-pointer text-xl text-center hidden group-hover:block text-gray-400 hover:text-gray-500"></i>
                 <p id="upload-all" title="点我上传全部"><i class="fas fa-cloud-upload-alt text-6xl hover:text-indigo-400"></i></p>
@@ -91,147 +94,136 @@
         const UPLOAD_WAITING = 0; // 等待上传
         const UPLOAD_SUCCESS = 1; // 上传成功
         const UPLOAD_ERROR = 2; // 上传失败
-        var uploader = WebUploader.create({
-            server: '/upload',
-            dnd: '#picker-dnd',
-            disableGlobalDnd: true,
-            pick: {
-                id: '#picker',
-                multiple: true,
-            },
-            threads: 3,
-            fileSingleSizeLimit: 5242880,
-            formData: {},
-            accept: {
-                title: 'Images',
-                extensions: 'gif,jpg,jpeg,bmp,png',
-                mimeTypes: 'image/*'
-            }
-        });
-        var $previews = $('#upload-preview');
-        var $links = $('#links-container');
-        // 获取某个预览图片dom
-        var $getPreview = function (id) {
-            return $previews.find('[data-id="' + id + '"]');
+        let $previews = $('#upload-preview');
+        let $links = $('#links-container');
+        let $picker = $('#picker');
+        let queue = []; // 文件队列
+        /**
+         * 设置状态
+         * @param data
+         * @param status
+         */
+        const setStatus = (data, status) => {
+          queue[data.guid].status = data.status = status;
         }
-        // 设置某个预览片上传状态
-        var $setPreviewStatus = function ($preview, status, msg) {
-            var $info = $preview.find('.upload-info');
-            $info.removeClass('text-green-800 text-red-500');
-            switch (status) {
-                case UPLOAD_WAITING:
-                    $info.text('等待上传');
-                    break;
-                case UPLOAD_SUCCESS:
+        $picker.fileupload({
+            url: '{{ route('upload') }}',
+            autoUpload: false,
+            dataType: 'json',
+            limitMultiFileUploads: 1,
+            limitConcurrentUploads: 3,
+            pasteZone: $(document),
+            dropZone: $('#picker-dnd'),
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+            },
+            formData: (form) => {
+
+            },
+            add: (e, data) => {
+                // TODO 验证文件size、类型等
+                let guid = utils.guid();
+                data.guid = guid;
+                data.status = UPLOAD_WAITING;
+                let file = data.files[0]
+                loadImage(file, function (img) {
+                        if (img.type === 'error') {
+                            toastr.error(`文件 ${file.name} 缩略图生成失败`);
+                            console.error('Error loading image file')
+                        }
+                        let html = $('#image-preview-tpl')
+                            .html()
+                            .replace(/__id__/g, guid)
+                            .replace(/__src__/g, img.toDataURL())
+                            .replace(/__name__/g, file.name)
+                            .replace(/__info__/g, utils.formatSize(file.size));
+                        data.$preview = $previews.append(html).show().find(`[data-id="${guid}"]`);
+                        queue[guid] = data;
+                    }, {
+                        maxWidth: 200,
+                        maxHeight: 200,
+                        meta: true,
+                        orientation: true,
+                        canvas: true
+                    },
+                )
+            },
+            send: (e, data) => {
+                data.$preview.find('[data-operate="upload"]').hide();
+            },
+            progress: (e, data) => {
+                let progress = parseInt(data.loaded / data.total * 100, 10);
+                let $uploadInfo = data.$preview.find('.upload-info');
+                let $uploadProgress = data.$preview.find('.upload-progress');
+                let rate = progress + '%';
+                $uploadInfo.text('上传中...' + rate);
+                $uploadProgress.css('width', rate);
+            },
+            done: (e, data) => {
+                let $info = data.$preview.find('.upload-info');
+                let response = data.result;
+                if (response.status) {
+                    setStatus(data, UPLOAD_SUCCESS);
+                    data.$preview.attr('uploaded', true);
                     $info.addClass('text-green-800').text('上传成功');
-                    break;
-                case UPLOAD_ERROR:
-                    $info.addClass('text-red-500').text('上传失败');
-                    break;
-            }
-            if (msg) $info.text(msg);
-        };
-        uploader.on('uploadBeforeSend', function (object, data, headers) {
-            headers['X-CSRF-TOKEN'] = $('meta[name="csrf-token"]').attr('content');
-        });
-        uploader.on('fileQueued', function(file) {
-            // 创建缩略图
-            uploader.makeThumb(file, function(error, src) {
-                if (error) {
-                    // 创建失败
+                    // 追加链接
+                    for (let key in response.data) {
+                        $('#links [data-tab="' + key + '"]').append('<p class="whitespace-nowrap select-all mt-1 bg-gray-50 hover:bg-gray-200 text-gray-600 rounded px-2 py-1 cursor-pointer overflow-scroll scrollbar-none">' + response.data[key].toString() + '</p>')
+                    }
+                    $links.show();
+                } else {
+                    setStatus(data, UPLOAD_ERROR);
+                    $info.addClass('text-red-500').text(response.message);
+                    // 重新显示上传按钮
+                    data.$preview.find('[data-operate="upload"]').show();
                 }
-                var html = $('#image-preview-tpl')
-                    .html()
-                    .replace(/__id__/g, file.id)
-                    .replace(/__src__/g, src)
-                    .replace(/__name__/g, file.name)
-                    .replace(/__info__/g, utils.formatSize(file.size));
-                $previews.append(html).show();
-            }, 100, 100);
-        });
-        uploader.on('uploadStart', function (file) {
-            $getPreview(file.id).find('[data-operate="upload"]').hide();
-        });
-        uploader.on('uploadAccept', function (object, ret) {
-        });
-        uploader.on('uploadProgress', function (file, percentage) {
-            var $preview = $getPreview(file.id);
-            var $uploadInfo = $preview.find('.upload-info');
-            var $uploadProgress = $preview.find('.upload-progress');
-            var rate = (percentage * 100).toFixed(2) + '%';
-            $uploadInfo.text('上传中...' + rate);
-            $uploadProgress.css('width', rate);
-        });
-        uploader.on('uploadError', function (file, reason) {
-            // Status Code: 400 ~ 400
-            if (reason === 'http') {
-            }
-            if (reason === 'server') {
-            }
-            $setPreviewStatus($getPreview(file.id), UPLOAD_ERROR, '服务异常，请刷新重试')
-        });
-        uploader.on('uploadSuccess', function (file, response) {
-            var $preview = $getPreview(file.id);
-            if (response.status) {
-                $preview.attr('uploaded', true);
-                $setPreviewStatus($preview, UPLOAD_SUCCESS);
-                // 追加链接
-                for (var key in response.data) {
-                    $('#links [data-tab="' + key + '"]').append('<p class="whitespace-nowrap select-all mt-1 bg-gray-50 hover:bg-gray-200 text-gray-600 rounded px-2 py-1 cursor-pointer overflow-scroll scrollbar-none">' + response.data[key].toString() + '</p>')
-                }
-                $links.show();
-            } else {
-                $setPreviewStatus($preview, UPLOAD_ERROR, response.message);
+            },
+            fail: (e, data) => {
+                setStatus(data, UPLOAD_ERROR);
+                // TODO 检查403、419等状态码
+                data.$preview.find('.upload-info').addClass('text-red-500').text('服务端异常，请稍后重试');
                 // 重新显示上传按钮
-                $preview.find('[data-operate="upload"]').show();
-            }
-        });
-        uploader.on('uploadComplete', function (file) {
-            console.log('uploadComplete', file)
-        });
-        uploader.on('error', function (type, max, file) {
-            // 不同类型的错误，第二个和第三个参数会有不同，坑😢
-            if (type === 'F_EXCEED_SIZE') {
-                toastr.warning('文件大小超出限制(max: ' + utils.formatSize(max) + '), ' + file.name);
+                data.$preview.find('[data-operate="upload"]').show();
+            },
+            // 等同于jq的complete
+            always: (e, data) => {
+
             }
         });
 
-        $('#upload-all').click(function (e) {
-           e.stopPropagation();
-            // 没有任何未上传的文件，选择文件
-            if ($previews.find('[data-id]').length === $previews.find('[data-id][uploaded]').length) {
-                $('#picker input').click();
+        $(document).on('drop dragover', (e) => e.preventDefault());
+        $previews.click((e) => e.stopPropagation());
+
+        $('#upload-all').click((e) => {
+            // 队列中没有文件，选择则继续冒泡，选择文件
+            if (Object.values(queue).filter((item) => item.status !== UPLOAD_SUCCESS).length) {
+                e.stopPropagation();
+                for (const key in queue) {
+                    if (queue[key].status !== UPLOAD_SUCCESS) {
+                        queue[key].submit();
+                    }
+                }
             }
-            // 组件正在上传，不进行任何操作
-            if (uploader.isInProgress()) {
-                return false;
-            }
-            // 上传队列中状态正常的文件，上传失败的需要传指定文件重新上传
-            uploader.upload();
         });
 
-        $previews.click(function (e) {
-            e.stopPropagation();
+        $previews.on('click', '[data-operate]', function () {
+            let $preview = $(this).closest('[data-id]');
+            let method = $(this).data('operate');
+            let id = $preview.data('id');
+            if (method === 'remove') {
+                queue[id].abort();
+                delete queue[id];
+                $preview.remove();
+            }
+            if (method === 'upload' && queue[id].status !== UPLOAD_SUCCESS) {
+                queue[id].submit();
+            }
         });
 
         $('#clear').click(function (e) {
             e.stopPropagation();
-            uploader.reset();
+            queue = [];
             $previews.html('');
-        });
-
-        $previews.on('click', '[data-operate]', function () {
-            var $getPreview = $(this).closest('[data-id]');
-            var method = $(this).data('operate');
-            var id = $getPreview.data('id');
-            if (method === 'remove') {
-                uploader.cancelFile(id);
-                uploader.removeFile(id, true);
-                $getPreview.remove();
-            }
-            if (method === 'upload') {
-                uploader.upload(id);
-            }
         });
 
         $('[data-tab-name]').click(function () {
@@ -248,6 +240,5 @@
             $('[data-tab]').html('')
             $links.hide();
         });
-
     </script>
 @endpush
