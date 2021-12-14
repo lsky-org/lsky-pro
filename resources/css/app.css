@@ -1,20 +1,3 @@
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
-
-.scrollbar-none::-webkit-scrollbar {
-    display: none;
-}
-
-.scrollbar-none {
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
-}
-
-progress::-webkit-progress-bar {
-    background-color: #d7d7d7;
-}
-
-progress::-webkit-progress-value {
-    background-color: #5dcafa;
-}

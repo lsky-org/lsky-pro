@@ -1,4 +1,5 @@
 window._ = require('lodash');
+window.$ = window.jQuery = require('jquery');
 
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
@@ -26,3 +27,13 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 //     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
 //     forceTLS: true
 // });
+
+window.toastr = require('toastr');
+toastr.options = {
+    "closeButton": true,
+    "debug": false,
+    "newestOnTop": true,
+    "progressBar": true,
+    "positionClass": "toast-bottom-right",
+    "preventDuplicates": false,
+}

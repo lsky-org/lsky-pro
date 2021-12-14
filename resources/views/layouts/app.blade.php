@@ -11,14 +11,15 @@
 
         <!-- Fonts -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
-        @stack('styles')
+        <link rel="stylesheet" href="{{ asset('css/fontawesome.css') }}">
 
         <!-- Styles -->
-        <link rel="stylesheet" href="{{ asset('css/fonts.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/common.css') }}">
         <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+        @stack('styles')
 
         <!-- Scripts -->
-        <script src="{{ asset('js/app.js') }}" defer></script>
+        <script src="{{ asset('js/app.js') }}"></script>
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100" x-data="{sidebarOpened: false}" x-cloak>

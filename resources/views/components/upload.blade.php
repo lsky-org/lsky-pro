@@ -1,10 +1,5 @@
-@push('styles')
-    <link rel="stylesheet" href="{{ asset('css/upload.css') }}">
-@endpush
-
 @push('scripts')
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/webuploader@0.1.8/dist/webuploader.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/webuploader@0.1.8/dist/webuploader.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js"></script>
 @endpush
 
@@ -105,9 +100,7 @@
                 multiple: true,
             },
             threads: 3,
-            // fileNumLimit: 10,
-            // fileSizeLimit: 20,
-            // fileSingleSizeLimit: 10,
+            fileSingleSizeLimit: 5242880,
             formData: {},
             accept: {
                 title: 'Images',
@@ -196,8 +189,11 @@
         uploader.on('uploadComplete', function (file) {
             console.log('uploadComplete', file)
         });
-        uploader.on('error', function (type, f) {
-            console.log('error', type, f)
+        uploader.on('error', function (type, max, file) {
+            // 不同类型的错误，第二个和第三个参数会有不同，坑😢
+            if (type === 'F_EXCEED_SIZE') {
+                toastr.warning('文件大小超出限制(max: ' + utils.formatSize(max) + '), ' + file.name);
+            }
         });
 
         $('#upload-all').click(function (e) {

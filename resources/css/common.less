@@ -1,0 +1,32 @@
+@import '~toastr';
+
+.scrollbar-none::-webkit-scrollbar {
+    display: none;
+}
+
+.scrollbar-none {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+}
+
+progress::-webkit-progress-bar {
+    background-color: #d7d7d7;
+}
+
+progress::-webkit-progress-value {
+    background-color: #5dcafa;
+}
+
+#toast-container {
+    &>div {
+        font-size: 13px;
+        padding: 10px 10px 10px 50px;
+        box-shadow: 0 0 12px rgba(183, 183, 183, 0.47);
+        &:hover {
+            box-shadow: 0 0 12px rgba(161, 161, 161, 0.47);
+        }
+    }
+}
+.toast-close-button {
+    right: -0.15em;
+}
