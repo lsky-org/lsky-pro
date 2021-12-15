@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\GroupConfigKey;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -37,14 +38,16 @@ class Group extends Model
     {
         static::creating(function (self $group) {
             $group->configs = collect([
-                'upload_max_size' => 5120, // 最大上传大小
-                'upload_single_num' => 3, // 单次同时上传数量
-                'is_need_review' => false, // 上传是否需要审查
-                'limit_per_day' => 0, // 每天可以上传数量，0 为不限制
-                'upload_allowed_types' => ['jpg', 'jpeg', 'gif', 'png', 'ico'], // 允许上传的文件类型
-                'path_naming_rule' => '{Y}/{m}/{d}', // 路径命名规则
-                'file_naming_rule' => '{uniqid}', // 文件命名规则
-                'user_initial_capacity' => 1048576, // 用户初始容量
+                GroupConfigKey::MaximumFileSize => 5120,
+                GroupConfigKey::ConcurrentUploadNum => 3,
+                GroupConfigKey::IsUploadNeedsReview => false,
+                GroupConfigKey::LimitPerHour => 0,
+                GroupConfigKey::LimitPerDay => 0,
+                GroupConfigKey::LimitPerWeek => 0,
+                GroupConfigKey::LimitPerMonth => 0,
+                GroupConfigKey::AcceptedFileSuffixes => ['jpg', 'jpeg', 'gif', 'png', 'ico'],
+                GroupConfigKey::PathNamingRule => '{Y}/{m}/{d}',
+                GroupConfigKey::FileNamingRule => '{uniqid}',
             ])->merge($group->configs ?: []);
         });
     }

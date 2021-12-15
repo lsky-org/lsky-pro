@@ -197,7 +197,7 @@
                     }
                     $links.show();
                 } else {
-                    setStatus(data, UPLOAD_ERROR, response.message);
+                    setStatus(data, UPLOAD_ERROR, "上传失败, " + response.message);
                     // 重新显示上传按钮
                     data.$preview.find('[data-operate="upload"]').show();
                 }

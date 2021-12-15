@@ -2,26 +2,29 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\UploadException;
+use App\Http\Api;
 use App\Service\UploadService;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Support\Facades\Log;
 
 class Controller extends BaseController
 {
-    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+    use AuthorizesRequests, DispatchesJobs, ValidatesRequests, Api;
 
     public function upload(Request $request, UploadService $service): array
     {
-        // TODO 如果关闭了游客上传，返回404
-        // TODO 检测IP是否超出上传限制
-        // TODO 获取用户组
-        // TODO 判断储存容量
-        // TODO 获取策略列表，根据用户所选的策略上传
-        // TODO 检测是否存在该图片，有则直接返回
-        // TODO 图片保存至默认相册(若有)
+        try {
+        } catch (UploadException $e) {
+            return $this->error($e->getMessage());
+        } catch (\Throwable $e) {
+            Log::error("Web 上传文件时发生异常，", ['message' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
+            return $this->error('上传失败，请稍后再试');
+        }
         $data = [
             'url' => 'https://pic.iqy.ink/2021/12/12/e8cfd03eb787f.png',
             'html' => '&lt;img src="https://pic.iqy.ink/2021/12/12/e8cfd03eb787f.png" alt="e212bc43771ad6d391952732a1713e31.png" title="e212bc43771ad6d391952732a1713e31.png" /&gt;',
