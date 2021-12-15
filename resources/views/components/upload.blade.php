@@ -102,9 +102,27 @@
          * 设置状态
          * @param data
          * @param status
+         * @param message
          */
-        const setStatus = (data, status) => {
-          queue[data.guid].status = data.status = status;
+        const setStatus = (data, status, message) => {
+            queue[data.guid].status = data.status = status;
+            let $info = data.$preview.find('.upload-info');
+            $info.removeClass('text-green-500 text-red-500')
+            let msg = '';
+            switch (status) {
+                case UPLOAD_WAITING:
+                    msg = '等待上传';
+                    break;
+                case UPLOAD_SUCCESS:
+                    msg = '上传成功';
+                    $info.addClass('text-green-500');
+                    break;
+                case UPLOAD_ERROR:
+                    msg = '上传失败';
+                    $info.addClass('text-red-500')
+                    break;
+            }
+            $info.text(message ? message : msg);
         }
         $picker.fileupload({
             url: '{{ route('upload') }}',
@@ -121,11 +139,19 @@
 
             },
             add: (e, data) => {
-                // TODO 验证文件size、类型等
+                let file = data.files[0];
+                let ext = file.name.substr(file.name.lastIndexOf('.') + 1);
+                let allowSuffixes = ['png', 'jpg', 'jpeg', 'bmp', 'gif', 'webp', 'psd', 'svg', 'tiff', 'ico'];
+                if (allowSuffixes.indexOf(ext.toLowerCase()) === -1) {
+                    toastr.warning(`不支持的文件格式 ${file.name}`);
+                    return false;
+                }
+                if (file.size > 5242880) {
+                    toastr.warning(`文件 ${file.name} 超出大小限制(最大5MB)`);
+                    return false;
+                }
                 let guid = utils.guid();
                 data.guid = guid;
-                data.status = UPLOAD_WAITING;
-                let file = data.files[0]
                 loadImage(file, function (img) {
                         if (img.type === 'error') {
                             toastr.error(`文件 ${file.name} 缩略图生成失败`);
@@ -139,6 +165,7 @@
                             .replace(/__info__/g, utils.formatSize(file.size));
                         data.$preview = $previews.append(html).show().find(`[data-id="${guid}"]`);
                         queue[guid] = data;
+                        setStatus(data, UPLOAD_WAITING);
                     }, {
                         maxWidth: 200,
                         maxHeight: 200,
@@ -160,30 +187,28 @@
                 $uploadProgress.css('width', rate);
             },
             done: (e, data) => {
-                let $info = data.$preview.find('.upload-info');
                 let response = data.result;
                 if (response.status) {
-                    setStatus(data, UPLOAD_SUCCESS);
+                    setStatus(data, UPLOAD_SUCCESS)
                     data.$preview.attr('uploaded', true);
-                    $info.addClass('text-green-800').text('上传成功');
                     // 追加链接
                     for (let key in response.data) {
                         $('#links [data-tab="' + key + '"]').append('<p class="whitespace-nowrap select-all mt-1 bg-gray-50 hover:bg-gray-200 text-gray-600 rounded px-2 py-1 cursor-pointer overflow-scroll scrollbar-none">' + response.data[key].toString() + '</p>')
                     }
                     $links.show();
                 } else {
-                    setStatus(data, UPLOAD_ERROR);
-                    $info.addClass('text-red-500').text(response.message);
+                    setStatus(data, UPLOAD_ERROR, response.message);
                     // 重新显示上传按钮
                     data.$preview.find('[data-operate="upload"]').show();
                 }
             },
             fail: (e, data) => {
-                setStatus(data, UPLOAD_ERROR);
-                // TODO 检查403、419等状态码
-                data.$preview.find('.upload-info').addClass('text-red-500').text('服务端异常，请稍后重试');
                 // 重新显示上传按钮
                 data.$preview.find('[data-operate="upload"]').show();
+                if (data.jqXHR.status === 419) {
+                    return setStatus(data, UPLOAD_ERROR, '令牌错误，请刷新网页重试');
+                }
+                return setStatus(data, UPLOAD_ERROR, '服务端异常，请稍后重试');
             },
             // 等同于jq的complete
             always: (e, data) => {
