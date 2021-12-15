@@ -71,7 +71,7 @@
             </div>
         </div>
 
-        <div class="flex flex-col space-y-2 mb-5 px-5 w-full">
+        <div class="flex flex-col space-y-2 mb-5 px-5 w-full mt-10">
             <p class="text-gray-700 text-sm">容量使用</p>
             <progress class="w-full h-1.5 bg-gary-300" value="90" max="100"></progress>
             <p class="text-gray-700 text-sm truncate" title="0.00 Bytes / 1.00 GB">0.00 Bytes / 1.00 GB</p>

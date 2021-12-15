@@ -115,7 +115,7 @@
                     break;
                 case UPLOAD_SUCCESS:
                     msg = '上传成功';
-                    $info.addClass('text-green-500');
+                    $info.addClass('text-green-800');
                     break;
                 case UPLOAD_ERROR:
                     msg = '上传失败';
