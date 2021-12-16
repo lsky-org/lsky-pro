@@ -13,6 +13,7 @@
         "laravel/framework": "^8.65",
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
+        "overtrue/flysystem-qiniu": "~1.0",
         "overtrue/laravel-lang": "~5.0"
     },
     "require-dev": {

@@ -34,21 +34,31 @@ class Group extends Model
         'configs' => 'collection',
     ];
 
+    /**
+     * 默认组配置
+     *
+     * @return Collection
+     */
+    public static function getDefaultConfig(): Collection
+    {
+        return collect([
+            GroupConfigKey::MaximumFileSize => 5120,
+            GroupConfigKey::ConcurrentUploadNum => 3,
+            GroupConfigKey::IsUploadNeedsReview => false,
+            GroupConfigKey::LimitPerHour => 0,
+            GroupConfigKey::LimitPerDay => 0,
+            GroupConfigKey::LimitPerWeek => 0,
+            GroupConfigKey::LimitPerMonth => 0,
+            GroupConfigKey::AcceptedFileSuffixes => ['jpg', 'jpeg', 'gif', 'png', 'ico'],
+            GroupConfigKey::PathNamingRule => '{Y}/{m}/{d}',
+            GroupConfigKey::FileNamingRule => '{uniqid}',
+        ]);
+    }
+
     protected static function booted()
     {
         static::creating(function (self $group) {
-            $group->configs = collect([
-                GroupConfigKey::MaximumFileSize => 5120,
-                GroupConfigKey::ConcurrentUploadNum => 3,
-                GroupConfigKey::IsUploadNeedsReview => false,
-                GroupConfigKey::LimitPerHour => 0,
-                GroupConfigKey::LimitPerDay => 0,
-                GroupConfigKey::LimitPerWeek => 0,
-                GroupConfigKey::LimitPerMonth => 0,
-                GroupConfigKey::AcceptedFileSuffixes => ['jpg', 'jpeg', 'gif', 'png', 'ico'],
-                GroupConfigKey::PathNamingRule => '{Y}/{m}/{d}',
-                GroupConfigKey::FileNamingRule => '{uniqid}',
-            ])->merge($group->configs ?: []);
+            $group->configs = self::getDefaultConfig()->merge($group->configs ?: []);
         });
     }
 

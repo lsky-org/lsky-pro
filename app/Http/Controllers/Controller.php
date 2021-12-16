@@ -4,13 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Exceptions\UploadException;
 use App\Http\Api;
+use App\Models\User;
 use App\Service\UploadService;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class Controller extends BaseController
 {
@@ -19,7 +22,9 @@ class Controller extends BaseController
     public function upload(Request $request, UploadService $service): array
     {
         try {
-            $service->store($request);
+            /** @var User $user */
+            $user = Auth::user();
+            $service->store($request, $user);
         } catch (UploadException $e) {
             return $this->error($e->getMessage());
         } catch (\Throwable $e) {

@@ -30,8 +30,8 @@ use Laravel\Sanctum\HasApiTokens;
  * @property Carbon $updated_at
  * @property Carbon $created_at
  * @property-read Group $group
- * @property-read Album[] $albums
- * @property-read Image[] $images
+ * @property-read \Illuminate\Database\Eloquent\Collection $albums
+ * @property-read \Illuminate\Database\Eloquent\Collection $images
  */
 class User extends Authenticatable
 {
