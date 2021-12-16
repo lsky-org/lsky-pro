@@ -4,6 +4,7 @@ namespace Tests\Unit;
 
 use App\Enums\ConfigKey;
 use App\Utils;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Tests\TestCase;
 
@@ -18,7 +19,7 @@ class UtilTest extends TestCase
     {
         Cache::forget('configs');
 
-        if (is_array(Utils::config())) {
+        if (Utils::config() instanceof Collection) {
             $this->assertTrue(true);
         }
 
@@ -26,11 +27,15 @@ class UtilTest extends TestCase
             $this->assertTrue(true);
         }
 
-        if (is_array(Utils::config(ConfigKey::MailConfigs))) {
+        if (Utils::config(ConfigKey::MailConfigs) instanceof Collection) {
             $this->assertTrue(true);
         }
 
         if (is_array(Utils::config(ConfigKey::MailConfigs.'.mailers'))) {
+            $this->assertTrue(true);
+        }
+
+        if (is_bool(Utils::config(ConfigKey::IsAllowGuestUpload))) {
             $this->assertTrue(true);
         }
     }

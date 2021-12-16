@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class UploadService
 {
-    public function store(Request $request, ?User $user)//: Image
+    public function store(Request $request, ?User $user = null)//: Image
     {
         // TODO 如果关闭了游客上传，返回404
         // TODO 检测IP是否超出上传限制
