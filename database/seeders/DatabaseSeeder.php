@@ -2,7 +2,11 @@
 
 namespace Database\Seeders;
 
+use App\Enums\ConfigKey;
+use App\Enums\Mail\SmtpOption;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
 {
@@ -13,6 +17,31 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
+        $date = Carbon::now()->format('Y-m-d H:i:s');
+        $array = collect([
+            ConfigKey::SiteName => 'Lsky Pro',
+            ConfigKey::SiteKeywords => 'Lsky Pro,lsky,兰空图床',
+            ConfigKey::SiteDescription => 'Lsky Pro, Your photo album on the cloud.',
+            ConfigKey::IcpNo => '',
+            ConfigKey::IsEnableRegistration => 1,
+            ConfigKey::IsEnableGallery => 1,
+            ConfigKey::IsAllowGuestUpload => 1,
+            ConfigKey::UserInitialCapacity => 512000,
+            ConfigKey::MailConfigs => json_encode([
+                'default' => 'smtp',
+                'mailers' => [
+                    SmtpOption::Host => '',
+                    SmtpOption::Port => 25,
+                    SmtpOption::Encryption => 'tls',
+                    SmtpOption::Username => '',
+                    SmtpOption::Password => '',
+                    SmtpOption::Timeout => null,
+                    SmtpOption::AuthMode => null,
+                ],
+            ]),
+        ])->transform(function ($value, $key) use ($date) {
+            return ['name' => $key, 'value' => $value, 'updated_at' => $date, 'created_at' => $date];
+        })->values()->toArray();
+        DB::table('configs')->insert($array);
     }
 }

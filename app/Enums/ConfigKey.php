@@ -38,7 +38,7 @@ final class ConfigKey extends Enum
     /** @var string 是否允许游客上传 */
     const IsAllowGuestUpload = 'is_allow_guest_upload';
 
-    /** @var string 用户初始容量 */
+    /** @var string 用户初始容量(kb) */
     const UserInitialCapacity = 'user_initial_capacity';
 
     /** @var string 邮件配置 */
