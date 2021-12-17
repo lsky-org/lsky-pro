@@ -66,8 +66,6 @@ class Image extends Model
         'is_unhealthy' => 'bool',
     ];
 
-    protected $with = ['strategy'];
-
     public function getPathnameAttribute(): string
     {
         return "{$this->path}/{$this->name}";

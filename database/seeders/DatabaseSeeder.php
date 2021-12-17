@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Enums\ConfigKey;
 use App\Enums\Mail\SmtpOption;
+use App\Models\Group;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -39,6 +40,7 @@ class DatabaseSeeder extends Seeder
                     SmtpOption::AuthMode => null,
                 ],
             ]),
+            ConfigKey::GuestGroupConfigs => Group::getDefaultConfig()->toJson(),
         ])->transform(function ($value, $key) use ($date) {
             return ['name' => $key, 'value' => $value, 'updated_at' => $date, 'created_at' => $date];
         })->values()->toArray();

@@ -16,6 +16,7 @@ use App\Models\Image;
 use App\Models\Strategy;
 use App\Models\User;
 use App\Utils;
+use Carbon\Carbon;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
@@ -85,12 +86,37 @@ class UploadService
             }
         }
 
+
         if (! in_array($file->extension(), $configs->get(GroupConfigKey::AcceptedFileSuffixes))) {
             throw new UploadException('不支持的文件类型');
         }
 
         if ($file->getSize() / 1024 > $configs->get(GroupConfigKey::MaximumFileSize)) {
             throw new UploadException("图片大小超出限制");
+        }
+
+        $carbon = Carbon::now();
+        $format = 'Y-m-d H:i:s';
+        $array = [
+            'minute' => ['key' => GroupConfigKey::LimitPerMinute, 'str' => '分钟'],
+            'hours' => ['key' => GroupConfigKey::LimitPerHour, 'str' => '小时'],
+            'days' => ['key' => GroupConfigKey::LimitPerDay, 'str' => '天'],
+            'weeks' => ['key' => GroupConfigKey::LimitPerWeek, 'str' => '周'],
+            'months' => ['key' => GroupConfigKey::LimitPerWeek, 'str' => '月'],
+        ];
+        $sql = collect(array_keys($array))->transform(function ($range) use ($carbon, $format) {
+            return "count(if(`created_at` between '{$carbon->parse("-1 {$range}")->format($format)}' and '{$carbon->format($format)}', 1, null)) as {$range}";
+        })->implode(', ');
+        $statistics = Image::query()->selectRaw($sql)->when(! is_null($user), function (Builder $builder) use ($user) {
+            $builder->where('user_id', $user->id);
+        }, function (Builder $builder) use ($request) {
+            $builder->where('uploaded_ip', $request->ip())->whereNull('user_id');
+        })->first();
+        foreach ($array as $key => $item) {
+            $value = $configs->get($item['key'], 0);
+            if ($statistics->$key >= $value) {
+                throw new UploadException("每{$item['str']}内你最多可以上传 {$value} 张图片");
+            }
         }
 
         $pathname = $this->replacePathname(
@@ -131,7 +157,9 @@ class UploadService
                 if (is_null($existing)) $filesystem->delete($image->pathname);
                 throw new UploadException('图片保存失败');
             }
-            $user->increment('image_num');
+            if (! is_null($user)) {
+                $user->increment('image_num');
+            }
         }, 3);
 
         return $image;

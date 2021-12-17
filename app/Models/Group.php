@@ -35,7 +35,7 @@ class Group extends Model
     ];
 
     /**
-     * 默认组配置
+     * 默认组配置，同时也属于访客组默认配置
      *
      * @return Collection
      */
@@ -45,10 +45,11 @@ class Group extends Model
             GroupConfigKey::MaximumFileSize => 5120,
             GroupConfigKey::ConcurrentUploadNum => 3,
             GroupConfigKey::IsUploadNeedsReview => false,
-            GroupConfigKey::LimitPerHour => 0,
-            GroupConfigKey::LimitPerDay => 0,
-            GroupConfigKey::LimitPerWeek => 0,
-            GroupConfigKey::LimitPerMonth => 0,
+            GroupConfigKey::LimitPerMinute => 20,
+            GroupConfigKey::LimitPerHour => 100,
+            GroupConfigKey::LimitPerDay => 300,
+            GroupConfigKey::LimitPerWeek => 600,
+            GroupConfigKey::LimitPerMonth => 999,
             GroupConfigKey::AcceptedFileSuffixes => ['jpg', 'jpeg', 'gif', 'png', 'ico'],
             GroupConfigKey::PathNamingRule => '{Y}/{m}/{d}',
             GroupConfigKey::FileNamingRule => '{uniqid}',

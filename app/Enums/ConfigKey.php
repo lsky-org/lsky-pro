@@ -43,4 +43,7 @@ final class ConfigKey extends Enum
 
     /** @var string 邮件配置 */
     const MailConfigs = 'mail_configs';
+
+    /** @var string 访客组配置，同时也为组默认配置，开启游客上传后生效 */
+    const GuestGroupConfigs = 'guest_group_configs';
 }

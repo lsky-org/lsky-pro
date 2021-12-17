@@ -27,6 +27,9 @@ final class GroupConfigKey extends Enum
     /** @var string 上传是否需要审查 */
     const IsUploadNeedsReview = 'is_upload_needs_review';
 
+    /** @var string 每分钟上传限制 */
+    const LimitPerMinute = 'limit_per_minute';
+
     /** @var string 每小时上传限制 */
     const LimitPerHour = 'limit_per_hour';
 
