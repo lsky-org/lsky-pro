@@ -49,7 +49,7 @@ class UploadService
         // 默认使用本地储存策略
         $disk = collect([
             'driver' => StrategyKey::Local,
-            'configs' => collect([LocalOption::Root => config('filesystems.disks.local.root')]),
+            'configs' => collect([LocalOption::Root => config('filesystems.disks.public.root')]),
         ]);
 
         if (! is_null($user)) {
@@ -85,7 +85,6 @@ class UploadService
                 }
             }
         }
-
 
         if (! in_array($file->extension(), $configs->get(GroupConfigKey::AcceptedFileSuffixes))) {
             throw new UploadException('不支持的文件类型');
