@@ -78,7 +78,7 @@ class Image extends Model
         if (! $this->strategy) {
             return Storage::disk('uploads')->url($this->pathname);
         }
-        $domain = Str::replaceFirst('/', '', $this->strategy->configs->get('domain'));
+        $domain = rtrim($this->strategy->configs->get('domain'), '/');
         return $domain.'/'.$this->pathname;
     }
 

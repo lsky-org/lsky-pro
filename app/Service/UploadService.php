@@ -167,7 +167,7 @@ class UploadService
     protected function getAdapter(int $disk, Collection $configs): AdapterInterface
     {
         return match ($disk) {
-            StrategyKey::Local => new Local($configs->get('root')),
+            StrategyKey::Local => new Local($configs->get('root') ?: config('filesystems.disks.uploads.root')),
             StrategyKey::Kodo => new QiniuAdapter(
                 accessKey: $configs->get(KodoOption::AccessKey),
                 secretKey: $configs->get(KodoOption::SecretKey),
