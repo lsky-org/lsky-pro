@@ -25,7 +25,7 @@ use Laravel\Sanctum\HasApiTokens;
  * @property int $image_num
  * @property int $album_num
  * @property string $registered_ip
- * @property string $status
+ * @property int $status
  * @property Carbon $email_verified_at
  * @property Carbon $updated_at
  * @property Carbon $created_at
@@ -93,7 +93,7 @@ class User extends Authenticatable
         return $this->belongsTo(Group::class, 'group_id', 'id');
     }
 
-    public function album(): HasMany
+    public function albums(): HasMany
     {
         return $this->hasMany(Album::class, 'user_id', 'id');
     }

@@ -71,7 +71,7 @@
     <script>
         (new ClipboardJS('#copy-all', {
             text: function(trigger) {
-                var text = '';
+                let text = '';
                 $('[data-tab="' + $('#link-tabs a.active').data('tab-name') + '"] p').each(function (i) {
                     if (i !== 0) {
                         text += '\r\n';
@@ -82,7 +82,7 @@
             }
         })).on('success', function(e) {
             if (! $(e.trigger).attr('disabled')) {
-                var text = $(e.trigger).text();
+                let text = $(e.trigger).text();
                 $(e.trigger).attr('disabled', true).text('复制成功');
                 setTimeout(function () {
                     $(e.trigger).attr('disabled', false).text(text);
@@ -192,8 +192,9 @@
                     setStatus(data, UPLOAD_SUCCESS)
                     data.$preview.attr('uploaded', true);
                     // 追加链接
-                    for (let key in response.data) {
-                        $('#links [data-tab="' + key + '"]').append('<p class="whitespace-nowrap select-all mt-1 bg-gray-50 hover:bg-gray-200 text-gray-600 rounded px-2 py-1 cursor-pointer overflow-scroll scrollbar-none">' + response.data[key].toString() + '</p>')
+                    let links = response.data.links;
+                    for (let key in links) {
+                        $('#links [data-tab="' + key + '"]').append('<p class="whitespace-nowrap select-all mt-1 bg-gray-50 hover:bg-gray-200 text-gray-600 rounded px-2 py-1 cursor-pointer overflow-scroll scrollbar-none">' + links[key].toString() + '</p>')
                     }
                     $links.show();
                 } else {

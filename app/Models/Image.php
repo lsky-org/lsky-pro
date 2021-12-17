@@ -6,6 +6,8 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 
 /**
  * @property int $id
@@ -14,12 +16,15 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int $strategy_id
  * @property string $path
  * @property string $name
+ * @property string $pathname
  * @property string $origin_name
  * @property string $alias_name
  * @property float $size
  * @property string $mimetype
  * @property string $md5
  * @property string $sha1
+ * @property string $url
+ * @property Collection $links
  * @property int $permission
  * @property boolean $is_unhealthy
  * @property string $uploaded_ip
@@ -34,9 +39,6 @@ class Image extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id',
-        'album_id',
-        'strategy_id',
         'path',
         'name',
         'origin_name',
@@ -63,6 +65,33 @@ class Image extends Model
         'size' => 'float',
         'is_unhealthy' => 'bool',
     ];
+
+    protected $with = ['strategy'];
+
+    public function getPathnameAttribute(): string
+    {
+        return "{$this->path}/{$this->name}";
+    }
+
+    public function getUrlAttribute(): string
+    {
+        if (! $this->strategy) {
+            return asset($this->pathname);
+        }
+        $domain = Str::replaceFirst('/', '', $this->strategy->configs->get('domain'));
+        return $domain.'/'.$this->pathname;
+    }
+
+    public function getLinksAttribute(): Collection
+    {
+        return collect([
+            'url' => $this->url,
+            'html' => "&lt;img src=\"{$this->url}\" alt=\"{$this->origin_name}\" title=\"{$this->origin_name}\" /&gt;",
+            'bbcode' => "[img]{$this->url}[/img]",
+            'markdown' => "![{$this->origin_name}]({$this->url})",
+            'markdown_with_link' => "[![{$this->origin_name}]({$this->url})]({$this->url})",
+        ]);
+    }
 
     public function user(): BelongsTo
     {

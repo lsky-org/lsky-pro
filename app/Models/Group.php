@@ -16,8 +16,8 @@ use Illuminate\Support\Collection;
  * @property Collection $configs
  * @property Carbon $updated_at
  * @property Carbon $created_at
- * @property-read User[] $users
- * @property-read Strategy[] $strategies
+ * @property-read \Illuminate\Database\Eloquent\Collection $users
+ * @property-read \Illuminate\Database\Eloquent\Collection $strategies
  */
 class Group extends Model
 {

@@ -3,11 +3,11 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Support\Collection;
 
 /**
  * @property int $id
@@ -15,11 +15,11 @@ use Illuminate\Support\Collection;
  * @property string $key
  * @property string $name
  * @property string $intro
- * @property Collection $configs
+ * @property \Illuminate\Support\Collection $configs
  * @property Carbon $updated_at
  * @property Carbon $created_at
  * @property-read Group $group
- * @property-read Image[] $images
+ * @property-read Collection $images
  */
 class Strategy extends Model
 {
