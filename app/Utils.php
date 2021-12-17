@@ -20,7 +20,7 @@ class Utils
     public static function config(string $name = '', mixed $default = null): mixed
     {
         /** @var Collection $configs */
-        $configs = Cache::remember('configs', 86400, function () {
+        $configs = Cache::rememberForever('configs', function () {
             return Config::query()->pluck('value', 'name')->transform(function ($value, $key) {
                 switch ($key) {
                     case ConfigKey::IsAllowGuestUpload:
