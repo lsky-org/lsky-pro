@@ -83,7 +83,7 @@ class User extends Authenticatable
             $user->configs = collect([
                 UserConfigKey::DefaultAlbum => 0,
                 UserConfigKey::DefaultStrategy => 0,
-                UserConfigKey::IsAutoClearPreview,
+                UserConfigKey::IsAutoClearPreview => 0,
             ])->merge($user->configs ?: []);
         });
     }
