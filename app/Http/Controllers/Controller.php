@@ -32,8 +32,8 @@ class Controller extends BaseController
             Log::error("Web 上传文件时发生异常，", ['message' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
             return $this->error('服务异常，请稍后再试');
         }
-        return $this->success('上传成功', $image->setAppends(['url', 'pathname', 'links'])->only(
-            'id', 'url', 'pathname', 'origin_name', 'size', 'mimetype', 'md5', 'sha1', 'links'
+        return $this->success('上传成功', $image->setAppends(['pathname', 'links'])->only(
+            'id', 'pathname', 'origin_name', 'size', 'mimetype', 'md5', 'sha1', 'links'
         ));
     }
 }
