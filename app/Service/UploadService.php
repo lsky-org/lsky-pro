@@ -49,7 +49,7 @@ class UploadService
         // 默认使用本地储存策略
         $disk = collect([
             'driver' => StrategyKey::Local,
-            'configs' => collect([LocalOption::Root => config('filesystems.disks.'.env('FILESYSTEM_DRIVER').'.root')]),
+            'configs' => collect([LocalOption::Root => config('filesystems.disks.uploads.root')]),
         ]);
 
         if (! is_null($user)) {

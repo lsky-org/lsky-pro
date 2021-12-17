@@ -8,6 +8,7 @@ use BenSampo\Enum\Enum;
  * @method static static MaximumFileSize()
  * @method static static ConcurrentUploadNum()
  * @method static static IsUploadNeedsReview()
+ * @method static static LimitPerMinute()
  * @method static static LimitPerHour()
  * @method static static LimitPerDay()
  * @method static static LimitPerWeek()

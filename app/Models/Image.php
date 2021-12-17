@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use App\Enums\StrategyKey;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 /**
@@ -74,9 +76,13 @@ class Image extends Model
     public function getUrlAttribute(): string
     {
         if (! $this->strategy) {
-            return asset($this->pathname);
+            return Storage::disk('uploads')->url($this->pathname);
         }
         $domain = Str::replaceFirst('/', '', $this->strategy->configs->get('domain'));
+        if (StrategyKey::Local()->is($this->strategy->key)) {
+            // 本地储存前缀必须是 uploads
+            $domain .= '/uploads';
+        }
         return $domain.'/'.$this->pathname;
     }
 

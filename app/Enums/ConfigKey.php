@@ -14,6 +14,7 @@ use BenSampo\Enum\Enum;
  * @method static static IsAllowGuestUpload()
  * @method static static UserInitialCapacity()
  * @method static static MailConfigs()
+ * @method static static GuestGroupConfigs()
  */
 final class ConfigKey extends Enum
 {
