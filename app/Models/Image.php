@@ -79,10 +79,6 @@ class Image extends Model
             return Storage::disk('uploads')->url($this->pathname);
         }
         $domain = Str::replaceFirst('/', '', $this->strategy->configs->get('domain'));
-        if (StrategyKey::Local()->is($this->strategy->key)) {
-            // 本地储存前缀必须是 uploads
-            $domain .= '/uploads';
-        }
         return $domain.'/'.$this->pathname;
     }
 
