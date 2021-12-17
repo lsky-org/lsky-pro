@@ -17,11 +17,12 @@ use App\Models\Strategy;
 use App\Models\User;
 use App\Utils;
 use Carbon\Carbon;
-use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\AdapterInterface;
 use League\Flysystem\Filesystem;
@@ -119,7 +120,7 @@ class UploadService
         }
 
         $pathname = $this->replacePathname(
-            $configs->get(GroupConfigKey::PathNamingRule).'/'.$configs->get(GroupConfigKey::FileNamingRule)
+            $configs->get(GroupConfigKey::PathNamingRule).'/'.$configs->get(GroupConfigKey::FileNamingRule), $file,
         ).".{$file->extension()}";
 
         $image->fill([
@@ -177,14 +178,20 @@ class UploadService
         };
     }
 
-    protected function replacePathname(string $pathname): string
+    protected function replacePathname(string $pathname, UploadedFile $file): string
     {
-        // TODO
         $array = [
             '{Y}' => date('Y'),
+            '{y}' => date('y'),
             '{m}' => date('m'),
             '{d}' => date('d'),
+            'timestamp' => time(),
             '{uniqid}' => uniqid(),
+            '{md5}' => md5(microtime() . Str::random()),
+            '{md5-16}' => substr(md5(microtime() . Str::random()), 0, 16),
+            '{str-random-16}' => Str::random(),
+            '{str-random-10}' => Str::random(10),
+            '{filename}' => rtrim($file->getClientOriginalName(), '.'.$file->extension()),
         ];
         return str_replace(array_keys($array), array_values($array), $pathname);
     }
