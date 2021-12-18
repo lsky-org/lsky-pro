@@ -22,9 +22,9 @@
                     <x-slot name="icon"><i class="fas fa-cloud-upload-alt text-blue-500"></i></x-slot>
                     <x-slot name="name">上传图片</x-slot>
                 </x-nav-link>
-                <x-nav-link :active="request()->routeIs('images')">
+                <x-nav-link :href="route('images')" :active="request()->routeIs('images')">
                     <x-slot name="icon"><i class="fas fa-images text-blue-500"></i></x-slot>
-                    <x-slot name="name">图片</x-slot>
+                    <x-slot name="name">我的图片</x-slot>
                 </x-nav-link>
                 <x-nav-link :active="request()->routeIs('settings')">
                     <x-slot name="icon"><i class="fas fa-user-cog text-blue-500"></i></x-slot>
@@ -44,27 +44,27 @@
             </div>
             <div class="flex flex-col space-y-2 mb-5">
                 <p class="text-gray-400 text-sm mx-4">系统</p>
-                <x-nav-link :active="request()->routeIs('admin/console')">
+                <x-nav-link :active="request()->routeIs('admin.console')">
                     <x-slot name="icon"><i class="fas fa-terminal text-blue-500"></i></x-slot>
                     <x-slot name="name">控制台</x-slot>
                 </x-nav-link>
-                <x-nav-link :active="request()->routeIs('admin/groups')">
+                <x-nav-link :active="request()->routeIs('admin.groups')">
                     <x-slot name="icon"><i class="fas fa-users text-blue-500"></i></x-slot>
                     <x-slot name="name">角色组</x-slot>
                 </x-nav-link>
-                <x-nav-link :active="request()->routeIs('/admin/users')">
+                <x-nav-link :active="request()->routeIs('admin.users')">
                     <x-slot name="icon"><i class="fas fa-users-cog text-blue-500"></i></x-slot>
                     <x-slot name="name">用户管理</x-slot>
                 </x-nav-link>
-                <x-nav-link :active="request()->routeIs('admin/images')">
+                <x-nav-link :active="request()->routeIs('admin.images')">
                     <x-slot name="icon"><i class="fas fa-images text-blue-500"></i></x-slot>
                     <x-slot name="name">图片管理</x-slot>
                 </x-nav-link>
-                <x-nav-link :active="request()->routeIs('admin/strategies')">
+                <x-nav-link :active="request()->routeIs('admin.strategies')">
                     <x-slot name="icon"><i class="fas fa-hdd text-blue-500"></i></x-slot>
                     <x-slot name="name">储存策略</x-slot>
                 </x-nav-link>
-                <x-nav-link :active="request()->routeIs('admin/settings')">
+                <x-nav-link :active="request()->routeIs('admin.settings')">
                     <x-slot name="icon"><i class="fas fa-cogs text-blue-500"></i></x-slot>
                     <x-slot name="name">系统设置</x-slot>
                 </x-nav-link>

@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+@props(['full' => request()->routeIs('images')])
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         <meta charset="utf-8">
@@ -24,18 +25,25 @@
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100" x-data="{sidebarOpened: false}" x-cloak>
             @include('layouts.sidebar')
-            @include('layouts.header')
+            @include('layouts.header', ['full' => $full])
             <div
-                 class="z-[1] bg-black opacity-50 h-full w-full fixed left-0 right-0 bottom-0 top-0 sm:hidden"
+                x-transition:enter="ease-in-out duration-500"
+                x-transition:enter-start="opacity-0"
+                x-transition:enter-end="opacity-100"
+                x-transition:leave="ease-in-out duration-500"
+                x-transition:leave-start="opacity-100"
+                x-transition:leave-end="opacity-0"
+                 class="z-[9] bg-black bg-opacity-75 transition-opacity h-full w-full fixed inset-0 sm:hidden"
                  x-show="sidebarOpened"
                  @click.outside="sidebarOpened = false"
                  @close.stop="sidebarOpened = false"
                  @click="sidebarOpened = ! sidebarOpened"
                  style="display: none"
             >
+
             </div>
-            <main class="transition-all duration-300 sm:ml-64 pt-9 sm:pt-14">
-                <div class="mt-9 container mx-auto px-4 sm:px-10 md:px-10 lg:px-10 xl:px-10 2xl:px-60 w-full pb-4">
+            <main class="transition-all duration-300 sm:ml-64 pt-14">
+                <div class="w-full {{ $full ? '' : 'container mx-auto p-6 md:p-10 md:px-10 lg:px-10 xl:px-10 2xl:px-60' }}" style="min-height: calc(100vh - 3.5rem)">
                     {{ $slot }}
                 </div>
             </main>

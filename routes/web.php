@@ -14,12 +14,14 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\User\UserController;
+use App\Http\Controllers\User\ImageController;
 
 Route::get('/', fn () => view('welcome'))->name('/');
 Route::post('/upload', [Controller::class, 'upload']);
-Route::group(['middleware' => ['auth'],], function () {
+Route::group(['middleware' => ['auth']], function () {
     Route::get('/dashboard', [UserController::class, 'dashboard'])->name('dashboard');
     Route::get('/upload', fn () => view('upload'))->name('upload');
+    Route::get('/images', [ImageController::class, 'index'])->name('images');
 });
 
 require __DIR__.'/auth.php';
