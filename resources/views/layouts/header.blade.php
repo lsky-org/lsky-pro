@@ -4,7 +4,7 @@
             <a href="javascript:void(0)" @click="sidebarOpened = ! sidebarOpened" class="w-6 h-6 p-4 rounded-full sm:hidden -ml-1 mr-4 flex justify-center items-center">
                 <i class="fas fa-bars text-xl"></i>
             </a>
-            <a href="" class="text-xl truncate">仪表盘</a>
+            <a href="" class="text-xl truncate">@yield('title', 'Lsky Pro')</a>
         </div>
         <div class="flex justify-end items-center">
             @include('layouts.user-nav')

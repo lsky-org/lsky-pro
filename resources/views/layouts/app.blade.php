@@ -35,7 +35,7 @@
             >
             </div>
             <main class="transition-all duration-300 sm:ml-64 pt-9 sm:pt-14">
-                <div class="mt-9 container mx-auto px-4 sm:px-10 md:px-10 lg:px-10 xl:px-10 2xl:px-60 w-full">
+                <div class="mt-9 container mx-auto px-4 sm:px-10 md:px-10 lg:px-10 xl:px-10 2xl:px-60 w-full pb-4">
                     {{ $slot }}
                 </div>
             </main>

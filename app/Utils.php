@@ -42,4 +42,26 @@ class Utils
         });
         return '' === $name ? $configs : $configs->get($name, $default);
     }
+
+    /**
+     * 转换字段单位
+     *
+     * @param int|float $size 字节b
+     * @return string
+     */
+    public static function formatSize(int|float $size): string
+    {
+        if ($size <= 0) {
+            return "0.00 Bytes";
+        }
+        $unit = ['', 'K', 'M', 'G', 'T', 'P'];
+        $base = 1024;
+        $i = floor(log($size, $base));
+        $n = count($unit);
+        if ($i >= $n) {
+            $i = $n - 1;
+        }
+
+        return sprintf("%.2f", $size / pow($base, $i)) . ' ' . $unit[$i] . 'B';
+    }
 }
