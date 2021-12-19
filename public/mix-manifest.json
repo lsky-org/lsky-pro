@@ -3,8 +3,19 @@
     "/css/app.css": "/css/app.css",
     "/css/common.css": "/css/common.css",
     "/css/fontawesome.css": "/css/fontawesome.css",
-    "/js/jquery.ui.widget.js": "/js/jquery.ui.widget.js",
-    "/js/jquery.iframe-transport.js": "/js/jquery.iframe-transport.js",
-    "/js/jquery.fileupload.js": "/js/jquery.fileupload.js",
-    "/js/load-image.all.min.js": "/js/load-image.all.min.js"
+    "/js/blueimp-file-upload/jquery.ui.widget.js": "/js/blueimp-file-upload/jquery.ui.widget.js",
+    "/js/blueimp-file-upload/jquery.iframe-transport.js": "/js/blueimp-file-upload/jquery.iframe-transport.js",
+    "/js/blueimp-file-upload/jquery.fileupload.js": "/js/blueimp-file-upload/jquery.fileupload.js",
+    "/js/blueimp-load-image/load-image.all.min.js": "/js/blueimp-load-image/load-image.all.min.js",
+    "/css/justified-gallery/justifiedGallery.min.css": "/css/justified-gallery/justifiedGallery.min.css",
+    "/js/justified-gallery/jquery.justifiedGallery.min.js": "/js/justified-gallery/jquery.justifiedGallery.min.js",
+    "/css/photo-swipe/photoswipe.css": "/css/photo-swipe/photoswipe.css",
+    "/css/photo-swipe/default-skin/default-skin.css": "/css/photo-swipe/default-skin/default-skin.css",
+    "/css/photo-swipe/default-skin/default-skin.png": "/css/photo-swipe/default-skin/default-skin.png",
+    "/css/photo-swipe/default-skin/default-skin.svg": "/css/photo-swipe/default-skin/default-skin.svg",
+    "/css/photo-swipe/default-skin/preloader.gif": "/css/photo-swipe/default-skin/preloader.gif",
+    "/js/photo-swipe/photoswipe.min.js": "/js/photo-swipe/photoswipe.min.js",
+    "/js/photo-swipe/photoswipe-ui-default.min.js": "/js/photo-swipe/photoswipe-ui-default.min.js",
+    "/js/photo-swipe/jquery.photoswipe-global.js": "/js/photo-swipe/jquery.photoswipe-global.js",
+    "/js/clipboard/clipboard.min.js": "/js/clipboard/clipboard.min.js"
 }

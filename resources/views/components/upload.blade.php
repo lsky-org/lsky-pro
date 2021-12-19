@@ -1,9 +1,9 @@
 @push('scripts')
-    <script src="{{ asset('js/jquery.ui.widget.js') }}"></script>
-    <script src="{{ asset('js/jquery.iframe-transport.js') }}"></script>
-    <script src="{{ asset('js/jquery.fileupload.js') }}"></script>
-    <script src="{{ asset('js/load-image.all.min.js') }}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js"></script>
+    <script src="{{ asset('js/blueimp-file-upload/jquery.ui.widget.js') }}"></script>
+    <script src="{{ asset('js/blueimp-file-upload/jquery.iframe-transport.js') }}"></script>
+    <script src="{{ asset('js/blueimp-file-upload/jquery.fileupload.js') }}"></script>
+    <script src="{{ asset('js/blueimp-load-image/load-image.all.min.js') }}"></script>
+    <script src="{{ asset('js/clipboard/clipboard.min.js') }}"></script>
 @endpush
 
 <div class="pb-6 h-full">
@@ -132,9 +132,6 @@
             limitConcurrentUploads: 3,
             pasteZone: $(document),
             dropZone: $('#picker-dnd'),
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-            },
             formData: (form) => {
 
             },
