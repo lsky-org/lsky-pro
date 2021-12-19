@@ -239,4 +239,7 @@ progress::-webkit-progress-value {
 .toast-close-button {
   right: -0.15em;
 }
+.viewer-backdrop {
+  background-color: rgba(0, 0, 0, 0.75);
+}
 

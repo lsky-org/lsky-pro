@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 
 /**
  * @property int $id
@@ -21,6 +20,7 @@ use Illuminate\Support\Str;
  * @property string $pathname
  * @property string $origin_name
  * @property string $alias_name
+ * @property string $filename
  * @property float $size
  * @property string $mimetype
  * @property string $md5
@@ -67,6 +67,11 @@ class Image extends Model
         'size' => 'float',
         'is_unhealthy' => 'bool',
     ];
+
+    public function getFilenameAttribute(): string
+    {
+        return $this->alias_name ?: $this->origin_name;
+    }
 
     public function getPathnameAttribute(): string
     {

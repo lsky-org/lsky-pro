@@ -28,13 +28,9 @@ mix.copy('node_modules/blueimp-load-image/js/load-image.all.min.js', 'public/js/
 mix.copy('node_modules/justifiedGallery/dist/css/justifiedGallery.min.css', 'public/css/justified-gallery');
 mix.copy('node_modules/justifiedGallery/dist/js/jquery.justifiedGallery.min.js', 'public/js/justified-gallery');
 
-// photoSwipe
-mix.copy('node_modules/photoswipe/dist/photoswipe.css', 'public/css/photo-swipe');
-mix.copy('node_modules/photoswipe/dist/default-skin', 'public/css/photo-swipe/default-skin');
-mix.copy('node_modules/photoswipe/dist/photoswipe.min.js', 'public/js/photo-swipe');
-mix.copy('node_modules/photoswipe/dist/photoswipe-ui-default.min.js', 'public/js/photo-swipe')
-// jquery Photoswipe
-mix.copy('node_modules/jquery.photoswipe/dist/jquery.photoswipe-global.js', 'public/js/photo-swipe')
+// viewer.js
+mix.copy('node_modules/viewerjs/dist/viewer.min.css', 'public/css/viewer-js')
+mix.copy('node_modules/viewerjs/dist/viewer.min.js', 'public/js/viewer-js')
 
 // clipboard
 mix.copy('node_modules/clipboard/dist/clipboard.min.js', 'public/js/clipboard')

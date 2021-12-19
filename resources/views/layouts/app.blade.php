@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-@props(['full' => request()->routeIs('images')])
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         <meta charset="utf-8">
@@ -13,11 +12,11 @@
         <!-- Fonts -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
         <link rel="stylesheet" href="{{ asset('css/fontawesome.css') }}">
+        @stack('styles')
 
         <!-- Styles -->
         <link rel="stylesheet" href="{{ asset('css/common.css') }}">
         <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-        @stack('styles')
 
         <!-- Scripts -->
         <script src="{{ asset('js/app.js') }}"></script>
@@ -25,7 +24,7 @@
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100" x-data="{sidebarOpened: false}" x-cloak>
             @include('layouts.sidebar')
-            @include('layouts.header', ['full' => $full])
+            @include('layouts.header')
             <div
                 x-transition:enter="ease-in-out duration-500"
                 x-transition:enter-start="opacity-0"
@@ -42,11 +41,9 @@
             >
 
             </div>
-            <main class="transition-all duration-300 sm:ml-64 pt-14">
-                <div class="w-full {{ $full ? '' : 'container mx-auto p-6 md:p-10 md:px-10 lg:px-10 xl:px-10 2xl:px-60' }}" style="min-height: calc(100vh - 3.5rem)">
-                    {{ $slot }}
-                </div>
-            </main>
+            <x-container class="transition-all duration-300 pt-20 md:pt-24 pb-6">
+                {{ $slot }}
+            </x-container>
         </div>
     </body>
     @stack('scripts')

@@ -12,11 +12,11 @@
         <!-- Fonts -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
         <link rel="stylesheet" href="{{ asset('css/fontawesome.css') }}">
+        @stack('styles')
 
         <!-- Styles -->
         <link rel="stylesheet" href="{{ asset('css/common.css') }}">
         <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-        @stack('styles')
 
         <!-- Scripts -->
         <script src="{{ asset('js/app.js') }}"></script>

@@ -1,7 +1,5 @@
-@props(['full' => false])
-
-<header class="pl-0 sm:pl-64 transition-all duration-300 w-full h-14 bg-gray-700 text-white flex justify-center fixed top-0 z-[9]">
-    <div class="{{ $full ? 'px-4' : 'container mx-auto px-6 md:px-10 md:px-10 lg:px-10 xl:px-10 2xl:px-60' }} w-full flex justify-between items-center">
+<header class="transition-all duration-300 w-full h-14 bg-gray-700 text-white flex justify-center fixed top-0 z-[9]">
+    <x-container class="w-full px-6 flex justify-between items-center">
         <div class="flex justify-start items-center max-w-[70%]">
             <a href="javascript:void(0)" @click="sidebarOpened = ! sidebarOpened" class="w-6 h-6 p-4 rounded-full sm:hidden -ml-1 mr-4 flex justify-center items-center">
                 <i class="fas fa-bars text-xl"></i>
@@ -11,5 +9,5 @@
         <div class="flex justify-end items-center">
             @include('layouts.user-nav')
         </div>
-    </div>
+    </x-container>
 </header>
