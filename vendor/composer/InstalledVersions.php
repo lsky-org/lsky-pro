@@ -19,7 +19,7 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => '5231f8d54187df93aacf8508c61b72d9d97ac76d',
+    'reference' => '64e328f6b35d19279640ab402d2580aa64a3e922',
     'name' => 'wisp-x/lsky-pro',
   ),
   'versions' => 
@@ -234,12 +234,12 @@ private static $installed = array (
     ),
     'phpmailer/phpmailer' => 
     array (
-      'pretty_version' => 'v6.4.0',
-      'version' => '6.4.0.0',
+      'pretty_version' => 'v6.5.3',
+      'version' => '6.5.3.0',
       'aliases' => 
       array (
       ),
-      'reference' => '050d430203105c27c30efd1dce7aa421ad882d01',
+      'reference' => 'baeb7cde6b60b1286912690ab0693c7789a31e71',
     ),
     'psr/http-message' => 
     array (
@@ -372,7 +372,7 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => '5231f8d54187df93aacf8508c61b72d9d97ac76d',
+      'reference' => '64e328f6b35d19279640ab402d2580aa64a3e922',
     ),
   ),
 );
