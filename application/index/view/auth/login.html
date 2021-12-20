@@ -31,7 +31,9 @@
             </form>
             <p class="mdui-clearfix mdui-m-t-1">
               <a class="mdui-float-left" href="{:url('auth/forgot')}">忘记密码？</a>
+              {if !$config.close_register}
               <a class="mdui-float-right" href="{:url('auth/register')}">注册账号</a>
+              {/if}
             </p>
           </div>
         </div>
