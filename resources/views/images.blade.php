@@ -80,6 +80,7 @@
                 margins: 10,
                 captions: false,
                 border: 10,
+                refreshSensitivity: (this.scrollbarWidth || 19) + 1, // 防止 viewer.js 打开时隐藏滚动条导致 grid 被重新计算
             };
             const getImages = () => {
                 if (params.page !== 1 && $loading.hasClass('cursor-not-allowed')) {
