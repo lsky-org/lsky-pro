@@ -22,7 +22,7 @@ class Token extends Base
             if ($user->password != md5($password)) {
                 throw new Exception('账号密码错误');
             }
-            if ('true' == $refresh) {
+            if ($refresh) {
                 $token = make_token();
                 $user->token = $token;
                 if (!$user->save()) {
