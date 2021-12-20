@@ -23,7 +23,7 @@ class ObjectVersionInfo
      * @param string $lastModified
      * @param string $eTag
      * @param string $type
-     * @param string $size
+     * @param int $size
      * @param string $storageClass
      * @param string $isLatest
      */
@@ -78,25 +78,14 @@ class ObjectVersionInfo
     {
         return $this->type;
     }
-	
-	/**
-	 * php7 && 64bit can use it
-	 * @return int
-	 */
-	public function getSize()
-	{
-		return (int)$this->size;
-	}
-	
-	
-	/**
-	 * php5.x or 32bit must use it
-	 * @return string
-	 */
-	public function getSizeStr()
-	{
-		return $this->size;
-	}
+
+    /**
+     * @return int
+     */
+    public function getSize()
+    {
+        return $this->size;
+    }
 
     /**
      * @return string
@@ -119,7 +108,7 @@ class ObjectVersionInfo
     private $lastModified = "";
     private $eTag = "";
     private $type = "";
-    private $size = "0";
+    private $size = 0;
     private $storageClass = "";
     private $isLatest = "";
 }

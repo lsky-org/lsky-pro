@@ -6,7 +6,7 @@ use OSS\Result\GetBucketTagsResult;
 use OSS\Core\OssException;
 use OSS\Http\ResponseCore;
 
-class GetBucketTagsResultTest extends \PHPUnit\Framework\TestCase
+class GetBucketTagsResultTest extends \PHPUnit_Framework_TestCase
 {
     private $validXml = <<<BBBB
         <?xml version="1.0" ?>

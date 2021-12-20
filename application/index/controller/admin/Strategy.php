@@ -44,7 +44,7 @@ class Strategy extends Base
                 Db::rollback();
                 $this->error($e->getMessage());
             }
-            $this->success(lang('Saved successfully'));
+            $this->success('保存成功');
         }
         return $this->fetch();
     }

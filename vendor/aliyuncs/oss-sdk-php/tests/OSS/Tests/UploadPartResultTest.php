@@ -7,7 +7,7 @@ use OSS\Core\OssException;
 use OSS\Result\UploadPartResult;
 use OSS\Http\ResponseCore;
 
-class UploadPartResultTest extends \PHPUnit\Framework\TestCase
+class UploadPartResultTest extends \PHPUnit_Framework_TestCase
 {
     private $validHeader = array('etag' => '7265F4D211B56873A381D321F586E4A9');
     private $invalidHeader = array();

@@ -6,7 +6,7 @@ use OSS\Result\GetBucketRequestPaymentResult;
 use OSS\Core\OssException;
 use OSS\Http\ResponseCore;
 
-class GetBucketRequestPaymentResultTest extends \PHPUnit\Framework\TestCase
+class GetBucketRequestPaymentResultTest extends \PHPUnit_Framework_TestCase
 {
 
     private $validXml = <<<BBBB

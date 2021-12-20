@@ -49,17 +49,17 @@ class Users extends Base
             $id = $this->request->post('id');
             if (is_array($id)) {
                 if (in_array($this->user->id, $id)) {
-                    $this->error(lang('You cannot delete your account!'));
+                    $this->error('不能删除自己的账号！');
                 }
             } else {
                 if ($id == $this->user->id) {
-                    $this->error(lang('You cannot delete your account!'));
+                    $this->error('不能删除自己的账号！');
                 }
             }
             if (!UsersModel::destroy($id)) {
-                $this->error(lang('Deletion failed'));
+                $this->error('删除失败');
             }
-            $this->success(lang('Delete succeeded'));
+            $this->success('删除成功');
         }
     }
 
@@ -69,18 +69,18 @@ class Users extends Base
             $id = $this->request->post('id');
             if (is_array($id)) {
                 if (in_array($this->user->id, $id)) {
-                    $this->error(lang('You can\'t freeze your account!'));
+                    $this->error('不能冻结自己的账号！');
                 }
             } else {
                 if ($id == $this->user->id) {
-                    $this->error(lang('You can\'t freeze your account!'));
+                    $this->error('不能冻结自己的账号！');
                 }
             }
             $model = new UsersModel();
             if (!$model->where('id', 'in', $id)->update(['state' => 0])) {
-                $this->error(lang('Freeze failed'));
+                $this->error('冻结失败');
             }
-            $this->success(lang('Freeze succeeded'));
+            $this->success('冻结成功');
         }
     }
 
@@ -89,10 +89,10 @@ class Users extends Base
         if ($this->request->isPost()) {
             $id = $this->request->post('id');
             if (!$user = UsersModel::get($id)) {
-                $this->error(lang('Data acquisition failed'));
+                $this->error('数据获取失败');
             }
             unset($user->password);
-            $this->success(lang('Success'), null, $user);
+            $this->success('成功', null, $user);
         }
     }
 
@@ -107,12 +107,12 @@ class Users extends Base
                 }
                 if (!$data['password']) unset($data['password'], $data['password_confirm']);
                 if (!UsersModel::update($data)) {
-                    throw new Exception(lang('Modification failed'));
+                    throw new Exception('修改失败');
                 }
             } catch (Exception $e) {
                 $this->error($e->getMessage());
             }
-            $this->success(lang('Saved successfully'));
+            $this->success('保存成功');
         }
     }
 
@@ -122,15 +122,15 @@ class Users extends Base
             $id = $this->request->post('id');
             $state = $this->request->post('state');
             if (!$user = UsersModel::get($id)) {
-                $this->error(lang('Data acquisition failed'));
+                $this->error('数据获取失败');
             }
             if ($user->id === $this->user->id) {
-                $this->error(lang('You cannot modify your status'));
+                $this->error('不可修改自己的状态');
             }
             if (!$user->where('id', $id)->setField('state', $state)) {
-                $this->error(lang('Status modification failed'));
+                $this->error('状态修改失败');
             }
-            $this->success(lang('Status modification succeeded'));
+            $this->success('状态修改成功');
         }
     }
 
@@ -140,12 +140,12 @@ class Users extends Base
             $id = $this->request->post('id');
             $groupId = $this->request->post('group_id');
             if (!$group = \app\common\model\Group::find($groupId)) {
-                $this->error('Data acquisition failed');
+                $this->error('数据获取失败');
             }
             if (!UsersModel::where('id', $id)->setField('group_id', $groupId)) {
-                $this->error(lang('Modification failed'));
+                $this->error('修改失败');
             }
-            $this->success(lang('Modified successfully'));
+            $this->success('修改成功');
         }
     }
 }

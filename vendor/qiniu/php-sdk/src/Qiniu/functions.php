@@ -65,23 +65,6 @@ if (!defined('QINIU_FUNCTIONS_VERSION')) {
     }
 
     /**
-     * 二维数组根据某个字段排序
-     * @param array $array 要排序的数组
-     * @param string $key 要排序的键
-     * @param string $sort  排序类型 SORT_ASC SORT_DESC
-     * return array 排序后的数组
-     */
-    function arraySort($array, $key, $sort = SORT_ASC)
-    {
-        $keysValue = array();
-        foreach ($array as $k => $v) {
-            $keysValue[$k] = $v[$key];
-        }
-        array_multisort($keysValue, $sort, $array);
-        return $array;
-    }
-
-    /**
      * Wrapper for JSON decode that implements error detection with helpful
      * error messages.
      *

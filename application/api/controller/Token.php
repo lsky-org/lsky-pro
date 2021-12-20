@@ -17,16 +17,16 @@ class Token extends Base
         $user = null;
         try {
             if (!$user = Users::get(['email' => $email])) {
-                throw new Exception(lang('Account does not exist'));
+                throw new Exception('账号不存在');
             }
             if ($user->password != md5($password)) {
-                throw new Exception(lang('Account password error'));
+                throw new Exception('账号密码错误');
             }
             if ('true' == $refresh) {
                 $token = make_token();
                 $user->token = $token;
                 if (!$user->save()) {
-                    throw new Exception(lang('Token refresh failed'));
+                    throw new Exception('Token 刷新失败');
                 }
             }
         } catch (Exception $e) {

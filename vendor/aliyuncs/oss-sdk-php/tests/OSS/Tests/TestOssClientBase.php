@@ -6,7 +6,7 @@ use OSS\OssClient;
 
 require_once __DIR__ . DIRECTORY_SEPARATOR . 'Common.php';
 
-class TestOssClientBase extends \PHPUnit\Framework\TestCase
+class TestOssClientBase extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var OssClient
@@ -18,7 +18,7 @@ class TestOssClientBase extends \PHPUnit\Framework\TestCase
      */
     protected $bucket;
 
-    protected function setUp(): void
+    public function setUp()
     {
         $this->bucket = Common::getBucketName() .'-'. time();
         $this->ossClient = Common::getOssClient();
@@ -26,7 +26,7 @@ class TestOssClientBase extends \PHPUnit\Framework\TestCase
         Common::waitMetaSync();
     }
 
-    protected function tearDown(): void
+    public function tearDown()
     {
         if (!$this->ossClient->doesBucketExist($this->bucket)) {
             return;

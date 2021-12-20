@@ -49,7 +49,7 @@ if ($err !== null) {
 $policy = array(
     'callbackUrl' => 'http://172.30.251.210/upload_verify_callback.php',
     'callbackBody' => 'filename=$(fname)&filesize=$(fsize)'
-//  'callbackBodyType' => 'application/json',
+//  'callbackBodyType' => 'application/json',                       
 //  'callbackBody' => '{"filename":$(fname), "filesize": $(fsize)}'  //设置application/json格式回调
 );
 $token = $auth->uploadToken($bucket, null, 3600, $policy);

@@ -6,7 +6,7 @@ use OSS\Result\GetBucketWormResult;
 use OSS\Core\OssException;
 use OSS\Http\ResponseCore;
 
-class GetBucketWormResultTest extends \PHPUnit\Framework\TestCase
+class GetBucketWormResultTest extends \PHPUnit_Framework_TestCase
 {
 
     private $validXml = <<<BBBB

@@ -5,7 +5,7 @@ namespace OSS\Tests;
 use OSS\Core\OssException;
 use OSS\Model\StorageCapacityConfig;
 
-class StorageCapacityConfigTest extends \PHPUnit\Framework\TestCase
+class StorageCapacityConfigTest extends \PHPUnit_Framework_TestCase
 {
     private $validXml_10 = <<<BBBB
 <?xml version="1.0" encoding="utf-8"?>

@@ -1,6 +1,6 @@
 {extend name="common:base" /}
 
-{block name="title"}{:lang('Storage strategy')} - {$config.site_name}{/block}
+{block name="title"}储存策略 - {$config.site_name}{/block}
 
 {block name="main"}
 <div class="mdui-container mdui-p-b-5">
@@ -8,12 +8,12 @@
     <div class="strategy-container">
       <div class="mdui-typo">
         <blockquote class="mdui-m-l-0">
-          <p>{:lang('Storage strategy tips')}</p>
+          <p>储存策略，可配置多个，使用不同的角色组来控制用户图片储存策略。</p>
         </blockquote>
       </div>
       <div id="tab" class="mdui-tab mdui-tab-scrollable" mdui-tab>
         {foreach $strategy as $key => $value}
-        <a href="#tab-{$key}" class="mdui-ripple {if $key eq $config.storage_strategy}mdui-tab-active{/if}">{:lang($value.name)}</a>
+        <a href="#tab-{$key}" class="mdui-ripple {if $key eq $config.storage_strategy}mdui-tab-active{/if}">{$value.name}</a>
         {/foreach}
       </div>
       <div class="mdui-col-sm-8 mdui-col-md-8">
@@ -22,10 +22,10 @@
           <form action="{:url('admin/strategy/index')}" method="post">
             {foreach $value as $val}
             <div class="mdui-textfield">
-              <label class="mdui-textfield-label">{:lang($val.title)}{$val.tip ? '(' . lang($val.tip) . ')' : ''}</label>
+              <label class="mdui-textfield-label">{$val.title}{$val.tip ? '(' . $val.tip . ')' : ''}</label>
               {switch $val.type}
               {case text}
-              <input class="mdui-textfield-input" type="{$val.input_type}" name="{$val.name}" value="{$val.value}" autocomplete="off" placeholder="{:lang($val.title)}"/>
+              <input class="mdui-textfield-input" type="{$val.input_type}" name="{$val.name}" value="{$val.value}" autocomplete="off" placeholder="{$val.title}"/>
               {/case}
               {case bool}
               <label class="mdui-switch">
@@ -44,8 +44,8 @@
             </div>
             {/foreach}
             <input type="hidden" name="storage_strategy" value="{$key}">
-            <button type="submit" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent">{:lang('Save')}</button>
-            <button type="reset" class="mdui-btn mdui-btn-raised mdui-ripple">{:lang('Reset')}</button>
+            <button type="submit" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent">保存</button>
+            <button type="reset" class="mdui-btn mdui-btn-raised mdui-ripple">重置</button>
           </form>
         </div>
         {/foreach}

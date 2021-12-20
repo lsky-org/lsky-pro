@@ -6,7 +6,7 @@ use OSS\Result\DeleteObjectVersionsResult;
 use OSS\Core\OssException;
 use OSS\Http\ResponseCore;
 
-class DeleteObjectVersionsResultTest extends \PHPUnit\Framework\TestCase
+class DeleteObjectVersionsResultTest extends \PHPUnit_Framework_TestCase
 {
 
     private $validXml = <<<BBBB

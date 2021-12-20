@@ -20,7 +20,7 @@ class Upload extends Base
 
         // 是否允许游客上传
         if (!$this->getConfig('allowed_tourist_upload') && !request()->user) {
-            $this->response(lang('The administrator closed the tourist upload channel'));
+            $this->response('管理员关闭了游客上传通道');
         }
     }
 

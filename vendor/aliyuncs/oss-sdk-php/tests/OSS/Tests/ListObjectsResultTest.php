@@ -6,7 +6,7 @@ namespace OSS\Tests;
 use OSS\Result\ListObjectsResult;
 use OSS\Http\ResponseCore;
 
-class ListObjectsResultTest extends \PHPUnit\Framework\TestCase
+class ListObjectsResultTest extends \PHPUnit_Framework_TestCase
 {
 
     private $validXml1 = <<<BBBB

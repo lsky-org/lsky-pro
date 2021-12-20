@@ -7,7 +7,7 @@ use OSS\Result\GetWebsiteResult;
 use OSS\Http\ResponseCore;
 use OSS\Core\OssException;
 
-class GetWebsiteResultTest extends \PHPUnit\Framework\TestCase
+class GetWebsiteResultTest extends \PHPUnit_Framework_TestCase
 {
     private $validXml = <<<BBBB
 <?xml version="1.0" encoding="utf-8"?>
@@ -41,10 +41,10 @@ BBBB;
     {
         $response = new ResponseCore(array(), $this->validXml, 300);
         try {
-            $result = new GetWebsiteResult($response);
+            new GetWebsiteResult($response);
             $this->assertTrue(false);
         } catch (OssException $e) {
-            $this->assertTrue(true);
+
         }
     }
 }

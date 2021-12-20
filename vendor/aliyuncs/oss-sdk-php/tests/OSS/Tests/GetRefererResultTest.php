@@ -7,7 +7,7 @@ use OSS\Http\ResponseCore;
 use OSS\Core\OssException;
 
 
-class GetRefererResultTest extends \PHPUnit\Framework\TestCase
+class GetRefererResultTest extends \PHPUnit_Framework_TestCase
 {
     private $validXml = <<<BBBB
 <?xml version="1.0" encoding="utf-8"?>
@@ -42,10 +42,10 @@ BBBB;
     {
         $response = new ResponseCore(array(), $this->validXml, 300);
         try {
-            $result = new GetRefererResult($response);
+            new GetRefererResult($response);
             $this->assertTrue(false);
         } catch (OssException $e) {
-            $this->assertTrue(true);
+
         }
     }
 }

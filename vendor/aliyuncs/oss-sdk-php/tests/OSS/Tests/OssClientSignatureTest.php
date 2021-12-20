@@ -64,7 +64,7 @@ class OssClientSignatureTest extends TestOssClientBase
             $request->set_method('PUT');
             $request->add_header('Content-Type', 'txt');
             $request->set_read_file($file);
-            $request->set_read_stream_size(sprintf('%u',filesize($file)));
+            $request->set_read_stream_size(filesize($file));
             $request->send_request();
             $res = new ResponseCore($request->get_response_header(),
                 $request->get_response_body(), $request->get_response_code());
@@ -131,13 +131,13 @@ class OssClientSignatureTest extends TestOssClientBase
         $this->assertTrue(strpos($signedUrl1, 'Expires='.$expiration) !== false);
     }
 
-    protected function tearDown(): void
+    public function tearDown()
     {
         $this->ossClient->deleteObject($this->bucket, "a.file");
         parent::tearDown();
     }
 
-    protected function setUp(): void
+    public function setUp()
     {
         parent::setUp();
         /**

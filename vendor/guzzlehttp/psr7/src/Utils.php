@@ -217,7 +217,7 @@ final class Utils
             ->withQueryParams($request->getQueryParams())
             ->withCookieParams($request->getCookieParams())
             ->withUploadedFiles($request->getUploadedFiles());
-
+        
             foreach ($request->getAttributes() as $key => $value) {
                 $new = $new->withAttribute($key, $value);
             }
@@ -317,8 +317,7 @@ final class Utils
                  * The 'php://input' is a special stream with quirks and inconsistencies.
                  * We avoid using that stream by reading it into php://temp
                  */
-                $metaData = \stream_get_meta_data($resource);
-                if (isset($metaData['uri']) && $metaData['uri'] === 'php://input') {
+                if (\stream_get_meta_data($resource)['uri'] === 'php://input') {
                     $stream = self::tryFopen('php://temp', 'w+');
                     fwrite($stream, stream_get_contents($resource));
                     fseek($stream, 0);

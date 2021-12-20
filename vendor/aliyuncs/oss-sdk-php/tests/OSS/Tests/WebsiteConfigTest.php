@@ -5,7 +5,7 @@ namespace OSS\Tests;
 
 use OSS\Model\WebsiteConfig;
 
-class WebsiteConfigTest extends \PHPUnit\Framework\TestCase
+class WebsiteConfigTest extends \PHPUnit_Framework_TestCase
 {
     private $validXml = <<<BBBB
 <?xml version="1.0" encoding="utf-8"?>

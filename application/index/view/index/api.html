@@ -17,20 +17,20 @@
 <div class="mdui-container">
   <main>
     <div class="mdui-m-b-2">
-      <h2>1. Get token</h2>
+      <h2>1. 获取Token</h2>
       <div class="mdui-row">
         <div class="mdui-col-md-6">
           <div class="mdui-table-fluid mdui-m-t-1">
             <table class="mdui-table">
               <thead>
               <tr>
-                <td>Function</td>
-                <td>Interface</td>
+                <td>功能</td>
+                <td>接口</td>
               </tr>
               </thead>
               <tbody>
               <tr>
-                <td>Request mode</td>
+                <td>请求方式</td>
                 <td>POST</td>
               </tr>
               <tr>
@@ -42,42 +42,42 @@
           </div>
         </div>
       </div>
-      <h4 class="mdui-m-t-2 mdui-m-b-1">Request parameters</h4>
+      <h4 class="mdui-m-t-2 mdui-m-b-1">请求参数</h4>
       <div class="mdui-table-fluid">
         <table class="mdui-table">
           <thead>
           <tr>
-            <td>Parameter name</td>
-            <td>Type</td>
-            <td>Required</td>
-            <td>Explain</td>
+            <td>参数名称</td>
+            <td>类型</td>
+            <td>是否必须</td>
+            <td>说明</td>
           </tr>
           </thead>
           <tbody>
           <tr>
             <td>email</td>
             <td>String</td>
-            <td>Yes</td>
-            <td>Mailbox</td>
+            <td>是</td>
+            <td>邮箱</td>
           </tr>
           <tr>
             <td>password</td>
             <td>String</td>
-            <td>Yes</td>
-            <td>Account password</td>
+            <td>是</td>
+            <td>账号密码</td>
           </tr>
           </tbody>
         </table>
       </div>
-      <h4 class="mdui-m-t-2 mdui-m-b-1">Return data description</h4>
+      <h4 class="mdui-m-t-2 mdui-m-b-1">返回数据说明</h4>
       <div class="mdui-table-fluid">
         <table class="mdui-table">
           <thead>
           <tr>
-            <td>Parameter name</td>
-            <td>Type</td>
-            <td>Instance value</td>
-            <td>Explain</td>
+            <td>参数名称</td>
+            <td>类型</td>
+            <td>实例值</td>
+            <td>说明</td>
           </tr>
           </thead>
           <tbody>
@@ -85,25 +85,25 @@
             <td>code</td>
             <td>Number</td>
             <td>200</td>
-            <td>The status code returns 200 for success and 500 for failure</td>
+            <td>状态码，成功返回200，失败返回500</td>
           </tr>
           <tr>
             <td>msg</td>
             <td>String</td>
             <td>success</td>
-            <td>Prompt information</td>
+            <td>提示信息</td>
           </tr>
           <tr>
             <td>time</td>
             <td>Number</td>
             <td>1544176295</td>
-            <td>Response timestamp</td>
+            <td>响应时间戳</td>
           </tr>
           <tr>
             <td>data</td>
             <td>array|object</td>
             <td>{"token": "8961576c9090ef0902c4b89406f8d557"}</td>
-            <td>Obtained token data</td>
+            <td>获取的token数据</td>
           </tr>
           </tbody>
         </table>
@@ -111,20 +111,20 @@
     </div>
 
     <div class="mdui-m-b-2">
-      <h2>2. Picture upload</h2>
+      <h2>2. 图片上传</h2>
       <div class="mdui-row">
         <div class="mdui-col-md-6">
           <div class="mdui-table-fluid mdui-m-t-1">
             <table class="mdui-table">
               <thead>
               <tr>
-                <td>Function</td>
-                <td>Interface</td>
+                <td>功能</td>
+                <td>接口</td>
               </tr>
               </thead>
               <tbody>
               <tr>
-                <td>Request mode</td>
+                <td>请求方式</td>
                 <td>POST</td>
               </tr>
               <tr>
@@ -136,39 +136,39 @@
           </div>
         </div>
       </div>
-      <h4 class="mdui-m-t-2 mdui-m-b-1">Request parameters</h4>
+      <h4 class="mdui-m-t-2 mdui-m-b-1">请求参数</h4>
       <div class="mdui-table-fluid">
         <table class="mdui-table">
           <thead>
           <tr>
-            <td>Parameter name</td>
-            <td>Type</td>
-            <td>Required</td>
-            <td>Explain</td>
+            <td>参数名称</td>
+            <td>类型</td>
+            <td>是否必须</td>
+            <td>说明</td>
           </tr>
           </thead>
           <tbody>
           <tr>
             <td>image</td>
             <td>File</td>
-            <td>Yes</td>
-            <td>Form name</td>
+            <td>是</td>
+            <td>表单名称</td>
           </tr>
           </tbody>
         </table>
       </div>
       <div class="mdui-shadow-2 mdui-m-t-2 mdui-m-b-1 mdui-p-a-3 mdui-text-color-red">
-        Note: if the header has a token parameter during the request, the interface will authenticate the token, and the uploaded image is also in the token user account, otherwise the system will consider it as uploaded by tourists.
+        注意：请求时header如果有参数 token，接口则认证该token，上传的图片也是在该token用户下，否则为游客上传。
       </div>
-      <h4 class="mdui-m-t-2 mdui-m-b-1">Return data description</h4>
+      <h4 class="mdui-m-t-2 mdui-m-b-1">返回数据说明</h4>
       <div class="mdui-table-fluid">
         <table class="mdui-table">
           <thead>
           <tr>
-            <td>Parameter name</td>
-            <td>Type</td>
-            <td>Instance value</td>
-            <td>Explain</td>
+            <td>参数名称</td>
+            <td>类型</td>
+            <td>实例值</td>
+            <td>说明</td>
           </tr>
           </thead>
           <tbody>
@@ -176,19 +176,19 @@
             <td>code</td>
             <td>Number</td>
             <td>200</td>
-            <td>The status code returns 200 for success and 500 for failure</td>
+            <td>状态码，成功返回200，失败返回500</td>
           </tr>
           <tr>
             <td>msg</td>
             <td>String</td>
             <td>success</td>
-            <td>Prompt information</td>
+            <td>提示信息</td>
           </tr>
           <tr>
             <td>time</td>
             <td>Number</td>
             <td>1544176295</td>
-            <td>Response timestamp</td>
+            <td>响应时间戳</td>
           </tr>
           <tr>
             <td>data</td>
@@ -196,15 +196,15 @@
             <td>
 <pre>{
   "name": "9B7BCFBD05891B2D42187F126887777A.jpg",
-  "url": "http://domain.com/2018/12/08/5c0b519f44701.jpg"
+  "url": "http://域名/2018/12/08/5c0b519f44701.jpg"
 }</pre>
             </td>
-            <td>Picture data</td>
+            <td>图片数据</td>
           </tr>
           </tbody>
         </table>
       </div>
-      <h4 class="mdui-m-t-2 mdui-m-b-1">Upload example</h4>
+      <h4 class="mdui-m-t-2 mdui-m-b-1">上传示例</h4>
       <pre class="mdui-shadow-2 mdui-p-a-3">
 POST /api/upload HTTP/1.1
 Host: {$domain}
@@ -217,34 +217,34 @@ Content-Type: multipart/form-data; boundary=----WebKitFormBoundaryx2mqINKHVPJ8yM
 Content-Disposition: form-data; name="image"; filename="test.png"
 Content-Type: image/png
 </pre>
-      <h4 class="mdui-m-t-2 mdui-m-b-1">Response error example</h4>
+      <h4 class="mdui-m-t-2 mdui-m-b-1">响应错误示例</h4>
       <pre class="mdui-shadow-2 mdui-p-a-3">
 {
   "code": 500,
-  "msg": "The administrator turned off the tourist upload!",
+  "msg": "管理员关闭了游客上传！",
   "data": null,
   "time": 1544245931
 }</pre>
     </div>
 
     <div class="mdui-shadow-2 mdui-m-t-2 mdui-m-b-1 mdui-p-a-3 mdui-text-color-red">
-      Note: token is required for the following interfaces
+      注意：以下接口均需要 Token
     </div>
     <div class="mdui-m-b-2">
-      <h2>3. Get picture list</h2>
+      <h2>3. 获取图片列表</h2>
       <div class="mdui-row">
         <div class="mdui-col-md-6">
           <div class="mdui-table-fluid mdui-m-t-1">
             <table class="mdui-table">
               <thead>
               <tr>
-                <td>Function</td>
-                <td>Interface</td>
+                <td>功能</td>
+                <td>接口</td>
               </tr>
               </thead>
               <tbody>
               <tr>
-                <td>Request mode</td>
+                <td>请求方式</td>
                 <td>POST</td>
               </tr>
               <tr>
@@ -256,42 +256,42 @@ Content-Type: image/png
           </div>
         </div>
       </div>
-      <h4 class="mdui-m-t-2 mdui-m-b-1">Request parameters</h4>
+      <h4 class="mdui-m-t-2 mdui-m-b-1">请求参数</h4>
       <div class="mdui-table-fluid">
         <table class="mdui-table">
           <thead>
           <tr>
-            <td>Parameter name</td>
-            <td>Type</td>
-            <td>Required</td>
-            <td>Explain</td>
+            <td>参数名称</td>
+            <td>类型</td>
+            <td>是否必须</td>
+            <td>说明</td>
           </tr>
           </thead>
           <tbody>
           <tr>
             <td>page</td>
             <td>String</td>
-            <td>Yes</td>
-            <td>Page number</td>
+            <td>是</td>
+            <td>页码</td>
           </tr>
           <tr>
             <td>rows</td>
             <td>String</td>
-            <td>No</td>
-            <td>Quantity per page, 20 by default</td>
+            <td>否</td>
+            <td>每页数量, 默认 20 条</td>
           </tr>
           </tbody>
         </table>
       </div>
-      <h4 class="mdui-m-t-2 mdui-m-b-1">Return data description</h4>
+      <h4 class="mdui-m-t-2 mdui-m-b-1">返回数据(data)说明</h4>
       <div class="mdui-table-fluid">
         <table class="mdui-table">
           <thead>
           <tr>
-            <td>Parameter name</td>
-            <td>Type</td>
-            <td>Instance value</td>
-            <td>Explain</td>
+            <td>参数名称</td>
+            <td>类型</td>
+            <td>实例值</td>
+            <td>说明</td>
           </tr>
           </thead>
           <tbody>
@@ -299,38 +299,38 @@ Content-Type: image/png
             <td>total</td>
             <td>Number</td>
             <td>999</td>
-            <td>Total data</td>
+            <td>数据总量</td>
           </tr>
           <tr>
             <td>per_page</td>
             <td>String</td>
             <td>1</td>
-            <td>Number per page</td>
+            <td>每页数量</td>
           </tr>
           <tr>
             <td>current_page</td>
             <td>Number</td>
             <td>1</td>
-            <td>Current page</td>
+            <td>当前所在页码</td>
           </tr>
           <tr>
             <td>last_page</td>
             <td>Number</td>
             <td>999</td>
-            <td>Last page number</td>
+            <td>最后一页页码</td>
           </tr>
           </tbody>
         </table>
       </div>
-      <h4 class="mdui-m-t-2 mdui-m-b-1">Picture data description</h4>
+      <h4 class="mdui-m-t-2 mdui-m-b-1">图片数据说明</h4>
       <div class="mdui-table-fluid">
         <table class="mdui-table">
           <thead>
           <tr>
-            <td>Parameter name</td>
-            <td>Type</td>
-            <td>Instance value</td>
-            <td>Explain</td>
+            <td>参数名称</td>
+            <td>类型</td>
+            <td>实例值</td>
+            <td>说明</td>
           </tr>
           </thead>
           <tbody>
@@ -338,91 +338,91 @@ Content-Type: image/png
             <td>id</td>
             <td>Number</td>
             <td>1</td>
-            <td>Picture ID</td>
+            <td>图片ID</td>
           </tr>
           <tr>
             <td>strategy</td>
             <td>String</td>
             <td>oss</td>
-            <td>Storage strategy, (cos: Tencent cloud, kodo: qiniu cloud, local: local, soo: Alibaba cloud OSS, remote: remote storage, uss: shooting cloud again)</td>
+            <td>储存策略, (cos:腾讯云, kodo:七牛云, local:本地, oss:阿里云oss, remote:远程储存, uss:又拍云)</td>
           </tr>
           <tr>
             <td>path</td>
             <td>String</td>
             <td>2019/10/31</td>
-            <td>Picture path</td>
+            <td>图片所在路径</td>
           </tr>
           <tr>
             <td>alias_name</td>
             <td>String</td>
             <td>test</td>
-            <td>Picture alias</td>
+            <td>图片别名</td>
           </tr>
           <tr>
             <td>name</td>
             <td>String</td>
             <td>929616303ca92.jpg</td>
-            <td>Picture name</td>
+            <td>图片名称</td>
           </tr>
           <tr>
             <td>pathname</td>
             <td>String</td>
             <td>2019/10/31/929616303ca92.jpg</td>
-            <td>Picture path + name</td>
+            <td>图片路径+名称</td>
           </tr>
           <tr>
             <td>size</td>
             <td>String</td>
             <td>30405.00</td>
-            <td>Picture size (bytes: b)</td>
+            <td>图片大小(字节: b)</td>
           </tr>
           <tr>
             <td>mime</td>
             <td>String</td>
             <td>image/jpeg</td>
-            <td>Picture MIME type</td>
+            <td>图片 mime 类型</td>
           </tr>
           <tr>
             <td>sha1</td>
             <td>String</td>
             <td>0143f7904f12e2a76ff2935f21a771b8adadf961</td>
-            <td>Picture SHA1 value</td>
+            <td>图片 sha1 值</td>
           </tr>
           <tr>
             <td>md5</td>
             <td>String</td>
             <td>e630c1d832f1701b0afe09cfe86a7f2b</td>
-            <td>Picture MD5 value</td>
+            <td>图片 md5 值</td>
           </tr>
           <tr>
             <td>ip</td>
             <td>String</td>
             <td>192.168.0.1</td>
-            <td>Uploader IP</td>
+            <td>上传者 IP</td>
           </tr>
           <tr>
             <td>suspicious</td>
             <td>Number</td>
             <td>0</td>
-            <td>Is it a suspicious picture, (0: No, 1: Yes)</td>
+            <td>是否是可疑图片, (0:否, 1:是)</td>
           </tr>
           <tr>
             <td>upload_time</td>
             <td>Number</td>
             <td>1572491936</td>
-            <td>Picture upload time</td>
+            <td>图片上传时间</td>
           </tr>
           <tr>
             <td>upload_date</td>
             <td>String</td>
             <td>2019-10-31 11:18:56</td>
-            <td>Picture upload date</td>
+            <td>图片上传日期</td>
           </tr>
           <tr>
             <td>url</td>
             <td>String</td>
             <td>http://domain.com/2019/10/31/929616303ca92.jpg</td>
-            <td>Pictures linking</td>
+            <td>图片链接</td>
           </tr>
           </tbody>
         </table>
@@ -430,20 +430,20 @@ Content-Type: image/png
     </div>
 
     <div class="mdui-m-b-2">
-      <h2>4. Get a single picture</h2>
+      <h2>4. 获取单张图片</h2>
       <div class="mdui-row">
         <div class="mdui-col-md-6">
           <div class="mdui-table-fluid mdui-m-t-1">
             <table class="mdui-table">
               <thead>
               <tr>
-                <td>Function</td>
-                <td>Interface</td>
+                <td>功能</td>
+                <td>接口</td>
               </tr>
               </thead>
               <tbody>
               <tr>
-                <td>Request mode</td>
+                <td>请求方式</td>
                 <td>POST</td>
               </tr>
               <tr>
@@ -455,45 +455,45 @@ Content-Type: image/png
           </div>
         </div>
       </div>
-      <h4 class="mdui-m-t-2 mdui-m-b-1">Request parameters</h4>
+      <h4 class="mdui-m-t-2 mdui-m-b-1">请求参数</h4>
       <div class="mdui-table-fluid">
         <table class="mdui-table">
           <thead>
           <tr>
-            <td>Parameter name</td>
-            <td>Type</td>
-            <td>Request</td>
-            <td>Explain</td>
+            <td>参数名称</td>
+            <td>类型</td>
+            <td>是否必须</td>
+            <td>说明</td>
           </tr>
           </thead>
           <tbody>
           <tr>
             <td>id</td>
             <td>String</td>
-            <td>Yes</td>
-            <td>Picture ID</td>
+            <td>是</td>
+            <td>图片ID</td>
           </tr>
           </tbody>
         </table>
       </div>
-      <h4 class="mdui-m-t-2 mdui-m-b-1">The returned data is the same as the third one</h4>
+      <h4 class="mdui-m-t-2 mdui-m-b-1">返回数据(data)与第三条相同</h4>
     </div>
 
     <div class="mdui-m-b-2">
-      <h2>5. Delete picture</h2>
+      <h2>5. 删除图片</h2>
       <div class="mdui-row">
         <div class="mdui-col-md-6">
           <div class="mdui-table-fluid mdui-m-t-1">
             <table class="mdui-table">
               <thead>
               <tr>
-                <td>Function</td>
-                <td>Interface</td>
+                <td>功能</td>
+                <td>接口</td>
               </tr>
               </thead>
               <tbody>
               <tr>
-                <td>Request mode</td>
+                <td>请求方式</td>
                 <td>POST</td>
               </tr>
               <tr>
@@ -505,23 +505,23 @@ Content-Type: image/png
           </div>
         </div>
       </div>
-      <h4 class="mdui-m-t-2 mdui-m-b-1">Request parameters</h4>
+      <h4 class="mdui-m-t-2 mdui-m-b-1">请求参数</h4>
       <div class="mdui-table-fluid">
         <table class="mdui-table">
           <thead>
           <tr>
-            <td>Parameter name</td>
-            <td>Type</td>
-            <td>Required</td>
-            <td>Explain</td>
+            <td>参数名称</td>
+            <td>类型</td>
+            <td>是否必须</td>
+            <td>说明</td>
           </tr>
           </thead>
           <tbody>
           <tr>
             <td>id</td>
             <td>String</td>
-            <td>Yes</td>
-            <td>Picture ID, delete multiple, separated by commas</td>
+            <td>是</td>
+            <td>图片ID, 删除多个使用逗号分隔</td>
           </tr>
           </tbody>
         </table>

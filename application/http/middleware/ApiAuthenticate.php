@@ -23,19 +23,19 @@ class ApiAuthenticate
     public function handle(Request $request, \Closure $next)
     {
         if (!$this->getConfig('open_api')) { // 站点是否开启了接口
-            $this->response(lang('The administrator turned off API functionality'), [], 500);
+            $this->response('管理员关闭了接口', [], 500);
         }
 
         $user = null;
         $token = $request->header('token', $request->request('token'));
         if ($token) {
             if (!$user = Users::get(['token' => $token])) {
-                $this->response(lang('Authentication failed'), [], 401);
+                $this->response('认证失败', [], 401);
             }
         }
 
         if (!in_array($request->path(), $this->paths)) {
-            if (!$token) $this->response(lang('Token does not exist'), [], 401);
+            if (!$token) $this->response('Token 不存在', [], 401);
         }
 
         $request->user = $user;

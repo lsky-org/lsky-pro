@@ -26,7 +26,7 @@ class Group extends Base
     public function index()
     {
         $groups = GroupModel::select()->order('id', 'desc')->each(function ($item) {
-            $item->strategy_str = isset($this->strategyList[$item->strategy]) ? $this->strategyList[$item->strategy]['name'] : lang('Unknown');
+            $item->strategy_str = isset($this->strategyList[$item->strategy]) ? $this->strategyList[$item->strategy]['name'] : '未知';
             return $item;
         });
         $this->assign([
@@ -47,13 +47,13 @@ class Group extends Base
                     throw new Exception($validate);
                 }
                 if (!GroupModel::create($data)) {
-                    throw new Exception(lang('Add failed'));
+                    throw new Exception('添加失败');
                 }
             } catch (Exception $e) {
                 $this->error($e->getMessage());
             }
 
-            $this->success(lang('Added successfully'));
+            $this->success('添加成功');
         }
     }
 
@@ -69,16 +69,16 @@ class Group extends Base
                 $data['default'] = array_key_exists('default', $data) ? 1 : 0;
                 if ($data['default'] === 0) {
                     if (!GroupModel::where('default', 1)->where('id', 'neq', $data['id'])->count()) {
-                        throw new Exception(lang('Keep at least one default group'));
+                        throw new Exception('至少保留一个默认分组');
                     }
                 }
                 if (!GroupModel::update($data)) {
-                    throw new Exception(lang('Edit failed'));
+                    throw new Exception('编辑失败');
                 }
             } catch (Exception $e) {
                 $this->error($e->getMessage());
             }
-            $this->success(lang('Edit succeeded'));
+            $this->success('编辑成功');
         }
     }
 
@@ -89,13 +89,13 @@ class Group extends Base
             try {
                 $id = $this->request->post('id');
                 if (1 == $id) {
-                    throw new Exception(lang('The default group cannot be deleted'));
+                    throw new Exception('默认组不可删除');
                 }
                 $group = GroupModel::find($id);
                 // 至少保留一个默认分组
                 $defaultId = GroupModel::where('default', 1)->where('id', 'neq', $id)->value('id');
                 if (!$defaultId) {
-                    throw new Exception(lang('Keep at least one default group'));
+                    throw new Exception('至少保留一个默认分组');
                 }
                 // 转移该组下的用户到默认分组
                 \app\common\model\Users::where('group_id', $group->id)->setField('group_id', $defaultId);
@@ -105,7 +105,7 @@ class Group extends Base
                 Db::rollback();
                 $this->error($e->getMessage());
             }
-            $this->success(lang('Delete succeeded'));
+            $this->success('删除成功');
         }
     }
 
@@ -124,16 +124,16 @@ class Group extends Base
             $value = $this->request->post('value');
             if (1 != $value) {
                 if (!GroupModel::where('default', 1)->where('id', 'neq', $id)->count()) {
-                    $this->error(lang('Keep at least one default group'));
+                    $this->error('至少保留一个默认分组');
                 }
             }
             if (!GroupModel::update([
                 'id' => $id,
                 'default' => $value
             ])) {
-                $this->error(lang('Setting failed'));
+                $this->error('设置失败');
             }
-            $this->success(lang('Setting succeeded'));
+            $this->success('设置成功');
         }
     }
 
@@ -143,15 +143,15 @@ class Group extends Base
             $id = $this->request->post('id');
             $strategy = $this->request->post('strategy');
             if (!array_key_exists($strategy, $this->strategyList)) {
-                $this->error(lang('Storage policy does not exist'));
+                $this->error('储存策略不存在');
             }
             if (!GroupModel::update([
                 'id' => $id,
                 'strategy' => $strategy
             ])) {
-                $this->error(lang('Setting failed'));
+                $this->error('设置失败');
             }
-            $this->success(lang('Setting succeeded'));
+            $this->success('设置成功');
         }
     }
 }

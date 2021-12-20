@@ -777,7 +777,7 @@ class RequestCore
      * data stored in the `curl_handle` and `response` properties unless replacement data is passed in via
      * parameters.
      *
-     * @param resource|\CurlHandle|null|false $curl_handle (Optional) The reference to the already executed cURL request. Receive CurlHandle instance from PHP8.0
+     * @param resource $curl_handle (Optional) The reference to the already executed cURL request.
      * @param string $response (Optional) The actual response content itself that needs to be parsed.
      * @return ResponseCore A <ResponseCore> object containing a parsed HTTP response.
      */
@@ -788,8 +788,8 @@ class RequestCore
             $this->response = $response;
         }
 
-        // As long as this came back as a valid resource or CurlHandle instance...
-        if (is_resource($curl_handle) || (is_object($curl_handle) && get_class($curl_handle) === 'CurlHandle')) {
+        // As long as this came back as a valid resource...
+        if (is_resource($curl_handle)) {
             // Determine what's what.
             $header_size = curl_getinfo($curl_handle, CURLINFO_HEADER_SIZE);
             $this->response_headers = substr($this->response, 0, $header_size);
@@ -844,13 +844,12 @@ class RequestCore
         $this->response = curl_exec($curl_handle);
 
         if ($this->response === false) {
-            throw new RequestCore_Exception('cURL error: ' . curl_error($curl_handle) . ' (' . curl_errno($curl_handle) . ')');
+            throw new RequestCore_Exception('cURL resource: ' . (string)$curl_handle . '; cURL error: ' . curl_error($curl_handle) . ' (' . curl_errno($curl_handle) . ')');
         }
 
         $parsed_response = $this->process_response($curl_handle, $this->response);
 
         curl_close($curl_handle);
-        unset($curl_handle);
 
         if ($parse) {
             return $parsed_response;

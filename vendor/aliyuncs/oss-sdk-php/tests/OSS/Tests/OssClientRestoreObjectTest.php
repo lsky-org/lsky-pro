@@ -141,7 +141,7 @@ class OssClientRestoreObjectTest extends TestOssClientBase
     }
 
 
-    protected function setUp(): void
+    public function setUp()
     {
         parent::setUp();
 
@@ -160,7 +160,7 @@ class OssClientRestoreObjectTest extends TestOssClientBase
         $this->ossClient->createBucket($this->archiveBucket, OssClient::OSS_ACL_TYPE_PRIVATE, $options);
     }
 
-    protected function tearDown(): void
+    public function tearDown()
     {
         parent::tearDown();
 

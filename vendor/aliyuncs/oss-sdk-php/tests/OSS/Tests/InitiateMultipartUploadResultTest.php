@@ -7,7 +7,7 @@ use OSS\Core\OssException;
 use OSS\Result\InitiateMultipartUploadResult;
 use OSS\Http\ResponseCore;
 
-class InitiateMultipartUploadResultTest extends \PHPUnit\Framework\TestCase
+class InitiateMultipartUploadResultTest extends \PHPUnit_Framework_TestCase
 {
     private $validXml = <<<BBBB
 <?xml version="1.0" encoding="UTF-8"?>
@@ -41,7 +41,7 @@ BBBB;
             $result = new InitiateMultipartUploadResult($response);
             $this->assertTrue(false);
         } catch (OssException $e) {
-            $this->assertTrue(true);
+
         }
     }
 }

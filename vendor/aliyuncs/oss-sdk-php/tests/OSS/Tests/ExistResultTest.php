@@ -7,7 +7,7 @@ use OSS\Result\ExistResult;
 use OSS\Http\ResponseCore;
 use OSS\Core\OssException;
 
-class ExistResultTest extends \PHPUnit\Framework\TestCase
+class ExistResultTest extends \PHPUnit_Framework_TestCase
 {
     public function testParseValid200()
     {
@@ -32,7 +32,7 @@ class ExistResultTest extends \PHPUnit\Framework\TestCase
             new ExistResult($response);
             $this->assertTrue(false);
         } catch (OssException $e) {
-            $this->assertTrue(true);
+
         }
     }
 }

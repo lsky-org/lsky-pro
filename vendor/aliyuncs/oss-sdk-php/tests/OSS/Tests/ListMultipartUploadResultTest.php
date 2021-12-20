@@ -9,7 +9,7 @@ use OSS\Http\ResponseCore;
  * Class ListMultipartUploadResultTest
  * @package OSS\Tests
  */
-class ListMultipartUploadResultTest extends \PHPUnit\Framework\TestCase
+class ListMultipartUploadResultTest extends \PHPUnit_Framework_TestCase
 {
     private $validXml = <<<BBBB
 <?xml version="1.0" encoding="UTF-8"?>

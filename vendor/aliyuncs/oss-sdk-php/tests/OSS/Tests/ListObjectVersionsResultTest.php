@@ -6,7 +6,7 @@ use OSS\Result\ListObjectVersionsResult;
 use OSS\Core\OssException;
 use OSS\Http\ResponseCore;
 
-class ListObjectVersionsResultTest extends \PHPUnit\Framework\TestCase
+class ListObjectVersionsResultTest extends \PHPUnit_Framework_TestCase
 {
 
     private $validXml = <<<BBBB
@@ -202,7 +202,6 @@ class ListObjectVersionsResultTest extends \PHPUnit\Framework\TestCase
         $response = new ResponseCore(array(), "", 200);
         $result = new ListObjectVersionsResult($response);
         $list = $result->getData();
-        $this->assertTrue(true);
     }
 
     public function testParseInvalidXml()
@@ -210,6 +209,5 @@ class ListObjectVersionsResultTest extends \PHPUnit\Framework\TestCase
         $response = new ResponseCore(array(), $this->invalidXml, 200);
         $result = new ListObjectVersionsResult($response);
         $stat = $result->getData();
-        $this->assertTrue(true);
     }
 }

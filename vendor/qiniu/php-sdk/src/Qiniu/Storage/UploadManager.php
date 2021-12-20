@@ -48,7 +48,7 @@ final class UploadManager
         $mime = 'application/octet-stream',
         $fname = "default_filename"
     ) {
-
+    
         $params = self::trimParams($params);
         return FormUploader::put(
             $upToken,
@@ -72,9 +72,7 @@ final class UploadManager
      *                    http://developer.qiniu.com/docs/v6/api/overview/up/response/vars.html#xvar
      * @param $mime       上传数据的mimeType
      * @param $checkCrc   是否校验crc32
-     * @param $version    分片上传版本 目前支持v1/v2版本 默认v1
-     * @param $partSize   分片上传v2字段 默认大小为4MB 分片大小范围为1 MB - 1 GB
-     * @param $resumeRecordFile 断点续传文件路径 默认为null
+     *
      * @return array    包含已上传文件的信息，类似：
      *                                              [
      *                                                  "hash" => "<Hash string>",
@@ -87,12 +85,9 @@ final class UploadManager
         $filePath,
         $params = null,
         $mime = 'application/octet-stream',
-        $checkCrc = false,
-        $resumeRecordFile = null,
-        $version = 'v1',
-        $partSize = config::BLOCK_SIZE
+        $checkCrc = false
     ) {
-
+    
         $file = fopen($filePath, 'rb');
         if ($file === false) {
             throw new \Exception("file can not open", 1);
@@ -124,10 +119,7 @@ final class UploadManager
             $size,
             $params,
             $mime,
-            $this->config,
-            $resumeRecordFile,
-            $version,
-            $partSize
+            $this->config
         );
         $ret = $up->upload(basename($filePath));
         fclose($file);

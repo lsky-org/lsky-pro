@@ -14,7 +14,7 @@ class OssClinetImageTest extends TestOssClientBase
     private $object;
     private $download_file;
 
-    protected function setUp(): void
+    public function setUp()
     {
         parent::setUp();
 
@@ -28,7 +28,7 @@ class OssClinetImageTest extends TestOssClientBase
         $this->client->uploadFile($this->bucketName, $this->object, $this->local_file);
     }
 
-    protected function tearDown(): void
+    public function tearDown()
     {
         parent::tearDown();
         unlink($this->download_file);

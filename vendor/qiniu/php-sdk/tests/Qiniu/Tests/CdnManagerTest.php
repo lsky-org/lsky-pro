@@ -56,43 +56,43 @@ class CdnManagerTest extends \PHPUnit_Framework_TestCase
     public function testRefreshUrls()
     {
         list($ret, $err) = $this->cdnManager->refreshUrls(array($this->refreshUrl));
-        $this->assertNull($err);
         $this->assertNotNull($ret);
+        $this->assertNull($err);
     }
 
     public function testRefreshDirs()
     {
         list($ret, $err) = $this->cdnManager->refreshDirs(array($this->refreshDirs));
-        $this->assertNull($err);
         $this->assertNotNull($ret);
+        $this->assertNull($err);
     }
 
     public function testRefreshUrlsAndDirs()
     {
         list($ret, $err) = $this->cdnManager->refreshUrlsAndDirs(array($this->refreshUrl), array($this->refreshDirs));
-        $this->assertNull($err);
         $this->assertNotNull($ret);
+        $this->assertNull($err);
     }
 
     public function testGetCdnRefreshList()
     {
         list($ret, $err) = $this->cdnManager->getCdnRefreshList(null, null, null, 'success');
-        $this->assertNull($err);
         $this->assertNotNull($ret);
+        $this->assertNull($err);
     }
 
     public function testPrefetchUrls()
     {
         list($ret, $err) = $this->cdnManager->prefetchUrls(array($this->refreshUrl));
-        $this->assertNull($err);
         $this->assertNotNull($ret);
+        $this->assertNull($err);
     }
 
     public function testGetCdnPrefetchList()
     {
         list($ret, $err) = $this->cdnManager->getCdnPrefetchList(null, null, 'success');
-        $this->assertNull($err);
         $this->assertNotNull($ret);
+        $this->assertNull($err);
     }
 
     public function testGetBandwidthData()
@@ -103,8 +103,8 @@ class CdnManagerTest extends \PHPUnit_Framework_TestCase
             $this->testEndDate,
             $this->testGranularity
         );
-        $this->assertNull($err);
         $this->assertNotNull($ret);
+        $this->assertNull($err);
     }
 
     public function testGetFluxData()
@@ -115,23 +115,23 @@ class CdnManagerTest extends \PHPUnit_Framework_TestCase
             $this->testEndDate,
             $this->testGranularity
         );
-        $this->assertNull($err);
         $this->assertNotNull($ret);
+        $this->assertNull($err);
     }
 
     public function testGetCdnLogList()
     {
         list($ret, $err) = $this->cdnManager->getCdnLogList(array('fake.qiniu.com'), $this->testLogDate);
-        $this->assertNotNull($err);
         $this->assertNull($ret);
+        $this->assertNotNull($err);
     }
 
     public function testCreateTimestampAntiLeechUrl()
     {
         $signUrl = $this->cdnManager->createTimestampAntiLeechUrl($this->refreshUrl, $this->encryptKey, 3600);
         $response = Client::get($signUrl);
-        $this->assertNull($response->error);
         $this->assertEquals($response->statusCode, 200);
+        $this->assertNull($response->error);
 
         $signUrl = $this->cdnManager->createTimestampAntiLeechUrl(
             $this->refreshUrl . '?qiniu',
@@ -139,7 +139,7 @@ class CdnManagerTest extends \PHPUnit_Framework_TestCase
             3600
         );
         $response = Client::get($signUrl);
-        $this->assertNull($response->error);
         $this->assertEquals($response->statusCode, 200);
+        $this->assertNull($response->error);
     }
 }

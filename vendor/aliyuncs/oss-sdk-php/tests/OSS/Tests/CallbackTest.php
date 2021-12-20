@@ -289,7 +289,7 @@ class CallbackTest extends TestOssClientBase
         }
     }
 
-    protected function setUp(): void
+    public function setUp()
     {
         parent::setUp();
     }

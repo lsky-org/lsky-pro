@@ -6,7 +6,7 @@ use OSS\Model\StorageCapacityConfig;
 use OSS\Result\GetStorageCapacityResult;
 use OSS\Core\OssException;
 
-class StorageCapacityTest extends \PHPUnit\Framework\TestCase
+class StorageCapacityTest extends \PHPUnit_Framework_TestCase
 {
 
     private $inValidXml = <<<BBBB
@@ -29,9 +29,7 @@ BBBB;
         try {
             new GetStorageCapacityResult($response);
             $this->assertTrue(false);
-        } catch (OssException $e) {
-            $this->assertTrue(true);
-        }
+        } catch (OssException $e) {}
     }
 
     public function testParseEmptyXml()
@@ -40,9 +38,7 @@ BBBB;
         try {
             new GetStorageCapacityResult($response);
             $this->assertTrue(false);
-        } catch (OssException $e) {
-            $this->assertTrue(true);
-        }
+        } catch (OssException $e) {}
     }
 
     public function testParseValidXml()

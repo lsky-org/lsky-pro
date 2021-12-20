@@ -6,7 +6,7 @@ use OSS\Result\AclResult;
 use OSS\Core\OssException;
 use OSS\Http\ResponseCore;
 
-class AclResultTest extends \PHPUnit\Framework\TestCase
+class AclResultTest extends \PHPUnit_Framework_TestCase
 {
 
     private $validXml = <<<BBBB

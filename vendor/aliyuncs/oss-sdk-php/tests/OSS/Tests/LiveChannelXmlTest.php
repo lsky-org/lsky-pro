@@ -12,7 +12,7 @@ use OSS\Model\GetLiveChannelStatus;
 use OSS\Model\GetLiveChannelHistory;
 use OSS\Model\LiveChannelHistory;
 
-class LiveChannelXmlTest extends \PHPUnit\Framework\TestCase
+class LiveChannelXmlTest extends \PHPUnit_Framework_TestCase
 {
     private $config = <<<BBBB
 <?xml version="1.0" encoding="utf-8"?>

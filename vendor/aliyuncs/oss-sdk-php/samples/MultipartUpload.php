@@ -85,7 +85,7 @@ function putObjectByRawApis($ossClient, $bucket)
      */
     $partSize = 10 * 1024 * 1024;
     $uploadFile = __FILE__;
-    $uploadFileSize = sprintf('%u',filesize($uploadFile));
+    $uploadFileSize = filesize($uploadFile);
     $pieces = $ossClient->generateMultiuploadParts($uploadFileSize, $partSize);
     $responseUploadPart = array();
     $uploadPosition = 0;

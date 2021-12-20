@@ -1,6 +1,6 @@
 {extend name="common:base" /}
 
-{block name="title"}{:lang('Sign Up')} - {$config.site_name}{/block}
+{block name="title"}注册 - {$config.site_name}{/block}
 
 {block name="css"}
   <link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -12,42 +12,42 @@
     <div class="mdui-row">
       <div class="register-container">
         <div class="panel mdui-col-sm-6 mdui-col-md-6 mdui-col-offset-sm-3 mdui-col-offset-md-3">
-          <div class="panel-header">{:lang('Registered account')}</div>
+          <div class="panel-header">注册账号</div>
           <div class="panel-body-box">
             <form action="{:url('auth/register')}" method="post">
               {include file="common:alert"}
               <div class="mdui-textfield mdui-textfield-floating-label">
-                <label class="mdui-textfield-label">{:lang('User name')}</label>
+                <label class="mdui-textfield-label">用户名</label>
                 <input class="mdui-textfield-input" type="text" name="username" maxlength="15" value="{:input('post.username')}"/>
               </div>
               <div class="mdui-textfield mdui-textfield-floating-label">
-                <label class="mdui-textfield-label">{:lang('Mailbox')}</label>
+                <label class="mdui-textfield-label">邮箱</label>
                 <input class="mdui-textfield-input" type="email" name="email" value="{:input('post.email')}"/>
               </div>
               <div class="mdui-textfield mdui-textfield-floating-label">
-                <label class="mdui-textfield-label">{:lang('Password')}</label>
+                <label class="mdui-textfield-label">密码</label>
                 <input class="mdui-textfield-input" type="password" name="password" value="{:input('post.password')}"/>
               </div>
               <div class="mdui-textfield mdui-textfield-floating-label">
-                <label class="mdui-textfield-label">{:lang('Confirm password')}</label>
+                <label class="mdui-textfield-label">确认密码</label>
                 <input class="mdui-textfield-input" type="password" name="password_confirm"/>
               </div>
               <div class="mdui-textfield mdui-textfield-floating-label">
-                <label class="mdui-textfield-label">{:lang('Verification Code')}</label>
+                <label class="mdui-textfield-label">验证码</label>
                 <input class="mdui-textfield-input" type="text" name="captcha" maxlength="5" autocomplete="off"/>
-                <img src="{:captcha_src()}" class="captcha" onclick="this.src = '{:captcha_src()}' + '?t=' + new Date().getTime()" alt="{:lang('Verification Code')}">
+                <img src="{:captcha_src()}" class="captcha" onclick="this.src = '{:captcha_src()}' + '?t=' + new Date().getTime()" alt="验证码">
               </div>
               <div class="mdui-textfield mdui-textfield-floating-label">
                 {if $config.close_register}
-                <button class="mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple" disabled>{:lang('Registration closed')}</button>
+                <button class="mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple" disabled>已关闭注册</button>
                 {else /}
-                <button class="mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple">{:lang('Sign Up')}</button>
+                <button class="mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple">注册</button>
                 {/if}
               </div>
               {:token()}
             </form>
             <p class="mdui-clearfix mdui-m-t-1">
-              {:lang('Existing account?')}<a href="{:url('auth/login')}"> {:lang('Sign In')}</a>
+              已有账号？<a href="{:url('auth/login')}">登录</a>
             </p>
           </div>
         </div>
@@ -57,7 +57,7 @@
     <div class="mask">
       <div class="content">
         <div class="panel-box">
-          <h3>{:lang('Site registration closed')}</h3>
+          <h3>站点已关闭注册</h3>
         </div>
       </div>
     </div>

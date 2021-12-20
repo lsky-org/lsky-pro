@@ -6,7 +6,7 @@ use OSS\Core\OssException;
 use OSS\Http\ResponseCore;
 use OSS\Result\CopyObjectResult;
 
-class CopyObjectResultTest extends \PHPUnit\Framework\TestCase
+class CopyObjectResultTest extends \PHPUnit_Framework_TestCase
 {
     private $body = <<<BBBB
 <?xml version="1.0" encoding="utf-8"?>
@@ -45,7 +45,7 @@ BBBB;
             new CopyObjectResult($response);
             $this->assertFalse(true);
         } catch (OssException $e) {
-            $this->assertFalse(false);
+
         }
     }
 

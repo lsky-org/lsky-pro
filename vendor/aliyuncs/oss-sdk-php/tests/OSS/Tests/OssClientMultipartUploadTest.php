@@ -172,7 +172,7 @@ class OssClientMultipartUploadTest extends TestOssClientBase
          */
         $part_size = 10 * 1024 * 1024;
         $upload_file = __FILE__;
-        $upload_filesize = sprintf('%u',filesize($upload_file));
+        $upload_filesize = filesize($upload_file);
         $pieces = $this->ossClient->generateMultiuploadParts($upload_filesize, $part_size);
         $response_upload_part = array();
         $upload_position = 0;
@@ -257,7 +257,7 @@ class OssClientMultipartUploadTest extends TestOssClientBase
          */
         $part_size = 10 * 1024 * 1024;
         $upload_file = __FILE__;
-        $upload_filesize = sprintf('%u',filesize($upload_file));
+        $upload_filesize = filesize($upload_file);
         $pieces = $this->ossClient->generateMultiuploadParts($upload_filesize, $part_size);
         $response_upload_part = array();
         $upload_position = 0;
@@ -330,7 +330,6 @@ class OssClientMultipartUploadTest extends TestOssClientBase
 
         try {
             $this->ossClient->multiuploadFile($this->bucket, $object, $file, $options);
-            $this->assertFalse(false);
         } catch (OssException $e) {
             $this->assertFalse(true);
         }
@@ -344,7 +343,6 @@ class OssClientMultipartUploadTest extends TestOssClientBase
     
     	try {
     		$this->ossClient->multiuploadFile($this->bucket, $object, $file, $options);
-            $this->assertFalse(false);
     	} catch (OssException $e) {
     		$this->assertFalse(true);
     	}
@@ -387,7 +385,6 @@ class OssClientMultipartUploadTest extends TestOssClientBase
     
     	try {
             $this->ossClient->multiuploadFile($this->bucket, $object, $file);
-            $this->assertTrue(false);
     	} catch (OssException $e) {
             $this->assertTrue(true);
             if (strpos($e, "parameter invalid, file is empty") == false)

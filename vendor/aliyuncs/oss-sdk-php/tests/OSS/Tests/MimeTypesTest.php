@@ -4,7 +4,7 @@ namespace OSS\Tests;
 
 use OSS\Core\MimeTypes;
 
-class MimeTypesTest extends \PHPUnit\Framework\TestCase
+class MimeTypesTest extends \PHPUnit_Framework_TestCase
 {
     public function testGetMimeType()
     {

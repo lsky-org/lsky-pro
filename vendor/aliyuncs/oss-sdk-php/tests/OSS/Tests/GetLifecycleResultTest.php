@@ -8,7 +8,7 @@ use OSS\Core\OssException;
 use OSS\Model\LifecycleConfig;
 use OSS\Result\GetLifecycleResult;
 
-class GetLifecycleResultTest extends \PHPUnit\Framework\TestCase
+class GetLifecycleResultTest extends \PHPUnit_Framework_TestCase
 {
     private $validXml = <<<BBBB
 <?xml version="1.0" encoding="utf-8"?>
@@ -49,10 +49,10 @@ BBBB;
     {
         $response = new ResponseCore(array(), $this->validXml, 300);
         try {
-            $result = new GetLifecycleResult($response);
+            new GetLifecycleResult($response);
             $this->assertTrue(false);
         } catch (OssException $e) {
-            $this->assertTrue(true);
+
         }
     }
 

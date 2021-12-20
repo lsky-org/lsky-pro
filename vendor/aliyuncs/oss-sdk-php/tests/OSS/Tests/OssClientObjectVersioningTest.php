@@ -569,7 +569,7 @@ class OssClientObjectVersioningTest extends TestOssClientBase
         $this->assertEquals(0, count($deleteMarkerList));
     }
 
-    protected function setUp(): void
+    public function setUp()
     {
         parent::setUp();
 
@@ -577,7 +577,7 @@ class OssClientObjectVersioningTest extends TestOssClientBase
 
     }
 
-    protected function tearDown(): void
+    public function tearDown()
     {
         if (!$this->ossClient->doesBucketExist($this->bucket)) {
             return;
