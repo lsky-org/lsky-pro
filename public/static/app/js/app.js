@@ -242,12 +242,6 @@ var app = {
                   text: '忽略'
                 },
                 {
-                  text: '不再提示',
-                  onClick: function () {
-                    app.cookie.set('no_update', true, 30, '/');
-                  }
-                },
-                {
                   text: '立即升级',
                   close: false,
                   onClick: function (inst) {

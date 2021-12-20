@@ -186,11 +186,6 @@
     });
   });
 </script>
-{if $user and $user.is_admin and !cookie('?no_update')}
-<script>
-  app.getLastVer(ver, false);
-</script>
-{/if}
 {$config.statistics_code|raw}
 </body>
 </html>
