@@ -16,13 +16,6 @@
           <div class="panel-body-box">
             <form action="{:url('auth/login')}" method="post">
               {include file="common:alert"}
-              <div class="mt-3">
-                <label class="mdui-textfield-label">登录方式</label>
-                <select class="mdui-select" mdui-select name="type">
-                  <option value="email" {if input('post.type') === 'email'} selected{/if}>邮箱</option>
-                  <option value="username" {if input('post.type') === 'username'} selected{/if}>用户名</option>
-                </select>
-              </div>
               <div class="mdui-textfield mdui-textfield-floating-label">
                 <label class="mdui-textfield-label">账号</label>
                 <input class="mdui-textfield-input" type="text" name="account" value="{:input('post.account')}"/>
