@@ -1,6 +1,6 @@
 {extend name="common:base" /}
 
-{block name="title"}{:lang('Picture management')} - {$config.site_name}{/block}
+{block name="title"}图片管理 - {$config.site_name}{/block}
 
 {block name="css"}
   <link rel="stylesheet" href="/static/viewerjs/viewer.min.css">
@@ -11,44 +11,44 @@
   <main>
     <div class="mdui-chip">
       <span class="mdui-chip-icon"><i class="mdui-icon material-icons">&#xe88e;</i></span>
-      <span class="mdui-chip-title">{:lang('There are %s pictures in total', ['<small class="mdui-text-color-red">'.$images->total().'</small>'])}</span>
-      <a href="" class="mdui-chip-delete" mdui-tooltip="{content: '{:lang('Refresh')}', position: 'right'}"><i class="mdui-icon material-icons">&#xe863;</i></a>
+      <span class="mdui-chip-title">共有 <small class="mdui-text-color-red">{$images->total()}</small> 张图片</span>
+      <a href="" class="mdui-chip-delete" mdui-tooltip="{content: '刷新', position: 'right'}"><i class="mdui-icon material-icons">&#xe863;</i></a>
     </div>
     <div class="mdui-clearfix mdui-m-t-1"></div>
     <form action="" method="get" id="search-form">
       <select class="where mdui-select mdui-float-left" mdui-select>
-        <option value="{}">{:lang('All')}</option>
+        <option value="{}">全部</option>
         {foreach $strategyList as $key => $value}
-        <option value='{"strategy": "{$key}"}' {if $key eq $strategy}selected{/if}>{:lang($value.name)}</option>
+        <option value='{"strategy": "{$key}"}' {if $key eq $strategy}selected{/if}>{$value.name}</option>
         {/foreach}
-        <option value='{"user_id": "0"}' {eq name="user_id" value="0"} selected{/eq}>{:lang('Visitor picture')}</option>
-        <option value='{"suspicious": "1"}' {eq name="suspicious" value="1"} selected{/eq}>{:lang('Suspicious picture')}</option>
+        <option value='{"user_id": "0"}' {eq name="user_id" value="0"} selected{/eq}>访客图片</option>
+        <option value='{"suspicious": "1"}' {eq name="suspicious" value="1"} selected{/eq}>可疑图片</option>
       </select>
       <input type="hidden" name="" id="search-input">
       <input type="hidden" name="page" value="1">
-      <input class="mdui-textfield-input search-input mdui-float-left" type="text" name="keyword" placeholder="{:lang('Enter search...')}" value="{$keyword}" autocomplete="off"/>
+      <input class="mdui-textfield-input search-input mdui-float-left" type="text" name="keyword" placeholder="回车搜索..." value="{$keyword}" autocomplete="off"/>
     </form>
     <div class="mdui-clearfix"></div>
     <div class="mdui-table-fluid mdui-m-t-2 mdui-m-b-2">
       <table class="mdui-table mdui-table-selectable">
         <thead>
         <tr>
-          <th>{:lang('User')}</th>
-          <th>{:lang('Storage strategy')}</th>
-          <th>{:lang('Alias')}</th>
-          <th>{:lang('Route')}</th>
-          <th>{:lang('Size')}</th>
-          <th>{:lang('Type')}</th>
-          <th>{:lang('Upload IP')}</th>
-          <th>{:lang('Upload time')}</th>
-          <th>{:lang('Operation')}</th>
+          <th>所属用户</th>
+          <th>储存策略</th>
+          <th>别名</th>
+          <th>路径</th>
+          <th>大小</th>
+          <th>类型</th>
+          <th>上传IP</th>
+          <th>上传时间</th>
+          <th>操作</th>
         </tr>
         </thead>
         <tbody>
         {foreach $images as $key => $value}
         <tr data-id="{$value.id}">
           <td>{$value.username}</td>
-          <td>{:lang($value.strategyStr)}</td>
+          <td>{$value.strategyStr}</td>
           <td>{$value.alias_name ?: '-'}</td>
           <td>{$value.pathname}</td>
           <td class="mdui-text-color-light-blue">{$value.size|format_size}</td>
@@ -58,8 +58,8 @@
           <td>
             <img class="none" data-original="{$value.url}" src="{$value.url}">
             <div class="mdui-btn-group">
-              <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-btn-dense see" data-key="{$key}">{:lang('See')}</button>
-              <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-red mdui-btn-dense del">{:lang('Delete')}</button>
+              <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-btn-dense see" data-key="{$key}">查看</button>
+              <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-red mdui-btn-dense del">删除</button>
             </div>
           </td>
         </tr>
@@ -85,9 +85,9 @@
 <script>
   var methods = {
     delete: function (id, batch, callback) {
-      var msg = lang('Are you sure to delete this picture?');
+      var msg = '确认删除该图片吗？';
       if (batch) {
-        msg = lang('Are you sure to delete the selected picture?');
+        msg = '确认删除选中项图片吗？';
       }
       mdui.confirm(msg, function () {
         app.request("{:url('admin/images/delete')}", {id: id}, function () {
@@ -95,7 +95,7 @@
         });
       }, function () {
 
-      }, {confirmText: lang('Confirm'), cancelText: lang('Cancel')});
+      }, {confirmText: '确定', cancelText: '取消'});
     }
   };
 
@@ -112,7 +112,7 @@
       });
     } else {
       mdui.snackbar({
-        message: lang('Select at least one data!')
+        message: '至少选择一项数据！'
       });
     }
   }
@@ -153,11 +153,11 @@
       app.ajax("{:url('admin/images/getIpInfo')}", {ip: $(this).text()}, function (response) {
         if (response.code) {
           mdui.alert(
-            lang('Country:') + response.data.country +
-            '<br />' + lang('Region:') + response.data.area +
-            '<br />' + lang('Area:') + response.data.region +
-            '<br />' + lang('City:') + response.data.city +
-            '<br />' + lang('County:') + response.data.county +
+            '国家：' + response.data.country +
+            '<br />地区：' + response.data.area +
+            '<br />区域：' + response.data.region +
+            '<br />城市：' + response.data.city +
+            '<br />县：' + response.data.county +
             '<br />ISP：' + response.data.isp
             , 'IP：' + response.data.ip
           );

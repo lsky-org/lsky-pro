@@ -42,30 +42,33 @@ function format_size($size, $array = false)
 /**
  * 格式化友好时间戳
  *
+ * @param $unixTime
  * @return false|string
  */
-function format_time($remote, $local = null)
+function format_time($unixTime)
 {
-    $timediff = (is_null($local) || $local ? time() : $local) - $remote;
-    $chunks = array(
-        array(60 * 60 * 24 * 365, 'year'),
-        array(60 * 60 * 24 * 30, 'month'),
-        array(60 * 60 * 24 * 7, 'week'),
-        array(60 * 60 * 24, 'day'),
-        array(60 * 60, 'hour'),
-        array(60, 'minute'),
-        array(1, 'second')
-    );
-    $name = $count ='';
-    for ($i = 0, $j = count($chunks); $i < $j; $i++) {
-        $seconds = $chunks[$i][0];
-        $name = $chunks[$i][1];
-        if (($count = floor($timediff / $seconds)) != 0) {
-            break;
+    $showTime = date('Y', $unixTime) . "年" . date('n', $unixTime) . "月" . date('j', $unixTime) . "日";
+    if (date('Y', $unixTime) == date('Y')) {
+        $showTime = date('n', $unixTime) . "月" . date('j', $unixTime) . "日 " . date('H:i', $unixTime);
+        if (date('n.j', $unixTime) == date('n.j')) {
+            $timeDifference = time() - $unixTime + 1;
+            if ($timeDifference < 30) {
+                return "刚刚";
+            }
+            if ($timeDifference >= 30 && $timeDifference < 60) {
+                return $timeDifference . "秒前";
+            }
+            if ($timeDifference >= 60 && $timeDifference < 3600) {
+                return floor($timeDifference / 60) . "分钟前";
+            }
+            return date('H:i', $unixTime);
+        }
+        if (date('n.j', ($unixTime + 86400)) == date('n.j')) {
+            return "昨天 " . date('H:i', $unixTime);
         }
     }
 
-    return lang("%s {$name}%s ago", [$count, ($count > 1 ? 's' : '')]);
+    return $showTime;
 }
 
 /**

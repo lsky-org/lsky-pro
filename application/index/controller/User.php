@@ -71,11 +71,11 @@ class User extends Base
                 foreach ($deletes as $key => $val) {
                     if (1 === count($val)) {
                         if (!$strategy[$key]->delete(isset($val[0]) ? $val[0] : null)) {
-                            // throw new Exception(lang('Deletion failed'));
+                            // throw new Exception('删除失败');
                         }
                     } else {
                         if (!$strategy[$key]->deletes($val)) {
-                            // throw new Exception(lang('Batch deletion failed'));
+                            // throw new Exception('批量删除失败');
                         }
                     }
                 }
@@ -91,7 +91,7 @@ class User extends Base
         if ($deleteId) {
             return true;
         }
-        $this->success(lang('Delete succeeded'));
+        $this->success('删除成功');
     }
 
     public function createFolder()
@@ -113,7 +113,7 @@ class User extends Base
             } catch (Exception $e) {
                 $this->error($e->getMessage());
             }
-            $this->success(lang('Created successfully'));
+            $this->success('创建成功');
         }
     }
 
@@ -133,7 +133,7 @@ class User extends Base
                 Db::rollback();
                 $this->error($e->getMessage());
             }
-            $this->success(lang('Delete succeeded'));
+            $this->success('删除成功');
         }
     }
 
@@ -151,11 +151,11 @@ class User extends Base
             $count = $this->user->folders()->where('id', $folderId)->count();
             if ($count || $folderId == 0) {
                 if (Images::where('id', 'in', $ids)->setField('folder_id', $folderId)) {
-                    $this->success(lang('Move succeeded'));
+                    $this->success('移动成功');
                 }
-                $this->error(lang('Move failed'));
+                $this->error('移动失败');
             } else {
-                $this->error(lang('The folder does not exist!'));
+                $this->error('该文件夹不存在！');
             }
         }
     }
@@ -184,7 +184,7 @@ class User extends Base
                 Db::rollback();
                 $this->error($e->getMessage());
             }
-            $this->success(lang('Rename succeeded'));
+            $this->success('重命名成功');
         }
     }
 
@@ -195,17 +195,17 @@ class User extends Base
                 $id = $this->request->post('id');
                 $name = $this->request->post('name');
 
-                $validate = Validate::make(['name|'.lang('Alias')  => 'require|max:60|chsDash']);
+                $validate = Validate::make(['name|别名'  => 'require|max:60|chsDash']);
                 if (!$validate->check(['name' => $name])) {
                     throw new \Exception($validate->getError());
                 }
                 if (!$this->user->images()->where('id', $id)->update(['alias_name' => $name])) {
-                    throw new \Exception(lang('Rename failed'));
+                    throw new \Exception('重命名失败');
                 }
             } catch (\Exception $e) {
                 $this->error($e->getMessage());
             }
-            $this->success(lang('Rename succeeded'));
+            $this->success('重命名成功');
         }
     }
 
@@ -247,7 +247,7 @@ class User extends Base
                 }
                 if ($data['password_old']) {
                     if (md5($data['password_old']) != $this->user->password) {
-                        throw new Exception(lang('The original password is incorrect'));
+                        throw new Exception('原密码不正确');
                     }
                 }
                 if (!$data['password']) unset($data['password']);
@@ -255,7 +255,7 @@ class User extends Base
             } catch (Exception $e) {
                 $this->error($e->getMessage());
             }
-            $this->success(lang('Saved successfully'));
+            $this->success('保存成功');
         }
         return $this->fetch();
     }

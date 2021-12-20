@@ -33,6 +33,6 @@ class Upload extends Base
             return json(['error' => $e->getMessage()]);
         }
 
-        $this->result($data, 200, lang('Upload succeeded'));
+        $this->result($data, 200, '上传成功');
     }
 }

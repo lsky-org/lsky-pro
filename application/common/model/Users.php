@@ -54,23 +54,23 @@ class Users extends Model
     public static function login($account, $password, $field = 'email')
     {
         if (!$account) {
-            throw new Exception(lang('Please enter the account number'));
+            throw new Exception('请输入账号');
         }
 
         if (!$password) {
-            throw new Exception(lang('Please input a password'));
+            throw new Exception('请输入密码');
         }
 
         if ($user = self::get([$field => $account])) {
             if (0 === $user->state) {
-                throw new Exception(lang('Your account has been frozen, please contact the administrator!'));
+                throw new Exception('你的账户已被冻结，请联系管理员！');
             }
             if ($user->password !== md5($password)) {
-                throw new Exception(lang('Incorrect password'));
+                throw new Exception('密码不正确');
             }
             Session::set('uid', $user->id);
         } else {
-            throw new Exception(lang('User does not exist'));
+            throw new Exception('用户不存在');
         }
     }
 

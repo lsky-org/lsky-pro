@@ -28,7 +28,7 @@ class Base extends AdminBase
     {
         $data = Config::order('type', 'asc')->all();
         $configs = [];
-        foreach ($data as $value) {
+        foreach ($data as &$value) {
             if (in_array($value->key, $keys)) {
                 $configs[$value->key][] = $value;
             }

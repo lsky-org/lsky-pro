@@ -10,12 +10,6 @@ use think\facade\Response;
 trait Core
 {
     /**
-     * 系统配置
-     * @var array
-     */
-    protected $configs = [];
-
-    /**
      * 获取指定储存策略的对象实例
      *
      * @param $strategy
@@ -41,17 +35,15 @@ trait Core
      */
     public function getConfig($name = '')
     {
-        if (count($this->configs) === 0) {
-            $data = \app\common\model\Config::all();
-            foreach ($data as $value) {
-                $this->configs[$value->name] = $value->value;
-            }
+        $configs = [];
+        $data = \app\common\model\Config::all();
+        foreach ($data as $key => &$value) {
+            $configs[$value->name] = $value->value;
         }
-
         if ($name) {
-            return isset($this->configs[$name]) ? $this->configs[$name] : null;
+            return isset($configs[$name]) ? $configs[$name] : null;
         }
-        return $this->configs;
+        return $configs;
     }
 
     /**
@@ -71,7 +63,7 @@ trait Core
             'msg' => $msg,
             'data' => $data ?: new \stdClass(),
             'time' => time()
-        ], $type);
+        ], $type, 200);
 
         throw new HttpResponseException($response);
     }

@@ -1,12 +1,4 @@
 var app = {
-  sprintf: function () {
-    var args = arguments, string = args[0];
-    for (var i = 1; i < args.length; i++) {
-      var item = arguments[i];
-      string = string.replace('%s', item);
-    }
-    return string;
-  },
   /**
    * ajax
    * @param url
@@ -161,9 +153,9 @@ var app = {
     loading = true;
     var content = '<div class="mdui-valign">' +
       '<div class="mdui-spinner mdui-spinner-colorful mdui-m-r-3"></div>' +
-      lang('Upgrading, please do not close the window') +
+      '升级中, 请不要关闭窗口...' +
       '</div>';
-    var error = lang('Upgrade failed');
+    var error = '升级失败, 请稍后重试(帮助文档: <a target="_blank" href="https://www.kancloud.cn/wispx/lsky-pro/1569428">https://www.kancloud.cn/wispx/lsky-pro/1569428</a>)';
 
     $d = mdui.dialog({
       overlay: true,
@@ -180,7 +172,7 @@ var app = {
           url: '/admin/system/upgrade.html',
           type: 'POST',
           success: function (res) {
-            mdui.alert(res.msg, lang('System prompt'), function () {
+            mdui.alert(res.msg, '系统提示', function () {
               history.go(0);
             }, {
               modal: true,
@@ -192,7 +184,7 @@ var app = {
             loading = false;
           },
           error: function () {
-            mdui.alert(error, lang('System prompt'));
+            mdui.alert(error, '系统提示');
           }
         });
       }, 1000)
@@ -208,7 +200,7 @@ var app = {
           } else {
             $d.close();
             loading = false;
-            mdui.alert(res.msg, lang('System prompt'), function () {
+            mdui.alert(res.msg, '系统提示', function () {
               history.go(0);
             }, {
               modal: true,
@@ -219,7 +211,7 @@ var app = {
         error: function () {
           $d.close();
           loading = false;
-          mdui.alert(error, lang('System prompt'));
+          mdui.alert(error, '系统提示');
         }
       });
     } else {
@@ -237,32 +229,32 @@ var app = {
       success: function (response) {
         if (app.versionCompare(ver, response.version) === 0) {
           // 已经是最新版
-          auto && app.msg(true, lang('It is already the latest version'));
+          auto && app.msg(true, '已经是最新版本');
         } else {
           if (!app.cookie.has('no_update') || auto) {
             mdui.dialog({
-              title: lang('New version detected [%s]', [response.version]),
+              title: '检测到新版本[' + response.version + ']',
               content: '<div class="markdown-body mdui-p-l-3 mdui-p-r-3">' + marked(response.info) + '</div>',
               modal: true,
               history: false,
               buttons: [
                 {
-                  text: lang('Ignore')
+                  text: '忽略'
                 },
                 {
-                  text: lang('Don\'t prompt again'),
+                  text: '不再提示',
                   onClick: function () {
                     app.cookie.set('no_update', true, 30, '/');
                   }
                 },
                 {
-                  text: lang('Upgrade now'),
+                  text: '立即升级',
                   close: false,
                   onClick: function (inst) {
                     inst.close();
                     mdui.confirm(
-                      lang('Upgrade note'),
-                      lang('Do you need to back up the original system?'),
+                      '将会在升级前备份原系统文件, 但不包括 runtime 和 public 目录以及数据库',
+                      '⚠ 是否需要备份原系统?',
                       function () {
                         app.upgrade(true);
                       },
@@ -270,8 +262,8 @@ var app = {
                         app.upgrade(false);
                       },
                       {
-                        confirmText: lang('Backup'),
-                        cancelText: lang('No backup'),
+                        confirmText: '备份',
+                        cancelText: '不备份',
                         modal: true,
                         closeOnEsc: false,
                       }
@@ -294,15 +286,3 @@ var app = {
     $('#set-theme i').html(theme === 'dark' ? '&#xe3ac;' : '&#xe3a9;');
   }
 };
-
-window.lang = function (name, vars) {
-  vars = vars || [];
-  var k = name.toLowerCase();
-  for (var key in languages) {
-    if (k === key) {
-      return app.sprintf(languages[k], ...vars);
-    }
-  }
-  return name;
-};
-

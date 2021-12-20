@@ -41,7 +41,7 @@ class System extends Base
                 Db::rollback();
                 $this->error($e->getMessage());
             }
-            $this->success(lang('Saved successfully'));
+            $this->success('保存成功');
         }
         // 命名规则
         $naming = \think\facade\Config::pull('naming');
@@ -78,11 +78,11 @@ class System extends Base
     {
         if ($this->request->isPost()) {
             $email = $this->request->post('email');
-            $err = $this->sendMail($email, lang('Test'), lang('This is a test email!'));
+            $err = $this->sendMail($email, '测试', '这是一封测试邮件！');
             if (true !== $err) {
                 $this->error($err);
             }
-            $this->success(lang('Sent successfully'));
+            $this->success('发送成功');
         }
     }
 
@@ -94,7 +94,7 @@ class System extends Base
         $upgrade = null;
         try {
             if (!class_exists('ZipArchive')) {
-                throw new \Exception(lang('Cannot continue, please make sure ZipArrive is installed correctly'));
+                throw new \Exception('无法继续执行, 请确保 ZipArchive 正确安装');
             }
 
             ignore_user_abort(true);
@@ -106,33 +106,33 @@ class System extends Base
             $release = $upgrade->release(); // 获取最新版
             // 判断是否已经是最新版
             if ($upgrade->check($release->version)) {
-                throw new \Exception(lang('The current system is the latest version'));
+                throw new \Exception('当前系统已经是最新版');
             }
             $upgradeFile = app()->getRuntimePath() . 'upgrade.zip';// 判断是否存在安装包
             $file = file_exists($upgradeFile) ? $upgradeFile : $upgrade->download($release->url);
 
             // 校验 MD5
             if (strtolower(md5_file($file)) !== strtolower($release->md5)) {
-                throw new \Exception(lang('The installation package is corrupt. Please try again later'));
+                throw new \Exception('安装包损坏, 请稍后重试');
             }
 
             $dir = $upgrade->unzip($file, $upgrade->getWorkspace()); // 解压安装包到工作区目录
             $path = rtrim($dir . strtolower($release->path), '/') . '/'; // 新版本程序解压后的根目录
             $updateSql = $path . $release->sql; // 更新数据库结构 sql 文件路径
             if (!$sql = @file_get_contents($updateSql)) {
-                throw new \Exception(lang('SQL file acquisition failed'));
+                throw new \Exception('SQL 文件获取失败');
             }
 
             // 创建安装锁文件
             if (!@fopen($path . 'application/install.lock', 'w')) {
-                throw new \Exception(lang('Setup lock file creation failed'));
+                throw new \Exception('安装锁文件创建失败');
             }
 
             Db::startTrans();
 
             // 检测新增表字段
             if (!$tableFields = @include($path . 'config/table.php')) {
-                throw new \Exception(lang('Failed to get table field configuration file'));
+                throw new \Exception('表字段配置文件获取失败');
             }
             foreach ($tableFields as $table => $fields) {
                 foreach ($fields as $field => $sql) {
@@ -191,7 +191,7 @@ class System extends Base
             @$upgrade->rmdir($upgrade->getWorkspace());
             $this->error($e->getMessage());
         }
-        $this->success(lang('Upgrade Complete'));
+        $this->success('升级完成');
     }
 
     /**
@@ -212,6 +212,6 @@ class System extends Base
         } catch (\Throwable $e) {
             $this->error($e->getMessage());
         }
-        $this->success(lang('Backup complete, %s', [$backup]));
+        $this->success('备份完成, ' . $backup);
     }
 }
