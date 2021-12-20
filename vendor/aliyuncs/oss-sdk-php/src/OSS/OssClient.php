@@ -1698,7 +1698,7 @@ class OssClient
             throw new OssException($file . " file does not exist");
         }
         $options[self::OSS_FILE_UPLOAD] = $file;
-        $file_size = filesize($options[self::OSS_FILE_UPLOAD]);
+        $file_size = sprintf('%u',filesize($options[self::OSS_FILE_UPLOAD]));
         $is_check_md5 = $this->isCheckMD5($options);
         if ($is_check_md5) {
             $content_md5 = base64_encode(md5_file($options[self::OSS_FILE_UPLOAD], true));
@@ -1816,7 +1816,7 @@ class OssClient
             throw new OssException($file . " file does not exist");
         }
         $options[self::OSS_FILE_UPLOAD] = $file;
-        $file_size = filesize($options[self::OSS_FILE_UPLOAD]);
+        $file_size =  sprintf('%u',filesize($options[self::OSS_FILE_UPLOAD]));
         $is_check_md5 = $this->isCheckMD5($options);
         if ($is_check_md5) {
             $content_md5 = base64_encode(md5_file($options[self::OSS_FILE_UPLOAD], true));
@@ -2460,7 +2460,8 @@ class OssClient
         if (isset($options[self::OSS_CONTENT_LENGTH])) {
             $upload_file_size = (integer)$options[self::OSS_CONTENT_LENGTH];
         } else {
-            $upload_file_size = filesize($uploadFile);
+            $upload_file_size = sprintf('%u',filesize($uploadFile));
+
             if ($upload_file_size !== false) {
                 $upload_file_size -= $upload_position;  
             }
@@ -3508,8 +3509,8 @@ class OssClient
     );
     // OssClient version information
     const OSS_NAME = "aliyun-sdk-php";
-    const OSS_VERSION = "2.4.2";
-    const OSS_BUILD = "20210604";
+    const OSS_VERSION = "2.4.3";
+    const OSS_BUILD = "20210825";
     const OSS_AUTHOR = "";
     const OSS_OPTIONS_ORIGIN = 'Origin';
     const OSS_OPTIONS_REQUEST_METHOD = 'Access-Control-Request-Method';

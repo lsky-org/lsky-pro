@@ -14,7 +14,7 @@ class PartInfo
      * @param int $partNumber
      * @param string $lastModified
      * @param string $eTag
-     * @param int $size
+     * @param string $size
      */
     public function __construct($partNumber, $lastModified, $eTag, $size)
     {
@@ -49,15 +49,26 @@ class PartInfo
     }
 
     /**
+	 * php7 && 64bit can use it
      * @return int
      */
     public function getSize()
     {
-        return $this->size;
+        return (int)$this->size;
     }
+	
+	
+	/**
+	 * php5.x or 32bit must use it
+	 * @return string
+	 */
+	public function getSizeStr()
+	{
+		return $this->size;
+	}
 
     private $partNumber = 0;
     private $lastModified = "";
     private $eTag = "";
-    private $size = 0;
+    private $size = "0";
 }

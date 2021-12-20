@@ -83,5 +83,5 @@ function printImage($func, $imageFile)
     Common::println("$func, image width: " . $array[0]);
     Common::println("$func, image height: " . $array[1]);
     Common::println("$func, image type: " . ($array[2] === 2 ? 'jpg' : 'png'));
-    Common::println("$func, image size: " . ceil(filesize($imageFile)));
+    Common::println("$func, image size: " . ceil(sprintf('%u',filesize($imageFile))));
 }

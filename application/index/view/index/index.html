@@ -3,9 +3,9 @@
 {block name="title"}{$config.site_name}{/block}
 
 {block name="css"}
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" rel="stylesheet">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-fileinput@5.0.7/css/fileinput.min.css" rel="stylesheet">
-<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" rossorigin="anonymous" rel="stylesheet">
+<link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<link href="/static/bootstrap-fileinput/css/fileinput.min.css" rel="stylesheet">
+<link href="/static/fontawesome-free/css/all.min.css" rossorigin="anonymous" rel="stylesheet">
 {/block}
 
 {block name="main"}
@@ -20,7 +20,7 @@
       {/if}
       <div class="title">
         <h1>Image Upload</h1>
-        <p>{:lang('Home upload info', [format_size($config.upload_max_size), $config.upload_single_num, $images_count])}</p>
+        <p>最大可上传 {:format_size($config.upload_max_size)} 的图片，单次同时可选择 {$config.upload_single_num} 张。本站已托管 {$images_count} 张图片。</p>
       </div>
       <form action="" method="post" enctype="multipart/form-data">
         <input id="image" style="display: none;" type="file" multiple name="image" accept="image/*">
@@ -44,10 +44,10 @@
     <div class="mask">
       <div class="content">
         <div class="panel-box mdui-color-white mdui-text-center">
-          <h6 class="mdui-m-b-2">{:lang('Sign in tip')}</h6>
+          <h6 class="mdui-m-b-2">请登录后体验</h6>
           <div class="mdui-btn-group">
-            <a href="{:url('auth/login')}" class="mdui-btn mdui-ripple mdui-color-cyan mdui-text-color-white mdui-btn-dense">{:lang('Sign in')}</a>
-            <a href="{:url('auth/register')}" class="mdui-btn mdui-ripple mdui-color-green mdui-text-color-white mdui-btn-dense">{:lang('Sign up')}</a>
+            <a href="{:url('auth/login')}" class="mdui-btn mdui-ripple mdui-color-cyan mdui-text-color-white mdui-btn-dense">登录</a>
+            <a href="{:url('auth/register')}" class="mdui-btn mdui-ripple mdui-color-green mdui-text-color-white mdui-btn-dense">注册</a>
           </div>
         </div>
       </div>
@@ -57,15 +57,13 @@
 </div>
 {/block}
 {block name="js"}
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap-fileinput@5.0.7/js/plugins/piexif.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap-fileinput@5.0.7/js/plugins/sortable.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap-fileinput@5.0.7/js/plugins/purify.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap-fileinput@5.0.7/js/fileinput.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap-fileinput@5.0.7/themes/fas/theme.min.js"></script>
-{if ($lang === 'zh-cn')}
-<script src="https://cdn.jsdelivr.net/npm/bootstrap-fileinput@5.0.7/js/locales/zh.js"></script>
-{/if}
+<script src="/static/bootstrap/js/bootstrap.min.js"></script>
+<script src="/static/bootstrap-fileinput/js/plugins/piexif.min.js"></script>
+<script src="/static/bootstrap-fileinput/js/plugins/sortable.min.js"></script>
+<script src="/static/bootstrap-fileinput/js/plugins/purify.min.js"></script>
+<script src="/static/bootstrap-fileinput/js/fileinput.min.js"></script>
+<script src="/static/bootstrap-fileinput/themes/fas/theme.min.js"></script>
+<script src="/static/bootstrap-fileinput/js/locales/zh.js"></script>
 <script>
   var clipboard = new ClipboardJS('.copy', {
     text: function(trigger) {
@@ -74,11 +72,11 @@
   });
 
   clipboard.on('success', function(e) {
-    app.msg(true, lang('Copy successful'));
+    app.msg(true, '复制成功');
   });
 
   clipboard.on('error', function(e) {
-    app.msg(false, lang('Copy failed'));
+    app.msg(false, '复制失败');
   });
 
   var sort = function (uls) {
@@ -124,7 +122,7 @@
         $('.quota-container span.use-quota').text(app.bytesToSize(response.data.use_quota));
       }
     } else if (500 === response.code) {
-      mdui.alert(response.msg, lang('Exception occurred'));
+      mdui.alert(response.msg, '发生异常');
     } else {
       mdui.alert(response.msg);
     }
@@ -189,15 +187,15 @@
 
   function uploadBlobFile(images) {
     var form = $("#image");
-    mdui.confirm(lang('Upload pasted photos?'), function() {
+    mdui.confirm('是否上传粘贴的图片?', function() {
       $('.file-drop-zone-title').remove();
       form.fileinput('readFiles', images);
       setTimeout(function () {
         form.fileinput('upload');
       }, 400)
     }, function () {}, {
-      confirmText: lang('Confirm'),
-      cancelText: lang('Cancel')
+      confirmText: '确定',
+      cancelText: '取消'
     });
   }
 </script>

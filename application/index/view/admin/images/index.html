@@ -3,7 +3,7 @@
 {block name="title"}{:lang('Picture management')} - {$config.site_name}{/block}
 
 {block name="css"}
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/viewerjs@1.5.0/dist/viewer.min.css">
+  <link rel="stylesheet" href="/static/viewerjs/viewer.min.css">
 {/block}
 
 {block name="main"}
@@ -80,8 +80,8 @@
 {/block}
 
 {block name="js"}
-<script src="https://cdn.jsdelivr.net/npm/viewerjs@1.5.0/dist/viewer.min.js"></script>
-<script src="/static/jquery-viewer/1.2.0/js/jquery-viewer.js"></script>
+<script src="/static/viewerjs/viewer.min.js"></script>
+<script src="/static/app/js/jquery-viewer.js"></script>
 <script>
   var methods = {
     delete: function (id, batch, callback) {

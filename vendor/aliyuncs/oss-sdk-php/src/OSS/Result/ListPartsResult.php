@@ -33,7 +33,7 @@ class ListPartsResult extends Result
                 $partNumber = isset($part->PartNumber) ? intval($part->PartNumber) : "";
                 $lastModified = isset($part->LastModified) ? strval($part->LastModified) : "";
                 $eTag = isset($part->ETag) ? strval($part->ETag) : "";
-                $size = isset($part->Size) ? intval($part->Size) : "";
+                $size = isset($part->Size) ? strval($part->Size) : "";
                 $partList[] = new PartInfo($partNumber, $lastModified, $eTag, $size);
             }
         }

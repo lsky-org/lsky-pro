@@ -237,7 +237,7 @@ class OssUtil
      */
     public static function generateFile($filename, $size)
     {
-        if (file_exists($filename) && $size == filesize($filename)) {
+        if (file_exists($filename) && $size == sprintf('%u',filesize($filename))) {
             echo $filename . " already exists, no need to create again. ";
             return;
         }
@@ -284,7 +284,7 @@ BBB;
         if (($to_pos - $from_pos) > self::OSS_MAX_PART_SIZE) {
             return $content_md5;
         }
-        $filesize = filesize($filename);
+        $filesize = sprintf('%u',filesize($filename));
         if ($from_pos >= $filesize || $to_pos >= $filesize || $from_pos < 0 || $to_pos < 0) {
             return $content_md5;
         }

@@ -1,5 +1,8 @@
 # ChangeLog - Aliyun OSS SDK for PHP
 
+## v2.4.3 / 2021-08-25
+* Fixed: integer overflow in PHP5.x.
+
 ## v2.4.2 / 2021-06-04
 * Compatible with PHP8.
 * Fixed: compatible with PHP5.4.

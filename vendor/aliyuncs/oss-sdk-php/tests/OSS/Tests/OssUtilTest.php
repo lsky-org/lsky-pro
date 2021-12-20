@@ -154,10 +154,10 @@ BBBB;
 
     public function testGetMd5SumForFile()
     {
-        $this->assertEquals(OssUtil::getMd5SumForFile(__FILE__, 0, filesize(__FILE__) - 1), base64_encode(md5(file_get_contents(__FILE__), true)));
+        $this->assertEquals(OssUtil::getMd5SumForFile(__FILE__, 0, sprintf('%u',filesize(__FILE__)) - 1), base64_encode(md5(file_get_contents(__FILE__), true)));
         // false case
         $this->assertEquals(OssUtil::getMd5SumForFile(__FILE__, 0, OssClient::OSS_MAX_PART_SIZE + 1), "");
-        $this->assertEquals(OssUtil::getMd5SumForFile(__FILE__, 0, filesize(__FILE__) + 1), "");
+        $this->assertEquals(OssUtil::getMd5SumForFile(__FILE__, 0, sprintf('%u',filesize(__FILE__)) + 1), "");
 
     }
 
@@ -165,7 +165,7 @@ BBBB;
     {
         $path = __DIR__ . DIRECTORY_SEPARATOR . "generatedFile.txt";
         OssUtil::generateFile($path, 1024 * 1024);
-        $this->assertEquals(filesize($path), 1024 * 1024);
+        $this->assertEquals(sprintf('%u',filesize($path)), 1024 * 1024);
         unlink($path);
     }
 

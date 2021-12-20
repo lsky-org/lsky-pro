@@ -1,7 +1,0 @@
-vendor/
-composer.lock
-coverage.xml
-phpunit.xml
-
-# Mac OS X artifacts
-.DS_Store

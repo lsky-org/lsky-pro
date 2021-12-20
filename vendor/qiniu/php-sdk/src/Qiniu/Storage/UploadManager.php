@@ -48,7 +48,7 @@ final class UploadManager
         $mime = 'application/octet-stream',
         $fname = "default_filename"
     ) {
-    
+
         $params = self::trimParams($params);
         return FormUploader::put(
             $upToken,
@@ -92,7 +92,7 @@ final class UploadManager
         $version = 'v1',
         $partSize = config::BLOCK_SIZE
     ) {
-    
+
         $file = fopen($filePath, 'rb');
         if ($file === false) {
             throw new \Exception("file can not open", 1);

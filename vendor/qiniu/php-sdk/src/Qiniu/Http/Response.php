@@ -128,6 +128,16 @@ final class Response
         return $this->jsonData;
     }
 
+    public function headers()
+    {
+        return $this->headers;
+    }
+
+    public function body()
+    {
+        return $this->body;
+    }
+
     private static function bodyJson($body)
     {
         return \Qiniu\json_decode((string) $body, true, 512);

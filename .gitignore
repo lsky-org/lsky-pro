@@ -10,6 +10,7 @@ runtime/.tmp
 /application/install.lock
 backups
 .env
+node_modules
 
 # Icon must end with two \r
 Icon

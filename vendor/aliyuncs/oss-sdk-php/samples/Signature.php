@@ -130,7 +130,7 @@ function getSignedUrlForPuttingObjectFromFile($ossClient, $bucket)
     $request->set_method('PUT');
     $request->add_header('Content-Type', 'txt');
     $request->set_read_file($file);
-    $request->set_read_stream_size(filesize($file));
+    $request->set_read_stream_size(sprintf('%u',filesize($file)));
     $request->send_request();
     $res = new ResponseCore($request->get_response_header(),
         $request->get_response_body(), $request->get_response_code());

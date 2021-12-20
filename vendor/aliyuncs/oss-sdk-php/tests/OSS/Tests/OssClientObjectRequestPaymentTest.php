@@ -354,7 +354,7 @@ class OssClientObjectRequestPaymentTest extends TestOssClientBase
          */
         $part_size = 1 * 1024 * 1024;
         $upload_file = __FILE__;
-        $upload_filesize = filesize($upload_file);
+        $upload_filesize = sprintf('%u',filesize($upload_file));
         $pieces = $this->payerClient->generateMultiuploadParts($upload_filesize, $part_size);
         $response_upload_part = array();
         $upload_position = 0;

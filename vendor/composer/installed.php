@@ -6,19 +6,19 @@
     'aliases' => 
     array (
     ),
-    'reference' => '5565b029919bcfd187d42087447f9ae473f501b5',
+    'reference' => 'de90d79fbd0b37eb174b985ea64eddf4d8c34974',
     'name' => 'wisp-x/lsky-pro',
   ),
   'versions' => 
   array (
     'aliyuncs/oss-sdk-php' => 
     array (
-      'pretty_version' => 'v2.4.2',
-      'version' => '2.4.2.0',
+      'pretty_version' => 'v2.4.3',
+      'version' => '2.4.3.0',
       'aliases' => 
       array (
       ),
-      'reference' => '0c9d902c33847c07efc66c4cdf823deaea8fc2b6',
+      'reference' => '4ccead614915ee6685bf30016afb01aabd347e46',
     ),
     'guzzlehttp/command' => 
     array (
@@ -49,21 +49,21 @@
     ),
     'guzzlehttp/promises' => 
     array (
-      'pretty_version' => '1.4.1',
-      'version' => '1.4.1.0',
+      'pretty_version' => '1.5.1',
+      'version' => '1.5.1.0',
       'aliases' => 
       array (
       ),
-      'reference' => '8e7d04f1f6450fef59366c399cfad4b9383aa30d',
+      'reference' => 'fe752aedc9fd8fcca3fe7ad05d419d32998a06da',
     ),
     'guzzlehttp/psr7' => 
     array (
-      'pretty_version' => '1.8.2',
-      'version' => '1.8.2.0',
+      'pretty_version' => '1.8.3',
+      'version' => '1.8.3.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'dc960a912984efb74d0a90222870c72c87f10c91',
+      'reference' => '1afdd860a2566ed3c2b0b4a3de6e23434a79ec85',
     ),
     'nicolab/php-ftp-client' => 
     array (
@@ -76,12 +76,12 @@
     ),
     'phpmailer/phpmailer' => 
     array (
-      'pretty_version' => 'v6.5.0',
-      'version' => '6.5.0.0',
+      'pretty_version' => 'v6.5.3',
+      'version' => '6.5.3.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'a5b5c43e50b7fba655f793ad27303cd74c57363c',
+      'reference' => 'baeb7cde6b60b1286912690ab0693c7789a31e71',
     ),
     'psr/http-message' => 
     array (
@@ -110,12 +110,12 @@
     ),
     'qiniu/php-sdk' => 
     array (
-      'pretty_version' => 'v7.4.0',
-      'version' => '7.4.0.0',
+      'pretty_version' => 'v7.4.1',
+      'version' => '7.4.1.0',
       'aliases' => 
       array (
       ),
-      'reference' => '1c6bc89166e524a40ee42bf516fb99ffc6401c82',
+      'reference' => '10c7ead8357743b4b987a335c14964fb07700d57',
     ),
     'ralouphie/getallheaders' => 
     array (
@@ -205,7 +205,7 @@
       'aliases' => 
       array (
       ),
-      'reference' => '5565b029919bcfd187d42087447f9ae473f501b5',
+      'reference' => 'de90d79fbd0b37eb174b985ea64eddf4d8c34974',
     ),
   ),
 );

@@ -48,7 +48,7 @@ class ListObjectsResult extends Result
                 $lastModified = isset($content->LastModified) ? strval($content->LastModified) : "";
                 $eTag = isset($content->ETag) ? strval($content->ETag) : "";
                 $type = isset($content->Type) ? strval($content->Type) : "";
-                $size = isset($content->Size) ? intval($content->Size) : 0;
+                $size = isset($content->Size) ? strval($content->Size) : "0";
                 $storageClass = isset($content->StorageClass) ? strval($content->StorageClass) : "";
                 $retList[] = new ObjectInfo($key, $lastModified, $eTag, $type, $size, $storageClass);
             }

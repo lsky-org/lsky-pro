@@ -171,7 +171,13 @@ final class ResumeUploader
                 $response = $this->makeBlock($data, $blockSize);
             } else {
                 $md5 = md5($data);
-                $response = $this->uploadPart($data, $partNumber, $this->finishedEtags["uploadId"], $encodedObjectName);
+                $response = $this->uploadPart(
+                    $data,
+                    $partNumber,
+                    $this->finishedEtags["uploadId"],
+                    $encodedObjectName,
+                    $md5
+                );
             }
 
             $ret = null;
@@ -203,7 +209,8 @@ final class ResumeUploader
                         $data,
                         $partNumber,
                         $this->finishedEtags["uploadId"],
-                        $encodedObjectName
+                        $encodedObjectName,
+                        $md5
                     );
                     $ret = $response->json();
                 }
@@ -330,12 +337,12 @@ final class ResumeUploader
     /**
      * 分块上传v2
      */
-    private function uploadPart($block, $partNumber, $uploadId, $encodedObjectName)
+    private function uploadPart($block, $partNumber, $uploadId, $encodedObjectName, $md5)
     {
         $headers = array(
             'Authorization' => 'UpToken ' . $this->upToken,
             'Content-Type' => 'application/octet-stream',
-            'Content-MD5' => $block
+            'Content-MD5' => $md5
         );
         $url = $this->host.'/buckets/'.$this->bucket.'/objects/'.$encodedObjectName.
             '/uploads/'.$uploadId.'/'.$partNumber;
@@ -351,10 +358,28 @@ final class ResumeUploader
         );
         $etags = $this->finishedEtags['etags'];
         $sortedEtags = \Qiniu\arraySort($etags, 'partNumber');
+        $metadata = array();
+        $customVars = array();
+        if ($this->params) {
+            foreach ($this->params as $k => $v) {
+                if (strpos($k, 'x:') === 0) {
+                    $customVars[$k] = $v;
+                } elseif (strpos($k, 'x-qn-meta-') === 0) {
+                    $metadata[$k] = $v;
+                }
+            }
+        }
+        if (empty($metadata)) {
+            $metadata = null;
+        }
+        if (empty($customVars)) {
+            $customVars = null;
+        }
         $body = array(
             'fname' => $fname,
-            '$mimeType' => $this->mime,
-            'customVars' => $this->params,
+            'mimeType' => $this->mime,
+            'metadata' => $metadata,
+            'customVars' => $customVars,
             'parts' => $sortedEtags
         );
         $jsonBody = json_encode($body);

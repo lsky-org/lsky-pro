@@ -398,9 +398,9 @@ class OssClientObjectTest extends TestOssClientBase
          */
         try {
             $position = $this->ossClient->appendFile($this->bucket, $object, __FILE__, 0);
-            $this->assertEquals($position, filesize(__FILE__));
+            $this->assertEquals($position, sprintf('%u',filesize(__FILE__)));
             $position = $this->ossClient->appendFile($this->bucket, $object, __FILE__, $position);
-            $this->assertEquals($position, filesize(__FILE__) * 2);
+            $this->assertEquals($position, sprintf('%u',filesize(__FILE__)) * 2);
         } catch (OssException $e) {
             $this->assertFalse(true);
         }
@@ -568,9 +568,9 @@ class OssClientObjectTest extends TestOssClientBase
     	 */
     	try {
     		$position = $this->ossClient->appendFile($this->bucket, $object, __FILE__, 0, $options);
-    		$this->assertEquals($position, filesize(__FILE__));
+    		$this->assertEquals($position, sprintf('%u',filesize(__FILE__)));
     		$position = $this->ossClient->appendFile($this->bucket, $object, __FILE__, $position, $options);
-    		$this->assertEquals($position, filesize(__FILE__) * 2);
+    		$this->assertEquals($position, sprintf('%u',filesize(__FILE__)) * 2);
     	} catch (OssException $e) {
     		$this->assertFalse(true);
     	}
