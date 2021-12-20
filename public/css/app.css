@@ -658,6 +658,24 @@ select {
   bottom: 0px;
   left: 0px;
 }
+.inset-2 {
+  top: 0.5rem;
+  right: 0.5rem;
+  bottom: 0.5rem;
+  left: 0.5rem;
+}
+.inset-\[-2px\] {
+  top: -2px;
+  right: -2px;
+  bottom: -2px;
+  left: -2px;
+}
+.-inset-2 {
+  top: -0.5rem;
+  right: -0.5rem;
+  bottom: -0.5rem;
+  left: -0.5rem;
+}
 .top-1 {
   top: 0.25rem;
 }
@@ -694,6 +712,18 @@ select {
 .top-14 {
   top: 3.5rem;
 }
+.-top-2 {
+  top: -0.5rem;
+}
+.-left-2 {
+  left: -0.5rem;
+}
+.-right-2 {
+  right: -0.5rem;
+}
+.-bottom-2 {
+  bottom: -0.5rem;
+}
 .z-0 {
   z-index: 0;
 }
@@ -708,6 +738,9 @@ select {
 }
 .z-\[2\] {
   z-index: 2;
+}
+.z-\[3\] {
+  z-index: 3;
 }
 .m-2 {
   margin: 0.5rem;
@@ -1159,6 +1192,22 @@ select {
   --tw-border-opacity: 1;
   border-color: rgb(243 244 246 / var(--tw-border-opacity));
 }
+.border-blue-500 {
+  --tw-border-opacity: 1;
+  border-color: rgb(59 130 246 / var(--tw-border-opacity));
+}
+.border-gray-800 {
+  --tw-border-opacity: 1;
+  border-color: rgb(31 41 55 / var(--tw-border-opacity));
+}
+.border-gray-600 {
+  --tw-border-opacity: 1;
+  border-color: rgb(75 85 99 / var(--tw-border-opacity));
+}
+.border-gray-500 {
+  --tw-border-opacity: 1;
+  border-color: rgb(107 114 128 / var(--tw-border-opacity));
+}
 .bg-white {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
@@ -1526,6 +1575,18 @@ select {
   outline: 2px solid transparent;
   outline-offset: 2px;
 }
+.outline {
+  outline-style: solid;
+}
+.outline-1 {
+  outline-width: 1px;
+}
+.outline-offset-2 {
+  outline-offset: 2px;
+}
+.outline-transparent {
+  outline-color: transparent;
+}
 .ring-1 {
   --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
   --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color);
@@ -1638,6 +1699,9 @@ select {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
 }
+.hover\:outline-blue-500:hover {
+  outline-color: #3b82f6;
+}
 .focus\:z-10:focus {
   z-index: 10;
 }
@@ -1729,6 +1793,9 @@ select {
 }
 .group:hover .group-hover\:block {
   display: block;
+}
+.group:hover .group-hover\:h-full {
+  height: 100%;
 }
 .dark .dark\:bg-gray-900 {
   --tw-bg-opacity: 1;

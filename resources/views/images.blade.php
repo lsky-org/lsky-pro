@@ -49,8 +49,12 @@
     </div>
 
     <script type="text/html" id="photos-item">
-        <a href="javascript:void(0)" class="rounded relative item">
-            <div class="absolute left-0 right-0 bottom-0 h-20 z-[1] bg-gradient-to-t from-black" onclick="$(this).siblings('img').trigger('click')">
+        <a href="javascript:void(0)" class="relative transition-all rounded group outline outline-offset-2 outline-transparent hover:outline-blue-500">
+            <div class="photo-mask absolute transition-all left-0 right-0 bottom-0 h-20 group-hover:h-full z-[1] bg-gradient-to-t from-black">
+                <div class="photo-select absolute transition-all top-2 right-2 rounded-full overflow-hidden text-white text-lg bg-white border border-gray-500 cursor-pointer hidden group-hover:block">
+                    <i class="fas fa-check-circle block"></i>
+                </div>
+
                 <div class="absolute left-2 bottom-2 text-white z-[2] w-[90%]">
                     <p class="text-sm truncate" title="__name__">__name__</p>
                     <p class="text-xs" title="__human_date__">__date__</p>
@@ -141,6 +145,15 @@
             });
 
             setTimeout(() => getImages(), 500);
+
+            $photos.on('click', '.photo-mask', function () {
+                $(this).siblings('img').trigger('click');
+            })
+
+            $photos.on('click', '.photo-select', function (e) {
+                e.stopPropagation();
+                console.log(11)
+            });
         </script>
     @endpush
 </x-app-layout>
