@@ -1,2 +1,0 @@
-<a <?php echo e($attributes->merge(['class' => 'block px-4 py-2 active:bg-gray-100 text-sm text-gray-700', 'role' => 'menuitem', 'tabindex' => '-1'])); ?>><?php echo e($slot); ?></a>
-<?php /**PATH /Users/wispx/Develop/Projects/lsky-pro/resources/views/components/dropdown-link.blade.php ENDPATH**/ ?>
