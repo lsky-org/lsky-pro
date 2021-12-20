@@ -16,6 +16,10 @@
           <input class="mdui-textfield-input" type="email" value="{$user.email}" disabled/>
         </div>
         <div class="mdui-textfield">
+          <label class="mdui-textfield-label">注册时间</label>
+          <input class="mdui-textfield-input" type="text" value="{$user.create_time}" disabled/>
+        </div>
+        <div class="mdui-textfield">
           <label class="mdui-textfield-label">Token</label>
           <input class="mdui-textfield-input" type="text" value="{$user.token}" disabled/>
           <div class="mdui-textfield-helper">注意：Token 具有管理图片权限，请不要随意泄漏。</div>
