@@ -29,7 +29,7 @@
     <div class="mdui-toolbar-spacer"></div>
     {if $user}
       <!-- Update -->
-      {if $user.is_admin}
+      {if $user.is_admin && $config.system_version < 2}
       <span id="update" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">&#xe923;</i></span>
       {/if}
     <!-- User -->
