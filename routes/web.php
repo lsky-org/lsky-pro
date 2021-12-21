@@ -21,7 +21,8 @@ Route::post('/upload', [Controller::class, 'upload']);
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/dashboard', [UserController::class, 'dashboard'])->name('dashboard');
     Route::get('/upload', fn () => view('upload'))->name('upload');
-    Route::any('/images', [ImageController::class, 'index'])->name('images');
+    Route::get('/images', [ImageController::class, 'index'])->name('images');
+    Route::get('/user/images', [ImageController::class, 'images'])->name('user.images');
 });
 
 require __DIR__.'/auth.php';

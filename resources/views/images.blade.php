@@ -42,19 +42,26 @@
             </div>
         </x-container>
     </div>
-
-    <div id="photos-grid" class="overflow-hidden mt-6 md:mt-2"></div>
+    <div id="albums-grid" class="mt-10 md:mt-6 px-3 space-x-2 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 2xl:grid-cols-10">
+        <a href="javascript:void(0)" class="relative inline-flex flex-col mb-2 text-center rounded outline outline-2 outline-offset-2 outline-transparent">
+            <div class="album-select absolute z-[1] top-1 right-1 rounded-full overflow-hidden text-white text-lg bg-white border border-gray-500 cursor-pointer hidden group-hover:block">
+                <i class="fas fa-check-circle block"></i>
+            </div>
+            <i class="fas fa-folder-open text-7xl m-4 text-blue-500"></i>
+            <p class="truncate text-sm text-gray-500 mx-2 mb-2">哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈</p>
+        </a>
+    </div>
+    <div id="photos-grid" class="overflow-hidden mt-4 md:mt-2"></div>
     <div id="photos-loading" class="flex justify-center items-center pt-6 pb-6">
         <a href="javascript:void(0)" class="flex justify-center items-center text-sm text-gray-400 text-gray-700 cursor-not-allowed">加载中...</a>
     </div>
 
     <script type="text/html" id="photos-item">
-        <a href="javascript:void(0)" class="relative transition-all rounded group outline outline-offset-2 outline-transparent hover:outline-blue-500">
-            <div class="photo-mask absolute transition-all left-0 right-0 bottom-0 h-20 group-hover:h-full z-[1] bg-gradient-to-t from-black">
-                <div class="photo-select absolute transition-all top-2 right-2 rounded-full overflow-hidden text-white text-lg bg-white border border-gray-500 cursor-pointer hidden group-hover:block">
-                    <i class="fas fa-check-circle block"></i>
-                </div>
-
+        <a href="javascript:void(0)" class="relative rounded outline outline-2 outline-offset-2 outline-transparent">
+            <div class="photo-select absolute z-[1] top-1 right-1 rounded-full overflow-hidden text-white text-lg bg-white border border-gray-500 cursor-pointer hidden group-hover:block">
+                <i class="fas fa-check-circle block"></i>
+            </div>
+            <div class="photo-mask absolute left-0 right-0 bottom-0 h-20 z-[1] bg-gradient-to-t from-black">
                 <div class="absolute left-2 bottom-2 text-white z-[2] w-[90%]">
                     <p class="text-sm truncate" title="__name__">__name__</p>
                     <p class="text-xs" title="__human_date__">__date__</p>
@@ -77,7 +84,7 @@
             };
             let gridConfigs = {
                 rowHeight : 180,
-                margins: 10,
+                margins: 20,
                 captions: false,
                 border: 10,
                 waitThumbnailsLoad: false,
@@ -87,8 +94,7 @@
                     return;
                 }
                 $.ajax({
-                    url: '',
-                    type: 'post',
+                    url: '{{ route('user.images') }}',
                     data: params,
                     beforeSend: function () {
                         $loading.text('加载中...').addClass('text-gray-400 cursor-not-allowed');
@@ -152,9 +158,12 @@
                 $(this).siblings('img').trigger('click');
             })
 
-            $photos.on('click', '.photo-select', function (e) {
+            $('#albums-grid, #photos-grid').on('click', 'a', function (e) {
                 e.stopPropagation();
-                console.log(11)
+                $(this).css('transform', 'scale(1)').toggleClass('selected');
+            }).on('mousedown', 'a', function () {
+                // TODO 鼠标按下动画
+            }).on('mouseup', 'a', function () {
             });
         </script>
     @endpush

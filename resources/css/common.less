@@ -34,3 +34,21 @@ progress::-webkit-progress-value {
 .viewer-backdrop {
     background-color: rgba(0, 0, 0, .75);
 }
+
+// 我的图片
+#albums-grid, #photos-grid {
+    a:hover, a.selected {
+        outline-color: #3b82f6;
+        .album-select, .photo-select {
+            display: block;
+        }
+        &.selected {
+            .album-select, .photo-select {
+                border-color: white;
+                &>i {
+                    color: #0061ff;
+                }
+            }
+        }
+    }
+}

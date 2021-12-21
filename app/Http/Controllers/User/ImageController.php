@@ -12,23 +12,29 @@ use Illuminate\View\View;
 
 class ImageController extends Controller
 {
-    public function index(Request $request): View|Response
+    public function index(): View
+    {
+        return view('images');
+    }
+
+    public function images(Request $request): Response
     {
         /** @var User $user */
         $user = Auth::user();
 
-        if ($request->method() === 'POST') {
-            $images = $user->images()->latest()->paginate(40);
-            $images->getCollection()->each(function (Image $image) {
-                $image->human_date = $image->created_at->diffForHumans();
-                $image->date = $image->created_at->format('Y-m-d H:i:s');
-                $image->append(['url', 'filename'])->setVisible([
-                    'id', 'filename', 'url', 'human_date', 'date', 'human_date', 'width', 'height'
-                ]);
-            });
-            return $this->success('success', compact('images'));
-        }
+        $images = $user->images()->latest()->paginate(40);
+        $images->getCollection()->each(function (Image $image) {
+            $image->human_date = $image->created_at->diffForHumans();
+            $image->date = $image->created_at->format('Y-m-d H:i:s');
+            $image->append(['url', 'filename'])->setVisible([
+                'id', 'filename', 'url', 'human_date', 'date', 'human_date', 'width', 'height'
+            ]);
+        });
+        return $this->success('success', compact('images'));
+    }
 
-        return view('images');
+    public function albums(Request $request): Response
+    {
+        return $this->success();
     }
 }
