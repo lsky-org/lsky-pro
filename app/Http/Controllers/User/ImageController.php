@@ -23,7 +23,7 @@ class ImageController extends Controller
                 $image->human_date = $image->created_at->diffForHumans();
                 $image->date = $image->created_at->format('Y-m-d H:i:s');
                 $image->append(['url', 'filename'])->setVisible([
-                    'id', 'filename', 'url', 'human_date', 'date', 'human_date'
+                    'id', 'filename', 'url', 'human_date', 'date', 'human_date', 'width', 'height'
                 ]);
             });
             return $this->success('success', compact('images'));

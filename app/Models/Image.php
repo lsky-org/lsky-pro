@@ -25,6 +25,8 @@ use Illuminate\Support\Facades\Storage;
  * @property string $mimetype
  * @property string $md5
  * @property string $sha1
+ * @property integer $width
+ * @property integer $height
  * @property string $url
  * @property Collection $links
  * @property int $permission
@@ -49,6 +51,8 @@ class Image extends Model
         'mimetype',
         'md5',
         'sha1',
+        'width',
+        'height',
         'permission',
         'is_unhealthy',
         'uploaded_ip',
@@ -64,6 +68,8 @@ class Image extends Model
     ];
 
     protected $casts = [
+        'width' => 'integer',
+        'height' => 'integer',
         'size' => 'float',
         'is_unhealthy' => 'bool',
     ];

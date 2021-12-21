@@ -60,7 +60,7 @@
                     <p class="text-xs" title="__human_date__">__date__</p>
                 </div>
             </div>
-            <img alt="__name__" src="__url__">
+            <img alt="__name__" src="__url__" width="__width__" height="__height__">
         </a>
     </script>
 
@@ -80,6 +80,7 @@
                 margins: 10,
                 captions: false,
                 border: 10,
+                waitThumbnailsLoad: false,
             };
             const getImages = () => {
                 if (params.page !== 1 && $loading.hasClass('cursor-not-allowed')) {
@@ -110,6 +111,8 @@
                                 .replace(/__human_date__/g, images[i].human_date)
                                 .replace(/__date__/g, images[i].date)
                                 .replace(/__url__/g, images[i].url)
+                                .replace(/__width__/g, images[i].width)
+                                .replace(/__height__/g, images[i].height)
                         }
 
                         $photos.append(html).justifiedGallery('norewind');

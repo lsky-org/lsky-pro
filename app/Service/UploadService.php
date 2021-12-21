@@ -23,6 +23,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Intervention\Image\Facades\Image as InterventionImage;
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\AdapterInterface;
 use League\Flysystem\Filesystem;
@@ -43,6 +44,8 @@ class UploadService
         if (is_null($user) && ! Utils::config(ConfigKey::IsAllowGuestUpload, true)) {
             throw new UploadException('管理员关闭了游客上传');
         }
+
+        $img = InterventionImage::make($file);
 
         $image = new Image();
         // 组配置
@@ -131,6 +134,8 @@ class UploadService
             'origin_name' => $file->getClientOriginalName(),
             'size' => $file->getSize() / 1024,
             'mimetype' => $file->getMimeType(),
+            'width' => $img->width(),
+            'height' => $img->height(),
             'permission' => ImagePermission::Private,
             'is_unhealthy' => false, // TODO 接入鉴黄？
             'uploaded_ip' => $request->ip(),
