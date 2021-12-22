@@ -702,6 +702,9 @@ select {
 .left-\[50\%\] {
   left: 50%;
 }
+.top-12 {
+  top: 3rem;
+}
 .z-0 {
   z-index: 0;
 }
@@ -742,6 +745,10 @@ select {
 .mx-2 {
   margin-left: 0.5rem;
   margin-right: 0.5rem;
+}
+.my-6 {
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
 }
 .ml-3 {
   margin-left: 0.75rem;
@@ -920,6 +927,9 @@ select {
 .flex-1 {
   flex: 1 1 0%;
 }
+.flex-auto {
+  flex: 1 1 auto;
+}
 .basis-1\/3 {
   flex-basis: 33.333333%;
 }
@@ -1076,6 +1086,12 @@ select {
 }
 .overflow-scroll {
   overflow: scroll;
+}
+.overflow-y-auto {
+  overflow-y: auto;
+}
+.overflow-y-scroll {
+  overflow-y: scroll;
 }
 .overscroll-contain {
   -ms-scroll-chaining: none;
@@ -1317,6 +1333,9 @@ select {
 }
 .pt-8 {
   padding-top: 2rem;
+}
+.pb-14 {
+  padding-bottom: 3.5rem;
 }
 .text-center {
   text-align: center;
@@ -1577,6 +1596,9 @@ select {
 .ease-in {
   transition-timing-function: cubic-bezier(0.4, 0, 1, 1);
 }
+.hover\:w-32:hover {
+  width: 8rem;
+}
 .hover\:bg-gray-100:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(243 244 246 / var(--tw-bg-opacity));
@@ -1618,6 +1640,9 @@ select {
 }
 .focus\:z-10:focus {
   z-index: 10;
+}
+.focus\:w-32:focus {
+  width: 8rem;
 }
 .focus\:border-blue-300:focus {
   --tw-border-opacity: 1;
@@ -1771,6 +1796,11 @@ select {
 }
 @media (min-width: 768px) {
 
+  .md\:my-10 {
+    margin-top: 2.5rem;
+    margin-bottom: 2.5rem;
+  }
+
   .md\:mt-8 {
     margin-top: 2rem;
   }
@@ -1787,6 +1817,10 @@ select {
     margin-top: 1.5rem;
   }
 
+  .md\:mt-10 {
+    margin-top: 2.5rem;
+  }
+
   .md\:block {
     display: block;
   }
@@ -1801,6 +1835,10 @@ select {
 
   .md\:w-\[70\%\] {
     width: 70%;
+  }
+
+  .md\:w-36 {
+    width: 9rem;
   }
 
   .md\:grid-cols-2 {
@@ -1848,6 +1886,18 @@ select {
 
   .md\:pt-24 {
     padding-top: 6rem;
+  }
+
+  .md\:pt-6 {
+    padding-top: 1.5rem;
+  }
+
+  .md\:pt-8 {
+    padding-top: 2rem;
+  }
+
+  .md\:pt-10 {
+    padding-top: 2.5rem;
   }
 
   .md\:hover\:w-52:hover {

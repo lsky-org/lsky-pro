@@ -222,6 +222,18 @@ button.toast-close-button {
   scrollbar-width: none;
   /* Firefox */
 }
+::-webkit-scrollbar {
+  width: 6px;
+  height: 100%;
+}
+::-webkit-scrollbar-thumb {
+  border-radius: 6px;
+  background: #cad3e2;
+}
+::-webkit-scrollbar-track {
+  border-radius: 6px;
+  background: #ffffff;
+}
 progress::-webkit-progress-bar {
   background-color: #d7d7d7;
 }

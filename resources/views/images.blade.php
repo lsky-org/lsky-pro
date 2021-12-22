@@ -6,15 +6,14 @@
 @endpush
 
 <x-app-layout>
-    <div class="fixed z-[2] top-14 left-0 right-0 bg-white border-solid border-b">
-        <x-container class="px-2 flex justify-between items-center h-12">
-            <div class="hidden md:block">
-                <a class="text-sm py-2 px-3 hover:bg-gray-100 rounded text-gray-800" href=""><i class="fas fa-folder-open text-blue-500"></i> 新建相册</a>
-            </div>
+    <div class="relative flex justify-between items-center px-2 py-2 z-[2] top-0 left-0 right-0 bg-white border-solid border-b">
+        <div class="space-x-2 flex justify-between items-center">
+            <a class="text-sm py-2 px-3 hover:bg-gray-100 rounded text-gray-800" href="javascript:void(0)"><i class="fas fa-bars text-blue-500"></i> 相册</a>
             <div class="block md:hidden">
                 <x-dropdown direction="right">
                     <x-slot name="trigger">
-                        <a class="text-sm py-2 px-3 hover:bg-gray-100 rounded text-gray-800" href="javascript:void(0)">选中项 <i class="fas fa-chevron-down text-blue-500"></i></a>
+                        <a class="text-sm py-2 px-3 hover:bg-gray-100 rounded text-gray-800"
+                           href="javascript:void(0)"><i class="fas fa-ellipsis-h text-blue-500"></i></a>
                     </x-slot>
 
                     <x-slot name="content">
@@ -25,26 +24,37 @@
                     </x-slot>
                 </x-dropdown>
             </div>
-            <div class="flex space-x-2 items-center">
-                <input type="text" class="px-2.5 py-1.5 border-0 outline-none rounded bg-gray-100 text-sm transition-all duration-300 w-36 md:hover:w-52 md:focus:w-52" placeholder="输入关键字搜索...">
-                <x-dropdown direction="left">
-                    <x-slot name="trigger">
-                        <a class="text-sm py-2 px-3 hover:bg-gray-100 rounded text-gray-800" href="javascript:void(0)">排序 <i class="fas fa-sort-alpha-up text-blue-500"></i></a>
-                    </x-slot>
+        </div>
+        <div class="flex space-x-2 items-center">
+            <input type="text"
+                   class="px-2.5 py-1.5 border-0 outline-none rounded bg-gray-100 text-sm transition-all duration-300 hidden md:block md:w-36 md:hover:w-52 md:focus:w-52"
+                   placeholder="输入关键字搜索...">
+            <x-dropdown direction="left">
+                <x-slot name="trigger">
+                    <a class="text-sm py-2 px-3 hover:bg-gray-100 rounded text-gray-800" href="javascript:void(0)">排序 <i
+                            class="fas fa-sort-alpha-up text-blue-500"></i></a>
+                </x-slot>
 
-                    <x-slot name="content">
-                        <x-dropdown-link href="javascript:void(0)" @click="setOrderBy('newest'); open = false">最新</x-dropdown-link>
-                        <x-dropdown-link href="javascript:void(0)" @click="setOrderBy('earliest'); open = false">最早</x-dropdown-link>
-                        <x-dropdown-link href="javascript:void(0)" @click="setOrderBy('utmost'); open = false">最大</x-dropdown-link>
-                        <x-dropdown-link href="javascript:void(0)" @click="setOrderBy('least'); open = false">最小</x-dropdown-link>
-                    </x-slot>
-                </x-dropdown>
-            </div>
-        </x-container>
+                <x-slot name="content">
+                    <x-dropdown-link href="javascript:void(0)" @click="setOrderBy('newest'); open = false">最新
+                    </x-dropdown-link>
+                    <x-dropdown-link href="javascript:void(0)" @click="setOrderBy('earliest'); open = false">最早
+                    </x-dropdown-link>
+                    <x-dropdown-link href="javascript:void(0)" @click="setOrderBy('utmost'); open = false">最大
+                    </x-dropdown-link>
+                    <x-dropdown-link href="javascript:void(0)" @click="setOrderBy('least'); open = false">最小
+                    </x-dropdown-link>
+                </x-slot>
+            </x-dropdown>
+        </div>
     </div>
-    <div id="photos-grid" class="overflow-hidden mt-6 md:mt-2"></div>
-    <div id="photos-loading" class="flex justify-center items-center pt-6 pb-6">
-        <a href="javascript:void(0)" class="flex justify-center items-center text-sm text-gray-400 text-gray-700 cursor-not-allowed">加载中...</a>
+    <div class="relative inset-0 h-full">
+        <div class="absolute inset-0 overflow-y-scroll">
+            <div id="photos-grid"></div>
+            <div id="photos-loading" class="flex justify-center items-center py-10">
+                <a href="javascript:void(0)" class="flex justify-center items-center text-sm text-gray-400 text-gray-700 cursor-not-allowed">加载中...</a>
+            </div>
+        </div>
     </div>
 
     <script type="text/html" id="photos-item">
@@ -74,7 +84,7 @@
                 order: '',
             };
             let gridConfigs = {
-                rowHeight : 180,
+                rowHeight: 180,
                 margins: 16,
                 captions: false,
                 border: 10,
@@ -91,7 +101,7 @@
                         $loading.text('加载中...').addClass('text-gray-400 cursor-not-allowed');
                     },
                     success: function (response) {
-                        if (! response.status) {
+                        if (!response.status) {
                             return toastr.error(response.message);
                         }
 
@@ -130,15 +140,14 @@
                 getImages();
             };
 
-            $('html').css('overflow-y', 'scroll')
             $photos.justifiedGallery(gridConfigs);
             $loading.click(() => getImages(params.page));
 
-            $(window).scroll(function() {
+            $(window).scroll(function () {
                 let scrollTop = $(this).scrollTop();
                 let scrollHeight = $(document).height();
                 let clientHeight = $(this).height();
-                if(scrollTop + clientHeight >= scrollHeight - 50) {
+                if (scrollTop + clientHeight >= scrollHeight - 50) {
                     getImages();
                 }
             });
@@ -149,9 +158,12 @@
                 $(this).siblings('img').trigger('click');
             })
 
-            $photos.on('click', 'a', function (e) {
+            $photos.on('click', 'a .photo-select', function (e) {
                 e.stopPropagation();
-                $(this).css('transform', 'scale(1)').toggleClass('selected');
+                $(this).closest('a').toggleClass('selected');
+            }).on('mousedown', 'a', function () {
+
+            }).on('mouseup', 'a', function () {
             });
         </script>
     @endpush
