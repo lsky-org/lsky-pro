@@ -242,39 +242,19 @@ progress::-webkit-progress-value {
 .viewer-backdrop {
   background-color: rgba(0, 0, 0, 0.75);
 }
-#albums-grid a:hover,
 #photos-grid a:hover,
-#albums-grid a.selected,
 #photos-grid a.selected {
   outline-color: #3b82f6;
 }
-#albums-grid a:hover .album-select,
-#photos-grid a:hover .album-select,
-#albums-grid a.selected .album-select,
-#photos-grid a.selected .album-select,
-#albums-grid a:hover .photo-select,
 #photos-grid a:hover .photo-select,
-#albums-grid a.selected .photo-select,
 #photos-grid a.selected .photo-select {
   display: block;
 }
-#albums-grid a:hover.selected .album-select,
-#photos-grid a:hover.selected .album-select,
-#albums-grid a.selected.selected .album-select,
-#photos-grid a.selected.selected .album-select,
-#albums-grid a:hover.selected .photo-select,
 #photos-grid a:hover.selected .photo-select,
-#albums-grid a.selected.selected .photo-select,
 #photos-grid a.selected.selected .photo-select {
   border-color: white;
 }
-#albums-grid a:hover.selected .album-select > i,
-#photos-grid a:hover.selected .album-select > i,
-#albums-grid a.selected.selected .album-select > i,
-#photos-grid a.selected.selected .album-select > i,
-#albums-grid a:hover.selected .photo-select > i,
 #photos-grid a:hover.selected .photo-select > i,
-#albums-grid a.selected.selected .photo-select > i,
 #photos-grid a.selected.selected .photo-select > i {
   color: #0061ff;
 }
