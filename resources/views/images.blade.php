@@ -6,9 +6,9 @@
 @endpush
 
 <x-app-layout>
-    <div class="relative flex justify-between items-center px-2 py-2 z-[2] top-0 left-0 right-0 bg-white border-solid border-b">
+    <div class="relative flex justify-between items-center px-2 py-2 z-[3] top-0 left-0 right-0 bg-white border-solid border-b">
         <div class="space-x-2 flex justify-between items-center">
-            <a class="text-sm py-2 px-3 hover:bg-gray-100 rounded text-gray-800" href="javascript:void(0)"><i class="fas fa-bars text-blue-500"></i> 相册</a>
+            <a class="text-sm py-2 px-3 hover:bg-gray-100 rounded text-gray-800" href="javascript:getAlbums()"><i class="fas fa-bars text-blue-500"></i> 相册</a>
             <div class="block md:hidden">
                 <x-dropdown direction="right">
                     <x-slot name="trigger">
@@ -49,11 +49,21 @@
         </div>
     </div>
     <div class="relative inset-0 h-full">
+        <!-- content -->
         <div class="absolute inset-0 overflow-y-scroll">
             <div id="photos-grid"></div>
             <div id="photos-loading" class="flex justify-center items-center py-10">
                 <a href="javascript:void(0)" class="flex justify-center items-center text-sm text-gray-400 text-gray-700 cursor-not-allowed">加载中...</a>
             </div>
+        </div>
+        <!-- right drawer -->
+        <div id="drawer-mask" class="absolute hidden inset-0 bg-gray-500 bg-opacity-50 z-[2]" onclick="drawer.close()"></div>
+        <div id="drawer" class="absolute bg-white w-52 md:w-72 top-0 -right-[1000px] bottom-0 z-[2] flex flex-col transition-all duration-300">
+            <div class="flex justify-between items-center text-md px-3 py-1 border-b">
+                <span class="text-gray-600 truncate" id="drawer-title"></span>
+                <a href="javascript:drawer.close()" class="p-2"><i class="fas fa-times text-blue-500"></i></a>
+            </div>
+            <div id="drawer-content" class="overflow-y-auto"></div>
         </div>
     </div>
 
@@ -76,9 +86,6 @@
         <script src="{{ asset('js/justified-gallery/jquery.justifiedGallery.min.js') }}"></script>
         <script src="{{ asset('js/viewer-js/viewer.min.js') }}"></script>
         <script>
-            const $photos = $("#photos-grid");
-            const $loading = $("#photos-loading a");
-            const viewer = new Viewer(document.getElementById('photos-grid'), {});
             let params = {
                 page: 1,
                 order: '',
@@ -90,6 +97,36 @@
                 border: 10,
                 waitThumbnailsLoad: false,
             };
+
+            const $photos = $("#photos-grid");
+            const $loading = $("#photos-loading a");
+            const $drawer = $("#drawer");
+            const $drawerMask = $('#drawer-mask');
+            const viewer = new Viewer(document.getElementById('photos-grid'), {});
+            const drawer = {
+                open(title, $content) {
+                    $drawerMask.fadeIn();
+                    $drawer.css('right', 0);
+                    $drawer.find('#drawer-title').html(title);
+                    $drawer.find('#drawer-content').html($content);
+                },
+                close() {
+                    $drawerMask.fadeOut();
+                    $drawer.css('right', '-1000px');
+                },
+                toggle(title, $content) {
+                    if ($drawerMask.is(':hidden')) {
+                        this.open(title, $content);
+                    } else {
+                        this.close();
+                    }
+                }
+            }
+
+            const getAlbums = () => {
+                drawer.toggle('我的相册');
+            }
+
             const getImages = () => {
                 if (params.page !== 1 && $loading.hasClass('cursor-not-allowed')) {
                     return;

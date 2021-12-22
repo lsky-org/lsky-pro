@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Models\Album;
 use App\Models\Image;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -35,6 +36,12 @@ class ImageController extends Controller
 
     public function albums(Request $request): Response
     {
-        return $this->success();
+        /** @var User $user */
+        $user = Auth::user();
+        $albums = $user->albums()->latest()->paginate(40);
+        $albums->getCollection()->each(function (Album $album) {
+            $album->setVisible(['id', 'name', 'intro', 'image_num']);
+        });
+        return $this->success('success', compact('albums'));
     }
 }

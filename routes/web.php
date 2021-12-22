@@ -23,6 +23,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/upload', fn () => view('upload'))->name('upload');
     Route::get('/images', [ImageController::class, 'index'])->name('images');
     Route::get('/user/images', [ImageController::class, 'images'])->name('user.images');
+    Route::get('/user/albums', [ImageController::class, 'albums'])->name('user.albums');
 });
 
 require __DIR__.'/auth.php';
