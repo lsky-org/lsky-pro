@@ -25,7 +25,7 @@
             </div>
         </div>
         <div class="flex space-x-2 items-center">
-            <input type="text" class="px-2.5 py-1.5 border-0 outline-none rounded bg-gray-100 text-sm transition-all duration-300 hidden md:block md:w-36 md:hover:w-52 md:focus:w-52" placeholder="输入关键字搜索...">
+            <input type="text" id="search" class="px-2.5 py-1.5 border-0 outline-none rounded bg-gray-100 text-sm transition-all duration-300 hidden md:block md:w-36 md:hover:w-52 md:focus:w-52" placeholder="输入关键字搜索...">
             <x-dropdown direction="left">
                 <x-slot name="trigger">
                     <a id="order" class="text-sm py-2 px-3 hover:bg-gray-100 rounded text-gray-800" href="javascript:void(0)">
@@ -35,7 +35,7 @@
                 </x-slot>
 
                 <x-slot name="content">
-                    <x-dropdown-link href="javascript:void(0)" @click="setOrderBy('newest'); open = false">最新
+                    <x-dropdown-link href="javascript:void(0)" @click="setOrderBy('newest1'); open = false">最新
                     </x-dropdown-link>
                     <x-dropdown-link href="javascript:void(0)" @click="setOrderBy('earliest'); open = false">最早
                     </x-dropdown-link>
@@ -143,8 +143,14 @@
                             .replace(/__height__/g, images[i].height)
                     }
 
-                    $photos.append(html).justifiedGallery('norewind');
-                    viewer.update();
+                    $photos.append(html);
+                    if ($photos.html() !== '') {
+                        $photos.justifiedGallery('norewind')
+                        viewer.update();
+                    } else {
+                        // 没有任何数据时销毁 justifiedGallery，否则会占高度，且会计算
+                        $photos.justifiedGallery('destroy')
+                    }
                 }
             });
 
@@ -153,6 +159,13 @@
                 infinite.refresh({page: 1, order: sort});
                 $('#order span').text({newest: '最新', earliest: '最早', utmost: '最大', least: '最小'}[sort]);
             };
+
+            $('#search').keydown(function (e) {
+                if (e.keyCode === 13) {
+                    $photos.html('').justifiedGallery('destroy').justifiedGallery(gridConfigs)
+                    infinite.refresh({page: 1, keyword: $(this).val()});
+                }
+            })
 
             $photos.on('click', '.photo-mask', function () {
                 $(this).siblings('img').trigger('click');

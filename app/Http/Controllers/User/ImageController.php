@@ -38,6 +38,8 @@ class ImageController extends Controller
                 default:
                     $builder->latest();
             }
+        })->when($request->query('keyword'), function (Builder $builder, $keyword) {
+            $builder->whereRaw("concat(IFNULL(origin_name,''),IFNULL(alias_name,'')) like ?", ["%{$keyword}%"]);
         })->paginate(40);
         $images->getCollection()->each(function (Image $image) {
             $image->human_date = $image->created_at->diffForHumans();

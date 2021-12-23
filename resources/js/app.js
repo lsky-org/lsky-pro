@@ -93,6 +93,12 @@ window.utils = {
                 refresh(params) {
                     load(params, true);
                 },
+                reset() {
+                    opts.data = {page: 1};
+                    props.loading = false;
+                    props.finished = false;
+                    load();
+                },
             }
         }
     }
