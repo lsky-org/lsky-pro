@@ -3449,7 +3449,9 @@ window.utils = {
             $btn.text('加载更多').removeClass('disabled');
           }
 
-          if (opts.data.page !== undefined) opts.data.page++;
+          if (opts.data.page !== undefined) {
+            opts.data.page++;
+          }
         },
         error: function error() {
           $btn.text(errorText).addClass('disabled');
@@ -3459,8 +3461,10 @@ window.utils = {
         }
       };
 
-      var load = function load(params) {
-        if (props.loading || props.finished) return;
+      var load = function load(params, force) {
+        if (!force) {
+          if (props.loading || props.finished) return;
+        }
 
         if (typeof options.data === 'function') {
           opts.data = options.data(opts.data) || {};
@@ -3485,7 +3489,7 @@ window.utils = {
       });
       return {
         refresh: function refresh(params) {
-          load(params);
+          load(params, true);
         }
       };
     }

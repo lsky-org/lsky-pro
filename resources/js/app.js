@@ -56,7 +56,9 @@ window.utils = {
                     } else {
                         $btn.text('加载更多').removeClass('disabled')
                     }
-                    if (opts.data.page !== undefined) opts.data.page++;
+                    if (opts.data.page !== undefined) {
+                        opts.data.page++;
+                    }
                 },
                 error() {
                     $btn.text(errorText).addClass('disabled')
@@ -64,8 +66,10 @@ window.utils = {
                 }
             };
 
-            let load = (params) => {
-                if (props.loading || props.finished) return;
+            let load = (params, force) => {
+                if (! force) {
+                    if (props.loading || props.finished) return;
+                }
                 if (typeof options.data === 'function') {
                     opts.data = options.data(opts.data) || {};
                 }
@@ -87,7 +91,7 @@ window.utils = {
 
             return {
                 refresh(params) {
-                    load(params);
+                    load(params, true);
                 },
             }
         }

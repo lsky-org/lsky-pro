@@ -83,9 +83,6 @@
         <script src="{{ asset('js/justified-gallery/jquery.justifiedGallery.min.js') }}"></script>
         <script src="{{ asset('js/viewer-js/viewer.min.js') }}"></script>
         <script>
-            let params = {
-                order: '',
-            };
             let gridConfigs = {
                 rowHeight: 180,
                 margins: 16,
@@ -126,9 +123,6 @@
 
             const infinite = utils.infiniteScroll('#photos-scroll', {
                 url: '{{ route('user.images') }}',
-                data: function (data) {
-                    return $.extend(data, params)
-                },
                 success: function (response) {
                     if (!response.status) {
                         return toastr.error(response.message);
@@ -155,13 +149,9 @@
                 }
             });
 
-            const getImages = () => infinite.refresh();
-
             const setOrderBy = function (sort) {
-                params.page = 1;
-                params.order = sort;
                 $photos.html('').justifiedGallery('destroy').justifiedGallery(gridConfigs)
-                getImages();
+                infinite.refresh({page: 1, order: sort});
             };
 
             $photos.on('click', '.photo-mask', function () {

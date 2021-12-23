@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Album;
 use App\Models\Image;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
@@ -23,7 +24,21 @@ class ImageController extends Controller
         /** @var User $user */
         $user = Auth::user();
 
-        $images = $user->images()->latest()->paginate(40);
+        $images = $user->images()->when($request->query('order') ?: 'newest', function (Builder $builder, $order) {
+            switch ($order) {
+                case 'earliest':
+                    $builder->orderBy('created_at');
+                    break;
+                case 'utmost':
+                    $builder->orderByDesc('size');
+                    break;
+                case 'least':
+                    $builder->orderBy('size');
+                    break;
+                default:
+                    $builder->latest();
+            }
+        })->paginate(40);
         $images->getCollection()->each(function (Image $image) {
             $image->human_date = $image->created_at->diffForHumans();
             $image->date = $image->created_at->format('Y-m-d H:i:s');
