@@ -259,14 +259,15 @@ progress::-webkit-progress-value {
   display: flex;
   justify-content: center;
   justify-items: center;
-  padding: 1rem 0;
+  padding: 3rem 0;
 }
-.infinite-scroll a {
+.infinite-scroll span {
   display: inline-flex;
   color: #626262;
   font-size: 0.9em;
+  cursor: pointer;
 }
-.infinite-scroll a.disabled {
+.infinite-scroll span.disabled {
   cursor: not-allowed;
   color: grey;
 }

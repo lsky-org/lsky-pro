@@ -26,47 +26,70 @@ window.utils = {
             let loadingText = options.loadingText || '加载中...';
             let finishedText = options.finishedText || '我也是有底线的~';
             let errorText = options.errorText || '加载失败';
-            let offset = options.offset || 100;
-            let loading = false;
-            let opts = {
+            let offset = options.offset || 30;
+            let props = {
+                loading: false,
                 finished: false,
+            };
+            $(selector).append(`<div class="infinite-scroll"><span>${loadingText}</span></div>`);
+            let $btn = $(selector + ' .infinite-scroll span');
+
+            let opts = {
                 url: options.url || '',
                 data: {
-                    page: 0,
+                    page: 1,
                 },
                 beforeSend() {
-                    loading = true;
+                    props.loading = true;
+                    $btn.text(loadingText).addClass('disabled')
                 },
                 success(response) {
                     if (typeof options.success === 'function') {
-                        options.success(response.data);
+                        options.success.call(props, response);
                     }
                 },
                 complete() {
-                    loading = false;
+                    props.loading = false;
+                    if (props.finished) {
+                        // no more
+                        $btn.text(finishedText).addClass('disabled')
+                    } else {
+                        $btn.text('加载更多').removeClass('disabled')
+                    }
+                    if (opts.data.page !== undefined) opts.data.page++;
+                },
+                error() {
+                    $btn.text(errorText).addClass('disabled')
+                    setTimeout(() => $btn.text(errorText).removeClass('disabled'), 3000)
                 }
             };
 
-            let load = () => {
-                if (loading) return;
-                if (opts.data.page !== undefined) opts.data.page++;
+            let load = (params) => {
+                if (props.loading || props.finished) return;
                 if (typeof options.data === 'function') {
                     opts.data = options.data(opts.data) || {};
+                }
+                if (params) {
+                    opts.data = $.extend(opts.data, params)
                 }
                 $.ajax(opts);
             };
 
-            // 首次加载，创建dom
-            $(selector)
-                .append('<div class="infinite-scroll"><a href="javascript:void(0)">加载中...</a></div>')
-                .on('click', '.loading a', () => load());
+            // 首次加载
             load();
+            $(selector).on('click', 'span:not(.disabled)', () => load());
 
             $(selector).scroll(function() {
                 if(this.scrollTop + $(selector).height() >= this.scrollHeight - offset) {
                     load();
                 }
             });
+
+            return {
+                refresh(params) {
+                    load(params);
+                },
+            }
         }
     }
 }

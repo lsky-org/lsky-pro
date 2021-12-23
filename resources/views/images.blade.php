@@ -50,7 +50,7 @@
     </div>
     <div class="relative inset-0 h-full">
         <!-- content -->
-        <div id="content" class="absolute inset-0 overflow-y-scroll">
+        <div id="photos-scroll" class="absolute inset-0 overflow-y-scroll">
             <div id="photos-grid"></div>
         </div>
         <!-- right drawer -->
@@ -84,7 +84,6 @@
         <script src="{{ asset('js/viewer-js/viewer.min.js') }}"></script>
         <script>
             let params = {
-                page: 1,
                 order: '',
             };
             let gridConfigs = {
@@ -95,19 +94,7 @@
                 waitThumbnailsLoad: false,
             };
 
-            utils.infiniteScroll('#content', {
-                url: '{{ route('user.albums') }}',
-                data: function (params) {
-                    return params;
-                },
-                success: function (response) {
-                    console.log(this)
-                    // console.log(response)
-                }
-            });
-
             const $photos = $("#photos-grid");
-            const $loading = $("#photos-loading a");
             const $drawer = $("#drawer");
             const $drawerMask = $('#drawer-mask');
             const viewer = new Viewer(document.getElementById('photos-grid'), {});
@@ -131,52 +118,44 @@
                 }
             }
 
+            $photos.justifiedGallery(gridConfigs);
+
             const getAlbums = () => {
                 drawer.toggle('我的相册');
             }
 
-            const getImages = () => {
-                if (params.page !== 1 && $loading.hasClass('cursor-not-allowed')) {
-                    return;
+            const infinite = utils.infiniteScroll('#photos-scroll', {
+                url: '{{ route('user.images') }}',
+                data: function (data) {
+                    return $.extend(data, params)
+                },
+                success: function (response) {
+                    if (!response.status) {
+                        return toastr.error(response.message);
+                    }
+
+                    let images = response.data.images.data;
+                    if (images.length <= 0 || response.data.images.current_page === response.data.images.last_page) {
+                        this.finished = true;
+                    }
+
+                    let html = '';
+                    for (const i in images) {
+                        html += $('#photos-item').html()
+                            .replace(/__name__/g, images[i].filename)
+                            .replace(/__human_date__/g, images[i].human_date)
+                            .replace(/__date__/g, images[i].date)
+                            .replace(/__url__/g, images[i].url)
+                            .replace(/__width__/g, images[i].width)
+                            .replace(/__height__/g, images[i].height)
+                    }
+
+                    $photos.append(html).justifiedGallery('norewind');
+                    viewer.update();
                 }
-                $.ajax({
-                    url: '{{ route('user.images') }}',
-                    data: params,
-                    beforeSend: function () {
-                        $loading.text('加载中...').addClass('text-gray-400 cursor-not-allowed');
-                    },
-                    success: function (response) {
-                        if (!response.status) {
-                            return toastr.error(response.message);
-                        }
+            });
 
-                        let images = response.data.images.data;
-                        if (images.length <= 0 || response.data.last_page === params.page) {
-                            $loading.text('我也是有底线的~').addClass('text-gray-400 cursor-not-allowed');
-                            return;
-                        }
-
-                        let html = '';
-                        for (const i in images) {
-                            html += $('#photos-item').html()
-                                .replace(/__name__/g, images[i].filename)
-                                .replace(/__human_date__/g, images[i].human_date)
-                                .replace(/__date__/g, images[i].date)
-                                .replace(/__url__/g, images[i].url)
-                                .replace(/__width__/g, images[i].width)
-                                .replace(/__height__/g, images[i].height)
-                        }
-
-                        $photos.append(html).justifiedGallery('norewind');
-                        viewer.update();
-
-                        params.page++;
-                        setTimeout(function () {
-                            $loading.text('加载更多').removeClass('text-gray-400 cursor-not-allowed');
-                        }, 500)
-                    },
-                });
-            };
+            const getImages = () => infinite.refresh();
 
             const setOrderBy = function (sort) {
                 params.page = 1;
@@ -184,20 +163,6 @@
                 $photos.html('').justifiedGallery('destroy').justifiedGallery(gridConfigs)
                 getImages();
             };
-
-            $photos.justifiedGallery(gridConfigs);
-            $loading.click(() => getImages(params.page));
-
-            $(window).scroll(function () {
-                let scrollTop = $(this).scrollTop();
-                let scrollHeight = $(document).height();
-                let clientHeight = $(this).height();
-                if (scrollTop + clientHeight >= scrollHeight - 50) {
-                    getImages();
-                }
-            });
-
-            // setTimeout(() => getImages(), 500);
 
             $photos.on('click', '.photo-mask', function () {
                 $(this).siblings('img').trigger('click');

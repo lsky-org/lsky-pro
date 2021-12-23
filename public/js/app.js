@@ -3418,48 +3418,76 @@ window.utils = {
       var loadingText = options.loadingText || '加载中...';
       var finishedText = options.finishedText || '我也是有底线的~';
       var errorText = options.errorText || '加载失败';
-      var offset = options.offset || 100;
-      var loading = false;
+      var offset = options.offset || 30;
+      var props = {
+        loading: false,
+        finished: false
+      };
+      $(selector).append("<div class=\"infinite-scroll\"><span>".concat(loadingText, "</span></div>"));
+      var $btn = $(selector + ' .infinite-scroll span');
       var opts = {
-        finished: false,
         url: options.url || '',
         data: {
-          page: 0
+          page: 1
         },
         beforeSend: function beforeSend() {
-          loading = true;
+          props.loading = true;
+          $btn.text(loadingText).addClass('disabled');
         },
         success: function success(response) {
           if (typeof options.success === 'function') {
-            options.success(response.data);
+            options.success.call(props, response);
           }
         },
         complete: function complete() {
-          loading = false;
+          props.loading = false;
+
+          if (props.finished) {
+            // no more
+            $btn.text(finishedText).addClass('disabled');
+          } else {
+            $btn.text('加载更多').removeClass('disabled');
+          }
+
+          if (opts.data.page !== undefined) opts.data.page++;
+        },
+        error: function error() {
+          $btn.text(errorText).addClass('disabled');
+          setTimeout(function () {
+            return $btn.text(errorText).removeClass('disabled');
+          }, 3000);
         }
       };
 
-      var load = function load() {
-        if (loading) return;
-        if (opts.data.page !== undefined) opts.data.page++;
+      var load = function load(params) {
+        if (props.loading || props.finished) return;
 
         if (typeof options.data === 'function') {
           opts.data = options.data(opts.data) || {};
         }
 
+        if (params) {
+          opts.data = $.extend(opts.data, params);
+        }
+
         $.ajax(opts);
-      }; // 首次加载，创建dom
+      }; // 首次加载
 
 
-      $(selector).append('<div class="infinite-scroll"><a href="javascript:void(0)">加载中...</a></div>').on('click', '.loading a', function () {
+      load();
+      $(selector).on('click', 'span:not(.disabled)', function () {
         return load();
       });
-      load();
       $(selector).scroll(function () {
         if (this.scrollTop + $(selector).height() >= this.scrollHeight - offset) {
           load();
         }
       });
+      return {
+        refresh: function refresh(params) {
+          load(params);
+        }
+      };
     }
   }
 };
