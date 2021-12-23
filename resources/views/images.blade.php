@@ -12,8 +12,7 @@
             <div class="block md:hidden">
                 <x-dropdown direction="right">
                     <x-slot name="trigger">
-                        <a class="text-sm py-2 px-3 hover:bg-gray-100 rounded text-gray-800"
-                           href="javascript:void(0)"><i class="fas fa-ellipsis-h text-blue-500"></i></a>
+                        <a class="text-sm py-2 px-3 hover:bg-gray-100 rounded text-gray-800" href="javascript:void(0)"><i class="fas fa-ellipsis-h text-blue-500"></i></a>
                     </x-slot>
 
                     <x-slot name="content">
@@ -26,13 +25,13 @@
             </div>
         </div>
         <div class="flex space-x-2 items-center">
-            <input type="text"
-                   class="px-2.5 py-1.5 border-0 outline-none rounded bg-gray-100 text-sm transition-all duration-300 hidden md:block md:w-36 md:hover:w-52 md:focus:w-52"
-                   placeholder="输入关键字搜索...">
+            <input type="text" class="px-2.5 py-1.5 border-0 outline-none rounded bg-gray-100 text-sm transition-all duration-300 hidden md:block md:w-36 md:hover:w-52 md:focus:w-52" placeholder="输入关键字搜索...">
             <x-dropdown direction="left">
                 <x-slot name="trigger">
-                    <a class="text-sm py-2 px-3 hover:bg-gray-100 rounded text-gray-800" href="javascript:void(0)">排序 <i
-                            class="fas fa-sort-alpha-up text-blue-500"></i></a>
+                    <a id="order" class="text-sm py-2 px-3 hover:bg-gray-100 rounded text-gray-800" href="javascript:void(0)">
+                        <span>最新</span>
+                        <i class="fas fa-sort-alpha-up text-blue-500"></i>
+                    </a>
                 </x-slot>
 
                 <x-slot name="content">
@@ -152,6 +151,7 @@
             const setOrderBy = function (sort) {
                 $photos.html('').justifiedGallery('destroy').justifiedGallery(gridConfigs)
                 infinite.refresh({page: 1, order: sort});
+                $('#order span').text({newest: '最新', earliest: '最早', utmost: '最大', least: '最小'}[sort]);
             };
 
             $photos.on('click', '.photo-mask', function () {
