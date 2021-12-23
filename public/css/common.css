@@ -254,6 +254,22 @@ progress::-webkit-progress-value {
 .viewer-backdrop {
   background-color: rgba(0, 0, 0, 0.75);
 }
+.infinite-scroll {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  justify-items: center;
+  padding: 1rem 0;
+}
+.infinite-scroll a {
+  display: inline-flex;
+  color: #626262;
+  font-size: 0.9em;
+}
+.infinite-scroll a.disabled {
+  cursor: not-allowed;
+  color: grey;
+}
 #photos-grid a:hover,
 #photos-grid a.selected {
   outline-color: #3b82f6;

@@ -50,11 +50,8 @@
     </div>
     <div class="relative inset-0 h-full">
         <!-- content -->
-        <div class="absolute inset-0 overflow-y-scroll">
+        <div id="content" class="absolute inset-0 overflow-y-scroll">
             <div id="photos-grid"></div>
-            <div id="photos-loading" class="flex justify-center items-center py-10">
-                <a href="javascript:void(0)" class="flex justify-center items-center text-sm text-gray-400 text-gray-700 cursor-not-allowed">加载中...</a>
-            </div>
         </div>
         <!-- right drawer -->
         <div id="drawer-mask" class="absolute hidden inset-0 bg-gray-500 bg-opacity-50 z-[2]" onclick="drawer.close()"></div>
@@ -97,6 +94,17 @@
                 border: 10,
                 waitThumbnailsLoad: false,
             };
+
+            utils.infiniteScroll('#content', {
+                url: '{{ route('user.albums') }}',
+                data: function (params) {
+                    return params;
+                },
+                success: function (response) {
+                    console.log(this)
+                    // console.log(response)
+                }
+            });
 
             const $photos = $("#photos-grid");
             const $loading = $("#photos-loading a");
@@ -189,7 +197,7 @@
                 }
             });
 
-            setTimeout(() => getImages(), 500);
+            // setTimeout(() => getImages(), 500);
 
             $photos.on('click', '.photo-mask', function () {
                 $(this).siblings('img').trigger('click');
@@ -199,7 +207,6 @@
                 e.stopPropagation();
                 $(this).closest('a').toggleClass('selected');
             }).on('mousedown', 'a', function () {
-
             }).on('mouseup', 'a', function () {
             });
         </script>

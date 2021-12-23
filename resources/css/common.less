@@ -53,6 +53,24 @@ progress::-webkit-progress-value {
     background-color: rgba(0, 0, 0, .75);
 }
 
+// infiniteScroll
+.infinite-scroll {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    justify-items: center;
+    padding: 1rem 0;
+    a {
+        display: inline-flex;
+        color: #626262;
+        font-size: .9em;
+        &.disabled {
+            cursor: not-allowed;
+            color: grey;
+        }
+    }
+}
+
 // 我的图片
 #photos-grid {
     a:hover, a.selected {

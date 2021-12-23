@@ -3412,6 +3412,55 @@ window.utils = {
           v = c === 'x' ? r : r & 0x3 | 0x8;
       return v.toString(16);
     });
+  },
+  infiniteScroll: function infiniteScroll(selector, options) {
+    if ($(selector).length > 0) {
+      var loadingText = options.loadingText || '加载中...';
+      var finishedText = options.finishedText || '我也是有底线的~';
+      var errorText = options.errorText || '加载失败';
+      var offset = options.offset || 100;
+      var loading = false;
+      var opts = {
+        finished: false,
+        url: options.url || '',
+        data: {
+          page: 0
+        },
+        beforeSend: function beforeSend() {
+          loading = true;
+        },
+        success: function success(response) {
+          if (typeof options.success === 'function') {
+            options.success(response.data);
+          }
+        },
+        complete: function complete() {
+          loading = false;
+        }
+      };
+
+      var load = function load() {
+        if (loading) return;
+        if (opts.data.page !== undefined) opts.data.page++;
+
+        if (typeof options.data === 'function') {
+          opts.data = options.data(opts.data) || {};
+        }
+
+        $.ajax(opts);
+      }; // 首次加载，创建dom
+
+
+      $(selector).append('<div class="infinite-scroll"><a href="javascript:void(0)">加载中...</a></div>').on('click', '.loading a', function () {
+        return load();
+      });
+      load();
+      $(selector).scroll(function () {
+        if (this.scrollTop + $(selector).height() >= this.scrollHeight - offset) {
+          load();
+        }
+      });
+    }
   }
 };
 
