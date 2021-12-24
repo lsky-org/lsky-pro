@@ -147,24 +147,30 @@
                 },
                 complete: function () {
                     if ($photos.html() !== '') {
+                        // 由于 justifiedGallery 创建后占高度(无论是否有内容或内容被清空)，导致加载过程中在没有数据的情况下高度被拉开
+                        // 所以需要在重置数据后重新构建 justifiedGallery
+                        if ($photos.hasClass('reset')) {
+                            $photos.justifiedGallery(gridConfigs).removeClass('reset');
+                        }
+
                         $photos.justifiedGallery('norewind')
                         viewer.update();
                     } else {
-                        // 没有任何数据时销毁 justifiedGallery，否则会占高度，且会计算
+                        // 没有任何数据时销毁 justifiedGallery
                         $photos.justifiedGallery('destroy')
                     }
                 }
             });
 
             const setOrderBy = function (sort) {
-                $photos.html('').justifiedGallery('destroy').justifiedGallery(gridConfigs)
+                $photos.addClass('reset').html('').justifiedGallery('destroy');
                 infinite.refresh({page: 1, order: sort});
                 $('#order span').text({newest: '最新', earliest: '最早', utmost: '最大', least: '最小'}[sort]);
             };
 
             $('#search').keydown(function (e) {
                 if (e.keyCode === 13) {
-                    $photos.html('').justifiedGallery('destroy').justifiedGallery(gridConfigs)
+                    $photos.addClass('reset').html('').justifiedGallery('destroy');
                     infinite.refresh({page: 1, keyword: $(this).val()});
                 }
             })
