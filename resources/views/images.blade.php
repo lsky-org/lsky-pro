@@ -78,6 +78,13 @@
         </a>
     </script>
 
+    <script type="text/html" id="albums-item">
+        <a href="" class="flex justify-between items-center px-2 py-1 rounded w-full bg-gray-100 text-gray-800 hover:bg-blue-400 hover:text-white">
+            <span class="text-sm truncate w-[80%]">__name__</span>
+            <span class="text-xs">__image_num__</span>
+        </a>
+    </script>
+
     @push('scripts')
         <script src="{{ asset('js/justified-gallery/jquery.justifiedGallery.min.js') }}"></script>
         <script src="{{ asset('js/viewer-js/viewer.min.js') }}"></script>
@@ -95,21 +102,23 @@
             const $drawerMask = $('#drawer-mask');
             const viewer = new Viewer(document.getElementById('photos-grid'), {});
             const drawer = {
-                open(title, $content) {
+                open(title, $content, callback) {
                     $drawerMask.fadeIn();
                     $drawer.css('right', 0);
                     $drawer.find('#drawer-title').html(title);
                     $drawer.find('#drawer-content').html($content);
+                    callback && callback();
                 },
-                close() {
+                close(callback) {
                     $drawerMask.fadeOut();
                     $drawer.css('right', '-1000px');
+                    callback && callback();
                 },
-                toggle(title, $content) {
+                toggle(title, $content, callback) {
                     if ($drawerMask.is(':hidden')) {
-                        this.open(title, $content);
+                        this.open(title, $content, callback);
                     } else {
-                        this.close();
+                        this.close(callback);
                     }
                 }
             }
@@ -117,7 +126,30 @@
             $photos.justifiedGallery(gridConfigs);
 
             const getAlbums = () => {
-                drawer.toggle('我的相册');
+                drawer.toggle('我的相册', '<div id="albums-container" class="flex flex-col justify-center items-center w-full p-3 space-y-2"></div>', function () {
+                    utils.infiniteScroll('#drawer-content', {
+                        url: '{{ route('user.albums') }}',
+                        success: function (response) {
+                            if (!response.status) {
+                                return toastr.error(response.message);
+                            }
+
+                            let albums = response.data.albums.data;
+                            if (albums.length <= 0 || response.data.albums.current_page === response.data.albums.last_page) {
+                                this.finished = true;
+                            }
+
+                            let html = '';
+                            for (const i in albums) {
+                                html += $('#albums-item').html()
+                                    .replace(/__name__/g, albums[i].name)
+                                    .replace(/__image_num__/g, albums[i].image_num)
+                            }
+
+                            $('#albums-container').append(html);
+                        }
+                    });
+                });
             }
 
             const infinite = utils.infiniteScroll('#photos-scroll', {
@@ -148,7 +180,7 @@
                 complete: function () {
                     if ($photos.html() !== '') {
                         // 由于 justifiedGallery 创建后占高度(无论是否有内容或内容被清空)，导致加载过程中在没有数据的情况下高度被拉开
-                        // 所以需要在重置数据后重新构建 justifiedGallery
+                        // 所以需要在重置前销毁，重置数据后重新构建 justifiedGallery
                         if ($photos.hasClass('reset')) {
                             $photos.justifiedGallery(gridConfigs).removeClass('reset');
                         }
@@ -173,11 +205,11 @@
                     $photos.addClass('reset').html('').justifiedGallery('destroy');
                     infinite.refresh({page: 1, keyword: $(this).val()});
                 }
-            })
+            });
 
             $photos.on('click', '.photo-mask', function () {
                 $(this).siblings('img').trigger('click');
-            })
+            });
 
             $photos.on('click', 'a .photo-select', function (e) {
                 e.stopPropagation();

@@ -3479,7 +3479,7 @@ window.utils = {
 
 
       load();
-      $(selector).on('click', 'span:not(.disabled)', function () {
+      $(selector).off('click').on('click', 'span:not(.disabled)', function () {
         return load();
       });
       $(selector).scroll(function () {

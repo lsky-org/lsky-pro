@@ -80,7 +80,7 @@ window.utils = {
 
             // 首次加载
             load();
-            $(selector).on('click', 'span:not(.disabled)', () => load());
+            $(selector).off('click').on('click', 'span:not(.disabled)', () => load());
 
             $(selector).scroll(function() {
                 if(this.scrollTop + $(selector).height() >= this.scrollHeight - offset) {
