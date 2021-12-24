@@ -79,7 +79,7 @@
     </script>
 
     <script type="text/html" id="albums-item">
-        <a href="" class="flex justify-between items-center px-2 py-1 rounded w-full bg-gray-100 text-gray-800 hover:bg-blue-400 hover:text-white">
+        <a href="javascript:void(0)" data-id="__id__" class="flex justify-between items-center px-2 py-1 rounded w-full bg-gray-100 text-gray-800 hover:bg-blue-300 hover:text-white">
             <span class="text-sm truncate w-[80%]">__name__</span>
             <span class="text-xs">__image_num__</span>
         </a>
@@ -96,6 +96,8 @@
                 border: 10,
                 waitThumbnailsLoad: false,
             };
+
+            let selectedAlbum = 0; // 选择的相册
 
             const $photos = $("#photos-grid");
             const $drawer = $("#drawer");
@@ -124,33 +126,6 @@
             }
 
             $photos.justifiedGallery(gridConfigs);
-
-            const getAlbums = () => {
-                drawer.toggle('我的相册', '<div id="albums-container" class="flex flex-col justify-center items-center w-full p-3 space-y-2"></div>', function () {
-                    utils.infiniteScroll('#drawer-content', {
-                        url: '{{ route('user.albums') }}',
-                        success: function (response) {
-                            if (!response.status) {
-                                return toastr.error(response.message);
-                            }
-
-                            let albums = response.data.albums.data;
-                            if (albums.length <= 0 || response.data.albums.current_page === response.data.albums.last_page) {
-                                this.finished = true;
-                            }
-
-                            let html = '';
-                            for (const i in albums) {
-                                html += $('#albums-item').html()
-                                    .replace(/__name__/g, albums[i].name)
-                                    .replace(/__image_num__/g, albums[i].image_num)
-                            }
-
-                            $('#albums-container').append(html);
-                        }
-                    });
-                });
-            }
 
             const infinite = utils.infiniteScroll('#photos-scroll', {
                 url: '{{ route('user.images') }}',
@@ -194,16 +169,62 @@
                 }
             });
 
-            const setOrderBy = function (sort) {
+            const resetImages = (params) => {
                 $photos.addClass('reset').html('').justifiedGallery('destroy');
-                infinite.refresh({page: 1, order: sort});
+                infinite.refresh(params);
+            }
+
+            const getAlbums = () => {
+                drawer.toggle('我的相册', '<div id="albums-container" class="flex flex-col justify-center items-center w-full p-3 space-y-2"></div>', function () {
+                    let $albums = $('#albums-container');
+                    utils.infiniteScroll('#drawer-content', {
+                        url: '{{ route('user.albums') }}',
+                        success: function (response) {
+                            if (!response.status) {
+                                return toastr.error(response.message);
+                            }
+
+                            let albums = response.data.albums.data;
+                            if (albums.length <= 0 || response.data.albums.current_page === response.data.albums.last_page) {
+                                this.finished = true;
+                            }
+
+                            let html = '';
+                            for (const i in albums) {
+                                let item = $('#albums-item').html()
+                                    .replace(/__id__/g, albums[i].id)
+                                    .replace(/__name__/g, albums[i].name)
+                                    .replace(/__image_num__/g, albums[i].image_num)
+                                if (albums[i].id === selectedAlbum) {
+                                    // 选中的相册高亮
+                                    item = item
+                                        .replace(/bg-gray-100/g, 'bg-blue-400')
+                                        .replace(/text-gray-800/g, 'text-white')
+                                }
+
+                                html += item;
+                            }
+
+                            $albums.append(html);
+                        }
+                    });
+
+                    $albums.off('click', 'a').on('click', 'a', function () {
+                        selectedAlbum = $(this).data('id');
+                        resetImages({page: 1, album_id: selectedAlbum});
+                        drawer.close();
+                    });
+                });
+            }
+
+            const setOrderBy = function (sort) {
+                resetImages({page: 1, order: sort})
                 $('#order span').text({newest: '最新', earliest: '最早', utmost: '最大', least: '最小'}[sort]);
             };
 
             $('#search').keydown(function (e) {
                 if (e.keyCode === 13) {
-                    $photos.addClass('reset').html('').justifiedGallery('destroy');
-                    infinite.refresh({page: 1, keyword: $(this).val()});
+                    resetImages({page: 1, keyword: $(this).val()});
                 }
             });
 
