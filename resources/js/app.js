@@ -44,11 +44,9 @@ window.utils = {
                     $btn.text(loadingText).addClass('disabled')
                 },
                 success(response) {
-                    if (typeof options.success === 'function') {
-                        options.success.call(props, response);
-                    }
+                    options.success && options.success.call(props, response);
                 },
-                complete() {
+                complete(xhr, status) {
                     props.loading = false;
                     if (props.finished) {
                         // no more
@@ -59,6 +57,7 @@ window.utils = {
                     if (opts.data.page !== undefined) {
                         opts.data.page++;
                     }
+                    options.complete && options.complete.call(props, xhr, status)
                 },
                 error() {
                     $btn.text(errorText).addClass('disabled')

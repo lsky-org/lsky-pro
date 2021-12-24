@@ -144,6 +144,8 @@
                     }
 
                     $photos.append(html);
+                },
+                complete: function () {
                     if ($photos.html() !== '') {
                         $photos.justifiedGallery('norewind')
                         viewer.update();

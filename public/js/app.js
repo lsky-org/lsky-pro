@@ -3435,11 +3435,9 @@ window.utils = {
           $btn.text(loadingText).addClass('disabled');
         },
         success: function success(response) {
-          if (typeof options.success === 'function') {
-            options.success.call(props, response);
-          }
+          options.success && options.success.call(props, response);
         },
-        complete: function complete() {
+        complete: function complete(xhr, status) {
           props.loading = false;
 
           if (props.finished) {
@@ -3452,6 +3450,8 @@ window.utils = {
           if (opts.data.page !== undefined) {
             opts.data.page++;
           }
+
+          options.complete && options.complete.call(props, xhr, status);
         },
         error: function error() {
           $btn.text(errorText).addClass('disabled');
@@ -3514,9 +3514,27 @@ window.utils = {
 
 window._ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
 window.$ = window.jQuery = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+window.toastr = __webpack_require__(/*! toastr */ "./node_modules/toastr/toastr.js");
+toastr.options = {
+  "closeButton": true,
+  "debug": false,
+  "newestOnTop": true,
+  "progressBar": true,
+  "positionClass": "toast-bottom-right",
+  "preventDuplicates": false
+};
 window.$.ajaxSetup({
+  dataType: 'json',
   headers: {
     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+  },
+  statusCode: {
+    401: function _() {
+      toastr.warning('状态失效，请先登录账号');
+    },
+    500: function _() {
+      toastr.warning('服务出现异常，请稍后再试');
+    }
   }
 });
 /**
@@ -3540,16 +3558,6 @@ window.$.ajaxSetup({
 //     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
 //     forceTLS: true
 // });
-
-window.toastr = __webpack_require__(/*! toastr */ "./node_modules/toastr/toastr.js");
-toastr.options = {
-  "closeButton": true,
-  "debug": false,
-  "newestOnTop": true,
-  "progressBar": true,
-  "positionClass": "toast-bottom-right",
-  "preventDuplicates": false
-};
 
 /***/ }),
 

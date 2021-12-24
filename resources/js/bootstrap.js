@@ -1,8 +1,28 @@
 window._ = require('lodash');
 window.$ = window.jQuery = require('jquery');
+window.toastr = require('toastr');
+
+toastr.options = {
+    "closeButton": true,
+    "debug": false,
+    "newestOnTop": true,
+    "progressBar": true,
+    "positionClass": "toast-bottom-right",
+    "preventDuplicates": false,
+}
+
 window.$.ajaxSetup({
+    dataType: 'json',
     headers: {
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+    },
+    statusCode: {
+        401: () => {
+            toastr.warning('状态失效，请先登录账号');
+        },
+        500: () => {
+            toastr.warning('服务出现异常，请稍后再试');
+        }
     }
 })
 
@@ -32,13 +52,3 @@ window.$.ajaxSetup({
 //     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
 //     forceTLS: true
 // });
-
-window.toastr = require('toastr');
-toastr.options = {
-    "closeButton": true,
-    "debug": false,
-    "newestOnTop": true,
-    "progressBar": true,
-    "positionClass": "toast-bottom-right",
-    "preventDuplicates": false,
-}
