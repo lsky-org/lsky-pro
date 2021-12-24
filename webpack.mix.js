@@ -34,3 +34,6 @@ mix.copy('node_modules/viewerjs/dist/viewer.min.js', 'public/js/viewer-js')
 
 // clipboard
 mix.copy('node_modules/clipboard/dist/clipboard.min.js', 'public/js/clipboard')
+
+// dragselect
+mix.copy('node_modules/dragselect/dist/ds.min.js', 'public/js/dragselect')

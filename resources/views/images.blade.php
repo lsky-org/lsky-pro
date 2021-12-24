@@ -49,7 +49,7 @@
     </div>
     <div class="relative inset-0 h-full">
         <!-- content -->
-        <div id="photos-scroll" class="absolute inset-0 overflow-y-scroll">
+        <div id="photos-scroll" class="absolute inset-0 overflow-y-scroll select-none">
             <div id="photos-grid"></div>
         </div>
         <!-- right drawer -->
@@ -64,7 +64,7 @@
     </div>
 
     <script type="text/html" id="photos-item">
-        <a href="javascript:void(0)" class="relative cursor-default rounded outline outline-2 outline-offset-2 outline-transparent">
+        <a href="javascript:void(0)" class="photos-item relative cursor-default rounded outline outline-2 outline-offset-2 outline-transparent">
             <div class="photo-select absolute z-[1] top-1 right-1 rounded-full overflow-hidden text-white text-lg bg-white border border-gray-500 cursor-pointer hidden group-hover:block">
                 <i class="fas fa-check-circle block"></i>
             </div>
@@ -88,6 +88,7 @@
     @push('scripts')
         <script src="{{ asset('js/justified-gallery/jquery.justifiedGallery.min.js') }}"></script>
         <script src="{{ asset('js/viewer-js/viewer.min.js') }}"></script>
+        <script src="{{ asset('js/dragselect/ds.min.js') }}"></script>
         <script>
             let gridConfigs = {
                 rowHeight: 180,
@@ -151,6 +152,7 @@
                     }
 
                     $photos.append(html);
+                    ds.setSelectables($photos.find('.photos-item'));
                 },
                 complete: function () {
                     if ($photos.html() !== '') {
@@ -227,16 +229,29 @@
                     resetImages({page: 1, keyword: $(this).val()});
                 }
             });
-
-            $photos.on('click', '.photo-mask', function () {
-                $(this).siblings('img').trigger('click');
+        </script>
+        <script>
+            const ds = new DragSelect({
+                area: document.getElementById('photos-grid'),
+                keyboardDrag: false,
+                // multiSelectMode: true,
+                // multiSelectToggling: false,
             });
 
-            $photos.on('click', 'a .photo-select', function (e) {
-                e.stopPropagation();
-                $(this).closest('a').toggleClass('selected');
-            }).on('mousedown', 'a', function () {
-            }).on('mouseup', 'a', function () {
+            // 预期使用组件内部 api 实现单击选择图标进行选择/反选，但是 click 事件总在组件的 mousedown 事件后触发。
+            // 并且组件没有提供跳过某个元素选择的 api，只能通过组件选框，然后自定义 class 来判断选中项目。
+            // see https://github.com/ThibaultJanBeyer/DragSelect/issues/113#issuecomment-1000904432
+            // TODO 可能有更优的解决方案？
+            ds.subscribe('dragstart', ({ event }) => {
+                if ($(event.target).hasClass('justified-gallery')) {
+                    $photos.find('a.photos-item').removeClass('selected');
+                }
+            });
+            ds.subscribe('dragmove', ({ items, event}) => {
+                $(items).addClass('selected');
+            });
+            $photos.on('click', '.photo-select', function (e) {
+                $(this).closest('a.photos-item').toggleClass('selected');
             });
         </script>
     @endpush
