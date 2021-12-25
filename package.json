@@ -20,7 +20,7 @@
         "blueimp-load-image": "^5.16.0",
         "clipboard": "^2.0.8",
         "deepmerge": "^4.2.2",
-        "dragselect": "^2.2.2",
+        "dragselect": "^2.3.0",
         "jquery": "^3.6.0",
         "jquery.photoswipe": "^1.1.1",
         "justifiedGallery": "^3.8.1",

@@ -272,19 +272,19 @@ progress::-webkit-progress-value {
   color: grey;
 }
 #photos-grid a:hover,
-#photos-grid a.selected {
+#photos-grid a.ds-selected {
   outline-color: #3b82f6;
 }
-#photos-grid a:hover .photo-select,
-#photos-grid a.selected .photo-select {
+#photos-grid a:hover .photo-selector,
+#photos-grid a.ds-selected .photo-selector {
   display: block;
 }
-#photos-grid a:hover.selected .photo-select,
-#photos-grid a.selected.selected .photo-select {
+#photos-grid a:hover.ds-selected .photo-selector,
+#photos-grid a.ds-selected.ds-selected .photo-selector {
   border-color: white;
 }
-#photos-grid a:hover.selected .photo-select > i,
-#photos-grid a.selected.selected .photo-select > i {
+#photos-grid a:hover.ds-selected .photo-selector > i,
+#photos-grid a.ds-selected.ds-selected .photo-selector > i {
   color: #0061ff;
 }
 
