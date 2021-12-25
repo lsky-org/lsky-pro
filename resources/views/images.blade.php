@@ -63,7 +63,7 @@
         </div>
     </div>
 
-    <script type="text/html" id="photos-item">
+    <script type="text/html" id="photos-item-tpl">
         <a href="javascript:void(0)" class="photos-item relative cursor-default rounded outline outline-2 outline-offset-2 outline-transparent">
             <div class="photo-selector absolute z-[1] top-1 right-1 rounded-full overflow-hidden text-white text-lg bg-white border border-gray-500 cursor-pointer hidden group-hover:block">
                 <i class="fas fa-check-circle block"></i>
@@ -78,10 +78,21 @@
         </a>
     </script>
 
-    <script type="text/html" id="albums-item">
-        <a href="javascript:void(0)" data-id="__id__" class="flex justify-between items-center px-2 py-1 rounded w-full bg-gray-100 text-gray-800 hover:bg-blue-300 hover:text-white">
+    <script type="text/html" id="albums-container-tpl">
+        <div id="albums-container" class="flex flex-col justify-center items-center w-full p-3 space-y-2">
+            <div id="album-add" class="flex flex-col space-y-2 w-full hidden">
+                <input type="text" class="w-full rounded px-2.5 py-1.5 text-sm" placeholder="请输入标题">
+                <textarea class="resize-y rounded-md text-sm" placeholder="请输入简介"></textarea>
+                <a href="javascript:void(0)" class="w-full py-1 px-2 bg-indigo-500 text-white text-sm text-center tracking-wider font-semibold rounded-md">创建相册</a>
+            </div>
+        </div>
+    </script>
+
+    <script type="text/html" id="albums-item-tpl">
+        <a href="javascript:void(0)" data-id="__id__" title="__intro__" class="flex justify-between items-center group px-2 h-7 rounded w-full bg-gray-100 text-gray-800 hover:bg-blue-300 hover:text-white">
             <span class="text-sm truncate w-[80%]">__name__</span>
-            <span class="text-xs">__image_num__</span>
+            <span class="hidden group-hover:block delete"><i class="fas fa-trash-alt text-xs text-red-400"></i></span>
+            <span class="group-hover:hidden text-xs">__image_num__</span>
         </a>
     </script>
 
@@ -142,7 +153,7 @@
 
                     let html = '';
                     for (const i in images) {
-                        html += $('#photos-item').html()
+                        html += $('#photos-item-tpl').html()
                             .replace(/__name__/g, images[i].filename)
                             .replace(/__human_date__/g, images[i].human_date)
                             .replace(/__date__/g, images[i].date)
@@ -177,7 +188,9 @@
             }
 
             const getAlbums = () => {
-                drawer.toggle('我的相册', '<div id="albums-container" class="flex flex-col justify-center items-center w-full p-3 space-y-2"></div>', function () {
+                let title = '我的相册 <i class="cursor-pointer fas fa-plus text-blue-500" onclick="$(\'#album-add\').toggleClass(\'hidden\')"></i>';
+                let content = $('#albums-container-tpl').html();
+                drawer.toggle(title, content, function () {
                     let $albums = $('#albums-container');
                     utils.infiniteScroll('#drawer-content', {
                         url: '{{ route('user.albums') }}',
@@ -193,9 +206,10 @@
 
                             let html = '';
                             for (const i in albums) {
-                                let item = $('#albums-item').html()
+                                let item = $('#albums-item-tpl').html()
                                     .replace(/__id__/g, albums[i].id)
                                     .replace(/__name__/g, albums[i].name)
+                                    .replace(/__intro__/g, albums[i].intro)
                                     .replace(/__image_num__/g, albums[i].image_num)
                                 if (albums[i].id === selectedAlbum) {
                                     // 选中的相册高亮
@@ -211,10 +225,25 @@
                         }
                     });
 
-                    $albums.off('click', 'a').on('click', 'a', function () {
-                        selectedAlbum = $(this).data('id');
+                    $albums.off('click', '>a').on('click', '>a', function () {
+                        // 如果当前已经为选中状态则清除
+                        if (selectedAlbum === $(this).data('id')) {
+                            selectedAlbum = 0;
+                        } else {
+                            selectedAlbum = $(this).data('id');
+                        }
                         resetImages({page: 1, album_id: selectedAlbum});
                         drawer.close();
+                    });
+
+                    $albums.off('click', '.delete').on('click', '.delete', function (e) {
+                        // TODO
+                        console.log('remove')
+                    });
+
+                    $albums.off('click', '#album-add a').on('click', '#album-add a', function (e) {
+                        // TODO
+                       console.log('create')
                     });
                 });
             }
