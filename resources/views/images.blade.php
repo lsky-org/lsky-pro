@@ -80,9 +80,10 @@
 
     <script type="text/html" id="albums-container-tpl">
         <div id="albums-container" class="flex flex-col justify-center items-center w-full p-3 space-y-2">
-            <div id="album-add" class="flex flex-col space-y-2 w-full hidden">
-                <input type="text" class="w-full rounded px-2.5 py-1.5 text-sm" placeholder="请输入标题">
-                <textarea class="resize-y rounded-md text-sm" placeholder="请输入简介"></textarea>
+            <div id="album-add" class="flex flex-col space-y-2 w-full hidden border rounded p-2">
+                <p class="error-message text-white p-2 text-sm bg-red-500 rounded hidden"></p>
+                <input type="text" class="w-full rounded px-2.5 py-1.5 text-sm border-0 bg-gray-200" placeholder="请输入标题">
+                <textarea class="resize-y rounded-md text-sm border-0 bg-gray-200" placeholder="请输入简介"></textarea>
                 <a href="javascript:void(0)" class="w-full py-1 px-2 bg-indigo-500 text-white text-sm text-center tracking-wider font-semibold rounded-md">创建相册</a>
             </div>
         </div>
@@ -139,7 +140,7 @@
 
             $photos.justifiedGallery(gridConfigs);
 
-            const infinite = utils.infiniteScroll('#photos-scroll', {
+            const imagesInfinite = utils.infiniteScroll('#photos-scroll', {
                 url: '{{ route('user.images') }}',
                 success: function (response) {
                     if (!response.status) {
@@ -184,7 +185,7 @@
 
             const resetImages = (params) => {
                 $photos.addClass('reset').html('').justifiedGallery('destroy');
-                infinite.refresh(params);
+                imagesInfinite.refresh(params);
             }
 
             const getAlbums = () => {
@@ -192,7 +193,8 @@
                 let content = $('#albums-container-tpl').html();
                 drawer.toggle(title, content, function () {
                     let $albums = $('#albums-container');
-                    utils.infiniteScroll('#drawer-content', {
+                    const CREATE_ID = '#album-add';
+                    const albumsInfinite = utils.infiniteScroll('#drawer-content', {
                         url: '{{ route('user.albums') }}',
                         success: function (response) {
                             if (!response.status) {
@@ -236,14 +238,39 @@
                         drawer.close();
                     });
 
+                    const resetAlbums = () => {
+                        $albums.find('>a').remove();
+                        $albums.find(CREATE_ID).addClass('hidden');
+                        albumsInfinite.refresh({page: 1});
+                    }
+
                     $albums.off('click', '.delete').on('click', '.delete', function (e) {
+                        e.stopPropagation();
                         // TODO
                         console.log('remove')
                     });
 
-                    $albums.off('click', '#album-add a').on('click', '#album-add a', function (e) {
-                        // TODO
-                       console.log('create')
+                    $albums.off('click', CREATE_ID + ' a').on('click', CREATE_ID + ' a', function (e) {
+                        let $name = $(this).siblings('input');
+                        let $intro = $(this).siblings('textarea');
+                        $.ajax({
+                            url: '{{ route('user.album.create') }}',
+                            type: 'post',
+                            data: {
+                                name: $name.val(),
+                                intro: $intro.val(),
+                            },
+                            success: response => {
+                                $name.val('');
+                                $intro.val('');
+                                let $errorMessage = $albums.find(CREATE_ID + ' .error-message').html('').hide();
+                                if (response.status) {
+                                    resetAlbums()
+                                } else {
+                                    $errorMessage.html('<i class="fas fa-exclamation-circle"></i> ' + response.message).show();
+                                }
+                            }
+                        })
                     });
                 });
             }
