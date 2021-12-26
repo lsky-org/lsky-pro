@@ -80,21 +80,37 @@
 
     <script type="text/html" id="albums-container-tpl">
         <div id="albums-container" class="flex flex-col justify-center items-center w-full p-3 space-y-2">
-            <div id="album-add" class="flex flex-col space-y-2 w-full hidden border rounded p-2">
-                <p class="error-message text-white p-2 text-sm bg-red-500 rounded hidden"></p>
-                <input type="text" class="w-full rounded px-2.5 py-1.5 text-sm border-0 bg-gray-200" placeholder="请输入标题">
-                <textarea class="resize-y rounded-md text-sm border-0 bg-gray-200" placeholder="请输入简介"></textarea>
+            <div id="album-add" class="flex flex-col w-full hidden border rounded p-2">
+                <p class="error-message text-white p-2 mb-2 text-sm bg-red-500 rounded hidden"></p>
+                <form class="w-full space-y-2" action="{{ route('user.album.create') }}">
+                    <input type="text" class="w-full rounded px-2.5 py-1.5 text-sm border-0 bg-gray-200" name="name" placeholder="请输入名称">
+                    <textarea class="w-full resize-y rounded-md text-sm border-0 bg-gray-200" name="intro" placeholder="请输入简介"></textarea>
+                </form>
                 <a href="javascript:void(0)" class="w-full py-1 px-2 bg-indigo-500 text-white text-sm text-center tracking-wider font-semibold rounded-md">创建相册</a>
             </div>
         </div>
     </script>
 
     <script type="text/html" id="albums-item-tpl">
-        <a href="javascript:void(0)" data-id="__id__" title="__intro__" class="flex justify-between items-center group px-2 h-7 rounded w-full bg-gray-100 text-gray-800 hover:bg-blue-300 hover:text-white">
+        <a href="javascript:void(0)" data-id="__id__" title="__intro__" class="albums-item flex justify-between items-center group px-2 h-7 rounded w-full bg-gray-100 text-gray-800 hover:bg-blue-300 hover:text-white">
             <span class="text-sm truncate w-[80%]">__name__</span>
-            <span class="hidden group-hover:block delete"><i class="fas fa-trash-alt text-xs text-red-400"></i></span>
+            <div class="flex items-center justify-center space-x-1 hidden group-hover:block">
+                <span class="update"><i class="fas fa-edit text-xs"></i></span>
+                <span class="delete"><i class="fas fa-trash-alt text-xs text-red-400"></i></span>
+            </div>
             <span class="group-hover:hidden text-xs">__image_num__</span>
         </a>
+    </script>
+
+    <script type="text/html" id="album-update-tpl">
+        <div id="album-edit" data-id="__id__" class="flex flex-col w-full border rounded p-2">
+            <p class="error-message text-white p-2 mb-2 text-sm bg-red-500 rounded hidden"></p>
+            <form class="w-full space-y-2" action="{{ route('user.album.create') }}">
+                <input type="text" class="w-full rounded px-2.5 py-1.5 text-sm border-0 bg-gray-200" placeholder="请输入名称" value="__name__">
+                <textarea class="w-full resize-y rounded-md text-sm border-0 bg-gray-200" placeholder="请输入简介">__intro__</textarea>
+            </form>
+            <a href="javascript:void(0)" class="w-full py-1 px-2 bg-indigo-500 text-white text-sm text-center tracking-wider font-semibold rounded-md">确认修改</a>
+        </div>
     </script>
 
     @push('scripts')
@@ -194,6 +210,7 @@
                 drawer.toggle(title, content, function () {
                     let $albums = $('#albums-container');
                     const CREATE_ID = '#album-add';
+                    const UPDATE_ID = '#album-edit';
                     const albumsInfinite = utils.infiniteScroll('#drawer-content', {
                         url: '{{ route('user.albums') }}',
                         success: function (response) {
@@ -241,8 +258,23 @@
                     const resetAlbums = () => {
                         $albums.find('>a').remove();
                         $albums.find(CREATE_ID).addClass('hidden');
+                        $albums.find(UPDATE_ID).remove();
                         albumsInfinite.refresh({page: 1});
                     }
+
+                    $albums.off('click', '.update').on('click', '.update', function (e) {
+                        e.stopPropagation();
+                        let selectedId = $albums.find(UPDATE_ID).data('id');
+                        let $item = $(this).closest('a.albums-item');
+                        $albums.find(UPDATE_ID).remove();
+                        if (selectedId !== $item.data('id')) {
+                            $item.after($('#album-update-tpl').html()
+                                .replace(/__id__/g, $item.data('id'))
+                                .replace(/__name__/g, $item.find('>span').text())
+                                .replace(/__intro__/g, $item.attr('title'))
+                            );
+                        }
+                    });
 
                     $albums.off('click', '.delete').on('click', '.delete', function (e) {
                         e.stopPropagation();
@@ -250,27 +282,28 @@
                         console.log('remove')
                     });
 
+                    // confirm create
                     $albums.off('click', CREATE_ID + ' a').on('click', CREATE_ID + ' a', function (e) {
-                        let $name = $(this).siblings('input');
-                        let $intro = $(this).siblings('textarea');
+                        let $form = $(this).siblings('form');
                         $.ajax({
-                            url: '{{ route('user.album.create') }}',
+                            url: $form.attr('action'),
                             type: 'post',
-                            data: {
-                                name: $name.val(),
-                                intro: $intro.val(),
-                            },
+                            data: $form.serialize(),
                             success: response => {
-                                $name.val('');
-                                $intro.val('');
                                 let $errorMessage = $albums.find(CREATE_ID + ' .error-message').html('').hide();
                                 if (response.status) {
+                                    $form.get(0).reset();
                                     resetAlbums()
                                 } else {
                                     $errorMessage.html('<i class="fas fa-exclamation-circle"></i> ' + response.message).show();
                                 }
                             }
                         })
+                    });
+
+                    // confirm update
+                    $albums.off('click', UPDATE_ID + ' a').on('click', UPDATE_ID + ' a', function (e) {
+                        console.log(111)
                     });
                 });
             }
