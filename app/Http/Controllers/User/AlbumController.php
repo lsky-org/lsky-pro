@@ -32,4 +32,16 @@ class AlbumController extends Controller
         }
         return $this->error('创建失败');
     }
+
+    public function update(AlbumRequest $request): Response
+    {
+        /** @var User $user */
+        $user = Auth::user();
+        $album = $user->albums()->find($request->route('id'));
+        if (is_null($album)) {
+            return $this->error('不存在的相册');
+        }
+        $album->update(array_filter($request->validated()));
+        return $this->success('修改成功');
+    }
 }

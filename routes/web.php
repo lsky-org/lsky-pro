@@ -27,6 +27,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('images', [ImageController::class, 'images'])->name('user.images');
         Route::get('albums', [AlbumController::class, 'albums'])->name('user.albums');
         Route::post('albums', [AlbumController::class, 'create'])->name('user.album.create');
+        Route::put('albums/{id}', [AlbumController::class, 'update'])->name('user.album.update');
     });
 });
 
