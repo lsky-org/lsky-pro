@@ -285,18 +285,13 @@
                     // confirm create
                     $albums.off('click', CREATE_ID + ' a').on('click', CREATE_ID + ' a', function (e) {
                         let $form = $(this).siblings('form');
-                        $.ajax({
-                            url: $form.attr('action'),
-                            type: 'post',
-                            data: $form.serialize(),
-                            success: response => {
-                                let $errorMessage = $albums.find(CREATE_ID + ' .error-message').html('').hide();
-                                if (response.status) {
-                                    $form.get(0).reset();
-                                    resetAlbums()
-                                } else {
-                                    $errorMessage.html('<i class="fas fa-exclamation-circle"></i> ' + response.message).show();
-                                }
+                        axios.post($form.attr('action'), $form.serialize()).then(response => {
+                            let $errorMessage = $albums.find(CREATE_ID + ' .error-message').html('').hide();
+                            if (response.status) {
+                                $form.get(0).reset();
+                                resetAlbums()
+                            } else {
+                                $errorMessage.html('<i class="fas fa-exclamation-circle"></i> ' + response.message).show();
                             }
                         })
                     });

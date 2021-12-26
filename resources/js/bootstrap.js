@@ -11,30 +11,33 @@ toastr.options = {
     "preventDuplicates": false,
 }
 
-window.$.ajaxSetup({
-    dataType: 'json',
-    headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-    },
-    statusCode: {
-        401: () => {
-            toastr.warning('状态失效，请先登录账号');
-        },
-        500: () => {
-            toastr.warning('服务出现异常，请稍后再试');
-        }
-    }
-})
-
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
  * to our Laravel back-end. This library automatically handles sending the
  * CSRF token as a header based on the value of the "XSRF" token cookie.
  */
 
-// window.axios = require('axios');
+window.axios = require('axios');
 
-// window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+
+axios.interceptors.request.use(function (config) {
+    return config;
+}, function (error) {
+    return Promise.reject(error);
+});
+
+axios.interceptors.response.use(function (response) {
+    return response;
+}, function (error) {
+    if (401 === error.response.status) {
+        toastr.warning('状态失效，请先登录账号');
+    }
+    if (500 === error.response.status) {
+        toastr.warning('服务出现异常，请稍后再试');
+    }
+    return Promise.reject(error);
+});
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening

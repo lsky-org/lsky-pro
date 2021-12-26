@@ -44,9 +44,9 @@ window.utils = {
                     $btn.text(loadingText).addClass('disabled')
                 },
                 success(response) {
-                    options.success && options.success.call(props, response);
+                    options.success && options.success.call(props, response.data);
                 },
-                complete(xhr, status) {
+                complete(data) {
                     props.loading = false;
                     if (props.finished) {
                         // no more
@@ -57,9 +57,10 @@ window.utils = {
                     if (opts.data.page !== undefined) {
                         opts.data.page++;
                     }
-                    options.complete && options.complete.call(props, xhr, status)
+                    options.complete && options.complete.call(props, data)
                 },
-                error() {
+                error(error) {
+                    // response = error.response
                     $btn.text(errorText).addClass('disabled')
                     setTimeout(() => $btn.text(errorText).removeClass('disabled'), 3000)
                 }
@@ -75,7 +76,9 @@ window.utils = {
                 if (params) {
                     opts.data = $.extend(opts.data, params)
                 }
-                $.ajax(opts);
+
+                opts.beforeSend();
+                axios.get(opts.url, {params: opts.data}).then(opts.success).catch(opts.error).finally(opts.complete);
             };
 
             // 首次加载
