@@ -5466,6 +5466,13 @@ window.utils = {
       return v.toString(16);
     });
   },
+  isMobile: function isMobile() {
+    if (navigator.userAgent.match(/Android/i) || navigator.userAgent.match(/webOS/i) || navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/iPad/i) || navigator.userAgent.match(/iPod/i) || navigator.userAgent.match(/BlackBerry/i) || navigator.userAgent.match(/Windows Phone/i)) {
+      return true;
+    }
+
+    return false;
+  },
   infiniteScroll: function infiniteScroll(selector, options) {
     if ($(selector).length > 0) {
       var loadingText = options.loadingText || '加载中...';

@@ -21,6 +21,19 @@ window.utils = {
             return v.toString(16);
         });
     },
+    isMobile() {
+        if (navigator.userAgent.match(/Android/i)
+            || navigator.userAgent.match(/webOS/i)
+            || navigator.userAgent.match(/iPhone/i)
+            || navigator.userAgent.match(/iPad/i)
+            || navigator.userAgent.match(/iPod/i)
+            || navigator.userAgent.match(/BlackBerry/i)
+            || navigator.userAgent.match(/Windows Phone/i)
+        ) {
+            return true;
+        }
+        return false;
+    },
     infiniteScroll(selector, options) {
         if ($(selector).length > 0) {
             let loadingText = options.loadingText || '加载中...';
@@ -67,7 +80,7 @@ window.utils = {
             };
 
             let load = (params, force) => {
-                if (! force) {
+                if (!force) {
                     if (props.loading || props.finished) return;
                 }
                 if (typeof options.data === 'function') {
@@ -85,8 +98,8 @@ window.utils = {
             load();
             $(selector).off('click').on('click', 'span:not(.disabled)', () => load());
 
-            $(selector).scroll(function() {
-                if(this.scrollTop + $(selector).height() >= this.scrollHeight - offset) {
+            $(selector).scroll(function () {
+                if (this.scrollTop + $(selector).height() >= this.scrollHeight - offset) {
                     load();
                 }
             });

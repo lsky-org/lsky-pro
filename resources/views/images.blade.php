@@ -47,7 +47,7 @@
             </x-dropdown>
         </div>
     </div>
-    <div class="relative inset-0 h-full">
+    <div class="relative inset-0 h-full overflow-hidden">
         <!-- content -->
         <div id="photos-scroll" class="absolute inset-0 overflow-y-scroll select-none">
             <div id="photos-grid"></div>
@@ -65,7 +65,7 @@
 
     <script type="text/html" id="photos-item-tpl">
         <a href="javascript:void(0)" class="photos-item relative cursor-default rounded outline outline-2 outline-offset-2 outline-transparent">
-            <div class="photo-selector absolute z-[1] top-1 right-1 rounded-full overflow-hidden text-white text-lg bg-white border border-gray-500 cursor-pointer hidden group-hover:block">
+            <div class="photo-selector absolute z-[1] top-1 right-1 rounded-full overflow-hidden text-white text-lg bg-white border border-gray-500 cursor-pointer sm:hidden group-hover:block">
                 <i class="fas fa-check-circle block"></i>
             </div>
             <div class="photo-mask absolute left-0 right-0 bottom-0 h-20 z-[1] bg-gradient-to-t from-black" onclick="$(this).siblings('img').trigger('click')">
@@ -333,6 +333,9 @@
             });
 
             ds.subscribe('predragstart', ({ event }) => {
+                if (utils.isMobile()) {
+                    ds.stop();
+                }
                 if (event.target.id !== 'photos-grid') {
                     ds.break();
                 }
