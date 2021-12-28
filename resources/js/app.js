@@ -73,6 +73,7 @@ window.utils = {
                     options.complete && options.complete.call(props, data)
                 },
                 error(error) {
+                    console.log(error)
                     // response = error.response
                     $btn.text(errorText).addClass('disabled')
                     setTimeout(() => $btn.text(errorText).removeClass('disabled'), 3000)

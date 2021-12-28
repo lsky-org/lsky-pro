@@ -182,7 +182,9 @@
                     }
 
                     $photos.append(html);
-                    ds.setSelectables($photos.find('.photos-item'));
+                    if (ds) {
+                        ds.setSelectables($photos.find('.photos-item'));
+                    }
                 },
                 complete: function () {
                     if ($photos.html() !== '') {
