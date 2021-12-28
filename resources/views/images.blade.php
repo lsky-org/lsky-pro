@@ -329,21 +329,25 @@
             });
         </script>
         <script>
-            const ds = new DragSelect({
-                area: $photos.get(0),
-                keyboardDrag: false,
-            });
+            let ds;
+            if (! utils.isMobile()) {
+                ds = new DragSelect({
+                    area: $photos.get(0),
+                    keyboardDrag: false,
+                });
+                ds.subscribe('predragstart', ({ event }) => {
+                    if (event.target.id !== 'photos-grid') {
+                        ds.break();
+                    }
+                });
+            }
 
-            ds.subscribe('predragstart', ({ event }) => {
-                if (utils.isMobile()) {
-                    ds.stop();
-                }
-                if (event.target.id !== 'photos-grid') {
-                    ds.break();
-                }
-            });
             $photos.on('click', '.photo-selector', function () {
-                ds.toggleSelection($(this).closest('a'));
+                if (ds) {
+                    ds.toggleSelection($(this).closest('a'));
+                } else {
+                    $(this).closest('a').toggleClass('ds-selected')
+                }
             })
         </script>
     @endpush
