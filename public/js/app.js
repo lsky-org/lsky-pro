@@ -33760,6 +33760,19 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/css/context-js.less":
+/*!***************************************!*\
+  !*** ./resources/css/context-js.less ***!
+  \***************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ }),
+
 /***/ "./resources/css/app.css":
 /*!*******************************!*\
   !*** ./resources/css/app.css ***!
@@ -34590,6 +34603,7 @@ module.exports = JSON.parse('{"name":"axios","version":"0.21.4","description":"P
 /******/ 		var installedChunks = {
 /******/ 			"/js/app": 0,
 /******/ 			"css/app": 0,
+/******/ 			"css/context-js/context-js": 0,
 /******/ 			"css/common": 0,
 /******/ 			"css/fontawesome": 0
 /******/ 		};
@@ -34641,10 +34655,11 @@ module.exports = JSON.parse('{"name":"axios","version":"0.21.4","description":"P
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module depends on other loaded chunks and execution need to be delayed
-/******/ 	__webpack_require__.O(undefined, ["css/app","css/common","css/fontawesome"], () => (__webpack_require__("./resources/js/app.js")))
-/******/ 	__webpack_require__.O(undefined, ["css/app","css/common","css/fontawesome"], () => (__webpack_require__("./resources/css/fontawesome.less")))
-/******/ 	__webpack_require__.O(undefined, ["css/app","css/common","css/fontawesome"], () => (__webpack_require__("./resources/css/common.less")))
-/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, ["css/app","css/common","css/fontawesome"], () => (__webpack_require__("./resources/css/app.css")))
+/******/ 	__webpack_require__.O(undefined, ["css/app","css/context-js/context-js","css/common","css/fontawesome"], () => (__webpack_require__("./resources/js/app.js")))
+/******/ 	__webpack_require__.O(undefined, ["css/app","css/context-js/context-js","css/common","css/fontawesome"], () => (__webpack_require__("./resources/css/fontawesome.less")))
+/******/ 	__webpack_require__.O(undefined, ["css/app","css/context-js/context-js","css/common","css/fontawesome"], () => (__webpack_require__("./resources/css/common.less")))
+/******/ 	__webpack_require__.O(undefined, ["css/app","css/context-js/context-js","css/common","css/fontawesome"], () => (__webpack_require__("./resources/css/context-js.less")))
+/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, ["css/app","css/context-js/context-js","css/common","css/fontawesome"], () => (__webpack_require__("./resources/css/app.css")))
 /******/ 	__webpack_exports__ = __webpack_require__.O(__webpack_exports__);
 /******/ 	
 /******/ })()

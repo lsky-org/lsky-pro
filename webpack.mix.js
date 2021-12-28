@@ -37,3 +37,7 @@ mix.copy('node_modules/clipboard/dist/clipboard.min.js', 'public/js/clipboard')
 
 // dragselect
 mix.copy('node_modules/dragselect/dist/ds.min.js', 'public/js/dragselect')
+
+// context-menu.min.js
+mix.less('resources/css/context-js.less', 'public/css/context-js')
+mix.copy('resources/js/context-js.js', 'public/js/context-js')

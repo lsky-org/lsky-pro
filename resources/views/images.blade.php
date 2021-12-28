@@ -3,6 +3,7 @@
 @push('styles')
     <link rel="stylesheet" href="{{ asset('css/justified-gallery/justifiedGallery.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/viewer-js/viewer.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/context-js/context-js.css') }}">
 @endpush
 
 <x-app-layout>
@@ -119,6 +120,7 @@
         <script src="{{ asset('js/justified-gallery/jquery.justifiedGallery.min.js') }}"></script>
         <script src="{{ asset('js/viewer-js/viewer.min.js') }}"></script>
         <script src="{{ asset('js/dragselect/ds.min.js') }}"></script>
+        <script src="{{ asset('js/context-js/context-js.js') }}"></script>
         <script>
             let gridConfigs = {
                 rowHeight: 180,
@@ -351,6 +353,50 @@
                     $(this).closest('a').toggleClass('ds-selected')
                 }
             })
+        </script>
+        <script>
+            context.init({
+                fadeSpeed: 100,
+                filter: function ($obj) {},
+                above: 'auto',
+                preventDoubleContext: true,
+                compress: false
+            });
+            const methods = {
+                view: {text: '查看', action: e => {}},
+                refresh: {text: '刷新', action: e => {}},
+                open: {text: '新窗口打开', action: e => {}},
+                links: {
+                    text: '复制链接',
+                    subMenu: [
+                        {text: 'Url', action: e => {}},
+                        {text: 'Html', action: e => {}},
+                        {text: 'BBCode', action: e => {}},
+                        {text: 'Markdown', action: e => {}},
+                        {text: 'Markdown with link', action: e => {}},
+                    ],
+                },
+                detail: {text: '详细信息', action: e => {}},
+                rename: {text: '重命名', action: e => {}},
+                delete: {text: '删除', action: e => {}},
+            };
+            $(document).on('contextmenu', '#photos-scroll', function(e) {
+                // 点击容器
+                context.attach('#photos-grid', [
+                    methods.refresh,
+                ]);
+                // 点击图片
+                context.attach('.photos-item', [
+                    {header: '图片操作'},
+                    methods.refresh,
+                    methods.view,
+                    methods.open,
+                    methods.links,
+                    methods.rename,
+                    {divider: true},
+                    methods.delete,
+                ]);
+            });
         </script>
     @endpush
 </x-app-layout>
