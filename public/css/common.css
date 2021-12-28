@@ -279,12 +279,9 @@ progress::-webkit-progress-value {
 #photos-grid a.ds-selected .photo-selector {
   display: block;
 }
-#photos-grid a:hover.ds-selected .photo-selector,
-#photos-grid a.ds-selected.ds-selected .photo-selector {
+#photos-grid a:hover.ds-selected .photo-selector i,
+#photos-grid a.ds-selected.ds-selected .photo-selector i {
   border-color: white;
-}
-#photos-grid a:hover.ds-selected .photo-selector > i,
-#photos-grid a.ds-selected.ds-selected .photo-selector > i {
   color: #0061ff;
 }
 
