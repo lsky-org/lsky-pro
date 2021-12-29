@@ -364,6 +364,10 @@
             });
             const methods = {
                 view: {text: '查看', action: e => {}},
+                copy: {text: '复制', action: function (e) {
+                        console.log(e)
+                    },
+                },
                 refresh: {text: '刷新', action: e => {}},
                 open: {text: '新窗口打开', action: e => {}},
                 links: {
@@ -380,23 +384,22 @@
                 rename: {text: '重命名', action: e => {}},
                 delete: {text: '删除', action: e => {}},
             };
-            $(document).on('contextmenu', '#photos-scroll', function(e) {
-                // 点击容器
-                context.attach('#photos-grid', [
-                    methods.refresh,
-                ]);
-                // 点击图片
-                context.attach('.photos-item', [
-                    {header: '图片操作'},
-                    methods.refresh,
-                    methods.view,
-                    methods.open,
-                    methods.links,
-                    methods.rename,
-                    {divider: true},
-                    methods.delete,
-                ]);
-            });
+            // 点击容器
+            context.attach('#photos-grid', [
+                methods.refresh,
+            ]);
+            // 点击图片
+            context.attach('.photos-item', [
+                {header: '图片操作'},
+                methods.refresh,
+                methods.view,
+                methods.copy,
+                methods.open,
+                methods.links,
+                methods.rename,
+                {divider: true},
+                methods.delete,
+            ]);
         </script>
     @endpush
 </x-app-layout>

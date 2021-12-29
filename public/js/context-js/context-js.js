@@ -4,9 +4,9 @@
  * MIT License
  */
 
-var context = context || (function () {
+window.context = window.context || (function () {
 
-    var options = {
+    let options = {
         fadeSpeed: 100,
         filter: function ($obj) {
             // Modify $obj, Do not return
@@ -15,6 +15,8 @@ var context = context || (function () {
         preventDoubleContext: true,
         compress: false
     };
+
+    let selection;
 
     function initialize(opts) {
 
@@ -31,7 +33,7 @@ var context = context || (function () {
             });
         }
         $(document).on('mouseenter', '.dropdown-submenu', function(){
-            var $sub = $(this).find('.dropdown-context-sub:first'),
+            let $sub = $(this).find('.dropdown-context-sub:first'),
                 subWidth = $sub.width(),
                 subLeft = $sub.offset().left,
                 collision = (subWidth+subLeft) > window.innerWidth;
@@ -47,10 +49,10 @@ var context = context || (function () {
     }
 
     function buildMenu(data, id, subMenu) {
-        var subClass = (subMenu) ? ' dropdown-context-sub' : '',
+        let subClass = (subMenu) ? ' dropdown-context-sub' : '',
             compressed = options.compress ? ' compressed-context' : '',
             $menu = $('<ul class="dropdown-menu dropdown-context' + subClass + compressed+'" id="dropdown-' + id + '"></ul>');
-        var i = 0, linkTarget = '';
+        let i = 0, linkTarget = '';
         for(i; i<data.length; i++) {
             if (typeof data[i].divider !== 'undefined') {
                 $menu.append('<li class="divider"></li>');
@@ -63,22 +65,24 @@ var context = context || (function () {
                 if (typeof data[i].target !== 'undefined') {
                     linkTarget = ' target="'+data[i].target+'"';
                 }
+                let $sub;
                 if (typeof data[i].subMenu !== 'undefined') {
                     $sub = ('<li class="dropdown-submenu"><a tabindex="-1" href="' + data[i].href + '">' + data[i].text + '</a></li>');
                 } else {
                     $sub = $('<li><a tabindex="-1" href="' + data[i].href + '"'+linkTarget+'>' + data[i].text + '</a></li>');
                 }
                 if (typeof data[i].action !== 'undefined') {
-                    var actiond = new Date(),
-                        actionID = 'event-' + actiond.getTime() * Math.floor(Math.random()*100000),
+                    let actionID = 'event-' + new Date().getTime() * Math.floor(Math.random()*100000),
                         eventAction = data[i].action;
                     $sub.find('a').attr('id', actionID);
                     $('#' + actionID).addClass('context-event');
-                    $(document).on('click', '#' + actionID, eventAction);
+                    $(document).on('click', '#' + actionID, function () {
+                        eventAction.call(this, selection);
+                    });
                 }
                 $menu.append($sub);
                 if (typeof data[i].subMenu != 'undefined') {
-                    var subMenuData = buildMenu(data[i].subMenu, id, true);
+                    let subMenuData = buildMenu(data[i].subMenu, id, true);
                     $menu.find('li:last').append(subMenuData);
                 }
             }
@@ -91,28 +95,28 @@ var context = context || (function () {
 
     function addContext(selector, data) {
 
-        var d = new Date(),
+        let d = new Date(),
             id = d.getTime(),
             $menu = buildMenu(data, id);
 
         $('body').append($menu);
 
-
         $(document).on('contextmenu', selector, function (e) {
             e.preventDefault();
             e.stopPropagation();
+            selection = e;
 
             $('.dropdown-context:not(.dropdown-context-sub)').hide();
 
-            $dd = $('#dropdown-' + id);
+            let $dd = $("#dropdown-" + id);
             if (typeof options.above == 'boolean' && options.above) {
                 $dd.addClass('dropdown-context-up').css({
                     top: e.pageY - 20 - $('#dropdown-' + id).height(),
                     left: e.pageX - 13
                 }).fadeIn(options.fadeSpeed);
-            } else if (typeof options.above == 'string' && options.above == 'auto') {
+            } else if (typeof options.above == 'string' && options.above === 'auto') {
                 $dd.removeClass('dropdown-context-up');
-                var autoH = $dd.height() + 12;
+                let autoH = $dd.height() + 12;
                 if ((e.pageY + autoH) > $('html').height()) {
                     $dd.addClass('dropdown-context-up').css({
                         top: e.pageY - 20 - autoH,
