@@ -19,6 +19,7 @@
         "blueimp-file-upload": "^10.32.0",
         "blueimp-load-image": "^5.16.0",
         "clipboard": "^2.0.8",
+        "copy-image-clipboard": "^2.0.1",
         "deepmerge": "^4.2.2",
         "dragselect": "^2.3.0",
         "jquery": "^3.6.0",

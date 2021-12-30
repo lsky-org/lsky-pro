@@ -121,6 +121,7 @@
         <script src="{{ asset('js/viewer-js/viewer.min.js') }}"></script>
         <script src="{{ asset('js/dragselect/ds.min.js') }}"></script>
         <script src="{{ asset('js/context-js/context-js.js') }}"></script>
+        <script src="{{ asset('js/clipboard/index.browser.js') }}"></script>
         <script>
             let gridConfigs = {
                 rowHeight: 180,
@@ -131,6 +132,8 @@
             };
 
             let selectedAlbum = 0; // 选择的相册
+
+            const PHOTOS_ITEM = '.photos-item';
 
             const $photos = $("#photos-grid");
             const $drawer = $("#drawer");
@@ -185,7 +188,7 @@
 
                     $photos.append(html);
                     if (ds) {
-                        ds.setSelectables($photos.find('.photos-item'));
+                        ds.setSelectables($photos.find(PHOTOS_ITEM));
                     }
                 },
                 complete: function () {
@@ -363,13 +366,24 @@
                 compress: false
             });
             const methods = {
-                view: {text: '查看', action: e => {}},
-                copy: {text: '复制', action: function (e) {
-                        console.log(e)
+                copy: {
+                    text: '复制',
+                    action: e => {
+                        let src = $(e.target.closest(PHOTOS_ITEM)).find('img').attr('src');
+                        CopyImageClipboard.copyImageToClipboard(src).then(() => {
+                            toastr.success('复制成功')
+                        }).catch(e => {
+                            toastr.error('复制失败, ' + e.message)
+                        });
                     },
                 },
-                refresh: {text: '刷新', action: e => {}},
-                open: {text: '新窗口打开', action: e => {}},
+                refresh: {text: '刷新', action: e => imagesInfinite.refresh()},
+                open: {
+                    text: '新窗口打开',
+                    action: e => {
+                        window.open($(e.target.closest(PHOTOS_ITEM)).find('img').attr('src'))
+                    },
+                },
                 links: {
                     text: '复制链接',
                     subMenu: [
@@ -389,10 +403,9 @@
                 methods.refresh,
             ]);
             // 点击图片
-            context.attach('.photos-item', [
+            context.attach(PHOTOS_ITEM, [
                 {header: '图片操作'},
                 methods.refresh,
-                methods.view,
                 methods.copy,
                 methods.open,
                 methods.links,

@@ -13,6 +13,7 @@
     "/css/viewer-js/viewer.min.css": "/css/viewer-js/viewer.min.css",
     "/js/viewer-js/viewer.min.js": "/js/viewer-js/viewer.min.js",
     "/js/clipboard/clipboard.min.js": "/js/clipboard/clipboard.min.js",
+    "/js/clipboard/index.browser.js": "/js/clipboard/index.browser.js",
     "/js/dragselect/ds.min.js": "/js/dragselect/ds.min.js",
     "/js/context-js/context-js.js": "/js/context-js/context-js.js"
 }
