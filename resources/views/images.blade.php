@@ -373,7 +373,7 @@
                         CopyImageClipboard.copyImageToClipboard(src).then(() => {
                             toastr.success('复制成功')
                         }).catch(e => {
-                            toastr.error('复制失败, ' + e.message)
+                            toastr.warning('复制失败, ' + e.message)
                         });
                     },
                 },
