@@ -23,58 +23,69 @@ window.context = window.context || (function () {
         options = $.extend({}, options, opts);
 
         $(document).on('click', 'html', function () {
-            $('.dropdown-context').fadeOut(options.fadeSpeed, function(){
-                $('.dropdown-context').css({display:''}).find('.drop-left').removeClass('drop-left');
+            $('.dropdown-context').fadeOut(options.fadeSpeed, function () {
+                $('.dropdown-context').css({display: ''}).find('.drop-left').removeClass('drop-left');
             });
         });
-        if(options.preventDoubleContext){
+        if (options.preventDoubleContext) {
             $(document).on('contextmenu', '.dropdown-context', function (e) {
                 e.preventDefault();
             });
         }
-        $(document).on('mouseenter', '.dropdown-submenu', function(){
+        $(document).on('mouseenter', '.dropdown-submenu', function () {
             let $sub = $(this).find('.dropdown-context-sub:first'),
                 subWidth = $sub.width(),
                 subLeft = $sub.offset().left,
-                collision = (subWidth+subLeft) > window.innerWidth;
-            if(collision){
+                collision = (subWidth + subLeft) > window.innerWidth;
+            if (collision) {
                 $sub.addClass('drop-left');
             }
         });
 
     }
 
-    function updateOptions(opts){
+    function updateOptions(opts) {
         options = $.extend({}, options, opts);
     }
 
     function buildMenu(data, id, subMenu) {
         let subClass = (subMenu) ? ' dropdown-context-sub' : '',
             compressed = options.compress ? ' compressed-context' : '',
-            $menu = $('<ul class="dropdown-menu dropdown-context' + subClass + compressed+'" id="dropdown-' + id + '"></ul>');
+            $menu = $('<ul class="dropdown-menu dropdown-context' + subClass + compressed + '" id="dropdown-' + id + '"></ul>');
         let i = 0, linkTarget = '';
-        for(i; i<data.length; i++) {
+        for (i; i < data.length; i++) {
             if (typeof data[i].divider !== 'undefined') {
                 $menu.append('<li class="divider"></li>');
             } else if (typeof data[i].header !== 'undefined') {
                 $menu.append('<li class="nav-header">' + data[i].header + '</li>');
             } else {
                 if (typeof data[i].href == 'undefined') {
-                    data[i].href = '#';
+                    data[i].href = 'javascript:void(0)';
                 }
                 if (typeof data[i].target !== 'undefined') {
-                    linkTarget = ' target="'+data[i].target+'"';
+                    linkTarget = ' target="' + data[i].target + '"';
                 }
                 let $sub;
                 if (typeof data[i].subMenu !== 'undefined') {
-                    $sub = ('<li class="dropdown-submenu"><a tabindex="-1" href="' + data[i].href + '">' + data[i].text + '</a></li>');
+                    $sub = $('<li class="dropdown-submenu"><a tabindex="-1" href="' + data[i].href + '">' + data[i].text + '</a></li>');
                 } else {
-                    $sub = $('<li><a tabindex="-1" href="' + data[i].href + '"'+linkTarget+'>' + data[i].text + '</a></li>');
+                    $sub = $('<li><a tabindex="-1" href="' + data[i].href + '"' + linkTarget + '>' + data[i].text + '</a></li>');
+                }
+                let $a = $sub.find('a');
+                if (typeof data[i].classes !== 'undefined') {
+                    for (const classKey in data[i].classes) {
+                        $a.addClass(data[i].classes[classKey]);
+                    }
+                }
+                if (typeof data[i].attributes !== 'undefined') {
+                    for (const attributesKey in data[i].attributes) {
+                        $a.attr(attributesKey, data[i].attributes[attributesKey]);
+                    }
                 }
                 if (typeof data[i].action !== 'undefined') {
-                    let actionID = 'event-' + new Date().getTime() * Math.floor(Math.random()*100000),
+                    let actionID = 'event-' + new Date().getTime() * Math.floor(Math.random() * 100000),
                         eventAction = data[i].action;
-                    $sub.find('a').attr('id', actionID);
+                    $a.attr('id', actionID);
                     $('#' + actionID).addClass('context-event');
                     $(document).on('click', '#' + actionID, function () {
                         eventAction.call(this, selection);
@@ -93,7 +104,18 @@ window.context = window.context || (function () {
         return $menu;
     }
 
-    function addContext(selector, data) {
+    /**
+     * 添加菜单
+     * @param selector 被右击元素
+     * @param data 数据 {
+     *     text: String, // 文本
+     *     classes: Array, // class
+     *     attributes: Object, // 属性
+     *     action: Function, // 点击后的回调
+     * }
+     * @param open 右击元素后的回调
+     */
+    function addContext(selector, data, open) {
 
         let d = new Date(),
             id = d.getTime(),
@@ -129,6 +151,8 @@ window.context = window.context || (function () {
                     }).fadeIn(options.fadeSpeed);
                 }
             }
+
+            open && open.call($dd.get(0), this);
         });
     }
 

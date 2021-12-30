@@ -1,11 +1,3 @@
-@push('scripts')
-    <script src="{{ asset('js/blueimp-file-upload/jquery.ui.widget.js') }}"></script>
-    <script src="{{ asset('js/blueimp-file-upload/jquery.iframe-transport.js') }}"></script>
-    <script src="{{ asset('js/blueimp-file-upload/jquery.fileupload.js') }}"></script>
-    <script src="{{ asset('js/blueimp-load-image/load-image.all.min.js') }}"></script>
-    <script src="{{ asset('js/clipboard/clipboard.min.js') }}"></script>
-@endpush
-
 <div class="pb-6 h-full">
     <input type="file" id="picker" name="file" class="hidden" accept="image/*" multiple>
 
@@ -66,7 +58,13 @@
         </div>
     </div>
 </script>
-
+@push('scripts')
+    <script src="{{ asset('js/blueimp-file-upload/jquery.ui.widget.js') }}"></script>
+    <script src="{{ asset('js/blueimp-file-upload/jquery.iframe-transport.js') }}"></script>
+    <script src="{{ asset('js/blueimp-file-upload/jquery.fileupload.js') }}"></script>
+    <script src="{{ asset('js/blueimp-load-image/load-image.all.min.js') }}"></script>
+    <script src="{{ asset('js/clipboard/clipboard.min.js') }}"></script>
+@endpush
 @push('scripts')
     <script>
         (new ClipboardJS('#copy-all', {
@@ -88,7 +86,9 @@
                     $(e.trigger).attr('disabled', false).text(text);
                 }, 1000);
             }
-        }).on('error', function(e) {});
+        }).on('error', function(e) {
+            toastr.warning('复制失败')
+        });
     </script>
     <script>
         const UPLOAD_WAITING = 0; // 等待上传

@@ -65,7 +65,7 @@
     </div>
 
     <script type="text/html" id="photos-item-tpl">
-        <a href="javascript:void(0)" class="photos-item relative cursor-default rounded outline outline-2 outline-offset-2 outline-transparent">
+        <a href="javascript:void(0)" data-json='__json__' class="photos-item relative cursor-default rounded outline outline-2 outline-offset-2 outline-transparent">
             <div class="photo-selector absolute z-[2] top-0 right-0 overflow-hidden cursor-pointer sm:hidden group-hover:block">
                 <div class="p-1 text-xl sm:text-2xl">
                     <i class="fas fa-check-circle block rounded-full bg-white text-white border border-gray-500"></i>
@@ -122,6 +122,7 @@
         <script src="{{ asset('js/dragselect/ds.min.js') }}"></script>
         <script src="{{ asset('js/context-js/context-js.js') }}"></script>
         <script src="{{ asset('js/clipboard/index.browser.js') }}"></script>
+        <script src="{{ asset('js/clipboard/clipboard.min.js') }}"></script>
         <script>
             let gridConfigs = {
                 rowHeight: 180,
@@ -133,9 +134,10 @@
 
             let selectedAlbum = 0; // 选择的相册
 
+            const PHOTOS_GRID = '#photos-grid';
             const PHOTOS_ITEM = '.photos-item';
 
-            const $photos = $("#photos-grid");
+            const $photos = $(PHOTOS_GRID);
             const $drawer = $("#drawer");
             const $drawerMask = $('#drawer-mask');
             const viewer = new Viewer(document.getElementById('photos-grid'), {});
@@ -184,6 +186,7 @@
                             .replace(/__url__/g, images[i].url)
                             .replace(/__width__/g, images[i].width)
                             .replace(/__height__/g, images[i].height)
+                            .replace(/__json__/g, JSON.stringify(images[i]))
                     }
 
                     $photos.append(html);
@@ -365,6 +368,17 @@
                 preventDoubleContext: true,
                 compress: false
             });
+
+            new ClipboardJS('.dropdown-menu li a.copy', {
+                text: function(trigger) {
+                    return $(trigger).data('copy-value');
+                }
+            }).on('success', _ => {
+                toastr.success('复制成功');
+            }).on('error', _ => {
+                toastr.warning('复制失败')
+            });
+
             const methods = {
                 copy: {
                     text: '复制',
@@ -377,7 +391,7 @@
                         });
                     },
                 },
-                refresh: {text: '刷新', action: e => imagesInfinite.refresh()},
+                refresh: {text: '刷新', action: _ => imagesInfinite.refresh()},
                 open: {
                     text: '新窗口打开',
                     action: e => {
@@ -387,11 +401,36 @@
                 links: {
                     text: '复制链接',
                     subMenu: [
-                        {text: 'Url', action: e => {}},
-                        {text: 'Html', action: e => {}},
-                        {text: 'BBCode', action: e => {}},
-                        {text: 'Markdown', action: e => {}},
-                        {text: 'Markdown with link', action: e => {}},
+                        {
+                            text: 'Url',
+                            classes: ['copy'],
+                            attributes: {"data-link-type": "url"},
+                            action: e => {},
+                        },
+                        {
+                            text: 'Html',
+                            classes: ['copy'],
+                            attributes: {"data-link-type": "html"},
+                            action: e => {},
+                        },
+                        {
+                            text: 'BBCode',
+                            classes: ['copy'],
+                            attributes: {"data-link-type": "bbcode"},
+                            action: e => {},
+                        },
+                        {
+                            text: 'Markdown',
+                            classes: ['copy'],
+                            attributes: {"data-link-type": "markdown"},
+                            action: e => {},
+                        },
+                        {
+                            text: 'Markdown with link',
+                            classes: ['copy'],
+                            attributes: {"data-link-type": "markdown_with_link"},
+                            action: e => {},
+                        },
                     ],
                 },
                 detail: {text: '详细信息', action: e => {}},
@@ -399,7 +438,7 @@
                 delete: {text: '删除', action: e => {}},
             };
             // 点击容器
-            context.attach('#photos-grid', [
+            context.attach(PHOTOS_GRID, [
                 methods.refresh,
             ]);
             // 点击图片
@@ -412,7 +451,13 @@
                 methods.rename,
                 {divider: true},
                 methods.delete,
-            ]);
+            ], function (e) {
+                let data = $(e).closest(PHOTOS_ITEM).data('json');
+                // 追加链接
+                $(this).find('.copy').each(function () {
+                    $(this).data('copy-value', data.links[$(this).data('link-type')])
+                });
+            });
         </script>
     @endpush
 </x-app-layout>

@@ -41,12 +41,12 @@ class ImageController extends Controller
             $builder->whereRaw("concat(IFNULL(origin_name,''),IFNULL(alias_name,'')) like ?", ["%{$keyword}%"]);
         })->when((int) $request->query('album_id'), function (Builder $builder, $albumId) {
             $builder->where('album_id', $albumId);
-        })->paginate(40);
+        })->paginate(1);
         $images->getCollection()->each(function (Image $image) {
             $image->human_date = $image->created_at->diffForHumans();
             $image->date = $image->created_at->format('Y-m-d H:i:s');
-            $image->append(['url', 'filename'])->setVisible([
-                'id', 'filename', 'url', 'human_date', 'date', 'human_date', 'width', 'height'
+            $image->append(['url', 'filename', 'links'])->setVisible([
+                'id', 'filename', 'url', 'human_date', 'date', 'human_date', 'width', 'height', 'links'
             ]);
         });
         return $this->success('success', compact('images'));
