@@ -51,4 +51,12 @@ class ImageController extends Controller
         });
         return $this->success('success', compact('images'));
     }
+
+    public function movement(Request $request): Response
+    {
+        /** @var User $user */
+        $user = Auth::user();
+        $user->images()->whereIn('id', $request->input('selected'))->update(['album_id' => $request->input('album_id')]);
+        return $this->success('移动成功');
+    }
 }

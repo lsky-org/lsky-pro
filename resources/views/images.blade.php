@@ -65,7 +65,7 @@
     </div>
 
     <script type="text/html" id="photos-item-tpl">
-        <a href="javascript:void(0)" data-json='__json__' class="photos-item relative cursor-default rounded outline outline-2 outline-offset-2 outline-transparent">
+        <a href="javascript:void(0)" data-id="__id__" data-json='__json__' class="photos-item relative cursor-default rounded outline outline-2 outline-offset-2 outline-transparent">
             <div class="photo-selector absolute z-[2] top-0 right-0 overflow-hidden cursor-pointer sm:hidden group-hover:block">
                 <div class="p-1 text-xl sm:text-2xl">
                     <i class="fas fa-check-circle block rounded-full bg-white text-white border border-gray-500"></i>
@@ -180,6 +180,7 @@
                     let html = '';
                     for (const i in images) {
                         html += $('#photos-item-tpl').html()
+                            .replace(/__id__/g, images[i].id)
                             .replace(/__name__/g, images[i].filename)
                             .replace(/__human_date__/g, images[i].human_date)
                             .replace(/__date__/g, images[i].date)
@@ -215,8 +216,8 @@
                 imagesInfinite.refresh(params);
             }
 
-            const getAlbums = () => {
-                let title = '我的相册 <i class="cursor-pointer fas fa-plus text-blue-500" onclick="$(\'#album-add\').toggleClass(\'hidden\')"></i>';
+            const getAlbums = (options, callback) => {
+                let title = '__title__ <i class="cursor-pointer fas fa-plus text-blue-500" onclick="$(\'#album-add\').toggleClass(\'hidden\')"></i>'.replace(/__title__/g, (options || {}).title || '我的相册');
                 let content = $('#albums-container-tpl').html();
                 drawer.toggle(title, content, function () {
                     let $albums = $('#albums-container');
@@ -252,6 +253,8 @@
                             }
 
                             $albums.append(html);
+
+                            callback && callback.call(this, $albums.get(0));
                         }
                     });
 
@@ -431,8 +434,24 @@
                 },
                 move: {
                     text: '移动到相册',
-                    action: e => {
-                        console.log(ds.getSelection())
+                    action: _ => {
+                        let selected = [];
+                        ds.getSelection().map(item => selected.push($(item).data('id')));
+                        getAlbums({title: '选择相册'}, e => {
+                            $(e).off('click', '>a').on('click', '>a', function () {
+                                axios.put('{{ route('user.images.movement') }}', {
+                                    selected: selected,
+                                    album_id: $(this).data('id')
+                                }).then(response => {
+                                    if (response.data.status) {
+                                        drawer.close();
+                                        toastr.success(response.data.message);
+                                    } else {
+                                        toastr.warning(response.data.message);
+                                    }
+                                })
+                            });
+                        })
                     },
                 },
                 detail: {text: '详细信息', action: e => {}},
