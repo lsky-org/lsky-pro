@@ -190,9 +190,7 @@
                     }
 
                     $photos.append(html);
-                    if (ds) {
-                        ds.setSelectables($photos.find(PHOTOS_ITEM));
-                    }
+                    ds.setSelectables($photos.find(PHOTOS_ITEM));
                 },
                 complete: function () {
                     if ($photos.html() !== '') {
@@ -340,25 +338,21 @@
             });
         </script>
         <script>
-            let ds;
-            if (! utils.isMobile()) {
-                ds = new DragSelect({
-                    area: $photos.get(0),
-                    keyboardDrag: false,
-                });
-                ds.subscribe('predragstart', ({ event }) => {
-                    if (event.target.id !== 'photos-grid') {
-                        ds.break();
-                    }
-                });
-            }
+            const ds = new DragSelect({
+                area: $photos.get(0),
+                keyboardDrag: false,
+            });
+            ds.subscribe('predragstart', ({ event }) => {
+                if (utils.isMobile()) {
+                    ds.stop();
+                }
+                if (event.target.id !== 'photos-grid') {
+                    ds.break();
+                }
+            });
 
             $photos.on('click', '.photo-selector', function () {
-                if (ds) {
-                    ds.toggleSelection($(this).closest('a'));
-                } else {
-                    $(this).closest('a').toggleClass('ds-selected')
-                }
+                ds.toggleSelection($(this).closest('a'));
             })
         </script>
         <script>
@@ -393,13 +387,14 @@
                     },
                 },
                 refresh: {text: '刷新', action: _ => resetImages()},
+                rename: {text: '重命名', action: e => {}},
                 open: {
                     text: '新窗口打开',
                     action: e => {
                         window.open($(e.target.closest(PHOTOS_ITEM)).find('img').attr('src'))
                     },
                 },
-                links: {
+                copies: {
                     text: '复制链接',
                     subMenu: [
                         {
@@ -434,26 +429,36 @@
                         },
                     ],
                 },
+                move: {
+                    text: '移动到相册',
+                    action: e => {
+                        console.log(ds.getSelection())
+                    },
+                },
                 detail: {text: '详细信息', action: e => {}},
-                rename: {text: '重命名', action: e => {}},
                 delete: {text: '删除', action: e => {}},
             };
             // 点击容器
             context.attach(PHOTOS_GRID, [
                 methods.refresh,
-            ]);
+            ], _ => ds.clearSelection());
             // 点击图片
             context.attach(PHOTOS_ITEM, [
                 {header: '图片操作'},
                 methods.refresh,
                 methods.copy,
+                methods.copies,
                 methods.open,
-                methods.links,
-                methods.rename,
+                methods.move,
                 {divider: true},
+                methods.rename,
                 methods.delete,
             ], function (e) {
-                let data = $(e).closest(PHOTOS_ITEM).data('json');
+                let $item = $(e).closest(PHOTOS_ITEM);
+                let data = $item.data('json');
+                // 选中当前项目
+                if (ds.getSelection().length <= 1) ds.clearSelection();
+                ds.addSelection($item);
                 // 追加链接
                 $(this).find('.copy').each(function () {
                     $(this).data('copy-value', data.links[$(this).data('link-type')])
