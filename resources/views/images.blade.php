@@ -213,6 +213,7 @@
 
             const resetImages = (params) => {
                 $photos.addClass('reset').html('').justifiedGallery('destroy');
+                params = $.extend({page: 1}, params)
                 imagesInfinite.refresh(params);
             }
 
@@ -391,7 +392,7 @@
                         });
                     },
                 },
-                refresh: {text: '刷新', action: _ => imagesInfinite.refresh()},
+                refresh: {text: '刷新', action: _ => resetImages()},
                 open: {
                     text: '新窗口打开',
                     action: e => {

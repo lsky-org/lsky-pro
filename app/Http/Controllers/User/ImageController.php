@@ -41,7 +41,7 @@ class ImageController extends Controller
             $builder->whereRaw("concat(IFNULL(origin_name,''),IFNULL(alias_name,'')) like ?", ["%{$keyword}%"]);
         })->when((int) $request->query('album_id'), function (Builder $builder, $albumId) {
             $builder->where('album_id', $albumId);
-        })->paginate(1);
+        })->paginate(40);
         $images->getCollection()->each(function (Image $image) {
             $image->human_date = $image->created_at->diffForHumans();
             $image->date = $image->created_at->format('Y-m-d H:i:s');
