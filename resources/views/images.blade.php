@@ -462,7 +462,7 @@
                             } else {
                                 toastr.warning(response.data.message);
                             }
-                        })
+                        });
                     },
                     visible: _ => selectedAlbum !== 0,
                 },

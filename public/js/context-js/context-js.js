@@ -119,6 +119,7 @@ window.context = window.context || (function () {
      *     classes: Array, // class
      *     attributes: Object, // 属性
      *     action: Function, // 点击后的回调
+     *     visible: Function, // 函数返回bool类型，表示显示或隐藏按钮
      * }
      * @param open 右击元素后的回调
      */
