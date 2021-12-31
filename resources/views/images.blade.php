@@ -134,10 +134,12 @@
 
             let selectedAlbum = 0; // 选择的相册
 
+            const HEADER_TITLE = '#header-title';
             const PHOTOS_SCROLL = '#photos-scroll';
             const PHOTOS_GRID = '#photos-grid';
             const PHOTOS_ITEM = '.photos-item';
 
+            const $headerTitle = $(HEADER_TITLE);
             const $photos = $(PHOTOS_GRID);
             const $drawer = $("#drawer");
             const $drawerMask = $('#drawer-mask');
@@ -194,7 +196,6 @@
 
                     $photos.append(html);
                     ds.setSelectables($photos.find(PHOTOS_ITEM));
-                    $(PHOTOS_SCROLL).trigger('click');
                 },
                 complete: function () {
                     if ($photos.html() !== '') {
@@ -210,6 +211,7 @@
                         // 没有任何数据时销毁 justifiedGallery
                         $photos.justifiedGallery('destroy')
                     }
+                    $headerTitle.text('我的图片')
                 }
             });
 
@@ -357,6 +359,17 @@
                 area: $(PHOTOS_SCROLL).get(0),
                 keyboardDrag: false,
             });
+
+            const bindOperates = () => {
+                let selected = ds.getSelection();
+                if (selected.length) {
+                    $headerTitle.text(`已选择 ${selected.length} 张图片`);
+                } else {
+                    $headerTitle.text('我的图片');
+                }
+                // TODO 构建菜单
+            };
+
             ds.subscribe('predragstart', ({ event }) => {
                 if (utils.isMobile()) {
                     ds.stop();
@@ -366,9 +379,12 @@
                     ds.break();
                 }
             });
+            ds.subscribe('elementselect', _ => bindOperates());
+            ds.subscribe('elementunselect', _ => bindOperates());
 
             $photos.on('click', '.photo-selector', function () {
                 ds.toggleSelection($(this).closest('a'));
+                bindOperates();
             })
         </script>
         <script>
@@ -442,9 +458,11 @@
                     text: '移动到相册',
                     action: _ => {
                         getAlbums({title: '选择相册'}, e => {
+                            let selected = ds.getSelection().map(item => $(item).data('id'));
+                            $headerTitle.text(`移动 ${selected.length} 张图片到...`)
                             $(e).off('click', '>a').on('click', '>a', function () {
                                 axios.put('{{ route('user.images.movement') }}', {
-                                    selected: ds.getSelection().map(item => $(item).data('id')),
+                                    selected: selected,
                                     album_id: $(this).data('id')
                                 }).then(response => {
                                     if (response.data.status) {
@@ -462,8 +480,10 @@
                 remove: {
                     text: '移出当前相册',
                     action: _ => {
+                        let selected = ds.getSelection().map(item => $(item).data('id'));
+                        $headerTitle.text(`移出 ${selected.length} 张图片`)
                         axios.put('{{ route('user.images.movement') }}', {
-                            selected: ds.getSelection().map(item => $(item).data('id')),
+                            selected: selected,
                             album_id: null,
                         }).then(response => {
                             if (response.data.status) {
