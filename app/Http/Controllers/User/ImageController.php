@@ -62,7 +62,7 @@ class ImageController extends Controller
         $user = Auth::user();
         DB::transaction(function () use ($user, $request) {
             /** @var null|Album $album */
-            $album = $user->albums()->find($request->input('id'));
+            $album = $user->albums()->find((int) $request->input('id'));
             $user->images()->whereIn('id', $request->input('selected'))->update([
                 'album_id' => $album->id ?? null,
             ]);
@@ -70,9 +70,9 @@ class ImageController extends Controller
                 $album->image_num = $album->images()->count();
                 $album->save();
             }
-            if ($request->has('album_id')) {
+            if ($albumId = (int) $request->input('album_id')) {
                 /** @var Album $originAlbum */
-                $originAlbum = $user->albums()->find($request->input('album_id'));
+                $originAlbum = $user->albums()->find($albumId);
                 $originAlbum->image_num = $originAlbum->images()->count();
                 $originAlbum->save();
             }

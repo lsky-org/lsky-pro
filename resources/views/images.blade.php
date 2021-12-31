@@ -95,7 +95,7 @@
     </script>
 
     <script type="text/html" id="albums-item-tpl">
-        <a href="javascript:void(0)" data-id="__id__" title="__intro__" class="albums-item flex justify-between items-center group px-2 h-7 rounded w-full bg-gray-100 text-gray-800 hover:bg-blue-300 hover:text-white">
+        <a href="javascript:void(0)" data-id="__id__" data-json='__json__' title="__intro__" class="albums-item flex justify-between items-center group px-2 h-7 rounded w-full bg-gray-100 text-gray-800 hover:bg-blue-300 hover:text-white">
             <span class="text-sm truncate w-[80%] name">__name__</span>
             <div class="flex items-center justify-center space-x-1 hidden group-hover:block">
                 <span class="update"><i class="fas fa-edit text-xs"></i></span>
@@ -132,7 +132,7 @@
                 waitThumbnailsLoad: false,
             };
 
-            let selectedAlbumId = 0; // 选择的相册
+            let selectedAlbum = {}; // 选择的相册
 
             const HEADER_TITLE = '#header-title';
             const PHOTOS_SCROLL = '#photos-scroll';
@@ -248,7 +248,8 @@
                                     .replace(/__name__/g, albums[i].name)
                                     .replace(/__intro__/g, albums[i].intro)
                                     .replace(/__image_num__/g, albums[i].image_num)
-                                if (albums[i].id === selectedAlbumId) {
+                                    .replace(/__json__/g, JSON.stringify(albums[i]))
+                                if (albums[i].id === selectedAlbum.id) {
                                     // 选中的相册高亮
                                     item = item
                                         .replace(/bg-gray-100/g, 'bg-blue-400')
@@ -266,12 +267,12 @@
 
                     $albums.off('click', '>a').on('click', '>a', function () {
                         // 如果当前已经为选中状态则清除
-                        if (selectedAlbumId === $(this).data('id')) {
-                            selectedAlbumId = 0;
+                        if (selectedAlbum.id === $(this).data('id')) {
+                            selectedAlbum = {};
                         } else {
-                            selectedAlbumId = $(this).data('id');
+                            selectedAlbum = $(this).data('json');
                         }
-                        resetImages({page: 1, album_id: selectedAlbumId});
+                        resetImages({page: 1, album_id: selectedAlbum.id || null});
                         drawer.close();
                         ds.clearSelection();
                     });
@@ -491,7 +492,7 @@
                         $headerTitle.text(`移出 ${selected.length} 张图片`)
                         axios.put('{{ route('user.images.movement') }}', {
                             selected: selected,
-                            album_id: selectedAlbumId, // 原相册ID
+                            album_id: selectedAlbum.id || null, // 原相册ID
                             id: null,
                         }).then(response => {
                             if (response.data.status) {
@@ -503,37 +504,42 @@
                             }
                         });
                     },
-                    visible: _ => selectedAlbumId !== 0,
+                    visible: _ => selectedAlbum.id !== undefined,
                 },
                 detail: {text: '详细信息', action: e => {}},
                 delete: {text: '删除', action: e => {}},
             };
             // 点击容器
-            context.attach(PHOTOS_SCROLL, [
-                methods.refresh,
-            ], _ => ds.clearSelection());
+            context.attach(PHOTOS_SCROLL, {
+                data: [methods.refresh],
+                beforeOpen: () => ds.clearSelection(),
+            });
             // 点击图片
-            context.attach(PHOTOS_ITEM, [
-                {header: '图片操作'},
-                methods.refresh,
-                methods.copy,
-                methods.copies,
-                methods.open,
-                methods.movements,
-                methods.remove,
-                {divider: true},
-                methods.rename,
-                methods.delete,
-            ], function (item) {
-                let data = $(item).data('json');
-                // 选中当前项目
-                if (ds.getSelection().length <= 1) ds.clearSelection();
-                ds.addSelection($(item));
-
-                // 追加链接
-                $(this).find('.copy').each(function () {
-                    $(this).data('copy-value', data.links[$(this).data('link-type')])
-                });
+            context.attach(PHOTOS_ITEM, {
+                data: [
+                    {header: '图片操作'},
+                    methods.refresh,
+                    methods.copy,
+                    methods.copies,
+                    methods.open,
+                    methods.movements,
+                    methods.remove,
+                    {divider: true},
+                    methods.rename,
+                    methods.delete,
+                ],
+                beforeOpen: function (item) {
+                    // 选中当前项目
+                    if (ds.getSelection().length <= 1) ds.clearSelection();
+                    ds.addSelection($(item));
+                },
+                afterOpen: function (item, dropdown) {
+                    let data = $(item).data('json');
+                    // 追加链接
+                    $(dropdown).find('a.copy').each(function () {
+                        $(this).data('copy-value', data.links[$(this).data('link-type')])
+                    });
+                }
             });
         </script>
     @endpush

@@ -114,17 +114,21 @@ window.context = window.context || (function () {
     /**
      * 添加菜单
      * @param selector 被右击元素
-     * @param data 数据 {
-     *     text: String, // 文本
-     *     classes: Array, // class
-     *     attributes: Object, // 属性
-     *     action: Function, // 点击后的回调
-     *     visible: Function, // 函数返回bool类型，表示显示或隐藏按钮
+     * @param opts 参数 {
+     *     data: Array[Object] {
+     *         text: String, // 文本
+     *         classes: Array, // class
+     *         attributes: Object, // 属性
+     *         action: Function, // 点击后的回调
+     *         visible: Function, // 函数返回bool类型，表示显示或隐藏按钮
+     *     }
+     *     beforeOpen: Function, // 打开前
+     *     afterOpen: Function, // 打开后
      * }
-     * @param open 右击元素后的回调
      */
-    function addContext(selector, data, open) {
-
+    function addContext(selector, opts) {
+        opts = opts || {};
+        let data = opts.data || {};
         let id = new Date().getTime();
 
         $(document).on('contextmenu', selector, function (e) {
@@ -132,7 +136,7 @@ window.context = window.context || (function () {
             e.stopPropagation();
 
             let item = e.target.closest(selector);
-            open && open.call(item, this);
+            typeof opts.beforeOpen === 'function' && opts.beforeOpen.call(e, item);
 
             let $menu = buildMenu(item, data, id);
             // clear dropdowns
@@ -164,6 +168,8 @@ window.context = window.context || (function () {
                     }).fadeIn(options.fadeSpeed);
                 }
             }
+
+            typeof opts.afterOpen === 'function' && opts.afterOpen.call(e, item, $dd.get(0));
         });
     }
 
