@@ -48,10 +48,10 @@
             </x-dropdown>
         </div>
     </div>
-    <div class="relative inset-0 h-full overflow-hidden">
+    <div class="relative inset-0 h-full overflow-hidden select-none">
         <!-- content -->
-        <div id="photos-scroll" class="absolute inset-0 overflow-y-scroll select-none">
-            <div id="photos-grid"></div>
+        <div id="photos-scroll" class="absolute inset-0 overflow-y-scroll dragselect">
+            <div id="photos-grid" class="dragselect"></div>
         </div>
         <!-- right drawer -->
         <div id="drawer-mask" class="absolute hidden inset-0 bg-gray-500 bg-opacity-50 z-[2]" onclick="drawer.close()"></div>
@@ -134,6 +134,7 @@
 
             let selectedAlbum = 0; // 选择的相册
 
+            const PHOTOS_SCROLL = '#photos-scroll';
             const PHOTOS_GRID = '#photos-grid';
             const PHOTOS_ITEM = '.photos-item';
 
@@ -165,8 +166,9 @@
 
             $photos.justifiedGallery(gridConfigs);
 
-            const imagesInfinite = utils.infiniteScroll('#photos-scroll', {
+            const imagesInfinite = utils.infiniteScroll(PHOTOS_SCROLL, {
                 url: '{{ route('user.images') }}',
+                classes: ['dragselect'],
                 success: function (response) {
                     if (!response.status) {
                         return toastr.error(response.message);
@@ -192,6 +194,7 @@
 
                     $photos.append(html);
                     ds.setSelectables($photos.find(PHOTOS_ITEM));
+                    $(PHOTOS_SCROLL).trigger('click');
                 },
                 complete: function () {
                     if ($photos.html() !== '') {
@@ -341,17 +344,25 @@
                     resetImages({page: 1, keyword: $(this).val()});
                 }
             });
+
+            $(document).keydown(e => {
+                e.preventDefault();
+                if (e.keyCode === 65 && (e.altKey || e.metaKey)) {
+                    ds.setSelection($(PHOTOS_ITEM));
+                }
+            });
         </script>
         <script>
             const ds = new DragSelect({
-                area: $photos.get(0),
+                area: $(PHOTOS_SCROLL).get(0),
                 keyboardDrag: false,
             });
             ds.subscribe('predragstart', ({ event }) => {
                 if (utils.isMobile()) {
                     ds.stop();
                 }
-                if (event.target.id !== 'photos-grid') {
+
+                if (! $(event.target).hasClass('dragselect')) {
                     ds.break();
                 }
             });
@@ -449,7 +460,7 @@
                     },
                 },
                 remove: {
-                    text: '移出所在相册',
+                    text: '移出当前相册',
                     action: _ => {
                         axios.put('{{ route('user.images.movement') }}', {
                             selected: ds.getSelection().map(item => $(item).data('id')),
@@ -470,7 +481,7 @@
                 delete: {text: '删除', action: e => {}},
             };
             // 点击容器
-            context.attach('#photos-scroll', [
+            context.attach(PHOTOS_SCROLL, [
                 methods.refresh,
             ], _ => ds.clearSelection());
             // 点击图片

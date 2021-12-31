@@ -5475,6 +5475,7 @@ window.utils = {
   },
   infiniteScroll: function infiniteScroll(selector, options) {
     if ($(selector).length > 0) {
+      var classes = options.classes || {};
       var loadingText = options.loadingText || '加载中...';
       var finishedText = options.finishedText || '我也是有底线的~';
       var errorText = options.errorText || '加载失败';
@@ -5484,6 +5485,11 @@ window.utils = {
         finished: false
       };
       $(selector).append("<div class=\"infinite-scroll\"><span>".concat(loadingText, "</span></div>"));
+
+      for (var classesKey in classes) {
+        $(selector).find('.infinite-scroll').addClass(classes[classesKey]);
+      }
+
       var $btn = $(selector + ' .infinite-scroll span');
       var opts = {
         url: options.url || '',

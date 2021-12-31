@@ -36,6 +36,7 @@ window.utils = {
     },
     infiniteScroll(selector, options) {
         if ($(selector).length > 0) {
+            let classes = options.classes || {};
             let loadingText = options.loadingText || '加载中...';
             let finishedText = options.finishedText || '我也是有底线的~';
             let errorText = options.errorText || '加载失败';
@@ -45,6 +46,9 @@ window.utils = {
                 finished: false,
             };
             $(selector).append(`<div class="infinite-scroll"><span>${loadingText}</span></div>`);
+            for (const classesKey in classes) {
+                $(selector).find('.infinite-scroll').addClass(classes[classesKey]);
+            }
             let $btn = $(selector + ' .infinite-scroll span');
 
             let opts = {
