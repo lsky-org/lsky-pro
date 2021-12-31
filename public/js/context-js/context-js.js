@@ -1,9 +1,8 @@
 /*
  * Context.js
- * Copyright Jacob Kelley
+ * Copyright Jacob Kelley, Modified by WispX
  * MIT License
  */
-
 window.context = window.context || (function () {
 
     let options = {
@@ -119,11 +118,11 @@ window.context = window.context || (function () {
      *         text: String, // 文本
      *         classes: Array, // class
      *         attributes: Object, // 属性
-     *         action: Function, // 点击后的回调
-     *         visible: Function, // 函数返回bool类型，表示显示或隐藏按钮
+     *         action: Function, // 点击后的回调 function (e) {}
+     *         visible: Function, // 函数返回bool类型，表示显示或隐藏按钮 function (e) {}
      *     }
-     *     beforeOpen: Function, // 打开前
-     *     afterOpen: Function, // 打开后
+     *     beforeOpen: Function, // 打开前 function (item) {}
+     *     afterOpen: Function, // 打开后 function (item, dropdown) {}
      * }
      */
     function addContext(selector, opts) {
