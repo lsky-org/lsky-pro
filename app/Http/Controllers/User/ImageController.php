@@ -3,12 +3,14 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Models\Album;
 use App\Models\Image;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 class ImageController extends Controller
@@ -58,7 +60,23 @@ class ImageController extends Controller
     {
         /** @var User $user */
         $user = Auth::user();
-        $user->images()->whereIn('id', $request->input('selected'))->update(['album_id' => $request->input('album_id')]);
+        DB::transaction(function () use ($user, $request) {
+            /** @var null|Album $album */
+            $album = $user->albums()->find($request->input('id'));
+            $user->images()->whereIn('id', $request->input('selected'))->update([
+                'album_id' => $album->id ?? null,
+            ]);
+            if ($album) {
+                $album->image_num = $album->images()->count();
+                $album->save();
+            }
+            if ($request->has('album_id')) {
+                /** @var Album $originAlbum */
+                $originAlbum = $user->albums()->find($request->input('album_id'));
+                $originAlbum->image_num = $originAlbum->images()->count();
+                $originAlbum->save();
+            }
+        });
         return $this->success('移动成功');
     }
 }

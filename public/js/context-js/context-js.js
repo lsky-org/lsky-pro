@@ -131,7 +131,10 @@ window.context = window.context || (function () {
             e.preventDefault();
             e.stopPropagation();
 
-            let $menu = buildMenu(e.target.closest(selector), data, id);
+            let item = e.target.closest(selector);
+            open && open.call(item, this);
+
+            let $menu = buildMenu(item, data, id);
             // clear dropdowns
             $('body .dropdown-menu.dropdown-context').remove();
             // create dropdown
@@ -161,8 +164,6 @@ window.context = window.context || (function () {
                     }).fadeIn(options.fadeSpeed);
                 }
             }
-
-            open && open.call($dd.get(0), this);
         });
     }
 

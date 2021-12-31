@@ -132,7 +132,7 @@
                 waitThumbnailsLoad: false,
             };
 
-            let selectedAlbum = 0; // 选择的相册
+            let selectedAlbumId = 0; // 选择的相册
 
             const HEADER_TITLE = '#header-title';
             const PHOTOS_SCROLL = '#photos-scroll';
@@ -248,7 +248,7 @@
                                     .replace(/__name__/g, albums[i].name)
                                     .replace(/__intro__/g, albums[i].intro)
                                     .replace(/__image_num__/g, albums[i].image_num)
-                                if (albums[i].id === selectedAlbum) {
+                                if (albums[i].id === selectedAlbumId) {
                                     // 选中的相册高亮
                                     item = item
                                         .replace(/bg-gray-100/g, 'bg-blue-400')
@@ -266,12 +266,12 @@
 
                     $albums.off('click', '>a').on('click', '>a', function () {
                         // 如果当前已经为选中状态则清除
-                        if (selectedAlbum === $(this).data('id')) {
-                            selectedAlbum = 0;
+                        if (selectedAlbumId === $(this).data('id')) {
+                            selectedAlbumId = 0;
                         } else {
-                            selectedAlbum = $(this).data('id');
+                            selectedAlbumId = $(this).data('id');
                         }
-                        resetImages({page: 1, album_id: selectedAlbum});
+                        resetImages({page: 1, album_id: selectedAlbumId});
                         drawer.close();
                         ds.clearSelection();
                     });
@@ -408,7 +408,7 @@
 
             const methods = {
                 copy: {
-                    text: '复制',
+                    text: '复制图片',
                     action: e => {
                         let src = $(e).find('img').attr('src');
                         CopyImageClipboard.copyImageToClipboard(src).then(() => {
@@ -417,12 +417,18 @@
                             toastr.warning('复制失败, ' + e.message)
                         });
                     },
+                    visible: () => ds.getSelection().length === 1,
                 },
                 refresh: {text: '刷新', action: _ => resetImages()},
-                rename: {text: '重命名', action: e => {}},
+                rename: {
+                    text: '重命名',
+                    action: e => {},
+                    visible: () => ds.getSelection().length === 1,
+                },
                 open: {
                     text: '新窗口打开',
                     action: e => window.open($(e).find('img').attr('src')),
+                    visible: () => ds.getSelection().length === 1,
                 },
                 copies: {
                     text: '复制链接',
@@ -453,17 +459,18 @@
                             attributes: {"data-link-type": "markdown_with_link"},
                         },
                     ],
+                    visible: () => ds.getSelection().length === 1,
                 },
                 movements: {
                     text: '移动到相册',
                     action: _ => {
                         getAlbums({title: '选择相册'}, e => {
                             let selected = ds.getSelection().map(item => $(item).data('id'));
-                            $headerTitle.text(`移动 ${selected.length} 张图片到...`)
+                            $headerTitle.text(`移动 ${selected.length} 张图片至...`)
                             $(e).off('click', '>a').on('click', '>a', function () {
                                 axios.put('{{ route('user.images.movement') }}', {
                                     selected: selected,
-                                    album_id: $(this).data('id')
+                                    id: $(this).data('id'),
                                 }).then(response => {
                                     if (response.data.status) {
                                         drawer.close();
@@ -484,7 +491,8 @@
                         $headerTitle.text(`移出 ${selected.length} 张图片`)
                         axios.put('{{ route('user.images.movement') }}', {
                             selected: selected,
-                            album_id: null,
+                            album_id: selectedAlbumId, // 原相册ID
+                            id: null,
                         }).then(response => {
                             if (response.data.status) {
                                 drawer.close();
@@ -495,7 +503,7 @@
                             }
                         });
                     },
-                    visible: _ => selectedAlbum !== 0,
+                    visible: _ => selectedAlbumId !== 0,
                 },
                 detail: {text: '详细信息', action: e => {}},
                 delete: {text: '删除', action: e => {}},
@@ -516,12 +524,12 @@
                 {divider: true},
                 methods.rename,
                 methods.delete,
-            ], function (e) {
-                let $item = $(e).closest(PHOTOS_ITEM);
-                let data = $item.data('json');
+            ], function (item) {
+                let data = $(item).data('json');
                 // 选中当前项目
                 if (ds.getSelection().length <= 1) ds.clearSelection();
-                ds.addSelection($item);
+                ds.addSelection($(item));
+
                 // 追加链接
                 $(this).find('.copy').each(function () {
                     $(this).data('copy-value', data.links[$(this).data('link-type')])
