@@ -212,6 +212,7 @@
 
             const resetImages = (params) => {
                 $photos.addClass('reset').html('').justifiedGallery('destroy');
+                ds.clearSelection();
                 params = $.extend({page: 1}, params)
                 imagesInfinite.refresh(params);
             }
@@ -267,6 +268,7 @@
                         }
                         resetImages({page: 1, album_id: selectedAlbum});
                         drawer.close();
+                        ds.clearSelection();
                     });
 
                     const resetAlbums = () => {
@@ -381,7 +383,7 @@
                 copy: {
                     text: '复制',
                     action: e => {
-                        let src = $(e.target.closest(PHOTOS_ITEM)).find('img').attr('src');
+                        let src = $(e).find('img').attr('src');
                         CopyImageClipboard.copyImageToClipboard(src).then(() => {
                             toastr.success('复制成功')
                         }).catch(e => {
@@ -393,9 +395,7 @@
                 rename: {text: '重命名', action: e => {}},
                 open: {
                     text: '新窗口打开',
-                    action: e => {
-                        window.open($(e.target.closest(PHOTOS_ITEM)).find('img').attr('src'))
-                    },
+                    action: e => window.open($(e).find('img').attr('src')),
                 },
                 copies: {
                     text: '复制链接',
@@ -404,47 +404,41 @@
                             text: 'Url',
                             classes: ['copy'],
                             attributes: {"data-link-type": "url"},
-                            action: e => {},
                         },
                         {
                             text: 'Html',
                             classes: ['copy'],
                             attributes: {"data-link-type": "html"},
-                            action: e => {},
                         },
                         {
                             text: 'BBCode',
                             classes: ['copy'],
                             attributes: {"data-link-type": "bbcode"},
-                            action: e => {},
                         },
                         {
                             text: 'Markdown',
                             classes: ['copy'],
                             attributes: {"data-link-type": "markdown"},
-                            action: e => {},
                         },
                         {
                             text: 'Markdown with link',
                             classes: ['copy'],
                             attributes: {"data-link-type": "markdown_with_link"},
-                            action: e => {},
                         },
                     ],
                 },
-                move: {
+                movements: {
                     text: '移动到相册',
                     action: _ => {
-                        let selected = [];
-                        ds.getSelection().map(item => selected.push($(item).data('id')));
                         getAlbums({title: '选择相册'}, e => {
                             $(e).off('click', '>a').on('click', '>a', function () {
                                 axios.put('{{ route('user.images.movement') }}', {
-                                    selected: selected,
+                                    selected: ds.getSelection().map(item => $(item).data('id')),
                                     album_id: $(this).data('id')
                                 }).then(response => {
                                     if (response.data.status) {
                                         drawer.close();
+                                        resetImages();
                                         toastr.success(response.data.message);
                                     } else {
                                         toastr.warning(response.data.message);
@@ -454,11 +448,29 @@
                         })
                     },
                 },
+                remove: {
+                    text: '移出所在相册',
+                    action: _ => {
+                        axios.put('{{ route('user.images.movement') }}', {
+                            selected: ds.getSelection().map(item => $(item).data('id')),
+                            album_id: null,
+                        }).then(response => {
+                            if (response.data.status) {
+                                drawer.close();
+                                resetImages();
+                                toastr.success(response.data.message);
+                            } else {
+                                toastr.warning(response.data.message);
+                            }
+                        })
+                    },
+                    visible: _ => selectedAlbum !== 0,
+                },
                 detail: {text: '详细信息', action: e => {}},
                 delete: {text: '删除', action: e => {}},
             };
             // 点击容器
-            context.attach(PHOTOS_GRID, [
+            context.attach('#photos-scroll', [
                 methods.refresh,
             ], _ => ds.clearSelection());
             // 点击图片
@@ -468,7 +480,8 @@
                 methods.copy,
                 methods.copies,
                 methods.open,
-                methods.move,
+                methods.movements,
+                methods.remove,
                 {divider: true},
                 methods.rename,
                 methods.delete,

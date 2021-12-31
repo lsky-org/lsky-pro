@@ -16,8 +16,6 @@ window.context = window.context || (function () {
         compress: false
     };
 
-    let selection;
-
     function initialize(opts) {
 
         options = $.extend({}, options, opts);
@@ -48,7 +46,7 @@ window.context = window.context || (function () {
         options = $.extend({}, options, opts);
     }
 
-    function buildMenu(data, id, subMenu) {
+    function buildMenu(event, data, id, subMenu) {
         let subClass = (subMenu) ? ' dropdown-context-sub' : '',
             compressed = options.compress ? ' compressed-context' : '',
             $menu = $('<ul class="dropdown-menu dropdown-context' + subClass + compressed + '" id="dropdown-' + id + '"></ul>');
@@ -71,29 +69,38 @@ window.context = window.context || (function () {
                 } else {
                     $sub = $('<li><a tabindex="-1" href="' + data[i].href + '"' + linkTarget + '>' + data[i].text + '</a></li>');
                 }
+                // show or hide?
+                if (typeof data[i].visible === 'function') {
+                    if (! data[i].visible(event)) {
+                        $sub.hide();
+                    }
+                }
                 let $a = $sub.find('a');
+                // custom classes
                 if (typeof data[i].classes !== 'undefined') {
                     for (const classKey in data[i].classes) {
                         $a.addClass(data[i].classes[classKey]);
                     }
                 }
+                // custom attributes
                 if (typeof data[i].attributes !== 'undefined') {
                     for (const attributesKey in data[i].attributes) {
                         $a.attr(attributesKey, data[i].attributes[attributesKey]);
                     }
                 }
+                // click callback
                 if (typeof data[i].action !== 'undefined') {
                     let actionID = 'event-' + new Date().getTime() * Math.floor(Math.random() * 100000),
                         eventAction = data[i].action;
                     $a.attr('id', actionID);
                     $('#' + actionID).addClass('context-event');
                     $(document).on('click', '#' + actionID, function () {
-                        eventAction.call(this, selection);
+                        eventAction.call(this, event);
                     });
                 }
                 $menu.append($sub);
                 if (typeof data[i].subMenu != 'undefined') {
-                    let subMenuData = buildMenu(data[i].subMenu, id, true);
+                    let subMenuData = buildMenu(event, data[i].subMenu, id, true);
                     $menu.find('li:last').append(subMenuData);
                 }
             }
@@ -117,20 +124,22 @@ window.context = window.context || (function () {
      */
     function addContext(selector, data, open) {
 
-        let d = new Date(),
-            id = d.getTime(),
-            $menu = buildMenu(data, id);
-
-        $('body').append($menu);
+        let id = new Date().getTime();
 
         $(document).on('contextmenu', selector, function (e) {
             e.preventDefault();
             e.stopPropagation();
-            selection = e;
+
+            let $menu = buildMenu(e.target.closest(selector), data, id);
+            // clear dropdowns
+            $('body .dropdown-menu.dropdown-context').remove();
+            // create dropdown
+            $('body').append($menu);
 
             $('.dropdown-context:not(.dropdown-context-sub)').hide();
 
             let $dd = $("#dropdown-" + id);
+
             if (typeof options.above == 'boolean' && options.above) {
                 $dd.addClass('dropdown-context-up').css({
                     top: e.pageY - 20 - $('#dropdown-' + id).height(),
