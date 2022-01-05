@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class AlbumController extends Controller
 {
@@ -43,5 +44,21 @@ class AlbumController extends Controller
         }
         $album->update(array_filter($request->validated()));
         return $this->success('修改成功');
+    }
+
+    public function delete(Request $request): Response
+    {
+        /** @var User $user */
+        $user = Auth::user();
+        /** @var Album|null $album */
+        $album = $user->albums()->find($request->route('id'));
+        if (is_null($album)) {
+            return $this->error('不存在的相册');
+        }
+        DB::transaction(function () use ($album) {
+            $album->images()->update(['album_id' => null]);
+            $album->delete();
+        });
+        return $this->success('删除成功');
     }
 }

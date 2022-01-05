@@ -1,6 +1,7 @@
 window._ = require('lodash');
 window.$ = window.jQuery = require('jquery');
 window.toastr = require('toastr');
+window.swal = require('sweetalert2')
 
 toastr.options = {
     "closeButton": true,

@@ -29,6 +29,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('albums', [AlbumController::class, 'albums'])->name('user.albums');
         Route::post('albums', [AlbumController::class, 'create'])->name('user.album.create');
         Route::put('albums/{id}', [AlbumController::class, 'update'])->name('user.album.update');
+        Route::delete('albums/{id}', [AlbumController::class, 'delete'])->name('user.album.delete');
     });
 });
 

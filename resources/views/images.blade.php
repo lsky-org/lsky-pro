@@ -138,6 +138,7 @@
             const PHOTOS_SCROLL = '#photos-scroll';
             const PHOTOS_GRID = '#photos-grid';
             const PHOTOS_ITEM = '.photos-item';
+            const ALBUM_ITEM = '.albums-item';
 
             const $headerTitle = $(HEADER_TITLE);
             const $photos = $(PHOTOS_GRID);
@@ -300,8 +301,28 @@
 
                     $albums.off('click', '.delete').on('click', '.delete', function (e) {
                         e.stopPropagation();
-                        // TODO
-                        console.log('remove')
+                        swal.fire({
+                            title: '确认删除该相册?',
+                            text: "删除后相册中的图片将会被移出。",
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: '确认',
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                let id = $(this).closest(ALBUM_ITEM).data('id');
+                                axios.delete(`/user/albums/${id}`).then(response => {
+                                    if (response.data.status) {
+                                        selectedAlbum = {};
+                                        resetImages();
+                                        setTimeout(_ => drawer.close(), 300)
+                                    } else {
+                                        toastr.error(response.data.message);
+                                    }
+                                });
+                            }
+                        })
                     });
 
                     // confirm create
