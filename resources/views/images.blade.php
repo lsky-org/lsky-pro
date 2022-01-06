@@ -46,6 +46,20 @@
                     </x-dropdown-link>
                 </x-slot>
             </x-dropdown>
+            <x-dropdown direction="left">
+                <x-slot name="trigger">
+                    <a id="visibility" class="text-sm py-2 px-3 hover:bg-gray-100 rounded text-gray-800" href="javascript:void(0)">
+                        <span>全部</span>
+                        <i class="fas fa-eye text-blue-500"></i>
+                    </a>
+                </x-slot>
+
+                <x-slot name="content">
+                    <x-dropdown-link href="javascript:void(0)" @click="open = false">全部</x-dropdown-link>
+                    <x-dropdown-link href="javascript:void(0)" @click="open = false">公开</x-dropdown-link>
+                    <x-dropdown-link href="javascript:void(0)" @click="open = false">私有</x-dropdown-link>
+                </x-slot>
+            </x-dropdown>
         </div>
     </div>
     <div class="relative inset-0 h-full overflow-hidden select-none">
@@ -529,6 +543,10 @@
                 },
                 detail: {text: '详细信息', action: e => {}},
                 delete: {text: '删除', action: e => {}},
+                visibility: {
+                    text: '设置可见性',
+                    action: e => {},
+                },
             };
             // 点击容器
             context.attach(PHOTOS_SCROLL, {
@@ -544,6 +562,7 @@
                     methods.copies,
                     methods.open,
                     methods.movements,
+                    methods.visibility,
                     methods.remove,
                     {divider: true},
                     methods.rename,
