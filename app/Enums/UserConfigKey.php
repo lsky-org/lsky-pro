@@ -2,14 +2,7 @@
 
 namespace App\Enums;
 
-use BenSampo\Enum\Enum;
-
-/**
- * @method static static DefaultAlbum()
- * @method static static DefaultStrategy()
- * @method static static IsAutoClearPreview()
- */
-final class UserConfigKey extends Enum
+final class UserConfigKey
 {
     /** @var string 默认相册 */
     const DefaultAlbum = 'default_album';

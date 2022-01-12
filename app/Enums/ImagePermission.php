@@ -2,13 +2,7 @@
 
 namespace App\Enums;
 
-use BenSampo\Enum\Enum;
-
-/**
- * @method static static Public()
- * @method static static Private()
- */
-final class ImagePermission extends Enum
+final class ImagePermission
 {
     const Public  = 1; // 公开
     const Private = 0; // 私有

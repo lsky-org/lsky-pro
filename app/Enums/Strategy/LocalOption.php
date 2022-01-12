@@ -2,13 +2,7 @@
 
 namespace App\Enums\Strategy;
 
-use BenSampo\Enum\Enum;
-
-/**
- * @method static static Domain()
- * @method static static Root()
- */
-final class LocalOption extends Enum
+final class LocalOption
 {
     /** @var string 访问域名 */
     const Domain = 'domain';

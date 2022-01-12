@@ -2,20 +2,7 @@
 
 namespace App\Enums;
 
-use BenSampo\Enum\Enum;
-
-/**
- * @method static static Local()
- * @method static static S3()
- * @method static static Oss()
- * @method static static Cos()
- * @method static static Kodo()
- * @method static static Uss()
- * @method static static Sftp()
- * @method static static Ftp()
- * @method static static Webdav()
- */
-final class StrategyKey extends Enum
+final class StrategyKey
 {
     /** @var int 本地 */
     const Local = 1;

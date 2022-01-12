@@ -2,18 +2,7 @@
 
 namespace App\Enums\Mail;
 
-use BenSampo\Enum\Enum;
-
-/**
- * @method static static Host()
- * @method static static Port()
- * @method static static Encryption()
- * @method static static Username()
- * @method static static Password()
- * @method static static Timeout()
- * @method static static AuthMode()
- */
-final class SmtpOption extends Enum
+final class SmtpOption
 {
     /** @var string 主机地址 */
     const Host = 'host';

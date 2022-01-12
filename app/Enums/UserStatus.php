@@ -2,13 +2,7 @@
 
 namespace App\Enums;
 
-use BenSampo\Enum\Enum;
-
-/**
- * @method static static Normal()
- * @method static static Frozen()
- */
-final class UserStatus extends Enum
+final class UserStatus
 {
     /** @var int 正常 */
     const Normal = 1;

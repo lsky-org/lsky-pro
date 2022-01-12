@@ -2,21 +2,7 @@
 
 namespace App\Enums;
 
-use BenSampo\Enum\Enum;
-
-/**
- * @method static static IsEnableRegistration()
- * @method static static IsEnableGallery()
- * @method static static SiteName()
- * @method static static SiteKeywords()
- * @method static static SiteDescription()
- * @method static static IcpNo()
- * @method static static IsAllowGuestUpload()
- * @method static static UserInitialCapacity()
- * @method static static MailConfigs()
- * @method static static GuestGroupConfigs()
- */
-final class ConfigKey extends Enum
+final class ConfigKey
 {
     /** @var string 是否启用注册 */
     const IsEnableRegistration = 'is_enable_registration';

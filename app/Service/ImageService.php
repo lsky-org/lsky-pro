@@ -24,9 +24,10 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image as InterventionImage;
-use League\Flysystem\Adapter\Local;
-use League\Flysystem\AdapterInterface;
 use League\Flysystem\Filesystem;
+use League\Flysystem\FilesystemAdapter;
+use League\Flysystem\FilesystemException;
+use League\Flysystem\Local\LocalFilesystemAdapter;
 use Overtrue\Flysystem\Qiniu\QiniuAdapter;
 
 class ImageService
@@ -149,8 +150,13 @@ class ImageService
         })->where('md5', $image->md5)->where('sha1', $image->sha1)->first();
         if (is_null($existing)) {
             $handle = fopen($file, 'r');
-            if (! $filesystem->putStream($pathname, $handle) || ! fclose($handle)) {
+            try {
+                $filesystem->writeStream($pathname, $handle);
+            } catch (FilesystemException $e) {
                 throw new UploadException('图片上传失败');
+            }
+            if (! fclose($handle)) {
+                throw new UploadException('资源关闭失败');
             }
         } else {
             $image->fill($existing->only('path', 'name'));
@@ -170,10 +176,10 @@ class ImageService
         return $image;
     }
 
-    public function getAdapter(int $disk, Collection $configs): AdapterInterface
+    public function getAdapter(int $disk, Collection $configs): FilesystemAdapter
     {
         return match ($disk) {
-            StrategyKey::Local => new Local($configs->get('root') ?: config('filesystems.disks.uploads.root')),
+            StrategyKey::Local => new LocalFilesystemAdapter($configs->get('root') ?: config('filesystems.disks.uploads.root')),
             StrategyKey::Kodo => new QiniuAdapter(
                 accessKey: $configs->get(KodoOption::AccessKey),
                 secretKey: $configs->get(KodoOption::SecretKey),

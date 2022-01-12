@@ -128,6 +128,9 @@
             url: '{{ route('upload') }}',
             autoUpload: false,
             dataType: 'json',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
             limitMultiFileUploads: 1,
             limitConcurrentUploads: 3,
             pasteZone: $(document),
@@ -201,12 +204,14 @@
                 }
             },
             fail: (e, data) => {
-                // 重新显示上传按钮
-                data.$preview.find('[data-operate="upload"]').show();
-                if (data.jqXHR.status === 419) {
-                    return setStatus(data, UPLOAD_ERROR, '令牌错误，请刷新网页重试');
+                if (data.errorThrown !== 'abort') {
+                    // 重新显示上传按钮
+                    data.$preview.find('[data-operate="upload"]').show();
+                    if (data.jqXHR.status === 419) {
+                        return setStatus(data, UPLOAD_ERROR, '令牌错误，请刷新网页重试');
+                    }
+                    return setStatus(data, UPLOAD_ERROR, '服务端异常，请稍后重试');
                 }
-                return setStatus(data, UPLOAD_ERROR, '服务端异常，请稍后重试');
             },
             // 等同于jq的complete
             always: (e, data) => {
@@ -229,7 +234,8 @@
             }
         });
 
-        $previews.on('click', '[data-operate]', function () {
+        $previews.on('click', '[data-operate]', function (e) {
+            e.stopPropagation();
             let $preview = $(this).closest('[data-id]');
             let method = $(this).data('operate');
             let id = $preview.data('id');

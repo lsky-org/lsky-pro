@@ -2,22 +2,7 @@
 
 namespace App\Enums;
 
-use BenSampo\Enum\Enum;
-
-/**
- * @method static static MaximumFileSize()
- * @method static static ConcurrentUploadNum()
- * @method static static IsUploadNeedsReview()
- * @method static static LimitPerMinute()
- * @method static static LimitPerHour()
- * @method static static LimitPerDay()
- * @method static static LimitPerWeek()
- * @method static static LimitPerMonth()
- * @method static static AcceptedFileSuffixes()
- * @method static static PathNamingRule()
- * @method static static FileNamingRule()
- */
-final class GroupConfigKey extends Enum
+final class GroupConfigKey
 {
     /** @var string 最大文件大小 */
     const MaximumFileSize = 'maximum_file_size';
