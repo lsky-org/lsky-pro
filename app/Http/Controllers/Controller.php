@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Exceptions\UploadException;
 use App\Http\Api;
 use App\Models\User;
-use App\Service\UploadService;
+use App\Service\ImageService;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -20,7 +20,7 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests, Api;
 
-    public function upload(Request $request, UploadService $service): Response
+    public function upload(Request $request, ImageService $service): Response
     {
         try {
             /** @var User $user */

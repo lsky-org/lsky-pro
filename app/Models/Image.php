@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use App\Enums\StrategyKey;
-use App\Service\UploadService;
+use App\Service\ImageService;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -80,7 +80,7 @@ class Image extends Model
     {
         static::deleting(function (self $image) {
             // TODO 检测是否启用了队列，放置队列中异步删除
-            $adapter = (new UploadService())->getAdapter($image->strategy->key, $image->strategy->configs);
+            $adapter = (new ImageService())->getAdapter($image->strategy->key, $image->strategy->configs);
             (new Filesystem($adapter))->delete($image->pathname);
         });
     }

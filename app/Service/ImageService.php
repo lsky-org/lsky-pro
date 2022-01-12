@@ -29,7 +29,7 @@ use League\Flysystem\AdapterInterface;
 use League\Flysystem\Filesystem;
 use Overtrue\Flysystem\Qiniu\QiniuAdapter;
 
-class UploadService
+class ImageService
 {
     /**
      * @param  Request  $request
