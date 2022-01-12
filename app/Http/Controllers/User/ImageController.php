@@ -79,4 +79,15 @@ class ImageController extends Controller
         });
         return $this->success('移动成功');
     }
+
+    public function delete(Request $request): Response
+    {
+        /** @var User $user */
+        $user = Auth::user();
+        /** @var Image $image */
+        foreach ($user->images()->with('strategy')->whereIn('id', $request->all() ?: [])->cursor() as $image) {
+            $image->delete();
+        }
+        return $this->success('删除成功');
+    }
 }

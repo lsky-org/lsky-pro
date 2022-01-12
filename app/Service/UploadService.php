@@ -170,7 +170,7 @@ class UploadService
         return $image;
     }
 
-    protected function getAdapter(int $disk, Collection $configs): AdapterInterface
+    public function getAdapter(int $disk, Collection $configs): AdapterInterface
     {
         return match ($disk) {
             StrategyKey::Local => new Local($configs->get('root') ?: config('filesystems.disks.uploads.root')),

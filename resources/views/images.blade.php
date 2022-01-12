@@ -542,7 +542,33 @@
                     visible: _ => selectedAlbum.id !== undefined,
                 },
                 detail: {text: '详细信息', action: e => {}},
-                delete: {text: '删除', action: e => {}},
+                delete: {
+                    text: '删除',
+                    action: e => {
+                        Swal.fire({
+                            title: '确认要删除选中的图片？',
+                            text: "删除后不可恢复，记录和文件同时删除",
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonText: '确认删除',
+                            cancelButtonText: '取消',
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                let selected = ds.getSelection().map(item => $(item).data('id'));
+                                axios.delete('{{ route('user.images.delete') }}', {
+                                    data: selected,
+                                }).then(response => {
+                                    if (response.data.status) {
+                                        resetImages();
+                                        toastr.success(response.data.message);
+                                    } else {
+                                        toastr.warning(response.data.message);
+                                    }
+                                });
+                            }
+                        })
+                    },
+                },
                 visibility: {
                     text: '设置可见性',
                     action: e => {},

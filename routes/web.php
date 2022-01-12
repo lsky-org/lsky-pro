@@ -25,6 +25,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/images', [ImageController::class, 'index'])->name('images');
     Route::group(['prefix' => 'user'], function () {
         Route::get('images', [ImageController::class, 'images'])->name('user.images');
+        Route::delete('images', [ImageController::class, 'delete'])->name('user.images.delete');
         Route::put('images/movement', [ImageController::class, 'movement'])->name('user.images.movement');
         Route::get('albums', [AlbumController::class, 'albums'])->name('user.albums');
         Route::post('albums', [AlbumController::class, 'create'])->name('user.album.create');

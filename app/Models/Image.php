@@ -3,12 +3,14 @@
 namespace App\Models;
 
 use App\Enums\StrategyKey;
+use App\Service\UploadService;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
+use League\Flysystem\Filesystem;
 
 /**
  * @property int $id
@@ -73,6 +75,15 @@ class Image extends Model
         'size' => 'float',
         'is_unhealthy' => 'bool',
     ];
+
+    protected static function booted()
+    {
+        static::deleting(function (self $image) {
+            // TODO 检测是否启用了队列，放置队列中异步删除
+            $adapter = (new UploadService())->getAdapter($image->strategy->key, $image->strategy->configs);
+            (new Filesystem($adapter))->delete($image->pathname);
+        });
+    }
 
     public function getFilenameAttribute(): string
     {

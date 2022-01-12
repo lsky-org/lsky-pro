@@ -1,7 +1,15 @@
 window._ = require('lodash');
 window.$ = window.jQuery = require('jquery');
 window.toastr = require('toastr');
-window.swal = require('sweetalert2')
+window.Swal = require('sweetalert2')
+window.Swal.mixin({
+    customClass: {
+        confirmButton: 'btn btn-success',
+        cancelButton: 'btn btn-danger'
+    },
+    buttonsStyling: false
+})
+
 
 toastr.options = {
     "closeButton": true,
