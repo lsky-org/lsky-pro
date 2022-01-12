@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\StrategyKey;
 use App\Service\ImageService;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -85,34 +86,36 @@ class Image extends Model
         });
     }
 
-    public function getFilenameAttribute(): string
+    public function filename(): Attribute
     {
-        return $this->alias_name ?: $this->origin_name;
+        return new Attribute(fn () => $this->alias_name ?: $this->origin_name);
     }
 
-    public function getPathnameAttribute(): string
+    public function pathname(): Attribute
     {
-        return "{$this->path}/{$this->name}";
+        return new Attribute(fn () => "{$this->path}/{$this->name}");
     }
 
-    public function getUrlAttribute(): string
+    public function url(): Attribute
     {
-        if (! $this->strategy) {
-            return Storage::disk('uploads')->url($this->pathname);
-        }
-        $domain = rtrim($this->strategy->configs->get('domain'), '/');
-        return $domain.'/'.$this->pathname;
+        return new Attribute(function () {
+            if (! $this->strategy) {
+                return Storage::disk('uploads')->url($this->pathname);
+            }
+            $domain = rtrim($this->strategy->configs->get('domain'), '/');
+            return $domain.'/'.$this->pathname;
+        });
     }
 
-    public function getLinksAttribute(): Collection
+    public function links(): Attribute
     {
-        return collect([
+        return new Attribute(fn () => collect([
             'url' => $this->url,
             'html' => "&lt;img src=\"{$this->url}\" alt=\"{$this->origin_name}\" title=\"{$this->origin_name}\" /&gt;",
             'bbcode' => "[img]{$this->url}[/img]",
             'markdown' => "![{$this->origin_name}]({$this->url})",
             'markdown_with_link' => "[![{$this->origin_name}]({$this->url})]({$this->url})",
-        ]);
+        ]));
     }
 
     public function user(): BelongsTo
