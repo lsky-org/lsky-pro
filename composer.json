@@ -11,8 +11,8 @@
         "intervention/image": "^2.7",
         "laravel/breeze": "dev-laravel9",
         "laravel/framework": "^9.0",
-        "laravel/sanctum": "^2.11|dev-develop",
-        "laravel/tinker": "^2.5|dev-develop",
+        "laravel/sanctum": "^2.14",
+        "laravel/tinker": "^2.7",
         "overtrue/flysystem-qiniu": "^2.0"
     },
     "require-dev": {
