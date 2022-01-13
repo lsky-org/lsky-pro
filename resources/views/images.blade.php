@@ -637,18 +637,20 @@
                                 })
                             }
                         }).then(result => {
-                            let selected = ds.getSelection().map(item => $(item).data('id'));
-                            axios.put('{{ route('user.images.permission') }}', {
-                                ids: selected,
-                                permission: result.value,
-                            }).then(response => {
-                                if (response.data.status) {
-                                    ds.clearSelection();
-                                    toastr.success(response.data.message);
-                                } else {
-                                    toastr.warning(response.data.message);
-                                }
-                            });
+                            if (result.isConfirmed) {
+                                let selected = ds.getSelection().map(item => $(item).data('id'));
+                                axios.put('{{ route('user.images.permission') }}', {
+                                    ids: selected,
+                                    permission: result.value,
+                                }).then(response => {
+                                    if (response.data.status) {
+                                        ds.clearSelection();
+                                        toastr.success(response.data.message);
+                                    } else {
+                                        toastr.warning(response.data.message);
+                                    }
+                                });
+                            }
                         });
                     },
                 },
