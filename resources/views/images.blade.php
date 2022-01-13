@@ -90,8 +90,8 @@
             </div>
             <div class="photo-mask absolute left-0 right-0 bottom-0 h-20 z-[1] bg-gradient-to-t from-black" onclick="$(this).siblings('img').trigger('click')">
                 <div class="absolute left-2 bottom-2 text-white z-[2] w-[90%]">
-                    <p class="text-sm truncate" title="__name__">__name__</p>
-                    <p class="text-xs" title="__human_date__">__date__</p>
+                    <p class="text-sm truncate filename" title="__name__">__name__</p>
+                    <p class="text-xs date" title="__human_date__">__date__</p>
                 </div>
             </div>
             <img alt="__name__" src="__url__" width="__width__" height="__height__">
@@ -466,8 +466,42 @@
                 refresh: {text: '刷新', action: _ => resetImages()},
                 rename: {
                     text: '重命名',
-                    action: e => {},
                     visible: () => ds.getSelection().length === 1,
+                    action: e => {
+                        let item = $(e).data('json');
+                        Swal.fire({
+                            title: '请输入图片名称',
+                            input: 'text',
+                            value: item.filename,
+                            inputAttributes: {
+                                autocapitalize: 'off'
+                            },
+                            showCancelButton: true,
+                            confirmButtonText: '确认',
+                            showLoaderOnConfirm: true,
+                            preConfirm: (value) => {
+                                return axios.put('{{ route('user.images.rename') }}', {
+                                    id: item.id,
+                                    name: value,
+                                }).then(response => {
+                                    if (! response.data.status) {
+                                        throw new Error(response.data.message)
+                                    }
+                                    return response.data;
+                                }).catch(error => Swal.showValidationMessage('服务异常，请稍后重试。'));
+                            },
+                            allowOutsideClick: () => !Swal.isLoading()
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                if (result.value.status) {
+                                    $(e).find('p.filename').attr('title', result.value.data.filename).text(result.value.data.filename)
+                                    toastr.success(result.value.message);
+                                } else {
+                                    toastr.error(result.value.message);
+                                }
+                            }
+                        })
+                    },
                 },
                 open: {
                     text: '新窗口打开',

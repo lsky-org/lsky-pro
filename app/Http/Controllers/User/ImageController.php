@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\Enums\ImagePermission;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ImageRenameRequest;
 use App\Models\Album;
 use App\Models\Image;
 use App\Models\User;
@@ -64,6 +65,19 @@ class ImageController extends Controller
             ]);
         });
         return $this->success('success', compact('images'));
+    }
+
+    public function rename(ImageRenameRequest $request): Response
+    {
+        /** @var User $user */
+        $user = Auth::user();
+        /** @var Image $image */
+        if ($image = $user->images()->find($request->input('id'))) {
+            $image->alias_name = $request->input('name');
+            $image->save();
+        }
+
+        return $this->success('重命名成功', $image->only('id', 'filename'));
     }
 
     public function movement(Request $request): Response
