@@ -11,7 +11,7 @@
         <div class="space-x-2 flex justify-between items-center">
             <a class="text-sm py-2 px-3 hover:bg-gray-100 rounded text-gray-800" href="javascript:getAlbums()"><i class="fas fa-bars text-blue-500"></i> 相册</a>
             <div class="flex-row hidden lg:flex">
-                <a data-operate="movement" class="hidden text-sm py-2 px-3 hover:bg-gray-100 rounded text-gray-800" href="javascript:void(0)">移动到相册</a>
+                <a data-operate="movements" class="hidden text-sm py-2 px-3 hover:bg-gray-100 rounded text-gray-800" href="javascript:void(0)">移动到相册</a>
                 <a data-operate="remove" class="hidden text-sm py-2 px-3 hover:bg-gray-100 rounded text-gray-800" href="javascript:void(0)">移出当前相册</a>
                 <a data-operate="permission" class="hidden text-sm py-2 px-3 hover:bg-gray-100 rounded text-gray-800" href="javascript:void(0)">设置可见性</a>
                 <a data-operate="rename" class="hidden text-sm py-2 px-3 hover:bg-gray-100 rounded text-gray-800" href="javascript:void(0)">重命名</a>
@@ -25,7 +25,7 @@
 
                     <x-slot name="content">
                         <x-dropdown-link data-operate="refresh" href="javascript:void(0)" @click="open = false">刷新</x-dropdown-link>
-                        <x-dropdown-link data-operate="movement" class="hidden" href="javascript:void(0)" @click="open = false">移动到相册</x-dropdown-link>
+                        <x-dropdown-link data-operate="movements" class="hidden" href="javascript:void(0)" @click="open = false">移动到相册</x-dropdown-link>
                         <x-dropdown-link data-operate="remove" class="hidden" href="javascript:void(0)" @click="open = false">移出当前相册</x-dropdown-link>
                         <x-dropdown-link data-operate="permission" class="hidden" href="javascript:void(0)" @click="open = false">设置可见性</x-dropdown-link>
                         <x-dropdown-link data-operate="rename" class="hidden" href="javascript:void(0)" @click="open = false">重命名</x-dropdown-link>
@@ -426,12 +426,12 @@
                     operates = ['refresh'];
                 }
                 if (selected.length === 1) {
-                    operates = ['refresh', 'movement', 'permission', 'rename', 'delete'];
+                    operates = ['refresh', 'movements', 'permission', 'rename', 'delete'];
                 }
                 if (selected.length > 1) {
-                    operates = ['refresh', 'movement', 'permission', 'delete'];
+                    operates = ['refresh', 'movements', 'permission', 'delete'];
                 }
-                if (selectedAlbum.id !== undefined) {
+                if (selected.length && selectedAlbum.id !== undefined) {
                     operates.push('remove');
                 }
                 $(operates.map(item => `[data-operate=${item}]`).toString()).css('display', 'block');
@@ -474,6 +474,146 @@
             });
 
             const methods = {
+                movements() {
+                    getAlbums({title: '选择相册'}, e => {
+                        let selected = ds.getSelection().map(item => $(item).data('id'));
+                        $headerTitle.text(`移动 ${selected.length} 张图片至...`)
+                        $(e).off('click', '>a').on('click', '>a', function () {
+                            axios.put('{{ route('user.images.movement') }}', {
+                                selected: selected,
+                                id: $(this).data('id'),
+                            }).then(response => {
+                                if (response.data.status) {
+                                    drawer.close();
+                                    resetImages();
+                                    toastr.success(response.data.message);
+                                } else {
+                                    toastr.warning(response.data.message);
+                                }
+                            })
+                        });
+                    });
+                },
+                remove() {
+                    let selected = ds.getSelection().map(item => $(item).data('id'));
+                    $headerTitle.text(`移出 ${selected.length} 张图片`)
+                    axios.put('{{ route('user.images.movement') }}', {
+                        selected: selected,
+                        album_id: selectedAlbum.id || null, // 原相册ID
+                        id: null,
+                    }).then(response => {
+                        if (response.data.status) {
+                            drawer.close();
+                            resetImages();
+                            toastr.success(response.data.message);
+                        } else {
+                            toastr.warning(response.data.message);
+                        }
+                    });
+                },
+                visibility() {
+                    Swal.fire({
+                        title: '选择一个权限',
+                        text: '选择公开将会出现在画廊中(若平台开启了画廊)',
+                        input: 'select',
+                        inputOptions: {
+                            public: '公开',
+                            private: '私有',
+                        },
+                        confirmButtonText: '确认设置',
+                        inputPlaceholder: '请选择一个权限',
+                        showCancelButton: true,
+                        inputValidator: (value) => {
+                            return new Promise((resolve) => {
+                                if (value === '') {
+                                    resolve('请选择正确的权限')
+                                } else {
+                                    resolve();
+                                }
+                            })
+                        }
+                    }).then(result => {
+                        if (result.isConfirmed) {
+                            let selected = ds.getSelection().map(item => $(item).data('id'));
+                            axios.put('{{ route('user.images.permission') }}', {
+                                ids: selected,
+                                permission: result.value,
+                            }).then(response => {
+                                if (response.data.status) {
+                                    ds.clearSelection();
+                                    toastr.success(response.data.message);
+                                } else {
+                                    toastr.warning(response.data.message);
+                                }
+                            });
+                        }
+                    });
+                },
+                rename(e) {
+                    let item = $(e).data('json');
+                    Swal.fire({
+                        title: '请输入图片名称',
+                        input: 'text',
+                        inputValue: item.filename,
+                        inputAttributes: {
+                            autocapitalize: 'off'
+                        },
+                        showCancelButton: true,
+                        confirmButtonText: '确认',
+                        showLoaderOnConfirm: true,
+                        preConfirm: (value) => {
+                            return axios.put('{{ route('user.images.rename') }}', {
+                                id: item.id,
+                                name: value,
+                            }).then(response => {
+                                if (! response.data.status) {
+                                    throw new Error(response.data.message)
+                                }
+                                return response.data;
+                            }).catch(error => Swal.showValidationMessage('服务异常，请稍后重试。'));
+                        },
+                        allowOutsideClick: () => !Swal.isLoading()
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            if (result.value.status) {
+                                $(e).find('p.filename').attr('title', result.value.data.filename).text(result.value.data.filename)
+                                item.filename = result.value.data.filename;
+                                $(e).data('json', item);
+                                toastr.success(result.value.message);
+                            } else {
+                                toastr.error(result.value.message);
+                            }
+                        }
+                    })
+                },
+                delete() {
+                    Swal.fire({
+                        title: '确认要删除选中的图片？',
+                        text: "删除后不可恢复，记录和文件同时删除",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: '确认删除',
+                        cancelButtonText: '取消',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            let selected = ds.getSelection().map(item => $(item).data('id'));
+                            axios.delete('{{ route('user.images.delete') }}', {
+                                data: selected,
+                            }).then(response => {
+                                if (response.data.status) {
+                                    ds.getSelection().map(item => $(item).remove())
+                                    $photos.justifiedGallery(gridConfigs).removeClass('reset');
+                                    toastr.success(response.data.message);
+                                } else {
+                                    toastr.warning(response.data.message);
+                                }
+                            });
+                        }
+                    });
+                }
+            };
+            // right click actions
+            const actions = {
                 copy: {
                     text: '复制图片',
                     action: e => {
@@ -490,43 +630,7 @@
                 rename: {
                     text: '重命名',
                     visible: () => ds.getSelection().length === 1,
-                    action: e => {
-                        let item = $(e).data('json');
-                        Swal.fire({
-                            title: '请输入图片名称',
-                            input: 'text',
-                            inputValue: item.filename,
-                            inputAttributes: {
-                                autocapitalize: 'off'
-                            },
-                            showCancelButton: true,
-                            confirmButtonText: '确认',
-                            showLoaderOnConfirm: true,
-                            preConfirm: (value) => {
-                                return axios.put('{{ route('user.images.rename') }}', {
-                                    id: item.id,
-                                    name: value,
-                                }).then(response => {
-                                    if (! response.data.status) {
-                                        throw new Error(response.data.message)
-                                    }
-                                    return response.data;
-                                }).catch(error => Swal.showValidationMessage('服务异常，请稍后重试。'));
-                            },
-                            allowOutsideClick: () => !Swal.isLoading()
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                if (result.value.status) {
-                                    $(e).find('p.filename').attr('title', result.value.data.filename).text(result.value.data.filename)
-                                    item.filename = result.value.data.filename;
-                                    $(e).data('json', item);
-                                    toastr.success(result.value.message);
-                                } else {
-                                    toastr.error(result.value.message);
-                                }
-                            }
-                        })
-                    },
+                    action: e => methods.rename(e),
                 },
                 open: {
                     text: '新窗口打开',
@@ -566,137 +670,42 @@
                 },
                 movements: {
                     text: '移动到相册',
-                    action: _ => {
-                        getAlbums({title: '选择相册'}, e => {
-                            let selected = ds.getSelection().map(item => $(item).data('id'));
-                            $headerTitle.text(`移动 ${selected.length} 张图片至...`)
-                            $(e).off('click', '>a').on('click', '>a', function () {
-                                axios.put('{{ route('user.images.movement') }}', {
-                                    selected: selected,
-                                    id: $(this).data('id'),
-                                }).then(response => {
-                                    if (response.data.status) {
-                                        drawer.close();
-                                        resetImages();
-                                        toastr.success(response.data.message);
-                                    } else {
-                                        toastr.warning(response.data.message);
-                                    }
-                                })
-                            });
-                        })
-                    },
+                    action: _ => methods.movements(),
                 },
                 remove: {
                     text: '移出当前相册',
-                    action: _ => {
-                        let selected = ds.getSelection().map(item => $(item).data('id'));
-                        $headerTitle.text(`移出 ${selected.length} 张图片`)
-                        axios.put('{{ route('user.images.movement') }}', {
-                            selected: selected,
-                            album_id: selectedAlbum.id || null, // 原相册ID
-                            id: null,
-                        }).then(response => {
-                            if (response.data.status) {
-                                drawer.close();
-                                resetImages();
-                                toastr.success(response.data.message);
-                            } else {
-                                toastr.warning(response.data.message);
-                            }
-                        });
-                    },
+                    action: _ => methods.remove(),
                     visible: _ => selectedAlbum.id !== undefined,
                 },
                 detail: {text: '详细信息', action: e => {}},
                 delete: {
                     text: '删除',
-                    action: e => {
-                        Swal.fire({
-                            title: '确认要删除选中的图片？',
-                            text: "删除后不可恢复，记录和文件同时删除",
-                            icon: 'warning',
-                            showCancelButton: true,
-                            confirmButtonText: '确认删除',
-                            cancelButtonText: '取消',
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                let selected = ds.getSelection().map(item => $(item).data('id'));
-                                axios.delete('{{ route('user.images.delete') }}', {
-                                    data: selected,
-                                }).then(response => {
-                                    if (response.data.status) {
-                                        resetImages();
-                                        toastr.success(response.data.message);
-                                    } else {
-                                        toastr.warning(response.data.message);
-                                    }
-                                });
-                            }
-                        })
-                    },
+                    action: _ => methods.delete(),
                 },
                 visibility: {
                     text: '设置可见性',
-                    action: e => {
-                        Swal.fire({
-                            title: '选择一个权限',
-                            text: '选择公开将会出现在画廊中(若平台开启了画廊)',
-                            input: 'select',
-                            inputOptions: {
-                                public: '公开',
-                                private: '私有',
-                            },
-                            confirmButtonText: '确认设置',
-                            inputPlaceholder: '请选择一个权限',
-                            showCancelButton: true,
-                            inputValidator: (value) => {
-                                return new Promise((resolve) => {
-                                    if (value === '') {
-                                        resolve('请选择正确的权限')
-                                    } else {
-                                        resolve();
-                                    }
-                                })
-                            }
-                        }).then(result => {
-                            if (result.isConfirmed) {
-                                let selected = ds.getSelection().map(item => $(item).data('id'));
-                                axios.put('{{ route('user.images.permission') }}', {
-                                    ids: selected,
-                                    permission: result.value,
-                                }).then(response => {
-                                    if (response.data.status) {
-                                        ds.clearSelection();
-                                        toastr.success(response.data.message);
-                                    } else {
-                                        toastr.warning(response.data.message);
-                                    }
-                                });
-                            }
-                        });
-                    },
+                    action: _ => methods.visibility(),
                 },
             };
-            // 点击容器
+            // right click 'photos scroll' container
             context.attach(PHOTOS_SCROLL, {
-                data: [methods.refresh],
+                data: [actions.refresh],
                 beforeOpen: () => ds.clearSelection(),
             });
-            // 点击图片
+            // right click image
             context.attach(PHOTOS_ITEM, {
                 data: [
                     {header: '图片操作'},
-                    methods.refresh,
-                    methods.copy,
-                    methods.copies,
-                    methods.open,
-                    methods.movements,
-                    methods.remove,
-                    methods.visibility,
+                    actions.refresh,
+                    actions.copy,
+                    actions.copies,
+                    actions.open,
+                    actions.movements,
+                    actions.remove,
+                    actions.visibility,
                     {divider: true},
-                    methods.rename,
-                    methods.delete,
+                    actions.rename,
+                    actions.delete,
                 ],
                 beforeOpen: function (item) {
                     // 选中当前项目
@@ -709,6 +718,36 @@
                     $(dropdown).find('a.copy').each(function () {
                         $(this).data('copy-value', data.links[$(this).data('link-type')])
                     });
+                }
+            });
+            // the operates functions
+            $('[data-operate]').click(function () {
+                let operate = $(this).data('operate');
+                let selected = ds.getSelection();
+
+                if (selected.length === 0) {
+                    return false;
+                }
+
+                switch (operate) {
+                    case 'refresh': // 刷新
+                        resetImages();
+                        break;
+                    case 'movements': // 移动到相册
+                        methods.movements();
+                        break;
+                    case 'remove': // 移出当前相册
+                        methods.remove();
+                        break;
+                    case 'rename': // 重命名
+                        methods.rename(selected[0]);
+                        break;
+                    case 'permission': // 设置可见性
+                        methods.visibility();
+                        break;
+                    case 'delete': // 删除
+                        methods.delete();
+                        break;
                 }
             });
         </script>
