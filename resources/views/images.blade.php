@@ -472,7 +472,7 @@
                         Swal.fire({
                             title: '请输入图片名称',
                             input: 'text',
-                            value: item.filename,
+                            inputValue: item.filename,
                             inputAttributes: {
                                 autocapitalize: 'off'
                             },
@@ -495,6 +495,8 @@
                             if (result.isConfirmed) {
                                 if (result.value.status) {
                                     $(e).find('p.filename').attr('title', result.value.data.filename).text(result.value.data.filename)
+                                    item.filename = result.value.data.filename;
+                                    $(e).data('json', item);
                                     toastr.success(result.value.message);
                                 } else {
                                     toastr.error(result.value.message);
