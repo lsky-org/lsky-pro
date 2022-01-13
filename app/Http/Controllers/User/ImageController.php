@@ -67,6 +67,21 @@ class ImageController extends Controller
         return $this->success('success', compact('images'));
     }
 
+    public function permission(Request $request): Response
+    {
+        /** @var User $user */
+        $user = Auth::user();
+        $permission = $request->input('permission');
+        $permissions = ['public' => ImagePermission::Public, 'private' => ImagePermission::Private];
+        if (! in_array($permission, array_keys($permissions))) {
+            return $this->error('设置失败');
+        }
+        $user->images()->whereIn('id', (array) $request->input('ids'))->update([
+            'permission' => $permissions[$permission],
+        ]);
+        return $this->success('设置成功');
+    }
+
     public function rename(ImageRenameRequest $request): Response
     {
         /** @var User $user */

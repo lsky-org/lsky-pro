@@ -615,7 +615,42 @@
                 },
                 visibility: {
                     text: '设置可见性',
-                    action: e => {},
+                    action: e => {
+                        Swal.fire({
+                            title: '选择一个权限',
+                            text: '选择公开将会出现在画廊中(若平台开启了画廊)',
+                            input: 'select',
+                            inputOptions: {
+                                public: '公开',
+                                private: '私有',
+                            },
+                            confirmButtonText: '确认设置',
+                            inputPlaceholder: '请选择一个权限',
+                            showCancelButton: true,
+                            inputValidator: (value) => {
+                                return new Promise((resolve) => {
+                                    if (value === '') {
+                                        resolve('请选择正确的权限')
+                                    } else {
+                                        resolve();
+                                    }
+                                })
+                            }
+                        }).then(result => {
+                            let selected = ds.getSelection().map(item => $(item).data('id'));
+                            axios.put('{{ route('user.images.permission') }}', {
+                                ids: selected,
+                                permission: result.value,
+                            }).then(response => {
+                                if (response.data.status) {
+                                    ds.clearSelection();
+                                    toastr.success(response.data.message);
+                                } else {
+                                    toastr.warning(response.data.message);
+                                }
+                            });
+                        });
+                    },
                 },
             };
             // 点击容器
