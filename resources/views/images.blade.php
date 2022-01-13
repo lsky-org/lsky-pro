@@ -601,7 +601,8 @@
                                 data: selected,
                             }).then(response => {
                                 if (response.data.status) {
-                                    ds.getSelection().map(item => $(item).remove())
+                                    ds.getSelection().map(item => $(item).remove());
+                                    $headerTitle.text('我的图片');
                                     $photos.justifiedGallery(gridConfigs).removeClass('reset');
                                     toastr.success(response.data.message);
                                 } else {

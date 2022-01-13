@@ -123,8 +123,9 @@ class ImageController extends Controller
     {
         /** @var User $user */
         $user = Auth::user();
+        $model = Image::with('strategy')->where('user_id', $user->id)->whereIn('id', $request->all() ?: []);
         /** @var Image $image */
-        foreach ($user->images()->with('strategy')->whereIn('id', $request->all() ?: [])->cursor() as $image) {
+        foreach ($model->cursor() as $image) {
             $image->delete();
         }
         return $this->success('删除成功');
