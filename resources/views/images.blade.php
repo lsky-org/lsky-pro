@@ -392,8 +392,8 @@
             });
 
             $(document).keydown(e => {
-                e.preventDefault();
                 if (e.keyCode === 65 && (e.altKey || e.metaKey)) {
+                    e.preventDefault();
                     ds.setSelection($(PHOTOS_ITEM));
                 }
             });
