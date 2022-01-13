@@ -17,10 +17,12 @@
                     </x-slot>
 
                     <x-slot name="content">
-                        <x-dropdown-link href="{{ route('/') }}">移动到相册</x-dropdown-link>
-                        <x-dropdown-link href="{{ route('/') }}">标记为不健康</x-dropdown-link>
-                        <x-dropdown-link href="{{ route('/') }}" class="text-red-500">公开</x-dropdown-link>
-                        <x-dropdown-link href="{{ route('/') }}" class="text-red-500">删除</x-dropdown-link>
+                        <x-dropdown-link data-operate="refresh" href="javascript:void(0)" @click="open = false">刷新</x-dropdown-link>
+                        <x-dropdown-link data-operate="movement" class="hidden" href="javascript:void(0)" @click="open = false">移动到相册</x-dropdown-link>
+                        <x-dropdown-link data-operate="remove" class="hidden" href="javascript:void(0)" @click="open = false">移出当前相册</x-dropdown-link>
+                        <x-dropdown-link data-operate="permission" class="hidden" href="javascript:void(0)" @click="open = false">设置可见性</x-dropdown-link>
+                        <x-dropdown-link data-operate="rename" class="hidden" href="javascript:void(0)" @click="open = false">重命名</x-dropdown-link>
+                        <x-dropdown-link data-operate="delete" class="hidden" href="javascript:void(0)" @click="open = false">删除</x-dropdown-link>
                     </x-slot>
                 </x-dropdown>
             </div>
@@ -411,7 +413,21 @@
                 } else {
                     $headerTitle.text('我的图片');
                 }
-                // TODO 构建菜单
+                $('[data-operate]').hide();
+                let operates = [];
+                if (selected.length === 0) {
+                    operates = ['refresh'];
+                }
+                if (selected.length === 1) {
+                    operates = ['refresh', 'movement', 'permission', 'rename', 'delete'];
+                }
+                if (selected.length > 1) {
+                    operates = ['refresh', 'movement', 'permission', 'delete'];
+                }
+                if (selectedAlbum.id !== undefined) {
+                    operates.push('remove');
+                }
+                $(operates.map(item => `[data-operate=${item}]`).toString()).css('display', 'block');
             };
 
             ds.subscribe('predragstart', ({ event }) => {
@@ -669,8 +685,8 @@
                     methods.copies,
                     methods.open,
                     methods.movements,
-                    methods.visibility,
                     methods.remove,
+                    methods.visibility,
                     {divider: true},
                     methods.rename,
                     methods.delete,
