@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Enums\ImagePermission;
 use App\Http\Controllers\Controller;
 use App\Models\Album;
 use App\Models\Image;
@@ -38,6 +39,15 @@ class ImageController extends Controller
                     break;
                 default:
                     $builder->latest();
+            }
+        })->when($request->query('visibility') ?: 'all', function (Builder $builder, $visibility) {
+            switch ($visibility) {
+                case 'public':
+                    $builder->where('permission', ImagePermission::Public);
+                    break;
+                case 'private':
+                    $builder->where('permission', ImagePermission::Private);
+                    break;
             }
         })->when($request->query('keyword'), function (Builder $builder, $keyword) {
             $builder->whereRaw("concat(IFNULL(origin_name,''),IFNULL(alias_name,'')) like ?", ["%{$keyword}%"]);

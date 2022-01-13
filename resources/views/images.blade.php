@@ -55,9 +55,12 @@
                 </x-slot>
 
                 <x-slot name="content">
-                    <x-dropdown-link href="javascript:void(0)" @click="open = false">全部</x-dropdown-link>
-                    <x-dropdown-link href="javascript:void(0)" @click="open = false">公开</x-dropdown-link>
-                    <x-dropdown-link href="javascript:void(0)" @click="open = false">私有</x-dropdown-link>
+                    <x-dropdown-link href="javascript:void(0)" @click="open = false; setVisibility('all')">全部
+                    </x-dropdown-link>
+                    <x-dropdown-link href="javascript:void(0)" @click="open = false; setVisibility('public')">公开
+                    </x-dropdown-link>
+                    <x-dropdown-link href="javascript:void(0)" @click="open = false; setVisibility('private')">私有
+                    </x-dropdown-link>
                 </x-slot>
             </x-dropdown>
         </div>
@@ -375,6 +378,11 @@
             const setOrderBy = function (sort) {
                 resetImages({page: 1, order: sort})
                 $('#order span').text({newest: '最新', earliest: '最早', utmost: '最大', least: '最小'}[sort]);
+            };
+
+            const setVisibility = function (visibility) {
+                resetImages({page: 1, visibility: visibility})
+                $('#visibility span').text({public: '公开', private: '私有', all: '全部'}[visibility]);
             };
 
             $('#search').keydown(function (e) {
