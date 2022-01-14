@@ -81,7 +81,7 @@ class Image extends Model
             // TODO 检测是否启用了队列，放置队列中异步删除
             // 在当前图片所属的策略中是否存在其他相同 md5 和 sha1 的记录，没有则可以删除物理文件
             if (! static::query()
-                ->where('strategy_id', $image->strategy)
+                ->where('strategy_id', $image->strategy_id)
                 ->where('id', '<>', $image->id)
                 ->where('md5', $image->md5)
                 ->where('sha1', $image->sha1)
