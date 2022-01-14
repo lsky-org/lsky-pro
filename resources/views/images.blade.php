@@ -76,9 +76,9 @@
             </x-dropdown>
         </div>
     </div>
-    <div class="relative inset-0 h-full overflow-hidden select-none">
+    <div class="relative inset-0 h-full overflow-hidden">
         <!-- content -->
-        <div id="images-scroll" class="absolute inset-0 overflow-y-scroll dragselect">
+        <div id="images-scroll" class="absolute inset-0 overflow-y-scroll dragselect select-none">
             <div id="images-grid" class="dragselect"></div>
         </div>
         <!-- right drawer -->
@@ -147,51 +147,51 @@
     <script type="text/html" id="image-detail-tpl">
         <div class="my-4 px-4 space-y-3">
             <div>
-                <span class="text-sm">相册名称</span>
+                <span class="text-sm font-semibold">相册名称</span>
                 <p class="my-2 break-words text-gray-700">__album_name__</p>
             </div>
             <div>
-                <div class="text-sm">使用策略</div>
+                <div class="text-sm font-semibold">使用策略</div>
                 <p class="my-2 break-words text-gray-600">__strategy_name__</p>
             </div>
             <div>
-                <div class="text-sm">图片名称</div>
+                <div class="text-sm font-semibold">图片名称</div>
                 <p class="my-2 break-words text-gray-600">__filename__</p>
             </div>
             <div>
-                <div class="text-sm">图片原始名称</div>
+                <div class="text-sm font-semibold">图片原始名称</div>
                 <p class="my-2 break-words text-gray-600">__origin_name__</p>
             </div>
             <div>
-                <div class="text-sm">图片大小</div>
+                <div class="text-sm font-semibold">图片大小</div>
                 <p class="my-2 break-words text-gray-600">__size__</p>
             </div>
             <div>
-                <div class="text-sm">图片类型</div>
+                <div class="text-sm font-semibold">图片类型</div>
                 <p class="my-2 break-words text-gray-600">__mimetype__</p>
             </div>
             <div>
-                <div class="text-sm">尺寸</div>
+                <div class="text-sm font-semibold">尺寸</div>
                 <p class="my-2 break-words text-gray-600">__width__ * __height__</p>
             </div>
             <div>
-                <div class="text-sm">MD5</div>
+                <div class="text-sm font-semibold">MD5</div>
                 <p class="my-2 break-words text-gray-600">__md5__</p>
             </div>
             <div>
-                <div class="text-sm">SHA-128</div>
+                <div class="text-sm font-semibold">SHA-128</div>
                 <p class="my-2 break-words text-gray-600">__sha1__</p>
             </div>
             <div>
-                <div class="text-sm">权限</div>
+                <div class="text-sm font-semibold">权限</div>
                 <p class="my-2 break-words text-gray-600">__permission__</p>
             </div>
             <div>
-                <div class="text-sm">上传 IP</div>
+                <div class="text-sm font-semibold">上传 IP</div>
                 <p class="my-2 break-words text-gray-600">__uploaded_ip__</p>
             </div>
             <div>
-                <div class="text-sm">上传时间</div>
+                <div class="text-sm font-semibold">上传时间</div>
                 <p class="my-2 break-words text-gray-600">__created_at__</p>
             </div>
         </div>
@@ -673,7 +673,7 @@
                         if (response.data.status) {
                             let image = response.data.data.image;
                             let content = $('#image-detail-tpl').html()
-                                .replace(/__album_name__/g, image.album ? data.album.name : '无')
+                                .replace(/__album_name__/g, image.album ? image.album.name : '无')
                                 .replace(/__strategy_name__/g, image.strategy.name)
                                 .replace(/__filename__/g, image.filename)
                                 .replace(/__origin_name__/g, image.origin_name)
@@ -758,7 +758,11 @@
                     action: _ => methods.remove(),
                     visible: _ => selectedAlbum.id !== undefined,
                 },
-                detail: {text: '详细信息', action: e => methods.detail(e)},
+                detail: {
+                    text: '详细信息',
+                    visible: () => ds.getSelection().length === 1,
+                    action: e => methods.detail(e)
+                },
                 delete: {
                     text: '删除',
                     action: _ => methods.delete(),
