@@ -39,7 +39,7 @@ class Group extends Model
      *
      * @return Collection
      */
-    public static function getDefaultConfig(): Collection
+    public static function getDefaultConfigs(): Collection
     {
         return collect([
             GroupConfigKey::MaximumFileSize => 5120,
@@ -59,7 +59,7 @@ class Group extends Model
     protected static function booted()
     {
         static::creating(function (self $group) {
-            $group->configs = self::getDefaultConfig()->merge($group->configs ?: []);
+            $group->configs = self::getDefaultConfigs()->merge($group->configs ?: []);
         });
     }
 

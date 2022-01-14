@@ -3,7 +3,15 @@
 
     <div class="mb-4 p-4 bg-white rounded-md">
         <h1 class="tracking-wider text-2xl text-gray-700 mb-2" style="text-shadow: -4px 4px 0 rgb(0 0 0 / 10%);">Image Upload</h1>
-        <p class="text-gray-500 text-sm">最大可上传 1.00 MB 的图片，单次同时可选择 3 张。本站已托管 3267 张图片。</p>
+        <p class="text-gray-500 text-sm">
+            最大可上传 1.00 MB 的图片，上传队列最多
+            @if(Auth::check() && Auth::user()->group)
+                {{ Auth::user()->group->configs->get(\App\Enums\GroupConfigKey::ConcurrentUploadNum) }}
+            @else
+                {{ \App\Models\Group::getDefaultConfigs()->get(\App\Enums\GroupConfigKey::ConcurrentUploadNum) }}
+            @endif
+            张。本站已托管 {{ \App\Models\Image::query()->count() }} 张图片。
+        </p>
         <div class="mt-3 rounded-md border-2 border-dotted border-stone-300 w-full h-full" id="picker-dnd" onclick="$('#picker').click()">
             <div id="upload-container" class="relative group flex flex-col justify-center items-center p-2 w-full h-full min-h-[150px] sm:min-h-[340px] space-y-4 text-gray-500 cursor-pointer">
                 <i id="clear" class="fas fa-times absolute top-1 right-1 w-8 h-8 flex justify-center items-center cursor-pointer text-xl text-center hidden group-hover:block text-gray-400 hover:text-gray-500"></i>

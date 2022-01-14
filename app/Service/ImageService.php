@@ -50,7 +50,7 @@ class ImageService
 
         $image = new Image();
         // 组配置
-        $configs = Group::getDefaultConfig();
+        $configs = Group::getDefaultConfigs();
         // 默认使用本地储存策略
         $disk = collect([
             'driver' => StrategyKey::Local,
