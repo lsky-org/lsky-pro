@@ -71,10 +71,14 @@
             </div>
         </div>
 
-        <div class="flex flex-col space-y-2 mb-5 px-5 w-full mt-10">
+        <div id="capacity-progress" class="flex flex-col space-y-2 mb-5 px-5 w-full mt-10">
             <p class="text-gray-700 text-sm">容量使用</p>
-            <progress class="w-full h-1.5 bg-gary-300" value="90" max="100"></progress>
-            <p class="text-gray-700 text-sm truncate" title="0.00 Bytes / 1.00 GB">0.00 Bytes / 1.00 GB</p>
+            <progress class="w-full h-1.5 bg-gary-300" value="{{ Auth::user()->images->sum('size') }}" max="{{ Auth::user()->capacity }}"></progress>
+            <p class="text-gray-700 text-sm truncate">
+                <span class="used">{{ \App\Utils::formatSize(Auth::user()->images->sum('size') * 1024) }}</span>
+                /
+                <span class="total">{{ \App\Utils::formatSize(Auth::user()->capacity * 1024) }}</span>
+            </p>
         </div>
     </div>
 </nav>

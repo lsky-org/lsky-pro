@@ -15,6 +15,25 @@ window.utils = {
 
         return (bytes / Math.pow(k, i)).toPrecision(3) + ' ' + sizes[i];
     },
+    /**
+     * 更新进度条
+     * @param size 增加的字节(kb)
+     * @param total 总共有多少字节(kb)
+     */
+    setCapacityProgress(size, total) {
+        let $progress = $('#capacity-progress');
+        if ($progress.length) {
+            let used = parseFloat($progress.find('progress').val()) + size;
+            $progress.find('progress').val(used);
+            $progress.find('span.used').text(utils.formatSize(used * 1024));
+
+            if (total !== undefined && typeof total === 'number') {
+                total = parseFloat($progress.find('progress').attr('max')) + total;
+                $progress.find('progress').attr('max', total);
+                $progress.find('span.total').text(utils.formatSize(total * 1024));
+            }
+        }
+    },
     guid() {
         return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
             let r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);

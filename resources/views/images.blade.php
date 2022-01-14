@@ -658,7 +658,12 @@
                                 data: selected,
                             }).then(response => {
                                 if (response.data.status) {
-                                    ds.getSelection().map(item => $(item).remove());
+                                    let size = 0;
+                                    ds.getSelection().map(item => {
+                                        size += $(item).data('json').size;
+                                        $(item).remove();
+                                    });
+                                    utils.setCapacityProgress(-size);
                                     $headerTitle.text('我的图片');
                                     $photos.justifiedGallery(gridConfigs).removeClass('reset');
                                     toastr.success(response.data.message);

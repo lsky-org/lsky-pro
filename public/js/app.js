@@ -5459,6 +5459,27 @@ window.utils = {
         i = Math.floor(Math.log(bytes) / Math.log(k));
     return (bytes / Math.pow(k, i)).toPrecision(3) + ' ' + sizes[i];
   },
+
+  /**
+   * 更新进度条
+   * @param size 增加的字节(kb)
+   * @param total 总共有多少字节(kb)
+   */
+  setCapacityProgress: function setCapacityProgress(size, total) {
+    var $progress = $('#capacity-progress');
+
+    if ($progress.length) {
+      var used = parseFloat($progress.find('progress').val()) + size;
+      $progress.find('progress').val(used);
+      $progress.find('span.used').text(utils.formatSize(used * 1024));
+
+      if (total !== undefined && typeof total === 'number') {
+        total = parseFloat($progress.find('progress').attr('max')) + total;
+        $progress.find('progress').attr('max', total);
+        $progress.find('span.total').text(utils.formatSize(total * 1024));
+      }
+    }
+  },
   guid: function guid() {
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
       var r = Math.random() * 16 | 0,

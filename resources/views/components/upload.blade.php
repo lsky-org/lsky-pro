@@ -197,6 +197,7 @@
                         $('#links [data-tab="' + key + '"]').append('<p class="whitespace-nowrap select-all mt-1 bg-gray-50 hover:bg-gray-200 text-gray-600 rounded px-2 py-1 cursor-pointer overflow-scroll scrollbar-none">' + links[key].toString() + '</p>')
                     }
                     $links.show();
+                    utils.setCapacityProgress(response.data.size);
                 } else {
                     setStatus(data, UPLOAD_ERROR, "上传失败, " + response.message);
                     // 重新显示上传按钮
