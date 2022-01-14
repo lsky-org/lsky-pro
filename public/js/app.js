@@ -5569,6 +5569,9 @@ window.utils = {
           props.loading = false;
           props.finished = false;
           load();
+        },
+        destroy: function destroy() {
+          $(selector).unbind('scroll').unbind('click');
         }
       };
     }

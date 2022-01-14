@@ -119,6 +119,9 @@ window.utils = {
                     props.finished = false;
                     load();
                 },
+                destroy() {
+                    $(selector).unbind('scroll').unbind('click')
+                }
             }
         }
     }

@@ -237,6 +237,7 @@
                 close(callback) {
                     $drawerMask.fadeOut();
                     $drawer.css('right', '-1000px');
+                    albumsInfinite.destroy();
                     callback && callback();
                 },
                 toggle(title, content, callback) {
@@ -250,6 +251,7 @@
 
             $photos.justifiedGallery(gridConfigs);
 
+            let albumsInfinite = null;
             const imagesInfinite = utils.infiniteScroll(IMAGES_SCROLL, {
                 url: '{{ route('user.images') }}',
                 classes: ['dragselect'],
@@ -311,7 +313,7 @@
                     let $albums = $('#albums-container');
                     const CREATE_ID = '#album-add';
                     const UPDATE_ID = '#album-edit';
-                    const albumsInfinite = utils.infiniteScroll('#drawer-content', {
+                    albumsInfinite = utils.infiniteScroll('#drawer-content', {
                         url: '{{ route('user.albums') }}',
                         success: function (response) {
                             if (!response.status) {
