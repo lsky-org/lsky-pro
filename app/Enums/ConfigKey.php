@@ -28,6 +28,9 @@ final class ConfigKey
     /** @var string 用户初始容量(kb) */
     const UserInitialCapacity = 'user_initial_capacity';
 
+    /** @var string 账户是否需要验证 */
+    const IsUserNeedVerify = 'is_user_need_verify';
+
     /** @var string 邮件配置 */
     const MailConfigs = 'mail_configs';
 

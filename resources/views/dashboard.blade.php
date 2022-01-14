@@ -74,8 +74,12 @@
                                 <p class="basis-1/3">注册 IP</p>
                                 <p class="basis-2/3 truncate text-gray-800">{{ $user->registered_ip }}</p>
                             </div>
-                            @if(! $user->email_verified_at)
-                                <p class="p-2 text-sm rounded bg-red-500 text-white">你的账号尚未激活，功能受限，请根据激活邮件指引激活账号，如果你没有收到邮件，请点击 <a href="" class="text-green-400">这里</a> 重新发送。</p>
+                            @if(\App\Utils::config(\App\Enums\ConfigKey::IsUserNeedVerify) && !$user->email_verified_at)
+                                <p class="p-2 text-sm rounded bg-red-400 text-white">
+                                    你的账号尚未激活，功能受限，请根据激活邮件指引激活账号，如果你没有收到邮件，请点击
+                                    <a id="send-verify-email" href="javascript:void(0)" class="text-green-400">这里</a>
+                                    重新发送。
+                                </p>
                             @endif
                         </div>
                     </x-slot>
@@ -122,4 +126,25 @@
             </div>
         </div>
     </div>
+
+    @if(\App\Utils::config(\App\Enums\ConfigKey::IsUserNeedVerify) && !$user->email_verified_at)
+        @push('scripts')
+            <script>
+                $('#send-verify-email').click(function () {
+                    if (! $(this).attr('disabled')) {
+                        $(this).text('发送中...').attr('disabled');
+                        axios.post('{{ route('verification.send') }}').then(response => {
+                            toastr.success('发送成功，请注意查收。');
+                        }).catch(error => {
+                            if (error.response.status === 429) {
+                                toastr.error('操作频繁，请稍后再试');
+                            }
+                        }).finally(_ => {
+                            $(this).text('这里').attr('disabled');
+                        });
+                    }
+                });
+            </script>
+        @endpush
+    @endif
 </x-app-layout>

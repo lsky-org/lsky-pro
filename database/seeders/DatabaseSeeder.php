@@ -28,6 +28,7 @@ class DatabaseSeeder extends Seeder
             ConfigKey::IsEnableGallery => 1,
             ConfigKey::IsAllowGuestUpload => 1,
             ConfigKey::UserInitialCapacity => 512000,
+            ConfigKey::IsUserNeedVerify => 1,
             ConfigKey::MailConfigs => json_encode([
                 'default' => 'smtp',
                 'mailers' => [

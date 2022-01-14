@@ -26,6 +26,7 @@ class Utils
                     case ConfigKey::IsAllowGuestUpload:
                     case ConfigKey::IsEnableGallery:
                     case ConfigKey::IsEnableRegistration:
+                    case ConfigKey::IsUserNeedVerify:
                         $value = (bool) $value;
                         break;
                     case ConfigKey::MailConfigs:

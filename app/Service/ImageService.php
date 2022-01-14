@@ -58,6 +58,10 @@ class ImageService
         ]);
 
         if (! is_null($user)) {
+            if (Utils::config(ConfigKey::IsUserNeedVerify) && ! $user->email_verified_at) {
+                throw new UploadException('账户未验证');
+            }
+
             if ($user->status !== UserStatus::Normal) {
                 throw new UploadException('账号状态异常');
             }
