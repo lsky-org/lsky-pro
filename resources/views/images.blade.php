@@ -237,7 +237,7 @@
                 close(callback) {
                     $drawerMask.fadeOut();
                     $drawer.css('right', '-1000px');
-                    albumsInfinite.destroy();
+                    albumsInfinite && albumsInfinite.destroy();
                     callback && callback();
                 },
                 toggle(title, content, callback) {
