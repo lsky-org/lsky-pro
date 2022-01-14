@@ -61,10 +61,27 @@ class ImageController extends Controller
             $image->human_date = $image->created_at->diffForHumans();
             $image->date = $image->created_at->format('Y-m-d H:i:s');
             $image->append(['url', 'filename', 'links'])->setVisible([
-                'id', 'filename', 'url', 'human_date', 'date', 'human_date', 'width', 'height', 'links'
+                'id', 'filename', 'url', 'human_date', 'date', 'width', 'height', 'links'
             ]);
         });
         return $this->success('success', compact('images'));
+    }
+
+    public function image(Request $request): Response
+    {
+        /** @var User $user */
+        $user = Auth::user();
+        /** @var Image $image */
+        if (! $image = $user->images()->find($request->route('id'))) {
+            return $this->error('未找到该图片');
+        }
+        $image->strategy->setVisible(['name']);
+        $image->album?->setVisible(['name']);
+        $image->append(['url', 'filename', 'links'])->setVisible([
+            'id', 'filename', 'origin_name', 'url', 'width', 'height', 'size', 'mimetype', 'md5', 'sha1', 'permission',
+            'strategy', 'album', 'uploaded_ip', 'links', 'created_at'
+        ]);
+        return $this->success('success', compact('image'));
     }
 
     public function permission(Request $request): Response

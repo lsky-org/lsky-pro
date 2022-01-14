@@ -14,6 +14,7 @@
                 <a data-operate="movements" class="hidden text-sm py-2 px-3 hover:bg-gray-100 rounded text-gray-800" href="javascript:void(0)">移动到相册</a>
                 <a data-operate="remove" class="hidden text-sm py-2 px-3 hover:bg-gray-100 rounded text-gray-800" href="javascript:void(0)">移出当前相册</a>
                 <a data-operate="permission" class="hidden text-sm py-2 px-3 hover:bg-gray-100 rounded text-gray-800" href="javascript:void(0)">设置可见性</a>
+                <a data-operate="detail" class="hidden text-sm py-2 px-3 hover:bg-gray-100 rounded text-gray-800" href="javascript:void(0)">详细信息</a>
                 <a data-operate="rename" class="hidden text-sm py-2 px-3 hover:bg-gray-100 rounded text-gray-800" href="javascript:void(0)">重命名</a>
                 <a data-operate="delete" class="hidden text-sm py-2 px-3 hover:bg-gray-100 rounded text-gray-800" href="javascript:void(0)">删除</a>
             </div>
@@ -28,6 +29,7 @@
                         <x-dropdown-link data-operate="movements" class="hidden" href="javascript:void(0)" @click="open = false">移动到相册</x-dropdown-link>
                         <x-dropdown-link data-operate="remove" class="hidden" href="javascript:void(0)" @click="open = false">移出当前相册</x-dropdown-link>
                         <x-dropdown-link data-operate="permission" class="hidden" href="javascript:void(0)" @click="open = false">设置可见性</x-dropdown-link>
+                        <x-dropdown-link data-operate="detail" class="hidden" href="javascript:void(0)" @click="open = false">详细信息</x-dropdown-link>
                         <x-dropdown-link data-operate="rename" class="hidden" href="javascript:void(0)" @click="open = false">重命名</x-dropdown-link>
                         <x-dropdown-link data-operate="delete" class="hidden" href="javascript:void(0)" @click="open = false">删除</x-dropdown-link>
                     </x-slot>
@@ -76,12 +78,12 @@
     </div>
     <div class="relative inset-0 h-full overflow-hidden select-none">
         <!-- content -->
-        <div id="photos-scroll" class="absolute inset-0 overflow-y-scroll dragselect">
-            <div id="photos-grid" class="dragselect"></div>
+        <div id="images-scroll" class="absolute inset-0 overflow-y-scroll dragselect">
+            <div id="images-grid" class="dragselect"></div>
         </div>
         <!-- right drawer -->
         <div id="drawer-mask" class="absolute hidden inset-0 bg-gray-500 bg-opacity-50 z-[2]" onclick="drawer.close()"></div>
-        <div id="drawer" class="absolute bg-white w-52 md:w-72 top-0 -right-[1000px] bottom-0 z-[2] flex flex-col transition-all duration-300">
+        <div id="drawer" class="absolute bg-white w-64 md:w-72 top-0 -right-[1000px] bottom-0 z-[2] flex flex-col transition-all duration-300">
             <div class="flex justify-between items-center text-md px-3 py-1 border-b">
                 <span class="text-gray-600 truncate" id="drawer-title"></span>
                 <a href="javascript:drawer.close()" class="p-2"><i class="fas fa-times text-blue-500"></i></a>
@@ -90,14 +92,14 @@
         </div>
     </div>
 
-    <script type="text/html" id="photos-item-tpl">
-        <a href="javascript:void(0)" data-id="__id__" data-json='__json__' class="photos-item relative cursor-default rounded outline outline-2 outline-offset-2 outline-transparent">
-            <div class="photo-selector absolute z-[2] top-0 right-0 overflow-hidden cursor-pointer sm:hidden group-hover:block">
+    <script type="text/html" id="images-item-tpl">
+        <a href="javascript:void(0)" data-id="__id__" data-json='__json__' class="images-item relative cursor-default rounded outline outline-2 outline-offset-2 outline-transparent">
+            <div class="image-selector absolute z-[2] top-0 right-0 overflow-hidden cursor-pointer sm:hidden group-hover:block">
                 <div class="p-1 text-xl sm:text-2xl">
                     <i class="fas fa-check-circle block rounded-full bg-white text-white border border-gray-500"></i>
                 </div>
             </div>
-            <div class="photo-mask absolute left-0 right-0 bottom-0 h-20 z-[1] bg-gradient-to-t from-black" onclick="$(this).siblings('img').trigger('click')">
+            <div class="image-mask absolute left-0 right-0 bottom-0 h-20 z-[1] bg-gradient-to-t from-black" onclick="$(this).siblings('img').trigger('click')">
                 <div class="absolute left-2 bottom-2 text-white z-[2] w-[90%]">
                     <p class="text-sm truncate filename" title="__name__">__name__</p>
                     <p class="text-xs date" title="__human_date__">__date__</p>
@@ -142,6 +144,59 @@
         </div>
     </script>
 
+    <script type="text/html" id="image-detail-tpl">
+        <div class="my-4 px-4 space-y-3">
+            <div>
+                <span class="text-sm">相册名称</span>
+                <p class="my-2 break-words text-gray-700">__album_name__</p>
+            </div>
+            <div>
+                <div class="text-sm">使用策略</div>
+                <p class="my-2 break-words text-gray-600">__strategy_name__</p>
+            </div>
+            <div>
+                <div class="text-sm">图片名称</div>
+                <p class="my-2 break-words text-gray-600">__filename__</p>
+            </div>
+            <div>
+                <div class="text-sm">图片原始名称</div>
+                <p class="my-2 break-words text-gray-600">__origin_name__</p>
+            </div>
+            <div>
+                <div class="text-sm">图片大小</div>
+                <p class="my-2 break-words text-gray-600">__size__</p>
+            </div>
+            <div>
+                <div class="text-sm">图片类型</div>
+                <p class="my-2 break-words text-gray-600">__mimetype__</p>
+            </div>
+            <div>
+                <div class="text-sm">尺寸</div>
+                <p class="my-2 break-words text-gray-600">__width__ * __height__</p>
+            </div>
+            <div>
+                <div class="text-sm">MD5</div>
+                <p class="my-2 break-words text-gray-600">__md5__</p>
+            </div>
+            <div>
+                <div class="text-sm">SHA-128</div>
+                <p class="my-2 break-words text-gray-600">__sha1__</p>
+            </div>
+            <div>
+                <div class="text-sm">权限</div>
+                <p class="my-2 break-words text-gray-600">__permission__</p>
+            </div>
+            <div>
+                <div class="text-sm">上传 IP</div>
+                <p class="my-2 break-words text-gray-600">__uploaded_ip__</p>
+            </div>
+            <div>
+                <div class="text-sm">上传时间</div>
+                <p class="my-2 break-words text-gray-600">__created_at__</p>
+            </div>
+        </div>
+    </script>
+
     @push('scripts')
         <script src="{{ asset('js/justified-gallery/jquery.justifiedGallery.min.js') }}"></script>
         <script src="{{ asset('js/viewer-js/viewer.min.js') }}"></script>
@@ -161,22 +216,22 @@
             let selectedAlbum = {}; // 选择的相册
 
             const HEADER_TITLE = '#header-title';
-            const PHOTOS_SCROLL = '#photos-scroll';
-            const PHOTOS_GRID = '#photos-grid';
-            const PHOTOS_ITEM = '.photos-item';
+            const IMAGES_SCROLL = '#images-scroll';
+            const IMAGES_GRID = '#images-grid';
+            const IMAGES_ITEM = '.images-item';
             const ALBUM_ITEM = '.albums-item';
 
             const $headerTitle = $(HEADER_TITLE);
-            const $photos = $(PHOTOS_GRID);
+            const $photos = $(IMAGES_GRID);
             const $drawer = $("#drawer");
             const $drawerMask = $('#drawer-mask');
-            const viewer = new Viewer(document.getElementById('photos-grid'), {});
+            const viewer = new Viewer(document.getElementById('images-grid'), {});
             const drawer = {
-                open(title, $content, callback) {
+                open(title, content, callback) {
                     $drawerMask.fadeIn();
                     $drawer.css('right', 0);
                     $drawer.find('#drawer-title').html(title);
-                    $drawer.find('#drawer-content').html($content);
+                    $drawer.find('#drawer-content').html(content);
                     callback && callback();
                 },
                 close(callback) {
@@ -184,9 +239,9 @@
                     $drawer.css('right', '-1000px');
                     callback && callback();
                 },
-                toggle(title, $content, callback) {
+                toggle(title, content, callback) {
                     if ($drawerMask.is(':hidden')) {
-                        this.open(title, $content, callback);
+                        this.open(title, content, callback);
                     } else {
                         this.close(callback);
                     }
@@ -195,7 +250,7 @@
 
             $photos.justifiedGallery(gridConfigs);
 
-            const imagesInfinite = utils.infiniteScroll(PHOTOS_SCROLL, {
+            const imagesInfinite = utils.infiniteScroll(IMAGES_SCROLL, {
                 url: '{{ route('user.images') }}',
                 classes: ['dragselect'],
                 success: function (response) {
@@ -210,7 +265,7 @@
 
                     let html = '';
                     for (const i in images) {
-                        html += $('#photos-item-tpl').html()
+                        html += $('#images-item-tpl').html()
                             .replace(/__id__/g, images[i].id)
                             .replace(/__name__/g, images[i].filename)
                             .replace(/__human_date__/g, images[i].human_date)
@@ -222,7 +277,7 @@
                     }
 
                     $photos.append(html);
-                    ds.setSelectables($photos.find(PHOTOS_ITEM));
+                    ds.setSelectables($photos.find(IMAGES_ITEM));
                 },
                 complete: function () {
                     if ($photos.html() !== '') {
@@ -327,7 +382,7 @@
 
                     $albums.off('click', '.delete').on('click', '.delete', function (e) {
                         e.stopPropagation();
-                        swal.fire({
+                        Swal.fire({
                             title: '确认删除该相册?',
                             text: "删除后相册中的图片将会被移出。",
                             icon: 'warning',
@@ -403,13 +458,13 @@
             $(document).keydown(e => {
                 if (e.keyCode === 65 && (e.altKey || e.metaKey)) {
                     e.preventDefault();
-                    ds.setSelection($(PHOTOS_ITEM));
+                    ds.setSelection($(IMAGES_ITEM));
                 }
             });
         </script>
         <script>
             const ds = new DragSelect({
-                area: $(PHOTOS_SCROLL).get(0),
+                area: $(IMAGES_SCROLL).get(0),
                 keyboardDrag: false,
             });
 
@@ -426,7 +481,7 @@
                     operates = ['refresh'];
                 }
                 if (selected.length === 1) {
-                    operates = ['refresh', 'movements', 'permission', 'rename', 'delete'];
+                    operates = ['refresh', 'movements', 'permission', 'detail', 'rename', 'delete'];
                 }
                 if (selected.length > 1) {
                     operates = ['refresh', 'movements', 'permission', 'delete'];
@@ -449,7 +504,7 @@
             ds.subscribe('elementselect', _ => bindOperates());
             ds.subscribe('elementunselect', _ => bindOperates());
 
-            $photos.on('click', '.photo-selector', function () {
+            $photos.on('click', '.image-selector', function () {
                 ds.toggleSelection($(this).closest('a'));
                 bindOperates();
             })
@@ -611,6 +666,31 @@
                             });
                         }
                     });
+                },
+                detail(e) {
+                    let item = $(e).data('json');
+                    axios.get(`/user/images/${item.id}`).then(response => {
+                        if (response.data.status) {
+                            let image = response.data.data.image;
+                            let content = $('#image-detail-tpl').html()
+                                .replace(/__album_name__/g, image.album ? data.album.name : '无')
+                                .replace(/__strategy_name__/g, image.strategy.name)
+                                .replace(/__filename__/g, image.filename)
+                                .replace(/__origin_name__/g, image.origin_name)
+                                .replace(/__size__/g, utils.formatSize(image.size))
+                                .replace(/__mimetype__/g, image.mimetype)
+                                .replace(/__width__/g, image.width)
+                                .replace(/__height__/g, image.height)
+                                .replace(/__md5__/g, image.md5)
+                                .replace(/__sha1__/g, image.sha1)
+                                .replace(/__permission__/g, image.permission === 1 ? '公开' : '私有')
+                                .replace(/__uploaded_ip__/g, image.uploaded_ip)
+                                .replace(/__created_at__/g, image.created_at)
+                            drawer.open(item.filename, content);
+                        } else {
+                            toastr.error(response.data.message);
+                        }
+                    })
                 }
             };
             // right click actions
@@ -678,7 +758,7 @@
                     action: _ => methods.remove(),
                     visible: _ => selectedAlbum.id !== undefined,
                 },
-                detail: {text: '详细信息', action: e => {}},
+                detail: {text: '详细信息', action: e => methods.detail(e)},
                 delete: {
                     text: '删除',
                     action: _ => methods.delete(),
@@ -688,13 +768,13 @@
                     action: _ => methods.visibility(),
                 },
             };
-            // right click 'photos scroll' container
-            context.attach(PHOTOS_SCROLL, {
+            // right click 'images scroll' container
+            context.attach(IMAGES_SCROLL, {
                 data: [actions.refresh],
                 beforeOpen: () => ds.clearSelection(),
             });
             // right click image
-            context.attach(PHOTOS_ITEM, {
+            context.attach(IMAGES_ITEM, {
                 data: [
                     {header: '图片操作'},
                     actions.refresh,
@@ -704,6 +784,7 @@
                     actions.movements,
                     actions.remove,
                     actions.visibility,
+                    actions.detail,
                     {divider: true},
                     actions.rename,
                     actions.delete,
@@ -745,6 +826,9 @@
                         break;
                     case 'permission': // 设置可见性
                         methods.visibility();
+                        break;
+                    case 'detail':
+                        methods.detail(selected[0]);
                         break;
                     case 'delete': // 删除
                         methods.delete();

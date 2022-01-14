@@ -271,16 +271,16 @@ progress::-webkit-progress-value {
   cursor: not-allowed;
   color: grey;
 }
-#photos-grid a:hover,
-#photos-grid a.ds-selected {
+#images-grid a:hover,
+#images-grid a.ds-selected {
   outline-color: #3b82f6;
 }
-#photos-grid a:hover .photo-selector,
-#photos-grid a.ds-selected .photo-selector {
+#images-grid a:hover .image-selector,
+#images-grid a.ds-selected .image-selector {
   display: block;
 }
-#photos-grid a:hover.ds-selected .photo-selector i,
-#photos-grid a.ds-selected.ds-selected .photo-selector i {
+#images-grid a:hover.ds-selected .image-selector i,
+#images-grid a.ds-selected.ds-selected .image-selector i {
   border-color: white;
   color: #0061ff;
 }

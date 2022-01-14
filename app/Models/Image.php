@@ -64,7 +64,6 @@ class Image extends Model
         'user_id',
         'album_id',
         'strategy_id',
-        'uploaded_ip',
         'is_unhealthy',
         'permission',
     ];

@@ -25,6 +25,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/images', [ImageController::class, 'index'])->name('images');
     Route::group(['prefix' => 'user'], function () {
         Route::get('images', [ImageController::class, 'images'])->name('user.images');
+        Route::get('images/{id}', [ImageController::class, 'image'])->name('user.image');
         Route::delete('images', [ImageController::class, 'delete'])->name('user.images.delete');
         Route::put('images/permission', [ImageController::class, 'permission'])->name('user.images.permission');
         Route::put('images/rename', [ImageController::class, 'rename'])->name('user.images.rename');
