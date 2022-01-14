@@ -679,7 +679,7 @@
                                 .replace(/__strategy_name__/g, image.strategy.name)
                                 .replace(/__filename__/g, image.filename)
                                 .replace(/__origin_name__/g, image.origin_name)
-                                .replace(/__size__/g, utils.formatSize(image.size))
+                                .replace(/__size__/g, utils.formatSize(image.size * 1024))
                                 .replace(/__mimetype__/g, image.mimetype)
                                 .replace(/__width__/g, image.width)
                                 .replace(/__height__/g, image.height)
