@@ -79,8 +79,11 @@ class Image extends Model
     {
         static::deleting(function (self $image) {
             // TODO 检测是否启用了队列，放置队列中异步删除
-            $adapter = (new ImageService())->getAdapter($image->strategy->key, $image->strategy->configs);
-            (new Filesystem($adapter))->delete($image->pathname);
+            // 是否存在其他相同 md5 和 sha1 的记录，没有则可以删除物理文件
+            if (! static::query()->where('md5', $image->md5)->where('sha1', $image->sha1)->exists()) {
+                $adapter = (new ImageService())->getAdapter($image->strategy->key, $image->strategy->configs);
+                (new Filesystem($adapter))->delete($image->pathname);
+            }
         });
     }
 
