@@ -29,6 +29,7 @@ class DatabaseSeeder extends Seeder
             ConfigKey::IsAllowGuestUpload => 1,
             ConfigKey::UserInitialCapacity => 512000,
             ConfigKey::IsUserNeedVerify => 1,
+            ConfigKey::IsEnableThumbnail => 1,
             ConfigKey::MailConfigs => json_encode([
                 'default' => 'smtp',
                 'mailers' => [
@@ -41,7 +42,7 @@ class DatabaseSeeder extends Seeder
                     SmtpOption::AuthMode => null,
                 ],
             ]),
-            ConfigKey::GuestGroupConfigs => Group::getDefaultConfig()->toJson(),
+            ConfigKey::GuestGroupConfigs => Group::getDefaultConfigs()->toJson(),
         ])->transform(function ($value, $key) use ($date) {
             return ['name' => $key, 'value' => $value, 'updated_at' => $date, 'created_at' => $date];
         })->values()->toArray();

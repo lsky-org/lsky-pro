@@ -23,11 +23,12 @@ class CreateImagesTable extends Migration
             $table->foreignId('album_id')->nullable()->comment('相册')->constrained('albums')->onDelete('set null');
             $table->foreignId('strategy_id')->nullable()->comment('策略')->constrained('strategies')->onDelete('set null');
             $table->string('path')->comment('保存路径');
-            $table->string('name')->comment('保存路径');
+            $table->string('name')->comment('保存名称');
             $table->string('origin_name')->default('')->comment('原始名称');
             $table->string('alias_name')->default('')->comment('别名');
             $table->decimal('size')->default(0)->comment('图片大小(kb)');
             $table->string('mimetype', 32)->comment('文件类型');
+            $table->string('extension', 32)->comment('文件后缀');
             $table->string('md5', 32)->comment('文件MD5');
             $table->string('sha1')->comment('文件SHA1');
             $table->unsignedInteger('width')->default(0)->comment('宽');

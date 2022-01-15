@@ -25,6 +25,7 @@ use League\Flysystem\Filesystem;
  * @property string $filename
  * @property float $size
  * @property string $mimetype
+ * @property string $extension
  * @property string $md5
  * @property string $sha1
  * @property integer $width
@@ -51,6 +52,7 @@ class Image extends Model
         'alias_name',
         'size',
         'mimetype',
+        'extension',
         'md5',
         'sha1',
         'width',
@@ -80,7 +82,7 @@ class Image extends Model
         static::deleting(function (self $image) {
             // TODO 检测是否启用了队列，放置队列中异步删除
             // 在当前图片所属的策略中是否存在其他相同 md5 和 sha1 的记录，没有则可以删除物理文件
-            if (! static::query()
+            if (!static::query()
                 ->where('strategy_id', $image->strategy_id)
                 ->where('id', '<>', $image->id)
                 ->where('md5', $image->md5)
@@ -95,18 +97,18 @@ class Image extends Model
 
     public function filename(): Attribute
     {
-        return new Attribute(fn () => $this->alias_name ?: $this->origin_name);
+        return new Attribute(fn() => $this->alias_name ?: $this->origin_name);
     }
 
     public function pathname(): Attribute
     {
-        return new Attribute(fn () => "{$this->path}/{$this->name}");
+        return new Attribute(fn() => "{$this->path}/{$this->name}");
     }
 
     public function url(): Attribute
     {
         return new Attribute(function () {
-            if (! $this->strategy) {
+            if (!$this->strategy) {
                 return Storage::disk('uploads')->url($this->pathname);
             }
             $domain = rtrim($this->strategy->configs->get('domain'), '/');
@@ -116,7 +118,7 @@ class Image extends Model
 
     public function links(): Attribute
     {
-        return new Attribute(fn () => collect([
+        return new Attribute(fn() => collect([
             'url' => $this->url,
             'html' => "&lt;img src=\"{$this->url}\" alt=\"{$this->origin_name}\" title=\"{$this->origin_name}\" /&gt;",
             'bbcode' => "[img]{$this->url}[/img]",

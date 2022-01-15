@@ -127,9 +127,10 @@ class ImageService
             }
         }
 
-        $pathname = $this->replacePathname(
+        $filename = $this->replacePathname(
             $configs->get(GroupConfigKey::PathNamingRule).'/'.$configs->get(GroupConfigKey::FileNamingRule), $file,
-        ).".{$file->extension()}";
+        );
+        $pathname = $filename.".{$file->extension()}";
 
         $image->fill([
             'md5' => md5_file($file->getRealPath()),
@@ -139,6 +140,7 @@ class ImageService
             'origin_name' => $file->getClientOriginalName(),
             'size' => $file->getSize() / 1024,
             'mimetype' => $file->getMimeType(),
+            'extension' => $file->extension(),
             'width' => $img->width(),
             'height' => $img->height(),
             'permission' => ImagePermission::Private,
