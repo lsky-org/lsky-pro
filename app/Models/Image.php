@@ -4,7 +4,6 @@ namespace App\Models;
 
 use App\Enums\Strategy\LocalOption;
 use App\Service\ImageService;
-use App\Utils;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -12,6 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use League\Flysystem\Filesystem;
 
 /**
@@ -19,6 +19,7 @@ use League\Flysystem\Filesystem;
  * @property int $user_id
  * @property int $album_id
  * @property int $strategy_id
+ * @property string $key
  * @property string $path
  * @property string $name
  * @property string $pathname
@@ -48,6 +49,7 @@ class Image extends Model
     use HasFactory;
 
     protected $fillable = [
+        'key',
         'path',
         'name',
         'origin_name',
@@ -81,6 +83,10 @@ class Image extends Model
 
     protected static function booted()
     {
+        static::creating(function (self $image) {
+            $image->key = $image->generateKey();
+        });
+
         static::deleting(function (self $image) {
             // TODO 检测是否启用了队列，放置队列中异步删除
             // 在当前图片所属的策略中是否存在其他相同 md5 和 sha1 的记录，没有则可以删除物理文件
@@ -91,8 +97,7 @@ class Image extends Model
                 ->where('sha1', $image->sha1)
                 ->exists()
             ) {
-                $adapter = (new ImageService())->getAdapter($image->strategy->key, $image->strategy->configs);
-                (new Filesystem($adapter))->delete($image->pathname);
+                $image->filesystem()->delete($image->pathname);
             }
         });
     }
@@ -117,7 +122,8 @@ class Image extends Model
             if ($this->strategy->configs->get(LocalOption::IsEnableOriginUrl)) {
                 return rtrim($this->strategy->configs->get(LocalOption::Domain), '/').'/'.$this->pathname;
             } else {
-                return asset($this->pathname);
+                // 原图保护
+                return asset("{$this->key}.{$this->extension}");
             }
         });
     }
@@ -133,6 +139,11 @@ class Image extends Model
         ]));
     }
 
+    public function filesystem(): Filesystem
+    {
+        return new Filesystem((new ImageService())->getAdapter($this->strategy->key, $this->strategy->configs));
+    }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
@@ -146,5 +157,14 @@ class Image extends Model
     public function strategy(): BelongsTo
     {
         return $this->belongsTo(Strategy::class, 'strategy_id', 'id');
+    }
+
+    private function generateKey($length = 6): string
+    {
+        $key = Str::random($length);
+        if (self::query()->where('key', $key)->exists()) {
+            return $this->generateKey(++$length);
+        }
+        return $key;
     }
 }

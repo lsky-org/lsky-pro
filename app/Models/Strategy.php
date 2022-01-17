@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\Strategy\LocalOption;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -44,6 +45,16 @@ class Strategy extends Model
     protected $casts = [
         'configs' => 'collection',
     ];
+
+    protected static function booted()
+    {
+        static::creating(function (self $strategy) {
+            $strategy->configs = collect([
+                LocalOption::Domain => env('APP_URL'),
+                LocalOption::IsEnableOriginUrl => true,
+            ]);
+        });
+    }
 
     public function group(): BelongsTo
     {

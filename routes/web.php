@@ -37,4 +37,8 @@ Route::group(['middleware' => ['auth']], function () {
     });
 });
 
+Route::any('{key}.{extension}', [ImageController::class, 'output'])->where('extension', implode('|', [
+    'jpg', 'jpeg', 'gif', 'png', 'apng', 'bmp', 'ico',
+]));
+
 require __DIR__.'/auth.php';

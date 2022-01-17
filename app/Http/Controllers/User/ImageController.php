@@ -14,6 +14,7 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
+use League\Flysystem\FilesystemException;
 
 class ImageController extends Controller
 {
@@ -82,6 +83,20 @@ class ImageController extends Controller
             'strategy', 'album', 'uploaded_ip', 'links', 'created_at'
         ]);
         return $this->success('success', compact('image'));
+    }
+
+    public function output(Request $request)
+    {
+        /** @var Image $image */
+        $image = Image::query()->where('key', $request->route('key'))->firstOr(fn() => abort(404));
+        try {
+            $stream = $image->filesystem()->readStream($image->pathname);
+        } catch (FilesystemException $e) {
+            abort(404);
+        }
+        $img = \Intervention\Image\Facades\Image::make($stream);
+        // ...
+        return $img->response(quality: 100);
     }
 
     public function permission(Request $request): Response
