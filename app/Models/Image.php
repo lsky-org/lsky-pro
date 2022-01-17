@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use App\Enums\Strategy\LocalOption;
 use App\Service\ImageService;
+use App\Utils;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -111,8 +113,12 @@ class Image extends Model
             if (!$this->strategy) {
                 return Storage::disk('uploads')->url($this->pathname);
             }
-            $domain = rtrim($this->strategy->configs->get('domain'), '/');
-            return $domain.'/'.$this->pathname;
+            // 是否启用了获取图片直链功能
+            if ($this->strategy->configs->get(LocalOption::IsEnableOriginUrl)) {
+                return rtrim($this->strategy->configs->get(LocalOption::Domain), '/').'/'.$this->pathname;
+            } else {
+                return asset($this->pathname);
+            }
         });
     }
 
