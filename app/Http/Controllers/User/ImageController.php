@@ -120,11 +120,7 @@ class ImageController extends Controller
         $img = \Intervention\Image\Facades\Image::make($stream);
         $width = $image->width;
         $height = $image->height;
-        if ($width > 600 && $height > 600) {
-            $width = $width / 2;
-            $height = $height / 2;
-        }
-        $img->fit((int)$width, (int)$height, fn($constraint) => $constraint->upsize());
+        $img->fit((int)($width / 2), (int)($height / 2), fn($constraint) => $constraint->upsize());
         return $img->response();
     }
 
