@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use League\Flysystem\Filesystem;
@@ -103,6 +104,9 @@ class Image extends Model
                 ->where('sha1', $image->sha1)
                 ->exists()
             ) {
+                // 删除本地缓存文件
+                Cache::forget("image_thumb_{$image->key}");
+                // 删除物理文件
                 $image->filesystem()->delete($image->pathname);
             }
         });

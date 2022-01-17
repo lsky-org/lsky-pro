@@ -50,7 +50,7 @@ class Strategy extends Model
     {
         static::creating(function (self $strategy) {
             $strategy->configs = collect([
-                LocalOption::Domain => env('APP_URL'),
+                LocalOption::Domain => rtrim(env('APP_URL'), '/').'/uploads',
             ]);
         });
     }
