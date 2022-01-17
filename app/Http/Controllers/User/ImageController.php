@@ -125,7 +125,7 @@ class ImageController extends Controller
                 $width = (int)($image->width / 2);
                 $height = (int)($image->height / 2);
                 $contents = $img->fit($width, $height, fn($constraint) => $constraint->upsize())->encode();
-                Cache::tags(['thumbnail'])->rememberForever($cacheKey, fn () => (string)$contents);
+                Cache::rememberForever($cacheKey, fn () => (string)$contents);
             }
         } catch (FilesystemException $e) {
             abort(404);
