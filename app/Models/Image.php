@@ -119,12 +119,11 @@ class Image extends Model
             if (!$this->strategy) {
                 return Storage::disk('uploads')->url($this->pathname);
             }
-            // 是否启用了获取图片直链功能
-            if ($this->strategy->configs->get(LocalOption::IsEnableOriginUrl)) {
-                return rtrim($this->strategy->configs->get(LocalOption::Domain), '/').'/'.$this->pathname;
-            } else {
-                // 原图保护
+            // 是否启用原图保护功能
+            if ($this->strategy->configs->get(LocalOption::IsEnableOriginalProtection)) {
                 return asset("{$this->key}.{$this->extension}");
+            } else {
+                return rtrim($this->strategy->configs->get(LocalOption::Domain), '/').'/'.$this->pathname;
             }
         });
     }
