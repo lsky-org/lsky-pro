@@ -31,9 +31,6 @@ final class ConfigKey
     /** @var string 账户是否需要验证 */
     const IsUserNeedVerify = 'is_user_need_verify';
 
-    /** @var string 是否启用缩略图功能 */
-    const IsEnableThumbnail = 'is_enable_thumbnail';
-
     /** @var string 邮件配置 */
     const MailConfigs = 'mail_configs';
 

@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use App\Enums\ConfigKey;
 use App\Enums\GroupConfigKey;
+use App\Utils;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -41,19 +43,7 @@ class Group extends Model
      */
     public static function getDefaultConfigs(): Collection
     {
-        return collect([
-            GroupConfigKey::MaximumFileSize => 5120,
-            GroupConfigKey::ConcurrentUploadNum => 3,
-            GroupConfigKey::IsUploadNeedsReview => false,
-            GroupConfigKey::LimitPerMinute => 20,
-            GroupConfigKey::LimitPerHour => 100,
-            GroupConfigKey::LimitPerDay => 300,
-            GroupConfigKey::LimitPerWeek => 600,
-            GroupConfigKey::LimitPerMonth => 999,
-            GroupConfigKey::AcceptedFileSuffixes => ['jpg', 'jpeg', 'gif', 'png', 'apng', 'bmp', 'ico'],
-            GroupConfigKey::PathNamingRule => '{Y}/{m}/{d}',
-            GroupConfigKey::FileNamingRule => '{uniqid}',
-        ]);
+        return Utils::config(ConfigKey::GuestGroupConfigs);
     }
 
     protected static function booted()

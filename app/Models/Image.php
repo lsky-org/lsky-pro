@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use App\Enums\GroupConfigKey;
 use App\Enums\Strategy\LocalOption;
+use App\Enums\StrategyKey;
 use App\Service\ImageService;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -18,6 +20,7 @@ use League\Flysystem\Filesystem;
  * @property int $id
  * @property int $user_id
  * @property int $album_id
+ * @property int $group_id
  * @property int $strategy_id
  * @property string $key
  * @property string $path
@@ -43,6 +46,7 @@ use League\Flysystem\Filesystem;
  * @property Carbon $created_at
  * @property-read User $user
  * @property-read Album $album
+ * @property-read Group $group
  * @property-read Strategy $strategy
  */
 class Image extends Model
@@ -70,6 +74,7 @@ class Image extends Model
     protected $hidden = [
         'user_id',
         'album_id',
+        'group_id',
         'strategy_id',
         'is_unhealthy',
         'permission',
@@ -120,10 +125,10 @@ class Image extends Model
                 return Storage::disk('uploads')->url($this->pathname);
             }
             // 是否启用原图保护功能
-            if ($this->strategy->configs->get(LocalOption::IsEnableOriginalProtection)) {
+            if ($this->group->configs->get(GroupConfigKey::IsEnableOriginalProtection)) {
                 return asset("{$this->key}.{$this->extension}");
             } else {
-                return rtrim($this->strategy->configs->get(LocalOption::Domain), '/').'/'.$this->pathname;
+                return rtrim($this->strategy->configs->get('domain'), '/').'/'.$this->pathname;
             }
         });
     }
@@ -162,9 +167,20 @@ class Image extends Model
         return $this->belongsTo(Album::class, 'album_id', 'id');
     }
 
+    public function group(): BelongsTo
+    {
+        return $this->belongsTo(Group::class, 'group_id', 'id')->withDefault(function (Group $group) {
+            $group->name = '系统默认组';
+            $group->configs = $group::getDefaultConfigs();
+        });
+    }
+
     public function strategy(): BelongsTo
     {
-        return $this->belongsTo(Strategy::class, 'strategy_id', 'id');
+        return $this->belongsTo(Strategy::class, 'strategy_id', 'id')->withDefault(function (Strategy $strategy) {
+            $strategy->key = StrategyKey::Local;
+            $strategy->configs = collect([LocalOption::Root => config('filesystems.disks.uploads.root')]);
+        });
     }
 
     private function generateKey($length = 6): string

@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Enums\ConfigKey;
+use App\Enums\GroupConfigKey;
 use App\Enums\Mail\SmtpOption;
 use App\Models\Group;
 use Illuminate\Database\Seeder;
@@ -29,7 +30,6 @@ class DatabaseSeeder extends Seeder
             ConfigKey::IsAllowGuestUpload => 1,
             ConfigKey::UserInitialCapacity => 512000,
             ConfigKey::IsUserNeedVerify => 1,
-            ConfigKey::IsEnableThumbnail => 1,
             ConfigKey::MailConfigs => json_encode([
                 'default' => 'smtp',
                 'mailers' => [
@@ -42,7 +42,22 @@ class DatabaseSeeder extends Seeder
                     SmtpOption::AuthMode => null,
                 ],
             ]),
-            ConfigKey::GuestGroupConfigs => Group::getDefaultConfigs()->toJson(),
+            ConfigKey::GuestGroupConfigs => collect([
+                GroupConfigKey::MaximumFileSize => 5120,
+                GroupConfigKey::ConcurrentUploadNum => 3,
+                GroupConfigKey::IsEnableReview => false,
+                GroupConfigKey::IsEnableWatermark => false,
+                GroupConfigKey::IsEnableOriginalProtection => false,
+                GroupConfigKey::WatermarkConfigs => new \stdClass(),
+                GroupConfigKey::LimitPerMinute => 20,
+                GroupConfigKey::LimitPerHour => 100,
+                GroupConfigKey::LimitPerDay => 300,
+                GroupConfigKey::LimitPerWeek => 600,
+                GroupConfigKey::LimitPerMonth => 999,
+                GroupConfigKey::AcceptedFileSuffixes => ['jpg', 'jpeg', 'gif', 'png', 'apng', 'bmp', 'ico'],
+                GroupConfigKey::PathNamingRule => '{Y}/{m}/{d}',
+                GroupConfigKey::FileNamingRule => '{uniqid}',
+            ])->toJson(),
         ])->transform(function ($value, $key) use ($date) {
             return ['name' => $key, 'value' => $value, 'updated_at' => $date, 'created_at' => $date];
         })->values()->toArray();

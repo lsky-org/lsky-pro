@@ -15,7 +15,4 @@ final class KodoOption
 
     /** @var string Bucket */
     const Bucket = 'bucket';
-
-    /** @var string 是否启用获取原始 url 功能 */
-    const IsEnableOriginalProtection = 'is_enable_origin_url';
 }

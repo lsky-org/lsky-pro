@@ -21,6 +21,7 @@ class CreateImagesTable extends Migration
             $table->id();
             $table->foreignId('user_id')->nullable()->comment('用户')->constrained('users')->onDelete('set null');
             $table->foreignId('album_id')->nullable()->comment('相册')->constrained('albums')->onDelete('set null');
+            $table->foreignId('group_id')->nullable()->comment('角色组')->constrained('groups')->onDelete('set null');
             $table->foreignId('strategy_id')->nullable()->comment('策略')->constrained('strategies')->onDelete('set null');
             $table->string('key')->unique()->comment('key');
             $table->string('path')->comment('保存路径');

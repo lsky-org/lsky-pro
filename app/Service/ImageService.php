@@ -24,11 +24,15 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image as InterventionImage;
+use Intervention\Image\Gd\Font;
+use Intervention\Image\ImageManager;
+use JetBrains\PhpStorm\NoReturn;
 use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemAdapter;
 use League\Flysystem\FilesystemException;
 use League\Flysystem\Local\LocalFilesystemAdapter;
 use Overtrue\Flysystem\Qiniu\QiniuAdapter;
+use Psr\Http\Message\StreamInterface;
 
 class ImageService
 {
@@ -68,6 +72,7 @@ class ImageService
 
             // 如果该用户有角色组，覆盖默认组、上传策略配置
             if ($user->group) {
+                $image->group_id = $user->group_id;
                 $configs = $user->group->configs;
                 // 获取策略列表，根据用户所选的策略上传
                 $strategies = $user->group->strategies()->get();
@@ -155,15 +160,13 @@ class ImageService
             $builder->where('strategy_id', $id);
         })->where('md5', $image->md5)->where('sha1', $image->sha1)->first();
         if (is_null($existing)) {
-            $handle = fopen($file, 'r');
+            $handle = $img->stream();
             try {
-                $filesystem->writeStream($pathname, $handle);
+                $filesystem->writeStream($pathname, $handle->detach());
             } catch (FilesystemException $e) {
                 throw new UploadException('图片上传失败');
             }
-            if (! fclose($handle)) {
-                throw new UploadException('资源关闭失败');
-            }
+            $handle->close();
         } else {
             $image->fill($existing->only('path', 'name'));
         }

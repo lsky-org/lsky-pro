@@ -11,7 +11,16 @@ final class GroupConfigKey
     const ConcurrentUploadNum = 'concurrent_upload_num';
 
     /** @var string 上传是否需要审查 */
-    const IsUploadNeedsReview = 'is_upload_needs_review';
+    const IsEnableReview = 'is_enable_review';
+
+    /** @var string 是否启用原图保护功能 */
+    const IsEnableOriginalProtection = 'is_enable_original_protection';
+
+    /** @var string 上传是否启用水印功能 */
+    const IsEnableWatermark = 'is_enable_watermark';
+
+    /** @var string 水印配置 */
+    const WatermarkConfigs = 'watermark_configs';
 
     /** @var string 每分钟上传限制 */
     const LimitPerMinute = 'limit_per_minute';

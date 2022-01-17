@@ -13,7 +13,8 @@
         "laravel/framework": "^9.0",
         "laravel/sanctum": "^2.14",
         "laravel/tinker": "^2.7",
-        "overtrue/flysystem-qiniu": "^2.0"
+        "overtrue/flysystem-qiniu": "^2.0",
+        "topthink/think-image": "^1.0"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.6",

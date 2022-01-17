@@ -723,7 +723,7 @@
                 },
                 open: {
                     text: '新窗口打开',
-                    action: e => window.open($(e).find('img').attr('src')),
+                    action: e => window.open($(e).data('json').url),
                     visible: () => ds.getSelection().length === 1,
                 },
                 copies: {

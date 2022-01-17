@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Enums\GroupConfigKey;
 use App\Enums\ImagePermission;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ImageRenameRequest;
@@ -30,7 +31,7 @@ class ImageController extends Controller
         /** @var User $user */
         $user = Auth::user();
 
-        $images = Image::with('strategy')
+        $images = Image::with('group')
             ->where('user_id', $user->id)
             ->when($request->query('order') ?: 'newest', function (Builder $builder, $order) {
                 switch ($order) {
@@ -93,13 +94,22 @@ class ImageController extends Controller
     {
         /** @var Image $image */
         $image = Image::query()
+            ->with('group')
             ->where('key', $request->route('key'))
             ->where('extension', $request->route('extension'))
             ->firstOr(fn() => abort(404));
+        if (! $image->group->configs->get(GroupConfigKey::IsEnableOriginalProtection)) {
+            abort(404);
+        }
         try {
             $contents = $image->filesystem()->read($image->pathname);
         } catch (FilesystemException $e) {
             abort(404);
+        }
+        // 是否启用了水印功能
+        if ($image->group->configs->get(GroupConfigKey::IsEnableWatermark)) {
+            // GroupConfigKey::WatermarkConfigs
+            // TODO 动态生成水印并缓存
         }
         return \response()->stream(function () use ($contents) {
             echo $contents;
