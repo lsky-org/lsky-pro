@@ -132,7 +132,7 @@ class Image extends Model
     public function thumbUrl(): Attribute
     {
         return new Attribute(function () {
-            return $this->url.'!thumbnail';
+            return "{$this->key}.{$this->extension}!thumbnail";
         });
     }
 
