@@ -50,7 +50,7 @@ class Group extends Model
             GroupConfigKey::LimitPerDay => 300,
             GroupConfigKey::LimitPerWeek => 600,
             GroupConfigKey::LimitPerMonth => 999,
-            GroupConfigKey::AcceptedFileSuffixes => ['jpg', 'jpeg', 'gif', 'png', 'ico'],
+            GroupConfigKey::AcceptedFileSuffixes => ['jpg', 'jpeg', 'gif', 'png', 'apng', 'bmp', 'ico', 'svg'],
             GroupConfigKey::PathNamingRule => '{Y}/{m}/{d}',
             GroupConfigKey::FileNamingRule => '{uniqid}',
         ]);
