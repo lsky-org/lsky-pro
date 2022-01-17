@@ -131,7 +131,7 @@ class Image extends Model
     public function thumbUrl(): Attribute
     {
         return new Attribute(function () {
-            return "{$this->key}.{$this->extension}!thumbnail";
+            return asset("{$this->key}.{$this->extension}!thumbnail");
         });
     }
 
@@ -143,6 +143,7 @@ class Image extends Model
             'bbcode' => "[img]{$this->url}[/img]",
             'markdown' => "![{$this->origin_name}]({$this->url})",
             'markdown_with_link' => "[![{$this->origin_name}]({$this->url})]({$this->url})",
+            'thumbnail_url' => $this->thumb_url,
         ]));
     }
 

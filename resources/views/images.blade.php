@@ -754,6 +754,11 @@
                             classes: ['copy'],
                             attributes: {"data-link-type": "markdown_with_link"},
                         },
+                        {
+                            text: 'Thumbnail url',
+                            classes: ['copy'],
+                            attributes: {"data-link-type": "thumbnail_url"},
+                        },
                     ],
                     visible: () => ds.getSelection().length === 1,
                 },

@@ -34,6 +34,7 @@
             <a href="javascript:void(0)" data-tab-name="bbcode" class="hover:bg-gray-100 flex justify-center items-center px-8 py-2 border-b-2 border-transparent">BBCode</a>
             <a href="javascript:void(0)" data-tab-name="markdown" class="hover:bg-gray-100 flex justify-center items-center px-8 py-2 border-b-2 border-transparent">Markdown</a>
             <a href="javascript:void(0)" data-tab-name="markdown_with_link" class="hover:bg-gray-100 flex justify-center items-center px-8 py-2 border-b-2 border-transparent whitespace-nowrap">Markdown with link</a>
+            <a href="javascript:void(0)" data-tab-name="thumbnail_url" class="hover:bg-gray-100 flex justify-center items-center px-8 py-2 border-b-2 border-transparent whitespace-nowrap">Thumbnail url</a>
         </div>
         <div id="links" class="mt-2">
             <div data-tab="url" class="space-y-2"></div>
@@ -41,6 +42,7 @@
             <div data-tab="bbcode" class="hidden space-y-2"></div>
             <div data-tab="markdown" class="hidden space-y-2"></div>
             <div data-tab="markdown_with_link" class="hidden space-y-2"></div>
+            <div data-tab="thumbnail_url" class="hidden space-y-2"></div>
         </div>
     </div>
 </div>
