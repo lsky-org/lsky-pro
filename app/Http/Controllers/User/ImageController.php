@@ -122,8 +122,31 @@ class ImageController extends Controller
             } else {
                 $stream = $image->filesystem()->readStream($image->pathname);
                 $img = \Intervention\Image\Facades\Image::make($stream);
-                $width = (int)($image->width / 2);
-                $height = (int)($image->height / 2);
+                switch (1) {
+                    case $image->width >= 115200 && $image->height >= 64800:
+                        $width = (int)($image->width / 32);
+                        $height = (int)($image->height / 32);
+                        break;
+                    case $image->width >= 102400 && $image->height >= 43200:
+                        $width = (int)($image->width / 28);
+                        $height = (int)($image->height / 28);
+                        break;
+                    case $image->width >= 10240 && $image->height >= 5760:
+                        $width = (int)($image->width / 10);
+                        $height = (int)($image->height / 10);
+                        break;
+                    case $image->width >= 3840 && $image->height >= 2160:
+                        $width = (int)($image->width / 8);
+                        $height = (int)($image->height / 8);
+                        break;
+                    case $image->width >= 1920 && $image->height >= 1080:
+                        $width = (int)($image->width / 6);
+                        $height = (int)($image->height / 6);
+                        break;
+                    default:
+                        $width = (int)($image->width / 3);
+                        $height = (int)($image->height / 3);
+                }
                 $contents = $img->fit($width, $height, fn($constraint) => $constraint->upsize())->encode();
                 Cache::rememberForever($cacheKey, fn () => (string)$contents);
             }
