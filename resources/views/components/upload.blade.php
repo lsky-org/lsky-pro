@@ -4,10 +4,11 @@
     <div class="mb-4 p-4 bg-white rounded-md">
         <h1 class="tracking-wider text-2xl text-gray-700 mb-2" style="text-shadow: -4px 4px 0 rgb(0 0 0 / 10%);">Image Upload</h1>
         <p class="text-gray-500 text-sm">
-            最大可上传 1.00 MB 的图片，上传队列最多
             @if(Auth::check() && Auth::user()->group)
+                最大可上传 {{ \App\Utils::formatSize(Auth::user()->group->configs->get(\App\Enums\GroupConfigKey::MaximumFileSize) * 1024) }} 的图片，上传队列最多
                 {{ Auth::user()->group->configs->get(\App\Enums\GroupConfigKey::ConcurrentUploadNum) }}
             @else
+                最大可上传 {{ \App\Utils::formatSize(\App\Models\Group::getDefaultConfigs()->get(\App\Enums\GroupConfigKey::MaximumFileSize) * 1024) }} 的图片，上传队列最多
                 {{ \App\Models\Group::getDefaultConfigs()->get(\App\Enums\GroupConfigKey::ConcurrentUploadNum) }}
             @endif
             张。本站已托管 {{ \App\Models\Image::query()->count() }} 张图片。
@@ -74,6 +75,15 @@
     <script src="{{ asset('js/clipboard/clipboard.min.js') }}"></script>
 @endpush
 @push('scripts')
+    @if(Auth::check() && Auth::user()->group)
+    <script>
+        let maxSize = {{ Auth::user()->group->configs->get(\App\Enums\GroupConfigKey::MaximumFileSize) * 1024 }}
+    </script>
+    @else
+    <script>
+        let maxSize = {{ \App\Models\Group::getDefaultConfigs()->get(\App\Enums\GroupConfigKey::MaximumFileSize) * 1024 }}
+    </script>
+    @endif
     <script>
         (new ClipboardJS('#copy-all', {
             text: function(trigger) {
@@ -154,8 +164,8 @@
                     toastr.warning(`不支持的文件格式 ${file.name}`);
                     return false;
                 }
-                if (file.size > 5242880) {
-                    toastr.warning(`文件 ${file.name} 超出大小限制(最大5MB)`);
+                if (file.size > maxSize) {
+                    toastr.warning(`文件 ${file.name} 超出大小限制`);
                     return false;
                 }
                 let guid = utils.guid();

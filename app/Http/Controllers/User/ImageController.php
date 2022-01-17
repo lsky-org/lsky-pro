@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 use League\Flysystem\FilesystemException;
@@ -105,23 +106,34 @@ class ImageController extends Controller
         }, headers: ['Content-type' => $image->mimetype]);
     }
 
-    public function thumbnail(Request $request)
+    public function thumbnail(Request $request): StreamedResponse
     {
         /** @var Image $image */
         $image = Image::query()
             ->where('key', $request->route('key'))
             ->where('extension', $request->route('extension'))
             ->firstOr(fn() => abort(404));
+
         try {
-            $stream = $image->filesystem()->readStream($image->pathname);
+            $cacheKey = "image_thumb_{$image->key}";
+
+            if (Cache::has($cacheKey)) {
+                $contents = Cache::get($cacheKey);
+            } else {
+                $stream = $image->filesystem()->readStream($image->pathname);
+                $img = \Intervention\Image\Facades\Image::make($stream);
+                $width = (int)($image->width / 2);
+                $height = (int)($image->height / 2);
+                $contents = $img->fit($width, $height, fn($constraint) => $constraint->upsize())->encode();
+                Cache::rememberForever($cacheKey, fn () => (string)$contents);
+            }
         } catch (FilesystemException $e) {
             abort(404);
         }
-        $img = \Intervention\Image\Facades\Image::make($stream);
-        $width = $image->width;
-        $height = $image->height;
-        $img->fit((int)($width / 2), (int)($height / 2), fn($constraint) => $constraint->upsize());
-        return $img->response();
+
+        return \response()->stream(function () use ($contents) {
+            echo $contents;
+        }, headers: ['Content-type' => $image->mimetype]);
     }
 
     public function permission(Request $request): Response
