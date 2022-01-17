@@ -34,6 +34,7 @@ use League\Flysystem\Filesystem;
  * @property integer $width
  * @property integer $height
  * @property string $url
+ * @property string $thumb_url
  * @property Collection $links
  * @property int $permission
  * @property boolean $is_unhealthy
@@ -125,6 +126,13 @@ class Image extends Model
                 // 原图保护
                 return asset("{$this->key}.{$this->extension}");
             }
+        });
+    }
+
+    public function thumbUrl(): Attribute
+    {
+        return new Attribute(function () {
+            return $this->url.'!thumbnail';
         });
     }
 

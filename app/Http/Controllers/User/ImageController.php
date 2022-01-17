@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 use League\Flysystem\FilesystemException;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class ImageController extends Controller
 {
@@ -28,41 +29,43 @@ class ImageController extends Controller
         /** @var User $user */
         $user = Auth::user();
 
-        $images = $user->images()->when($request->query('order') ?: 'newest', function (Builder $builder, $order) {
-            switch ($order) {
-                case 'earliest':
-                    $builder->orderBy('created_at');
-                    break;
-                case 'utmost':
-                    $builder->orderByDesc('size');
-                    break;
-                case 'least':
-                    $builder->orderBy('size');
-                    break;
-                default:
-                    $builder->latest();
-            }
-        })->when($request->query('visibility') ?: 'all', function (Builder $builder, $visibility) {
-            switch ($visibility) {
-                case 'public':
-                    $builder->where('permission', ImagePermission::Public);
-                    break;
-                case 'private':
-                    $builder->where('permission', ImagePermission::Private);
-                    break;
-            }
-        })->when($request->query('keyword'), function (Builder $builder, $keyword) {
-            $builder->whereRaw("concat(IFNULL(origin_name,''),IFNULL(alias_name,'')) like ?", ["%{$keyword}%"]);
-        })->when((int) $request->query('album_id'), function (Builder $builder, $albumId) {
-            $builder->where('album_id', $albumId);
-        }, function (Builder $builder) {
-            $builder->whereNull('album_id');
-        })->paginate(40);
+        $images = Image::with('strategy')
+            ->where('user_id', $user->id)
+            ->when($request->query('order') ?: 'newest', function (Builder $builder, $order) {
+                switch ($order) {
+                    case 'earliest':
+                        $builder->orderBy('created_at');
+                        break;
+                    case 'utmost':
+                        $builder->orderByDesc('size');
+                        break;
+                    case 'least':
+                        $builder->orderBy('size');
+                        break;
+                    default:
+                        $builder->latest();
+                }
+            })->when($request->query('visibility') ?: 'all', function (Builder $builder, $visibility) {
+                switch ($visibility) {
+                    case 'public':
+                        $builder->where('permission', ImagePermission::Public);
+                        break;
+                    case 'private':
+                        $builder->where('permission', ImagePermission::Private);
+                        break;
+                }
+            })->when($request->query('keyword'), function (Builder $builder, $keyword) {
+                $builder->whereRaw("concat(IFNULL(origin_name,''),IFNULL(alias_name,'')) like ?", ["%{$keyword}%"]);
+            })->when((int) $request->query('album_id'), function (Builder $builder, $albumId) {
+                $builder->where('album_id', $albumId);
+            }, function (Builder $builder) {
+                $builder->whereNull('album_id');
+            })->paginate(40);
         $images->getCollection()->each(function (Image $image) {
             $image->human_date = $image->created_at->diffForHumans();
             $image->date = $image->created_at->format('Y-m-d H:i:s');
-            $image->append(['url', 'filename', 'links'])->setVisible([
-                'id', 'filename', 'url', 'human_date', 'date', 'size', 'width', 'height', 'links'
+            $image->append(['url', 'thumb_url', 'filename', 'links'])->setVisible([
+                'id', 'filename', 'url', 'thumb_url', 'human_date', 'date', 'size', 'width', 'height', 'links'
             ]);
         });
         return $this->success('success', compact('images'));
@@ -73,30 +76,56 @@ class ImageController extends Controller
         /** @var User $user */
         $user = Auth::user();
         /** @var Image $image */
-        if (! $image = $user->images()->find($request->route('id'))) {
+        if (!$image = $user->images()->find($request->route('id'))) {
             return $this->error('未找到该图片');
         }
         $image->strategy->setVisible(['name']);
         $image->album?->setVisible(['name']);
-        $image->append(['url', 'filename', 'links'])->setVisible([
-            'id', 'filename', 'origin_name', 'url', 'width', 'height', 'size', 'mimetype', 'md5', 'sha1', 'permission',
-            'strategy', 'album', 'uploaded_ip', 'links', 'created_at'
+        $image->append(['url', 'thumb_url', 'filename', 'links'])->setVisible([
+            'id', 'filename', 'origin_name', 'url', 'thumb_url', 'width', 'height', 'size', 'mimetype', 'md5', 'sha1',
+            'permission', 'strategy', 'album', 'uploaded_ip', 'links', 'created_at'
         ]);
         return $this->success('success', compact('image'));
     }
 
-    public function output(Request $request)
+    public function output(Request $request): StreamedResponse
     {
         /** @var Image $image */
-        $image = Image::query()->where('key', $request->route('key'))->firstOr(fn() => abort(404));
+        $image = Image::query()
+            ->where('key', $request->route('key'))
+            ->where('extension', $request->route('extension'))
+            ->firstOr(fn() => abort(404));
+        try {
+            $contents = $image->filesystem()->read($image->pathname);
+        } catch (FilesystemException $e) {
+            abort(404);
+        }
+        return \response()->stream(function () use ($contents) {
+            echo $contents;
+        }, headers: ['Content-type' => $image->mimetype]);
+    }
+
+    public function thumbnail(Request $request)
+    {
+        /** @var Image $image */
+        $image = Image::query()
+            ->where('key', $request->route('key'))
+            ->where('extension', $request->route('extension'))
+            ->firstOr(fn() => abort(404));
         try {
             $stream = $image->filesystem()->readStream($image->pathname);
         } catch (FilesystemException $e) {
             abort(404);
         }
         $img = \Intervention\Image\Facades\Image::make($stream);
-        // ...
-        return $img->response(quality: 100);
+        $width = $image->width;
+        $height = $image->height;
+        if ($width > 600 && $height > 600) {
+            $width = $width / 2;
+            $height = $height / 2;
+        }
+        $img->fit((int)$width, (int)$height, fn($constraint) => $constraint->upsize());
+        return $img->response();
     }
 
     public function permission(Request $request): Response
@@ -105,7 +134,7 @@ class ImageController extends Controller
         $user = Auth::user();
         $permission = $request->input('permission');
         $permissions = ['public' => ImagePermission::Public, 'private' => ImagePermission::Private];
-        if (! in_array($permission, array_keys($permissions))) {
+        if (!in_array($permission, array_keys($permissions))) {
             return $this->error('设置失败');
         }
         $user->images()->whereIn('id', (array) $request->input('ids'))->update([

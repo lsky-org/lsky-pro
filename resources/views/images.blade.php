@@ -105,7 +105,7 @@
                     <p class="text-xs date" title="__human_date__">__date__</p>
                 </div>
             </div>
-            <img alt="__name__" src="__url__" width="__width__" height="__height__">
+            <img alt="__name__" data-original="__url__" src="__thumb_url__" width="__width__" height="__height__">
         </a>
     </script>
 
@@ -225,7 +225,7 @@
             const $photos = $(IMAGES_GRID);
             const $drawer = $("#drawer");
             const $drawerMask = $('#drawer-mask');
-            const viewer = new Viewer(document.getElementById('images-grid'), {});
+            const viewer = new Viewer(document.getElementById('images-grid'), {url: 'data-original'});
             const drawer = {
                 open(title, content, callback) {
                     $drawerMask.fadeIn();
@@ -273,6 +273,7 @@
                             .replace(/__human_date__/g, images[i].human_date)
                             .replace(/__date__/g, images[i].date)
                             .replace(/__url__/g, images[i].url)
+                            .replace(/__thumb_url__/g, images[i].thumb_url)
                             .replace(/__width__/g, images[i].width)
                             .replace(/__height__/g, images[i].height)
                             .replace(/__json__/g, JSON.stringify(images[i]))
