@@ -110,7 +110,7 @@ class ImageController extends Controller
         }
         // 是否启用了水印功能
         if ($image->group->configs->get(GroupConfigKey::IsEnableWatermark)) {
-            // TODO 动态生成水印并缓存
+            // TODO 缓存水印文件
             $configs = $image->group->configs->get(GroupConfigKey::WatermarkConfigs);
             $contents = (string)$service->stickWatermark($contents, collect($configs))->encode();
         }

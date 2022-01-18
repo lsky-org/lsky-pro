@@ -10,6 +10,7 @@ use App\Enums\Strategy\LocalOption;
 use App\Enums\StrategyKey;
 use App\Enums\UserConfigKey;
 use App\Enums\UserStatus;
+use App\Enums\Watermark\FontOption;
 use App\Exceptions\UploadException;
 use App\Models\Group;
 use App\Models\Image;
@@ -26,13 +27,11 @@ use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image as InterventionImage;
 use Intervention\Image\Gd\Font;
 use Intervention\Image\ImageManager;
-use JetBrains\PhpStorm\NoReturn;
 use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemAdapter;
 use League\Flysystem\FilesystemException;
 use League\Flysystem\Local\LocalFilesystemAdapter;
 use Overtrue\Flysystem\Qiniu\QiniuAdapter;
-use Psr\Http\Message\StreamInterface;
 
 class ImageService
 {
@@ -196,6 +195,46 @@ class ImageService
                 domain: $configs->get(KodoOption::Domain),
             ),
         };
+    }
+
+    /**
+     * 合成验证码
+     *
+     * @param  mixed $image
+     * @param  Collection $configs
+     * @return \Intervention\Image\Image
+     */
+    public function stickWatermark(mixed $image, Collection $configs): \Intervention\Image\Image
+    {
+        $driver = $configs->get('driver');
+        $options = collect($configs->get("drivers")[$driver]);
+        $image = InterventionImage::make($image);
+
+        if ($driver === 'font') {
+            $text = $options->get(FontOption::Text, Utils::config(ConfigKey::SiteName));
+            $font = new Font(urldecode($text));
+            $font->valign('top');
+            $font->file($options->get(FontOption::Font));
+            $font->size($options->get(FontOption::Size, 50));
+            $font->color($options->get(FontOption::Color)); // 十六禁止 or rgba
+            $box = $font->getBoxSize();
+            $font->text($text);
+            $manager = new ImageManager();
+            $canvas = $manager->canvas($box['width'], $box['height']);
+            $font->applyToImage($canvas);
+            $image->insert(
+                $manager->make($canvas),
+                $options->get(FontOption::Position, 'top-right'),
+                $options->get(FontOption::X, 0),
+                $options->get(FontOption::Y, 0),
+            );
+        }
+
+        if ($driver === 'image') {
+            // TODO
+        }
+
+        return $image;
     }
 
     protected function replacePathname(string $pathname, UploadedFile $file): string

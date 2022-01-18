@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Enums\ConfigKey;
 use App\Enums\GroupConfigKey;
 use App\Enums\Mail\SmtpOption;
+use App\Enums\Watermark\FontOption;
 use App\Models\Group;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Carbon;
@@ -48,7 +49,23 @@ class DatabaseSeeder extends Seeder
                 GroupConfigKey::IsEnableReview => false,
                 GroupConfigKey::IsEnableWatermark => false,
                 GroupConfigKey::IsEnableOriginalProtection => false,
-                GroupConfigKey::WatermarkConfigs => new \stdClass(),
+                GroupConfigKey::WatermarkConfigs => [
+                    'driver' => 'font',
+                    'drivers' => [
+                        'font' => [
+                            FontOption::Text => 'Lsky Pro',
+                            FontOption::Position => 'top-right',
+                            FontOption::Size => 50,
+                            FontOption::Font => '',
+                            FontOption::Color => '#000000',
+                            FontOption::X => 0,
+                            FontOption::Y => 0,
+                        ],
+                        'image' => [
+                            // TODO
+                        ]
+                    ],
+                ],
                 GroupConfigKey::LimitPerMinute => 20,
                 GroupConfigKey::LimitPerHour => 100,
                 GroupConfigKey::LimitPerDay => 300,
