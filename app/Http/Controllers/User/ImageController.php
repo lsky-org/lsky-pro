@@ -9,6 +9,7 @@ use App\Http\Requests\ImageRenameRequest;
 use App\Models\Album;
 use App\Models\Image;
 use App\Models\User;
+use App\Service\ImageService;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -16,6 +17,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
+use Intervention\Image\ImageManager;
 use League\Flysystem\FilesystemException;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
@@ -90,7 +92,7 @@ class ImageController extends Controller
         return $this->success('success', compact('image'));
     }
 
-    public function output(Request $request): StreamedResponse
+    public function output(Request $request, ImageService $service): StreamedResponse
     {
         /** @var Image $image */
         $image = Image::query()
@@ -108,8 +110,9 @@ class ImageController extends Controller
         }
         // 是否启用了水印功能
         if ($image->group->configs->get(GroupConfigKey::IsEnableWatermark)) {
-            // GroupConfigKey::WatermarkConfigs
             // TODO 动态生成水印并缓存
+            $configs = $image->group->configs->get(GroupConfigKey::WatermarkConfigs);
+            $contents = (string)$service->stickWatermark($contents, collect($configs))->encode();
         }
         return \response()->stream(function () use ($contents) {
             echo $contents;
@@ -132,31 +135,17 @@ class ImageController extends Controller
             } else {
                 $stream = $image->filesystem()->readStream($image->pathname);
                 $img = \Intervention\Image\Facades\Image::make($stream);
-                switch (1) {
-                    case $image->width >= 115200 && $image->height >= 64800:
-                        $width = (int)($image->width / 32);
-                        $height = (int)($image->height / 32);
-                        break;
-                    case $image->width >= 102400 && $image->height >= 43200:
-                        $width = (int)($image->width / 28);
-                        $height = (int)($image->height / 28);
-                        break;
-                    case $image->width >= 10240 && $image->height >= 5760:
-                        $width = (int)($image->width / 10);
-                        $height = (int)($image->height / 10);
-                        break;
-                    case $image->width >= 3840 && $image->height >= 2160:
-                        $width = (int)($image->width / 8);
-                        $height = (int)($image->height / 8);
-                        break;
-                    case $image->width >= 1920 && $image->height >= 1080:
-                        $width = (int)($image->width / 6);
-                        $height = (int)($image->height / 6);
-                        break;
-                    default:
-                        $width = (int)($image->width / 3);
-                        $height = (int)($image->height / 3);
+
+                $w = $image->width;
+                $h = $image->height;
+                $width = $height = 400;
+
+                if ($w > $width && $h > $height) {
+                    $scale = min($width / $w, $height / $h);
+                    $width  = (int)($w * $scale);
+                    $height = (int)($h * $scale);
                 }
+
                 $contents = $img->fit($width, $height, fn($constraint) => $constraint->upsize())->encode();
                 Cache::rememberForever($cacheKey, fn () => (string)$contents);
             }
