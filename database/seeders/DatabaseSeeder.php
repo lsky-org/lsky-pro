@@ -55,11 +55,12 @@ class DatabaseSeeder extends Seeder
                         'font' => [
                             FontOption::Text => 'Lsky Pro',
                             FontOption::Position => 'top-right',
+                            FontOption::Angle => 0,
                             FontOption::Size => 50,
                             FontOption::Font => '',
                             FontOption::Color => '#000000',
-                            FontOption::X => 0,
-                            FontOption::Y => 0,
+                            FontOption::X => 10,
+                            FontOption::Y => 10,
                         ],
                         'image' => [
                             // TODO

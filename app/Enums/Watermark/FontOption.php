@@ -19,6 +19,9 @@ final class FontOption
     /** @var string 水印位置 */
     const Position = 'position';
 
+    /** @var string 旋转角度 */
+    const Angle = 'angle';
+
     /** @var string X轴偏移量 */
     const X = 'x';
 

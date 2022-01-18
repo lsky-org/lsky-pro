@@ -210,24 +210,45 @@ class ImageService
         $options = collect($configs->get("drivers")[$driver]);
         $image = InterventionImage::make($image);
 
+        $position = $options->get(FontOption::Position, 'top-right');
+
         if ($driver === 'font') {
             $text = $options->get(FontOption::Text, Utils::config(ConfigKey::SiteName));
             $font = new Font(urldecode($text));
-            $font->valign('top');
-            $font->file($options->get(FontOption::Font));
-            $font->size($options->get(FontOption::Size, 50));
-            $font->color($options->get(FontOption::Color)); // 十六禁止 or rgba
+            $font->valign('top')
+                ->file($options->get(FontOption::Font))
+                ->size($options->get(FontOption::Size, 50))
+                ->angle($options->get(FontOption::Angle, 0))
+                ->color($options->get(FontOption::Color, '000000')); // 十六进制 or rgba
             $box = $font->getBoxSize();
             $font->text($text);
             $manager = new ImageManager();
             $canvas = $manager->canvas($box['width'], $box['height']);
-            $font->applyToImage($canvas);
-            $image->insert(
-                $manager->make($canvas),
-                $options->get(FontOption::Position, 'top-right'),
-                $options->get(FontOption::X, 0),
-                $options->get(FontOption::Y, 0),
-            );
+
+            // 原图宽高
+            $imageWidth = $image->width();
+            $imageHeight = $image->height();
+
+            // 水印画布宽高
+            $canvasWidth = $canvas->width();
+            $canvasHeight = $canvas->height();
+
+            $offsetX = $options->get(FontOption::X, 0);
+            $offsetY = $options->get(FontOption::Y, 0);
+
+            if ($position === 'tiled') {
+                // 平铺水印
+                for ($x = 0; $x < $imageWidth; $x++) {
+                    for ($y = 0; $y < $imageHeight; $y++) {
+                        $image->text($text, $x, $y, fn (Font &$f) => $f = $font);
+                        $y += $canvasHeight + $offsetY;
+                    }
+                    $x += $canvasWidth + $offsetX;
+                }
+            } else {
+                $font->applyToImage($canvas);
+                $image->insert($manager->make($canvas), $position, $offsetX, $offsetY);
+            }
         }
 
         if ($driver === 'image') {
