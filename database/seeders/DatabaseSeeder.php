@@ -6,6 +6,7 @@ use App\Enums\ConfigKey;
 use App\Enums\GroupConfigKey;
 use App\Enums\Mail\SmtpOption;
 use App\Enums\Watermark\FontOption;
+use App\Enums\Watermark\ImageOption;
 use App\Models\Group;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Carbon;
@@ -54,7 +55,7 @@ class DatabaseSeeder extends Seeder
                     'drivers' => [
                         'font' => [
                             FontOption::Text => 'Lsky Pro',
-                            FontOption::Position => 'top-right',
+                            FontOption::Position => 'bottom-right',
                             FontOption::Angle => 0,
                             FontOption::Size => 50,
                             FontOption::Font => '',
@@ -63,7 +64,14 @@ class DatabaseSeeder extends Seeder
                             FontOption::Y => 10,
                         ],
                         'image' => [
-                            // TODO
+                            ImageOption::Image => '',
+                            ImageOption::Position => 'bottom-right',
+                            ImageOption::Opacity => 100,
+                            ImageOption::Rotate => 0,
+                            ImageOption::Width => 0,
+                            ImageOption::Height => 0,
+                            ImageOption::X => 10,
+                            ImageOption::Y => 10,
                         ]
                     ],
                 ],

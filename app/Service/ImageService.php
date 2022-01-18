@@ -11,6 +11,7 @@ use App\Enums\StrategyKey;
 use App\Enums\UserConfigKey;
 use App\Enums\UserStatus;
 use App\Enums\Watermark\FontOption;
+use App\Enums\Watermark\ImageOption;
 use App\Exceptions\UploadException;
 use App\Models\Group;
 use App\Models\Image;
@@ -45,7 +46,7 @@ class ImageService
     {
         $file = $request->file('file');
 
-        if (is_null($user) && ! Utils::config(ConfigKey::IsAllowGuestUpload, true)) {
+        if (is_null($user) && !Utils::config(ConfigKey::IsAllowGuestUpload, true)) {
             throw new UploadException('管理员关闭了游客上传');
         }
 
@@ -60,8 +61,8 @@ class ImageService
             'configs' => collect([LocalOption::Root => config('filesystems.disks.uploads.root')]),
         ]);
 
-        if (! is_null($user)) {
-            if (Utils::config(ConfigKey::IsUserNeedVerify) && ! $user->email_verified_at) {
+        if (!is_null($user)) {
+            if (Utils::config(ConfigKey::IsUserNeedVerify) && !$user->email_verified_at) {
                 throw new UploadException('账户未验证');
             }
 
@@ -99,7 +100,7 @@ class ImageService
             }
         }
 
-        if (! in_array($file->extension(), $configs->get(GroupConfigKey::AcceptedFileSuffixes))) {
+        if (!in_array($file->extension(), $configs->get(GroupConfigKey::AcceptedFileSuffixes))) {
             throw new UploadException('不支持的文件类型');
         }
 
@@ -119,7 +120,7 @@ class ImageService
         $sql = collect(array_keys($array))->transform(function ($range) use ($carbon, $format) {
             return "count(if(`created_at` between '{$carbon->parse("-1 {$range}")->format($format)}' and '{$carbon->format($format)}', 1, null)) as {$range}";
         })->implode(', ');
-        $statistics = Image::query()->selectRaw($sql)->when(! is_null($user), function (Builder $builder) use ($user) {
+        $statistics = Image::query()->selectRaw($sql)->when(!is_null($user), function (Builder $builder) use ($user) {
             $builder->where('user_id', $user->id);
         }, function (Builder $builder) use ($request) {
             $builder->where('uploaded_ip', $request->ip())->whereNull('user_id');
@@ -171,12 +172,14 @@ class ImageService
         }
 
         DB::transaction(function () use ($image, $user, $filesystem, $existing) {
-            if (! $image->save()) {
+            if (!$image->save()) {
                 // 删除文件
-                if (is_null($existing)) $filesystem->delete($image->pathname);
+                if (is_null($existing)) {
+                    $filesystem->delete($image->pathname);
+                }
                 throw new UploadException('图片保存失败');
             }
-            if (! is_null($user)) {
+            if (!is_null($user)) {
                 $user->increment('image_num');
             }
         }, 3);
@@ -200,8 +203,8 @@ class ImageService
     /**
      * 合成验证码
      *
-     * @param  mixed $image
-     * @param  Collection $configs
+     * @param  mixed  $image
+     * @param  Collection  $configs
      * @return \Intervention\Image\Image
      */
     public function stickWatermark(mixed $image, Collection $configs): \Intervention\Image\Image
@@ -211,50 +214,65 @@ class ImageService
         $image = InterventionImage::make($image);
 
         $position = $options->get(FontOption::Position, 'top-right');
+        $offsetX = (int) $options->get(FontOption::X, 10);
+        $offsetY = (int) $options->get(FontOption::Y, 10);
 
         if ($driver === 'font') {
             $text = $options->get(FontOption::Text, Utils::config(ConfigKey::SiteName));
             $font = new Font(urldecode($text));
             $font->valign('top')
-                ->file($options->get(FontOption::Font))
-                ->size($options->get(FontOption::Size, 50))
-                ->angle($options->get(FontOption::Angle, 0))
+                ->file(storage_path('app/public/test.ttf'))
+                ->size((int) $options->get(FontOption::Size, 50))
+                ->angle((int) $options->get(FontOption::Angle, 0))
                 ->color($options->get(FontOption::Color, '000000')); // 十六进制 or rgba
             $box = $font->getBoxSize();
             $font->text($text);
             $manager = new ImageManager();
             $canvas = $manager->canvas($box['width'], $box['height']);
-
-            // 原图宽高
-            $imageWidth = $image->width();
-            $imageHeight = $image->height();
-
-            // 水印画布宽高
-            $canvasWidth = $canvas->width();
-            $canvasHeight = $canvas->height();
-
-            $offsetX = $options->get(FontOption::X, 0);
-            $offsetY = $options->get(FontOption::Y, 0);
-
-            if ($position === 'tiled') {
-                // 平铺水印
-                for ($x = 0; $x < $imageWidth; $x++) {
-                    for ($y = 0; $y < $imageHeight; $y++) {
-                        $image->text($text, $x, $y, fn (Font &$f) => $f = $font);
-                        $y += $canvasHeight + $offsetY;
-                    }
-                    $x += $canvasWidth + $offsetX;
-                }
-            } else {
-                $font->applyToImage($canvas);
-                $image->insert($manager->make($canvas), $position, $offsetX, $offsetY);
-            }
+            $font->applyToImage($canvas);
+            $watermark = $manager->make($canvas);
         }
 
         if ($driver === 'image') {
-            // TODO
+            $watermark = InterventionImage::make($options->get(ImageOption::Image));
+            $opacity = (int) $options->get(ImageOption::Opacity, 0);
+            $width = $options->get(ImageOption::Width, 0);
+            $height = $options->get(ImageOption::Height, 0);
+
+            if ($opacity && $opacity != 100) {
+                $watermark->opacity((int) min($opacity, 100));
+            }
+
+            if ($width + $height > 0) {
+                $watermark->resize($width ?: null, $height ?: null, function ($constraint) {
+                    $constraint->aspectRatio();
+                    $constraint->upsize();
+                });
+            }
         }
 
+        // 原图宽高
+        $imageWidth = $image->width();
+        $imageHeight = $image->height();
+
+        // 水印画布宽高
+        $watermarkWidth = $watermark->width();
+        $watermarkHeight = $watermark->height();
+
+        if ($position === 'tiled') {
+            // 平铺水印
+            for ($x = 0; $x < $imageWidth; $x++) {
+                for ($y = 0; $y < $imageHeight; $y++) {
+                    $image->insert($watermark, '', $x, $y);
+                    $y += $watermarkHeight + $offsetY;
+                }
+                $x += $watermarkWidth + $offsetX;
+            }
+        } else {
+            $image->insert($watermark, $position, $offsetX, $offsetY);
+        }
+
+        // TODO 可读性差，需要改进
         return $image;
     }
 
@@ -265,10 +283,10 @@ class ImageService
             '{y}' => date('y'),
             '{m}' => date('m'),
             '{d}' => date('d'),
-            'timestamp' => time(),
+            '{timestamp}' => time(),
             '{uniqid}' => uniqid(),
-            '{md5}' => md5(microtime() . Str::random()),
-            '{md5-16}' => substr(md5(microtime() . Str::random()), 0, 16),
+            '{md5}' => md5(microtime().Str::random()),
+            '{md5-16}' => substr(md5(microtime().Str::random()), 0, 16),
             '{str-random-16}' => Str::random(),
             '{str-random-10}' => Str::random(10),
             '{filename}' => rtrim($file->getClientOriginalName(), '.'.$file->extension()),
