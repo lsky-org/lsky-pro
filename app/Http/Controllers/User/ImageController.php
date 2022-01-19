@@ -33,7 +33,7 @@ class ImageController extends Controller
         /** @var User $user */
         $user = Auth::user();
 
-        $images = Image::with('group')
+        $images = Image::with('group', 'strategy')
             ->where('user_id', $user->id)
             ->when($request->query('order') ?: 'newest', function (Builder $builder, $order) {
                 switch ($order) {
