@@ -45,4 +45,7 @@ final class GroupConfigKey
 
     /** @var string 文件命名规则 */
     const FileNamingRule = 'file_naming_rule';
+
+    /** @var string 图片缓存时间 */
+    const CacheTtl = 'cache_ttl';
 }

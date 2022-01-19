@@ -83,6 +83,7 @@ class DatabaseSeeder extends Seeder
                 GroupConfigKey::AcceptedFileSuffixes => ['jpeg', 'png', 'gif', 'tif', 'bmp', 'ico', 'psd', 'webp'],
                 GroupConfigKey::PathNamingRule => '{Y}/{m}/{d}',
                 GroupConfigKey::FileNamingRule => '{uniqid}',
+                GroupConfigKey::CacheTtl => 2626560,
             ])->toJson(),
         ])->transform(function ($value, $key) use ($date) {
             return ['name' => $key, 'value' => $value, 'updated_at' => $date, 'created_at' => $date];

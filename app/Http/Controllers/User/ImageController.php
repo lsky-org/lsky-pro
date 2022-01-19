@@ -104,16 +104,29 @@ class ImageController extends Controller
             abort(404);
         }
         try {
-            $contents = $image->filesystem()->read($image->pathname);
+            $cacheKey = "image_{$image->key}";
+
+            if (Cache::has($cacheKey)) {
+                $contents = Cache::get($cacheKey);
+            } else {
+                $contents = $image->filesystem()->read($image->pathname);
+                // 是否启用了水印功能，跳过gif图片
+                if ($image->group->configs->get(GroupConfigKey::IsEnableWatermark) && $image->mimetype !== 'image/gif') {
+                    $configs = $image->group->configs->get(GroupConfigKey::WatermarkConfigs);
+                    $contents = (string)$service->stickWatermark($contents, collect($configs))->encode();
+                }
+                $cacheTtl = (int)$image->group->configs->get(GroupConfigKey::CacheTtl, 0);
+                // 是否启用了缓存
+                if ($cacheTtl) {
+                    Cache::remember($cacheKey, $cacheTtl, fn () => $contents);
+                } else {
+                    if (Cache::has($cacheKey)) Cache::forget($cacheKey);
+                }
+            }
         } catch (FilesystemException $e) {
             abort(404);
         }
-        // 是否启用了水印功能，跳过gif图片
-        if ($image->group->configs->get(GroupConfigKey::IsEnableWatermark) && $image->mimetype !== 'image/gif') {
-            // TODO 缓存水印文件
-            $configs = $image->group->configs->get(GroupConfigKey::WatermarkConfigs);
-            $contents = (string)$service->stickWatermark($contents, collect($configs))->encode();
-        }
+
         return \response()->stream(function () use ($contents) {
             echo $contents;
         }, headers: ['Content-type' => $image->mimetype]);
