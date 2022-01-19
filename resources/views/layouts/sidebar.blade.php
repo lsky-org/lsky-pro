@@ -26,7 +26,7 @@
                     <x-slot name="icon"><i class="fas fa-images text-blue-500"></i></x-slot>
                     <x-slot name="name">我的图片</x-slot>
                 </x-nav-link>
-                <x-nav-link :active="request()->routeIs('settings')">
+                <x-nav-link :href="route('settings')" :active="request()->routeIs('settings')">
                     <x-slot name="icon"><i class="fas fa-user-cog text-blue-500"></i></x-slot>
                     <x-slot name="name">设置</x-slot>
                 </x-nav-link>

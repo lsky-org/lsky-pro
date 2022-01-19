@@ -23,6 +23,6 @@ class UserController extends Controller
         }
 
         $strategies = $user->group ? $user->group->strategies()->get() : [];
-        return view('dashboard', compact('strategies', 'configs', 'user'));
+        return view('user.dashboard', compact('strategies', 'configs', 'user'));
     }
 }

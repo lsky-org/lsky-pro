@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\ImagePermission;
 use App\Enums\UserConfigKey;
 use Carbon\Carbon;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -84,6 +85,7 @@ class User extends Authenticatable implements MustVerifyEmail
             $user->configs = collect([
                 UserConfigKey::DefaultAlbum => 0,
                 UserConfigKey::DefaultStrategy => 0,
+                UserConfigKey::DefaultPermission => ImagePermission::Private,
                 UserConfigKey::IsAutoClearPreview => 0,
             ])->merge($user->configs ?: []);
         });

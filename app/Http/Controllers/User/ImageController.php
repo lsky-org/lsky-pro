@@ -19,7 +19,7 @@ class ImageController extends Controller
 {
     public function index(): View
     {
-        return view('images');
+        return view('user.images');
     }
 
     public function images(Request $request): Response
