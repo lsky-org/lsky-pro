@@ -142,10 +142,13 @@ class ImageController extends Controller
     {
         /** @var User $user */
         $user = Auth::user();
-        $model = Image::with('strategy')->where('user_id', $user->id)->whereIn('id', $request->all() ?: []);
+        $model = Image::with('strategy', 'album')->where('user_id', $user->id)->whereIn('id', $request->all() ?: []);
         DB::transaction(function () use ($model, $user) {
             /** @var Image $image */
             foreach ($model->cursor() as $image) {
+                // 相册图片数量更新
+                $image->album?->decrement('image_num');
+                // 更新相册图片数量
                 $image->delete();
             }
             // 更新数量

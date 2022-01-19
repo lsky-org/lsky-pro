@@ -187,6 +187,9 @@ class ImageService
             if (!is_null($user)) {
                 $user->increment('image_num');
             }
+            if (!is_null($image->album)) {
+                $image->album->increment('image_num');
+            }
         }, 3);
 
         return $image;
