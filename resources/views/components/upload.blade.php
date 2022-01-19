@@ -4,13 +4,8 @@
     <div class="mb-4 p-4 bg-white rounded-md">
         <h1 class="tracking-wider text-2xl text-gray-700 mb-2" style="text-shadow: -4px 4px 0 rgb(0 0 0 / 10%);">Image Upload</h1>
         <p class="text-gray-500 text-sm">
-            @if(Auth::check() && Auth::user()->group)
-                最大可上传 {{ \App\Utils::formatSize(Auth::user()->group->configs->get(\App\Enums\GroupConfigKey::MaximumFileSize) * 1024) }} 的图片，上传队列最多
-                {{ Auth::user()->group->configs->get(\App\Enums\GroupConfigKey::ConcurrentUploadNum) }}
-            @else
-                最大可上传 {{ \App\Utils::formatSize(\App\Models\Group::getDefaultConfigs()->get(\App\Enums\GroupConfigKey::MaximumFileSize) * 1024) }} 的图片，上传队列最多
-                {{ \App\Models\Group::getDefaultConfigs()->get(\App\Enums\GroupConfigKey::ConcurrentUploadNum) }}
-            @endif
+            最大可上传 {{ \App\Utils::formatSize($groupConfigs->get(\App\Enums\GroupConfigKey::MaximumFileSize) * 1024) }} 的图片，上传队列最多
+            {{ $groupConfigs->get(\App\Enums\GroupConfigKey::ConcurrentUploadNum) }}
             张。本站已托管 {{ \App\Models\Image::query()->count() }} 张图片。
         </p>
         <div class="mt-3 rounded-md border-2 border-dotted border-stone-300 w-full h-full" id="picker-dnd" onclick="$('#picker').click()">
@@ -77,17 +72,10 @@
     <script src="{{ asset('js/clipboard/clipboard.min.js') }}"></script>
 @endpush
 @push('scripts')
-    @if(Auth::check() && Auth::user()->group)
     <script>
-        let allowSuffixes = @json(Auth::user()->group->configs->get(\App\Enums\GroupConfigKey::AcceptedFileSuffixes));
-        let maxSize = {{ Auth::user()->group->configs->get(\App\Enums\GroupConfigKey::MaximumFileSize) * 1024 }};
+        let allowSuffixes = @json($groupConfigs->get(\App\Enums\GroupConfigKey::AcceptedFileSuffixes));
+        let maxSize = {{ $groupConfigs->get(\App\Enums\GroupConfigKey::MaximumFileSize) * 1024 }};
     </script>
-    @else
-    <script>
-        let allowSuffixes = @json(\App\Models\Group::getDefaultConfigs()->get(\App\Enums\GroupConfigKey::AcceptedFileSuffixes));
-        let maxSize = {{ \App\Models\Group::getDefaultConfigs()->get(\App\Enums\GroupConfigKey::MaximumFileSize) * 1024 }};
-    </script>
-    @endif
     <script>
         (new ClipboardJS('#copy-all', {
             text: function(trigger) {
