@@ -108,7 +108,7 @@ class ImageController extends Controller
         } catch (FilesystemException $e) {
             abort(404);
         }
-        // 是否启用了水印功能
+        // 是否启用了水印功能 TODO 跳过gif
         if ($image->group->configs->get(GroupConfigKey::IsEnableWatermark)) {
             // TODO 缓存水印文件
             $configs = $image->group->configs->get(GroupConfigKey::WatermarkConfigs);

@@ -252,7 +252,7 @@ class ImageService
      */
     private function getWatermark(string $driver, Collection $options): \Intervention\Image\Image
     {
-        $manager = new ImageManager();
+        $manager = new ImageManager(config('image'));
 
         if ($driver === 'image') {
             $watermark = $manager->make($options->get(ImageOption::Image));
