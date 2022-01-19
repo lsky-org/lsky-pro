@@ -213,43 +213,11 @@ class ImageService
         $options = collect($configs->get("drivers")[$driver]);
         $image = InterventionImage::make($image);
 
-        $position = $options->get(FontOption::Position, 'top-right');
+        $position = $options->get(FontOption::Position, 'bottom-right');
         $offsetX = (int) $options->get(FontOption::X, 10);
         $offsetY = (int) $options->get(FontOption::Y, 10);
 
-        if ($driver === 'font') {
-            $text = $options->get(FontOption::Text, Utils::config(ConfigKey::SiteName));
-            $font = new Font(urldecode($text));
-            $font->valign('top')
-                ->file(storage_path('app/public/test.ttf'))
-                ->size((int) $options->get(FontOption::Size, 50))
-                ->angle((int) $options->get(FontOption::Angle, 0))
-                ->color($options->get(FontOption::Color, '000000')); // 十六进制 or rgba
-            $box = $font->getBoxSize();
-            $font->text($text);
-            $manager = new ImageManager();
-            $canvas = $manager->canvas($box['width'], $box['height']);
-            $font->applyToImage($canvas);
-            $watermark = $manager->make($canvas);
-        }
-
-        if ($driver === 'image') {
-            $watermark = InterventionImage::make($options->get(ImageOption::Image));
-            $opacity = (int) $options->get(ImageOption::Opacity, 0);
-            $width = $options->get(ImageOption::Width, 0);
-            $height = $options->get(ImageOption::Height, 0);
-
-            if ($opacity && $opacity != 100) {
-                $watermark->opacity((int) min($opacity, 100));
-            }
-
-            if ($width + $height > 0) {
-                $watermark->resize($width ?: null, $height ?: null, function ($constraint) {
-                    $constraint->aspectRatio();
-                    $constraint->upsize();
-                });
-            }
-        }
+        $watermark = $this->getWatermark($driver, $options);
 
         // 原图宽高
         $imageWidth = $image->width();
@@ -272,8 +240,56 @@ class ImageService
             $image->insert($watermark, $position, $offsetX, $offsetY);
         }
 
-        // TODO 可读性差，需要改进
         return $image;
+    }
+
+    /**
+     * 获取水印画布
+     *
+     * @param  string  $driver
+     * @param  Collection  $options
+     * @return \Intervention\Image\Image
+     */
+    private function getWatermark(string $driver, Collection $options): \Intervention\Image\Image
+    {
+        $manager = new ImageManager();
+
+        if ($driver === 'image') {
+            $watermark = $manager->make($options->get(ImageOption::Image));
+            $opacity = (int) $options->get(ImageOption::Opacity, 0);
+            $rotate = (int) $options->get(ImageOption::Rotate, 0);
+            $width = $options->get(ImageOption::Width, 0);
+            $height = $options->get(ImageOption::Height, 0);
+
+            if ($opacity && $opacity != 100) {
+                $watermark->opacity((int) min($opacity, 100));
+            }
+
+            if ($rotate) {
+                $watermark->rotate($rotate);
+            }
+
+            if ($width + $height > 0) {
+                $watermark->resize($width ?: null, $height ?: null, function ($constraint) {
+                    $constraint->aspectRatio();
+                    $constraint->upsize();
+                });
+            }
+            return $watermark;
+        } else {
+            $text = $options->get(FontOption::Text, Utils::config(ConfigKey::SiteName));
+            $font = new Font(urldecode($text));
+            $font->valign('top')
+                ->file($options->get(FontOption::Font))
+                ->size((int) $options->get(FontOption::Size, 50))
+                ->angle((int) $options->get(FontOption::Angle, 0))
+                ->color($options->get(FontOption::Color, '000000')); // 十六进制 or rgba
+            $box = $font->getBoxSize();
+            $font->text($text);
+            $canvas = $manager->canvas($box['width'], $box['height']);
+            $font->applyToImage($canvas);
+            return $manager->make($canvas);
+        }
     }
 
     protected function replacePathname(string $pathname, UploadedFile $file): string
