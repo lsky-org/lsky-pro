@@ -198,8 +198,15 @@
             done: (e, data) => {
                 let response = data.result;
                 if (response.status) {
-                    setStatus(data, UPLOAD_SUCCESS)
-                    data.$preview.attr('uploaded', true);
+                    // 如果开启了自动清除缩略图功能
+                    if ({{ Auth::check() && Auth::user()->configs->get(\App\Enums\UserConfigKey::IsAutoClearPreview) }}) {
+                        delete queue[data.$preview.data('id')];
+                        data.$preview.remove();
+                    } else {
+                        setStatus(data, UPLOAD_SUCCESS)
+                        data.$preview.attr('uploaded', true);
+                    }
+
                     // 追加链接
                     let links = response.data.links;
                     for (let key in links) {
