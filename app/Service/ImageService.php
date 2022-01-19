@@ -61,6 +61,9 @@ class ImageService
             'configs' => collect([LocalOption::Root => config('filesystems.disks.uploads.root')]),
         ]);
 
+        // 图片默认权限
+        $image->permission = ImagePermission::Private;
+
         if (!is_null($user)) {
             if (Utils::config(ConfigKey::IsUserNeedVerify) && !$user->email_verified_at) {
                 throw new UploadException('账户未验证');
@@ -98,6 +101,9 @@ class ImageService
                     $image->album_id = $albumId;
                 }
             }
+
+            // 用户设置的图片默认权限
+            $image->permission = $user->configs->get(UserConfigKey::DefaultPermission, ImagePermission::Private);
         }
 
         if (!in_array($file->extension(), $configs->get(GroupConfigKey::AcceptedFileSuffixes))) {
@@ -148,7 +154,6 @@ class ImageService
             'extension' => $file->extension(),
             'width' => $img->width(),
             'height' => $img->height(),
-            'permission' => ImagePermission::Private,
             'is_unhealthy' => false, // TODO 接入鉴黄？
             'uploaded_ip' => $request->ip(),
         ]);
