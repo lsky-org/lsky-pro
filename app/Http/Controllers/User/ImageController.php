@@ -149,12 +149,13 @@ class ImageController extends Controller
                 $stream = $image->filesystem()->readStream($image->pathname);
                 $img = \Intervention\Image\Facades\Image::make($stream);
 
-                $w = $image->width;
-                $h = $image->height;
-                $width = $height = 400;
+                $width = $w = $image->width;
+                $height = $h = $image->height;
 
-                if ($w > $width && $h > $height) {
-                    $scale = min($width / $w, $height / $h);
+                $max = 400; // 最大宽高
+
+                if ($w > $max && $h > $max) {
+                    $scale = min($max / $w, $max / $h);
                     $width  = (int)($w * $scale);
                     $height = (int)($h * $scale);
                 }
