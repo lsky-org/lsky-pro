@@ -80,7 +80,7 @@ class DatabaseSeeder extends Seeder
                 GroupConfigKey::LimitPerDay => 300,
                 GroupConfigKey::LimitPerWeek => 600,
                 GroupConfigKey::LimitPerMonth => 999,
-                GroupConfigKey::AcceptedFileSuffixes => ['jpg', 'jpeg', 'gif', 'png', 'apng', 'bmp', 'ico'],
+                GroupConfigKey::AcceptedFileSuffixes => ['jpeg', 'png', 'gif', 'tif', 'bmp', 'ico', 'psd', 'webp'],
                 GroupConfigKey::PathNamingRule => '{Y}/{m}/{d}',
                 GroupConfigKey::FileNamingRule => '{uniqid}',
             ])->toJson(),

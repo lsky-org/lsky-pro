@@ -79,11 +79,13 @@
 @push('scripts')
     @if(Auth::check() && Auth::user()->group)
     <script>
-        let maxSize = {{ Auth::user()->group->configs->get(\App\Enums\GroupConfigKey::MaximumFileSize) * 1024 }}
+        let allowSuffixes = @json(Auth::user()->group->configs->get(\App\Enums\GroupConfigKey::AcceptedFileSuffixes));
+        let maxSize = {{ Auth::user()->group->configs->get(\App\Enums\GroupConfigKey::MaximumFileSize) * 1024 }};
     </script>
     @else
     <script>
-        let maxSize = {{ \App\Models\Group::getDefaultConfigs()->get(\App\Enums\GroupConfigKey::MaximumFileSize) * 1024 }}
+        let allowSuffixes = @json(\App\Models\Group::getDefaultConfigs()->get(\App\Enums\GroupConfigKey::AcceptedFileSuffixes));
+        let maxSize = {{ \App\Models\Group::getDefaultConfigs()->get(\App\Enums\GroupConfigKey::MaximumFileSize) * 1024 }};
     </script>
     @endif
     <script>
@@ -161,7 +163,6 @@
             add: (e, data) => {
                 let file = data.files[0];
                 let ext = file.name.substr(file.name.lastIndexOf('.') + 1);
-                let allowSuffixes = ['png', 'jpg', 'jpeg', 'bmp', 'gif', 'webp', 'psd', 'svg', 'tiff', 'ico'];
                 if (allowSuffixes.indexOf(ext.toLowerCase()) === -1) {
                     toastr.warning(`不支持的文件格式 ${file.name}`);
                     return false;
