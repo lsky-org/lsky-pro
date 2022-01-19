@@ -209,6 +209,7 @@ class ImageService
      */
     public function stickWatermark(mixed $image, Collection $configs): \Intervention\Image\Image
     {
+        // TODO 支持百分比大小
         $driver = $configs->get('driver');
         $options = collect($configs->get("drivers")[$driver]);
         $image = InterventionImage::make($image);
