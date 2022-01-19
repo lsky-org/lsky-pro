@@ -34023,7 +34023,7 @@ process.umask = function() { return 0; };
 /***/ (function(module) {
 
 /*!
-* sweetalert2 v11.3.3
+* sweetalert2 v11.3.6
 * Released under the MIT License.
 */
 (function (global, factory) {
@@ -34050,27 +34050,28 @@ process.umask = function() { return 0; };
   };
   /**
    * Capitalize the first letter of a string
-   * @param str
+   * @param {string} str
+   * @returns {string}
    */
 
   const capitalizeFirstLetter = str => str.charAt(0).toUpperCase() + str.slice(1);
   /**
-   * Convert NodeList to Array
-   * @param nodeList
+   * @param {NodeList | HTMLCollection | NamedNodeMap} nodeList
+   * @returns {array}
    */
 
   const toArray = nodeList => Array.prototype.slice.call(nodeList);
   /**
-   * Standardise console warnings
-   * @param message
+   * Standardize console warnings
+   * @param {string | array} message
    */
 
   const warn = message => {
     console.warn("".concat(consolePrefix, " ").concat(typeof message === 'object' ? message.join(' ') : message));
   };
   /**
-   * Standardise console errors
-   * @param message
+   * Standardize console errors
+   * @param {string} message
    */
 
   const error = message => {
@@ -34085,7 +34086,7 @@ process.umask = function() { return 0; };
   const previousWarnOnceMessages = [];
   /**
    * Show a console warning, but only if it hasn't already been shown
-   * @param message
+   * @param {string} message
    */
 
   const warnOnce = message => {
@@ -34319,12 +34320,12 @@ process.umask = function() { return 0; };
   const getFocusableElements = () => {
     const focusableElementsWithTabindex = toArray(getPopup().querySelectorAll('[tabindex]:not([tabindex="-1"]):not([tabindex="0"])')) // sort according to tabindex
     .sort((a, b) => {
-      a = parseInt(a.getAttribute('tabindex'));
-      b = parseInt(b.getAttribute('tabindex'));
+      const tabindexA = parseInt(a.getAttribute('tabindex'));
+      const tabindexB = parseInt(b.getAttribute('tabindex'));
 
-      if (a > b) {
+      if (tabindexA > tabindexB) {
         return 1;
-      } else if (a < b) {
+      } else if (tabindexA < tabindexB) {
         return -1;
       }
 
@@ -34592,7 +34593,11 @@ process.umask = function() { return 0; };
     timerProgressBar.style.width = "".concat(timerProgressBarPercent, "%");
   };
 
-  // Detect Node env
+  /**
+   * Detect Node env
+   *
+   * @returns {boolean}
+   */
   const isNodeEnv = () => typeof window === 'undefined' || typeof document === 'undefined';
 
   const RESTORE_FOCUS_TIMEOUT = 100;
@@ -34760,8 +34765,9 @@ process.umask = function() { return 0; };
     const testEl = document.createElement('div');
     const transEndEventNames = {
       WebkitAnimation: 'webkitAnimationEnd',
-      OAnimation: 'oAnimationEnd oanimationend',
-      animation: 'animationend'
+      // Chrome, Safari and Opera
+      animation: 'animationend' // Standard syntax
+
     };
 
     for (const i in transEndEventNames) {
@@ -35187,13 +35193,13 @@ process.umask = function() { return 0; };
 
     setColor(icon, params); // Success icon background color
 
-    adjustSuccessIconBackgoundColor(); // Custom class
+    adjustSuccessIconBackgroundColor(); // Custom class
 
     applyCustomClass(icon, params, 'icon');
   }; // Adjust success icon background color to match the popup background color
 
 
-  const adjustSuccessIconBackgoundColor = () => {
+  const adjustSuccessIconBackgroundColor = () => {
     const popup = getPopup();
     const popupBackgroundColor = window.getComputedStyle(popup).getPropertyValue('background-color');
     const successIconParts = popup.querySelectorAll('[class^=swal2-success-circular-line], .swal2-success-fix');
@@ -35437,32 +35443,39 @@ process.umask = function() { return 0; };
     if (!template) {
       return {};
     }
+    /** @type {DocumentFragment} */
+
 
     const templateContent = template.content;
     showWarningsForElements(templateContent);
     const result = Object.assign(getSwalParams(templateContent), getSwalButtons(templateContent), getSwalImage(templateContent), getSwalIcon(templateContent), getSwalInput(templateContent), getSwalStringParams(templateContent, swalStringParams));
     return result;
   };
+  /**
+   * @param {DocumentFragment} templateContent
+   */
 
   const getSwalParams = templateContent => {
     const result = {};
     toArray(templateContent.querySelectorAll('swal-param')).forEach(param => {
       showWarningsForAttributes(param, ['name', 'value']);
       const paramName = param.getAttribute('name');
-      let value = param.getAttribute('value');
+      const value = param.getAttribute('value');
 
       if (typeof defaultParams[paramName] === 'boolean' && value === 'false') {
-        value = false;
+        result[paramName] = false;
       }
 
       if (typeof defaultParams[paramName] === 'object') {
-        value = JSON.parse(value);
+        result[paramName] = JSON.parse(value);
       }
-
-      result[paramName] = value;
     });
     return result;
   };
+  /**
+   * @param {DocumentFragment} templateContent
+   */
+
 
   const getSwalButtons = templateContent => {
     const result = {};
@@ -35482,9 +35495,15 @@ process.umask = function() { return 0; };
     });
     return result;
   };
+  /**
+   * @param {DocumentFragment} templateContent
+   */
+
 
   const getSwalImage = templateContent => {
     const result = {};
+    /** @type {HTMLElement} */
+
     const image = templateContent.querySelector('swal-image');
 
     if (image) {
@@ -35509,9 +35528,15 @@ process.umask = function() { return 0; };
 
     return result;
   };
+  /**
+   * @param {DocumentFragment} templateContent
+   */
+
 
   const getSwalIcon = templateContent => {
     const result = {};
+    /** @type {HTMLElement} */
+
     const icon = templateContent.querySelector('swal-icon');
 
     if (icon) {
@@ -35530,9 +35555,15 @@ process.umask = function() { return 0; };
 
     return result;
   };
+  /**
+   * @param {DocumentFragment} templateContent
+   */
+
 
   const getSwalInput = templateContent => {
     const result = {};
+    /** @type {HTMLElement} */
+
     const input = templateContent.querySelector('swal-input');
 
     if (input) {
@@ -35566,12 +35597,19 @@ process.umask = function() { return 0; };
 
     return result;
   };
+  /**
+   * @param {DocumentFragment} templateContent
+   * @param {string[]} paramNames
+   */
+
 
   const getSwalStringParams = (templateContent, paramNames) => {
     const result = {};
 
     for (const i in paramNames) {
       const paramName = paramNames[i];
+      /** @type {HTMLElement} */
+
       const tag = templateContent.querySelector(paramName);
 
       if (tag) {
@@ -35582,10 +35620,14 @@ process.umask = function() { return 0; };
 
     return result;
   };
+  /**
+   * @param {DocumentFragment} templateContent
+   */
 
-  const showWarningsForElements = template => {
+
+  const showWarningsForElements = templateContent => {
     const allowedElements = swalStringParams.concat(['swal-param', 'swal-button', 'swal-image', 'swal-icon', 'swal-input', 'swal-input-option']);
-    toArray(template.children).forEach(el => {
+    toArray(templateContent.children).forEach(el => {
       const tagName = el.tagName.toLowerCase();
 
       if (allowedElements.indexOf(tagName) === -1) {
@@ -35593,6 +35635,11 @@ process.umask = function() { return 0; };
       }
     });
   };
+  /**
+   * @param {HTMLElement} el
+   * @param {string[]} allowedAttributes
+   */
+
 
   const showWarningsForAttributes = (el, allowedAttributes) => {
     toArray(el.attributes).forEach(attribute => {
@@ -35743,14 +35790,20 @@ process.umask = function() { return 0; };
       document.body.style.top = "".concat(offset * -1, "px");
       addClass(document.body, swalClasses.iosfix);
       lockBodyScroll();
-      addBottomPaddingForTallPopups(); // #1948
+      addBottomPaddingForTallPopups();
     }
   };
+  /**
+   * https://github.com/sweetalert2/sweetalert2/issues/1948
+   */
 
   const addBottomPaddingForTallPopups = () => {
-    const safari = !navigator.userAgent.match(/(CriOS|FxiOS|EdgiOS|YaBrowser|UCBrowser)/i);
+    const ua = navigator.userAgent;
+    const iOS = !!ua.match(/iPad/i) || !!ua.match(/iPhone/i);
+    const webkit = !!ua.match(/WebKit/i);
+    const iOSSafari = iOS && webkit && !ua.match(/CriOS/i);
 
-    if (safari) {
+    if (iOSSafari) {
       const bottomPanelHeight = 44;
 
       if (getPopup().scrollHeight > window.innerHeight - bottomPanelHeight) {
@@ -35780,7 +35833,7 @@ process.umask = function() { return 0; };
     const target = event.target;
     const container = getContainer();
 
-    if (isStylys(event) || isZoom(event)) {
+    if (isStylus(event) || isZoom(event)) {
       return false;
     }
 
@@ -35797,9 +35850,15 @@ process.umask = function() { return 0; };
 
     return false;
   };
+  /**
+   * https://github.com/sweetalert2/sweetalert2/issues/1786
+   *
+   * @param {*} event
+   * @returns {boolean}
+   */
 
-  const isStylys = event => {
-    // #1786
+
+  const isStylus = event => {
     return event.touches && event.touches.length && event.touches[0].touchType === 'stylus';
   };
 
@@ -35891,7 +35950,7 @@ process.umask = function() { return 0; };
   };
 
   const addClasses$1 = (container, popup, params) => {
-    addClass(container, params.showClass.backdrop); // the workaround with setting/unsetting opacity is needed for #2019 and 2059
+    addClass(container, params.showClass.backdrop); // this workaround with opacity is needed for https://github.com/sweetalert2/sweetalert2/issues/2059
 
     popup.style.setProperty('opacity', '0', 'important');
     show(popup, 'grid');
@@ -36157,6 +36216,11 @@ process.umask = function() { return 0; };
   /* 'confirm' | 'deny' */
   ) => {
     const innerParams = privateProps.innerParams.get(instance);
+
+    if (!innerParams.input) {
+      return error("The \"input\" parameter is needed to be set when using returnInputValueOn".concat(capitalizeFirstLetter(type)));
+    }
+
     const inputValue = getInputValue(instance, innerParams);
 
     if (innerParams.inputValidator) {
@@ -36199,7 +36263,7 @@ process.umask = function() { return 0; };
     }
 
     if (innerParams.preDeny) {
-      privateProps.awaitingPromise.set(instance || undefined, true); // Flagging the instance as awaiting a promise so it's own promise's reject/resolve methods doesnt get destroyed until the result from this preDeny's promise is received
+      privateProps.awaitingPromise.set(instance || undefined, true); // Flagging the instance as awaiting a promise so it's own promise's reject/resolve methods doesn't get destroyed until the result from this preDeny's promise is received
 
       const preDenyPromise = Promise.resolve().then(() => asPromise(innerParams.preDeny(value, innerParams.validationMessage)));
       preDenyPromise.then(preDenyValue => {
@@ -36240,7 +36304,7 @@ process.umask = function() { return 0; };
 
     if (innerParams.preConfirm) {
       instance.resetValidationMessage();
-      privateProps.awaitingPromise.set(instance || undefined, true); // Flagging the instance as awaiting a promise so it's own promise's reject/resolve methods doesnt get destroyed until the result from this preConfirm's promise is received
+      privateProps.awaitingPromise.set(instance || undefined, true); // Flagging the instance as awaiting a promise so it's own promise's reject/resolve methods doesn't get destroyed until the result from this preConfirm's promise is received
 
       const preConfirmPromise = Promise.resolve().then(() => asPromise(innerParams.preConfirm(value, innerParams.validationMessage)));
       preConfirmPromise.then(preConfirmValue => {
@@ -37022,7 +37086,7 @@ process.umask = function() { return 0; };
     const innerParams = privateProps.innerParams.get(this);
 
     if (!innerParams) {
-      disposeWeakMaps(this); // The WeakMaps might have been partly destroyed, we must recall it to dispose any remaining weakmaps #2335
+      disposeWeakMaps(this); // The WeakMaps might have been partly destroyed, we must recall it to dispose any remaining WeakMaps #2335
 
       return; // This instance has already been destroyed
     } // Check if there is another Swal closing
@@ -37304,7 +37368,7 @@ process.umask = function() { return 0; };
     };
   });
   SweetAlert.DismissReason = DismissReason;
-  SweetAlert.version = '11.3.3';
+  SweetAlert.version = '11.3.6';
 
   const Swal = SweetAlert; // @ts-ignore
 

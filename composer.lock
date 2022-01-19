@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "asm89/stack-cors",
-            "version": "v2.1.0",
+            "version": "v2.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/asm89/stack-cors.git",
-                "reference": "1faf1a97bddf4ce46521ba747f8474e4c15bb546"
+                "reference": "73e5b88775c64ccc0b84fb60836b30dc9d92ac4a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/asm89/stack-cors/zipball/1faf1a97bddf4ce46521ba747f8474e4c15bb546",
-                "reference": "1faf1a97bddf4ce46521ba747f8474e4c15bb546",
+                "url": "https://api.github.com/repos/asm89/stack-cors/zipball/73e5b88775c64ccc0b84fb60836b30dc9d92ac4a",
+                "reference": "73e5b88775c64ccc0b84fb60836b30dc9d92ac4a",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -27,12 +27,12 @@
                 ]
             },
             "require": {
-                "php": "^8.0",
-                "symfony/http-foundation": "^6",
-                "symfony/http-kernel": "^6"
+                "php": "^7.2|^8.0",
+                "symfony/http-foundation": "^4|^5|^6",
+                "symfony/http-kernel": "^4|^5|^6"
             },
             "require-dev": {
-                "phpunit/phpunit": "^9",
+                "phpunit/phpunit": "^7|^9",
                 "squizlabs/php_codesniffer": "^3.5"
             },
             "type": "library",
@@ -64,9 +64,9 @@
             ],
             "support": {
                 "issues": "https://github.com/asm89/stack-cors/issues",
-                "source": "https://github.com/asm89/stack-cors/tree/v2.1.0"
+                "source": "https://github.com/asm89/stack-cors/tree/v2.1.1"
             },
-            "time": "2022-01-03T15:53:27+00:00"
+            "time": "2022-01-18T09:12:03+00:00"
         },
         {
             "name": "brick/math",
@@ -396,16 +396,16 @@
         },
         {
             "name": "dragonmantank/cron-expression",
-            "version": "v3.3.0",
+            "version": "v3.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/dragonmantank/cron-expression.git",
-                "reference": "63f2a76a045bac6ec93cc2daf2b534b412aa0313"
+                "reference": "be85b3f05b46c39bbc0d95f6c071ddff669510fa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dragonmantank/cron-expression/zipball/63f2a76a045bac6ec93cc2daf2b534b412aa0313",
-                "reference": "63f2a76a045bac6ec93cc2daf2b534b412aa0313",
+                "url": "https://api.github.com/repos/dragonmantank/cron-expression/zipball/be85b3f05b46c39bbc0d95f6c071ddff669510fa",
+                "reference": "be85b3f05b46c39bbc0d95f6c071ddff669510fa",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -451,7 +451,7 @@
             ],
             "support": {
                 "issues": "https://github.com/dragonmantank/cron-expression/issues",
-                "source": "https://github.com/dragonmantank/cron-expression/tree/v3.3.0"
+                "source": "https://github.com/dragonmantank/cron-expression/tree/v3.3.1"
             },
             "funding": [
                 {
@@ -459,7 +459,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-01-14T16:02:05+00:00"
+            "time": "2022-01-18T15:43:28+00:00"
         },
         {
             "name": "egulias/email-validator",
@@ -6242,16 +6242,16 @@
         },
         {
             "name": "laravel/sail",
-            "version": "v1.12.12",
+            "version": "v1.13.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/sail.git",
-                "reference": "c60773f04f093bd1d2f3b99ff9e5a1aa5b05b8b6"
+                "reference": "a14125e71779c99e27979431a66ea2793aa6ae50"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/sail/zipball/c60773f04f093bd1d2f3b99ff9e5a1aa5b05b8b6",
-                "reference": "c60773f04f093bd1d2f3b99ff9e5a1aa5b05b8b6",
+                "url": "https://api.github.com/repos/laravel/sail/zipball/a14125e71779c99e27979431a66ea2793aa6ae50",
+                "reference": "a14125e71779c99e27979431a66ea2793aa6ae50",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -6304,7 +6304,7 @@
                 "issues": "https://github.com/laravel/sail/issues",
                 "source": "https://github.com/laravel/sail"
             },
-            "time": "2021-12-16T14:58:08+00:00"
+            "time": "2022-01-18T18:06:55+00:00"
         },
         {
             "name": "maximebf/debugbar",
@@ -6523,16 +6523,16 @@
         },
         {
             "name": "nunomaduro/collision",
-            "version": "v6.0.0",
+            "version": "v6.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nunomaduro/collision.git",
-                "reference": "5338ecc3909ef3ed150f6408f14e44cdb62bfdd0"
+                "reference": "df09e21a5e5d5a7d51a8b9ecd44d3dd150d97fec"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nunomaduro/collision/zipball/5338ecc3909ef3ed150f6408f14e44cdb62bfdd0",
-                "reference": "5338ecc3909ef3ed150f6408f14e44cdb62bfdd0",
+                "url": "https://api.github.com/repos/nunomaduro/collision/zipball/df09e21a5e5d5a7d51a8b9ecd44d3dd150d97fec",
+                "reference": "df09e21a5e5d5a7d51a8b9ecd44d3dd150d97fec",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -6612,7 +6612,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2022-01-10T17:17:19+00:00"
+            "time": "2022-01-18T17:49:08+00:00"
         },
         {
             "name": "phar-io/manifest",
