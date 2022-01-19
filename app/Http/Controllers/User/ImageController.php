@@ -215,10 +215,15 @@ class ImageController extends Controller
         /** @var User $user */
         $user = Auth::user();
         $model = Image::with('strategy')->where('user_id', $user->id)->whereIn('id', $request->all() ?: []);
-        /** @var Image $image */
-        foreach ($model->cursor() as $image) {
-            $image->delete();
-        }
+        DB::transaction(function () use ($model, $user) {
+            /** @var Image $image */
+            foreach ($model->cursor() as $image) {
+                $image->delete();
+            }
+            // 更新数量
+            $user->image_num = $user->images()->count();
+            $user->save();
+        });
         return $this->success('删除成功');
     }
 }
