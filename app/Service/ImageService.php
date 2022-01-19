@@ -160,13 +160,13 @@ class ImageService
             $builder->where('strategy_id', $id);
         })->where('md5', $image->md5)->where('sha1', $image->sha1)->first();
         if (is_null($existing)) {
-            $handle = $img->stream();
+            $handle = fopen($file, 'r');
             try {
-                $filesystem->writeStream($pathname, $handle->detach());
+                $filesystem->writeStream($pathname, $handle);
             } catch (FilesystemException $e) {
                 throw new UploadException('图片上传失败');
             }
-            $handle->close();
+            @fclose($handle);
         } else {
             $image->fill($existing->only('path', 'name'));
         }
