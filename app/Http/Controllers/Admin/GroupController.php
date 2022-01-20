@@ -11,6 +11,8 @@ use Illuminate\View\View;
 
 class GroupController extends Controller
 {
+    protected array $extensions = ['jpeg', 'jpg', 'png', 'gif', 'tif', 'bmp', 'ico', 'psd', 'webp'];
+
     public function index(Request $request): View
     {
         $groups = Group::query()->when($request->query('keywords'), function (Builder $builder, $keywords) {
@@ -21,13 +23,14 @@ class GroupController extends Controller
 
     public function add(): View
     {
-        return view('admin.group.add');
+        return view('admin.group.add', ['extensions' => $this->extensions]);
     }
 
     public function edit(Request $request): View
     {
         $group = Group::query()->findOrFail($request->route('id'));
-        return view('admin.group.edit', compact('group'));
+        $extensions = $this->extensions;
+        return view('admin.group.edit', compact('group', 'extensions'));
     }
 
     public function create(): Response
