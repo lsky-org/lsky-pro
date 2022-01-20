@@ -43,7 +43,11 @@ Route::group(['middleware' => ['auth']], function () {
 });
 
 Route::group(['prefix' => 'admin', 'middleware' => ['auth.admin']], function () {
-    Route::get('groups', [AdminGroupController::class, 'index'])->name('admin.groups');
+    Route::group(['prefix' => 'groups'], function () {
+        Route::get('', [AdminGroupController::class, 'index'])->name('admin.groups');
+        Route::get('create', fn () => view('admin.group.create'))->name('admin.group.create');
+        Route::get('{id}/edit', [AdminGroupController::class, 'edit'])->name('admin.group.edit');
+    });
 });
 
 require __DIR__.'/image.php';

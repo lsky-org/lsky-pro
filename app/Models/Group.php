@@ -55,7 +55,7 @@ class Group extends Model
 
     public function users(): HasMany
     {
-        return $this->hasMany(User::class, 'user_id', 'id');
+        return $this->hasMany(User::class, 'group_id', 'id');
     }
 
     public function strategies(): HasMany
