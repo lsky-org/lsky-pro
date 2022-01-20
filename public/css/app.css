@@ -1035,6 +1035,9 @@ select {
 .flex-col-reverse {
   flex-direction: column-reverse;
 }
+.flex-wrap {
+  flex-wrap: wrap;
+}
 .flex-nowrap {
   flex-wrap: nowrap;
 }
@@ -1157,6 +1160,10 @@ select {
 }
 .whitespace-nowrap {
   white-space: nowrap;
+}
+.break-normal {
+  overflow-wrap: normal;
+  word-break: normal;
 }
 .break-words {
   overflow-wrap: break-word;

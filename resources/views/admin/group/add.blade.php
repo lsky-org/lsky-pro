@@ -91,9 +91,9 @@
                             <div class="col-span-6">
                                 <fieldset>
                                     <legend class="text-base font-medium text-gray-900">允许上传的图片类型</legend>
-                                    <div class="flex mt-4 space-x-4">
+                                    <div class="flex flex-wrap mt-4">
                                         @foreach($extensions as $extension)
-                                        <div class="flex items-center h-5 space-x-2">
+                                        <div class="flex items-center h-5 space-x-2 mr-4">
                                             <input id="{{ $extension }}" name="{{ $extension }}" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded" checked>
                                             <label for="{{ $extension }}" class="font-medium text-gray-700">{{ strtoupper($extension) }}</label>
                                         </div>
