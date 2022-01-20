@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateStrategiesTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -19,7 +19,6 @@ class CreateStrategiesTable extends Migration
             $table->collation = 'utf8mb4_unicode_ci';
 
             $table->id();
-            $table->foreignId('group_id')->comment('角色组')->constrained('groups')->onDelete('cascade');
             $table->unsignedTinyInteger('key');
             $table->string('name', 64)->comment('策略名称');
             $table->string('intro', 255)->default('')->comment('简介');
@@ -37,4 +36,4 @@ class CreateStrategiesTable extends Migration
     {
         Schema::dropIfExists('strategies');
     }
-}
+};

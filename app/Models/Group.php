@@ -8,6 +8,7 @@ use App\Utils;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Collection;
 
@@ -58,8 +59,8 @@ class Group extends Model
         return $this->hasMany(User::class, 'group_id', 'id');
     }
 
-    public function strategies(): HasMany
+    public function strategies(): BelongsToMany
     {
-        return $this->hasMany(Strategy::class, 'group_id', 'id');
+        return $this->belongsToMany(Strategy::class, 'group_strategy', 'group_id', 'strategy_id');
     }
 }

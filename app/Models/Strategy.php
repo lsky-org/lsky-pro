@@ -8,18 +8,18 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * @property int $id
- * @property int $group_id
  * @property string $key
  * @property string $name
  * @property string $intro
  * @property \Illuminate\Support\Collection $configs
  * @property Carbon $updated_at
  * @property Carbon $created_at
- * @property-read Group $group
+ * @property-read Collection $groups
  * @property-read Collection $images
  */
 class Strategy extends Model
@@ -27,15 +27,10 @@ class Strategy extends Model
     use HasFactory;
 
     protected $fillable = [
-        'group_id',
         'key',
         'name',
         'intro',
         'configs',
-    ];
-
-    protected $hidden = [
-        'group_id',
     ];
 
     protected $attributes = [
@@ -55,9 +50,9 @@ class Strategy extends Model
         });
     }
 
-    public function group(): BelongsTo
+    public function groups(): BelongsToMany
     {
-        return $this->belongsTo(Group::class, 'group_id', 'id');
+        return $this->belongsToMany(Group::class, 'group_strategy', 'group_id', 'strategy_id');
     }
 
     public function images(): HasMany

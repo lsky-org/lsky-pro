@@ -41,7 +41,7 @@
         <script>
             $('[data-operate="delete"]').click(function () {
                 Swal.fire({
-                    title: `确认删除角色组${$(this).closest('tr').find('td.name').text()}吗?`,
+                    title: `确认删除角色组【${$(this).closest('tr').find('td.name').text()}】吗?`,
                     text: "⚠️注意，删除该角色组后，该角色组下属的用户会被重置为系统默认组。",
                     icon: 'warning',
                     showCancelButton: true,
