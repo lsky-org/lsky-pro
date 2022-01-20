@@ -199,7 +199,7 @@
                 let response = data.result;
                 if (response.status) {
                     // 如果开启了自动清除缩略图功能
-                    if ({{ Auth::check() && Auth::user()->configs->get(\App\Enums\UserConfigKey::IsAutoClearPreview) }}) {
+                    if ({{ (Auth::check() && Auth::user()->configs->get(\App\Enums\UserConfigKey::IsAutoClearPreview)) ? 1 : 0 }}) {
                         delete queue[data.$preview.data('id')];
                         data.$preview.remove();
                     } else {
