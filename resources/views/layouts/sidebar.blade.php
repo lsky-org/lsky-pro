@@ -48,7 +48,7 @@
                     <x-slot name="icon"><i class="fas fa-terminal text-blue-500"></i></x-slot>
                     <x-slot name="name">控制台</x-slot>
                 </x-nav-link>
-                <x-nav-link :active="request()->routeIs('admin.groups')">
+                <x-nav-link :href="route('admin.groups')" :active="request()->routeIs('admin.groups')">
                     <x-slot name="icon"><i class="fas fa-users text-blue-500"></i></x-slot>
                     <x-slot name="name">角色组</x-slot>
                 </x-nav-link>

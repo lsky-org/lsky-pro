@@ -4,47 +4,19 @@ namespace App\Http\Middleware;
 
 use App\Models\User;
 use Closure;
-use Illuminate\Contracts\Auth\Factory as AuthFactory;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
-class AuthenticateWithAdmin
+class AuthenticateWithAdmin extends Authenticate
 {
-    /**
-     * The guard factory instance.
-     *
-     * @var \Illuminate\Contracts\Auth\Factory
-     */
-    protected $auth;
-
-    /**
-     * Create a new middleware instance.
-     *
-     * @param  \Illuminate\Contracts\Auth\Factory  $auth
-     * @return void
-     */
-    public function __construct(AuthFactory $auth)
+    public function handle($request, Closure $next, ...$guards)
     {
-        $this->auth = $auth;
-    }
+        parent::handle($request, $next, ...$guards);
 
-    /**
-     * Handle an incoming request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
-     * @param  string|null  $guard
-     * @return mixed
-     *
-     * @throws \Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException
-     */
-    public function handle($request, Closure $next, $guard = null)
-    {
-        if ($this->auth->guard($guard)->check()) {
-            /** @var User $user */
-            $user = $this->auth->guard($guard)->user();
-            if (! $user->is_adminer) {
-                return abort(403);
-            }
+        /** @var User $user */
+        $user = Auth::user();
+
+        if (! $user->is_adminer) {
+            return abort(403);
         }
 
         return $next($request);
