@@ -13,7 +13,7 @@
             @foreach($groups as $group)
             <tr data-id="{{ $group->id }}">
                 <td class="px-6 py-4 whitespace-nowrap">{{ $group->id }}</td>
-                <td class="px-6 py-4 whitespace-nowrap">{{ $group->name }}</td>
+                <td class="px-6 py-4 whitespace-nowrap name">{{ $group->name }}</td>
                 <td class="px-6 py-4 whitespace-nowrap">
                     <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $group->is_default ? 'text-green-800' : 'text-red-800' }}">
                         <i class="text-lg fas fa-{{ $group->is_default ? 'check-circle' : 'times-circle' }}"></i>
@@ -30,15 +30,36 @@
         </x-table>
         @if($groups->isEmpty())
             <x-no-data message="没有找到任何角色组"/>
+        @else
+            <div class="mt-4">
+                {{ $groups->links() }}
+            </div>
         @endif
-        <div class="mt-4">
-            {{ $groups->links() }}
-        </div>
     </div>
 
     @push('scripts')
         <script>
-            $('[data-operate="del"]').click(function () {
+            $('[data-operate="delete"]').click(function () {
+                Swal.fire({
+                    title: `确认删除角色组${$(this).closest('tr').find('td.name').text()}吗?`,
+                    text: "⚠️注意，删除该角色组后，该角色组下属的用户会被重置为系统默认组。",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: '确认删除',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        let id = $(this).closest('tr').data('id');
+                        axios.delete(`/groups/${id}`).then(response => {
+                            if (response.data.status) {
+                                history.go(0);
+                            } else {
+                                toastr.error(response.data.message);
+                            }
+                        });
+                    }
+                })
             });
         </script>
     @endpush

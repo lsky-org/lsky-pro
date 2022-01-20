@@ -45,8 +45,11 @@ Route::group(['middleware' => ['auth']], function () {
 Route::group(['prefix' => 'admin', 'middleware' => ['auth.admin']], function () {
     Route::group(['prefix' => 'groups'], function () {
         Route::get('', [AdminGroupController::class, 'index'])->name('admin.groups');
-        Route::get('create', fn () => view('admin.group.create'))->name('admin.group.create');
-        Route::get('{id}/edit', [AdminGroupController::class, 'edit'])->name('admin.group.edit');
+        Route::get('create', [AdminGroupController::class, 'add'])->name('admin.group.add');
+        Route::post('create', [AdminGroupController::class, 'create'])->name('admin.group.create');
+        Route::get('{id}', [AdminGroupController::class, 'edit'])->name('admin.group.edit');
+        Route::put('{id}', [AdminGroupController::class, 'update'])->name('admin.group.update');
+        Route::delete('{id}', [AdminGroupController::class, 'delete'])->name('admin.group.delete');
     });
 });
 

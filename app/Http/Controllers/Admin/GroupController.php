@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Group;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\View\View;
 
 class GroupController extends Controller
@@ -18,9 +19,29 @@ class GroupController extends Controller
         return view('admin.group.index', compact('groups'));
     }
 
+    public function add(): View
+    {
+        return view('admin.group.create');
+    }
+
     public function edit(Request $request): View
     {
         $group = Group::query()->findOrFail($request->route('id'));
         return view('admin.group.edit', compact('group'));
+    }
+
+    public function create(): Response
+    {
+
+    }
+
+    public function update(): Response
+    {
+
+    }
+
+    public function delete(Request $request): Response
+    {
+
     }
 }
