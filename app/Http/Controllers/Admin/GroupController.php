@@ -21,7 +21,7 @@ class GroupController extends Controller
 
     public function add(): View
     {
-        return view('admin.group.create');
+        return view('admin.group.add');
     }
 
     public function edit(Request $request): View
