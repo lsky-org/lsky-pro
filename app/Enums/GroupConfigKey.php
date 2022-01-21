@@ -16,6 +16,9 @@ final class GroupConfigKey
     /** @var string 审查配置 */
     const ScanConfigs = 'scan_configs';
 
+    /** @var string 违规图片审查后动作 */
+    const ScannedAction = 'scanned_action';
+
     /** @var string 是否启用原图保护功能 */
     const IsEnableOriginalProtection = 'is_enable_original_protection';
 

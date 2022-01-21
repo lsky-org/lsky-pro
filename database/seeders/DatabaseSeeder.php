@@ -51,6 +51,7 @@ class DatabaseSeeder extends Seeder
                 GroupConfigKey::IsEnableScan => false,
                 GroupConfigKey::IsEnableWatermark => false,
                 GroupConfigKey::IsEnableOriginalProtection => false,
+                GroupConfigKey::ScannedAction => 'mark', // in mark or delete
                 GroupConfigKey::ScanConfigs => [
                     'driver' => 'aliyun',
                     'drivers' => [
