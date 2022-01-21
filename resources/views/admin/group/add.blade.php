@@ -1,5 +1,14 @@
 <x-app-layout>
     <div class="my-6 md:my-10">
+        @if(! ini_get('file_uploads'))
+            <p class="bg-red-500 p-2 mb-2 rounded text-sm text-white">
+                <i class="fas fa-exclamation-circle"></i> 系统监测到运行环境关闭了 HTTP 上传文件权限(file_uploads=off)，请更改 PHP 此项配置，否则无法上传文件。
+            </p>
+        @endif
+        <p class="bg-yellow-500 p-2 mb-4 rounded text-sm text-white">
+            <i class="fas fa-exclamation-circle"></i> 系统运行环境允许上传大小的最大值为 {{ ini_get('upload_max_filesize') }}，最大 POST 数据大小为 {{ ini_get('post_max_size') }}，上传文件大小不得超过这两项配置值。
+        </p>
+
         <div class="mt-5 md:mt-0 md:col-span-2">
             <ul id="tabs" class="flex space-x-2 text-sm">
                 <li class="group">
@@ -30,7 +39,7 @@
                             </div>
 
                             <div class="col-span-6 sm:col-span-3">
-                                <label for="concurrent_upload_num" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>并发上传数量</label>
+                                <label for="concurrent_upload_num" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>并发上传限制</label>
                                 <input type="number" name="configs[concurrent_upload_num]" id="concurrent_upload_num" autocomplete="concurrent_upload_num" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" placeholder="请输入并发上传数量">
                             </div>
 
@@ -71,7 +80,7 @@
 
                             <div class="col-span-6">
                                 <x-fieldset title="是否默认" faq="设置默认后，新用户注册以后将会属于该默认角色组。">
-                                    <x-switch id="configs[is_default]" name="configs[is_default]" value="1"></x-switch>
+                                    <x-switch id="is_default" name="is_default" value="1"></x-switch>
                                 </x-fieldset>
                             </div>
 
@@ -121,9 +130,9 @@
                                     <input type="text" name="configs[scan_configs][drivers][aliyun][region_id]" id="configs[scan_configs][drivers][aliyun][region_id]" autocomplete="region_id" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" placeholder="请输入地域节点，例如：cn-shanghai">
                                 </div>
                                 <div class="col-span-6 sm:col-span-3 mb-4">
-                                    <x-fieldset title="场景">
+                                    <x-fieldset title="审核场景">
                                         @foreach($scanAliyunScenes as $key => $scene)
-                                            <x-fieldset-checkbox name="configs[scan_configs][drivers][aliyun][scenes][]" value="{{ $key }}">{{ $scene }}</x-fieldset-checkbox>
+                                            <x-fieldset-checkbox id="configs[scan_configs][drivers][aliyun][scenes][]_{{ $key }}" name="configs[scan_configs][drivers][aliyun][scenes][]" value="{{ $key }}">{{ $scene }}</x-fieldset-checkbox>
                                         @endforeach
                                     </x-fieldset>
                                 </div>
@@ -138,8 +147,8 @@
                             </div>
 
                             <div class="col-span-6 mb-4">
-                                <label for="cache_ttl" class="block text-sm font-medium text-gray-700">图片缓存时间(秒)</label>
-                                <input type="number" name="configs[cache_ttl]" id="cache_ttl" autocomplete="cache_ttl" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" placeholder="请输入受保护图片的缓存时间，不填或填0表示不缓存">
+                                <label for="configs[image_cache_ttl]" class="block text-sm font-medium text-gray-700">图片缓存时间(秒)</label>
+                                <input type="number" name="configs[image_cache_ttl]" id="configs[image_cache_ttl]" autocomplete="image_cache_ttl" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" placeholder="请输入受保护图片的缓存时间，不填或填0表示不缓存">
                             </div>
                         </div>
 
@@ -157,80 +166,80 @@
                                 </div>
                                 <div class="mb-4 hidden" data-watermark-driver="font">
                                     <div class="col-span-6 sm:col-span-3 mb-4">
-                                        <label for="configs[watermark_configs][driver][font][font]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>字体文件</label>
-                                        <input type="text" name="configs[watermark_configs][driver][font][font]" id="configs[watermark_configs][driver][font][font]" autocomplete="text" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" placeholder="请输入字体文件路径，例如：fonts/lsky.ttf">
+                                        <label for="configs[watermark_configs][drivers][font][font]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>字体文件</label>
+                                        <input type="text" name="configs[watermark_configs][drivers][font][font]" id="configs[watermark_configs][drivers][font][font]" autocomplete="text" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" placeholder="请输入字体文件路径，例如：fonts/lsky.ttf">
                                         <small class="text-yellow-500">请将下载的字体文件放置程序根目录的 storage/app/public 目录下</small>
                                     </div>
                                     <div class="col-span-6 sm:col-span-3 mb-4">
-                                        <label for="configs[watermark_configs][driver][image][position]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>水印位置</label>
-                                        <select id="configs[watermark_configs][driver][image][position]" name="configs[watermark_configs][driver][image][position]" autocomplete="position" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                        <label for="configs[watermark_configs][drivers][font][position]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>水印位置</label>
+                                        <select id="configs[watermark_configs][drivers][font][position]" name="configs[watermark_configs][drivers][font][position]" autocomplete="position" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                                             @foreach($positions as $key => $position)
                                                 <option value="{{ $key }}">{{ $position }}</option>
                                             @endforeach
                                         </select>
                                     </div>
                                     <div class="col-span-6 sm:col-span-3 mb-4">
-                                        <label for="configs[watermark_configs][driver][font][text]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>水印文字</label>
-                                        <input type="text" name="configs[watermark_configs][driver][font][text]" id="configs[watermark_configs][driver][font][text]" autocomplete="text" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" placeholder="请输入水印文字">
+                                        <label for="configs[watermark_configs][drivers][font][text]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>水印文字</label>
+                                        <input type="text" name="configs[watermark_configs][drivers][font][text]" id="configs[watermark_configs][drivers][font][text]" autocomplete="text" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" placeholder="请输入水印文字">
                                     </div>
                                     <div class="col-span-6 sm:col-span-3 mb-4">
-                                        <label for="configs[watermark_configs][driver][font][color]" class="block text-sm font-medium text-gray-700">字体颜色</label>
-                                        <input type="text" name="configs[watermark_configs][driver][font][color]" id="configs[watermark_configs][driver][font][color]" autocomplete="color" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" placeholder="请输入字体颜色，例如：#ffffff">
+                                        <label for="configs[watermark_configs][drivers][font][color]" class="block text-sm font-medium text-gray-700">字体颜色</label>
+                                        <input type="text" name="configs[watermark_configs][drivers][font][color]" id="configs[watermark_configs][drivers][font][color]" autocomplete="color" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" placeholder="请输入字体颜色，例如：#ffffff">
                                     </div>
                                     <div class="col-span-6 sm:col-span-3 mb-4">
-                                        <label for="configs[watermark_configs][driver][font][size]" class="block text-sm font-medium text-gray-700">字体大小</label>
-                                        <input type="number" name="configs[watermark_configs][driver][font][size]" id="configs[watermark_configs][driver][font][size]" autocomplete="size" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" placeholder="请输入字体大小，默认 14">
+                                        <label for="configs[watermark_configs][drivers][font][size]" class="block text-sm font-medium text-gray-700">字体大小</label>
+                                        <input type="number" name="configs[watermark_configs][drivers][font][size]" id="configs[watermark_configs][drivers][font][size]" autocomplete="size" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" placeholder="请输入字体大小，默认 14">
                                     </div>
                                     <div class="col-span-6 sm:col-span-3 mb-4">
-                                        <label for="configs[watermark_configs][driver][font][angle]" class="block text-sm font-medium text-gray-700">旋转角度</label>
-                                        <input type="number" name="configs[watermark_configs][driver][font][angle]" id="configs[watermark_configs][driver][font][angle]" autocomplete="angle" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" placeholder="请输入旋转角度，默认 0">
+                                        <label for="configs[watermark_configs][drivers][font][angle]" class="block text-sm font-medium text-gray-700">旋转角度</label>
+                                        <input type="number" name="configs[watermark_configs][drivers][font][angle]" id="configs[watermark_configs][drivers][font][angle]" autocomplete="angle" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" placeholder="请输入旋转角度，默认 0">
                                     </div>
                                     <div class="col-span-6 sm:col-span-3 mb-4">
-                                        <label for="configs[watermark_configs][driver][font][x]" class="block text-sm font-medium text-gray-700">X轴偏移量</label>
-                                        <input type="number" name="configs[watermark_configs][driver][font][x]" id="configs[watermark_configs][driver][font][x]" autocomplete="x" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" placeholder="X轴偏移量">
+                                        <label for="configs[watermark_configs][drivers][font][x]" class="block text-sm font-medium text-gray-700">X轴偏移量</label>
+                                        <input type="number" name="configs[watermark_configs][drivers][font][x]" id="configs[watermark_configs][drivers][font][x]" autocomplete="x" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" placeholder="X轴偏移量">
                                     </div>
                                     <div class="col-span-6 sm:col-span-3 mb-4">
-                                        <label for="configs[watermark_configs][driver][font][y]" class="block text-sm font-medium text-gray-700">Y轴偏移量</label>
-                                        <input type="number" name="configs[watermark_configs][driver][font][y]" id="configs[watermark_configs][driver][font][y]" autocomplete="y" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" placeholder="Y轴偏移量">
+                                        <label for="configs[watermark_configs][drivers][font][y]" class="block text-sm font-medium text-gray-700">Y轴偏移量</label>
+                                        <input type="number" name="configs[watermark_configs][drivers][font][y]" id="configs[watermark_configs][drivers][font][y]" autocomplete="y" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" placeholder="Y轴偏移量">
                                     </div>
                                 </div>
                                 <div class="mb-4 hidden" data-watermark-driver="image">
                                     <div class="col-span-6 sm:col-span-3 mb-4">
-                                        <label for="configs[watermark_configs][driver][image][image]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>水印图片</label>
-                                        <input type="text" name="configs[watermark_configs][driver][image][image]" id="configs[watermark_configs][driver][image][image]" autocomplete="image" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" placeholder="请输入水印路径，例如：images/lsky.png">
+                                        <label for="configs[watermark_configs][drivers][image][image]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>水印图片</label>
+                                        <input type="text" name="configs[watermark_configs][drivers][image][image]" id="configs[watermark_configs][drivers][image][image]" autocomplete="image" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" placeholder="请输入水印路径，例如：images/lsky.png">
                                         <small class="text-yellow-500">请将水印图片放置程序根目录的 storage/app/public 目录下</small>
                                     </div>
                                     <div class="col-span-6 sm:col-span-3 mb-4">
-                                        <label for="configs[watermark_configs][driver][image][position]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>水印位置</label>
-                                        <select id="configs[watermark_configs][driver][image][position]" name="configs[watermark_configs][driver][image][position]" autocomplete="position" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                        <label for="configs[watermark_configs][drivers][image][position]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>水印位置</label>
+                                        <select id="configs[watermark_configs][drivers][image][position]" name="configs[watermark_configs][drivers][image][position]" autocomplete="position" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                                             @foreach($positions as $key => $position)
                                                 <option value="{{ $key }}">{{ $position }}</option>
                                             @endforeach
                                         </select>
                                     </div>
                                     <div class="col-span-6 sm:col-span-3 mb-4">
-                                        <label for="configs[watermark_configs][driver][image][width]" class="block text-sm font-medium text-gray-700">图片宽度</label>
-                                        <input type="number" name="configs[watermark_configs][driver][image][width]" id="configs[watermark_configs][driver][image][width]" autocomplete="width" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" placeholder="请输入水印图片宽度">
+                                        <label for="configs[watermark_configs][drivers][image][width]" class="block text-sm font-medium text-gray-700">图片宽度</label>
+                                        <input type="number" name="configs[watermark_configs][drivers][image][width]" id="configs[watermark_configs][drivers][image][width]" autocomplete="width" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" placeholder="请输入水印图片宽度">
                                     </div>
                                     <div class="col-span-6 sm:col-span-3 mb-4">
-                                        <label for="configs[watermark_configs][driver][image][height]" class="block text-sm font-medium text-gray-700">图片高度</label>
-                                        <input type="number" name="configs[watermark_configs][driver][image][height]" id="configs[watermark_configs][driver][image][height]" autocomplete="height" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" placeholder="请输入水印图片高度">
+                                        <label for="configs[watermark_configs][drivers][image][height]" class="block text-sm font-medium text-gray-700">图片高度</label>
+                                        <input type="number" name="configs[watermark_configs][drivers][image][height]" id="configs[watermark_configs][drivers][image][height]" autocomplete="height" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" placeholder="请输入水印图片高度">
                                     </div>
                                     <div class="col-span-6 sm:col-span-3 mb-4">
-                                        <label for="configs[watermark_configs][driver][image][opacity]" class="block text-sm font-medium text-gray-700">不透明度</label>
-                                        <input type="number" name="configs[watermark_configs][driver][image][opacity]" id="configs[watermark_configs][driver][image][opacity]" autocomplete="opacity" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" placeholder="请输入不透明度，取值 0 - 100">
+                                        <label for="configs[watermark_configs][drivers][image][opacity]" class="block text-sm font-medium text-gray-700">不透明度</label>
+                                        <input type="number" name="configs[watermark_configs][drivers][image][opacity]" id="configs[watermark_configs][drivers][image][opacity]" autocomplete="opacity" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" placeholder="请输入不透明度，取值 0 - 100">
                                     </div>
                                     <div class="col-span-6 sm:col-span-3 mb-4">
-                                        <label for="configs[watermark_configs][driver][image][rotate]" class="block text-sm font-medium text-gray-700">旋转角度</label>
-                                        <input type="number" name="configs[watermark_configs][driver][image][rotate]" id="configs[watermark_configs][driver][image][rotate]" autocomplete="rotate" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" placeholder="请输入旋转角度，默认 0，取值 0 - 100">
+                                        <label for="configs[watermark_configs][drivers][image][rotate]" class="block text-sm font-medium text-gray-700">旋转角度</label>
+                                        <input type="number" name="configs[watermark_configs][drivers][image][rotate]" id="configs[watermark_configs][drivers][image][rotate]" autocomplete="rotate" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" placeholder="请输入旋转角度，默认 0，取值 0 - 100">
                                     </div>
                                     <div class="col-span-6 sm:col-span-3 mb-4">
-                                        <label for="configs[watermark_configs][driver][image][x]" class="block text-sm font-medium text-gray-700">X轴偏移量</label>
-                                        <input type="number" name="configs[watermark_configs][driver][image][x]" id="configs[watermark_configs][driver][image][x]" autocomplete="x" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" placeholder="X轴偏移量">
+                                        <label for="configs[watermark_configs][drivers][image][x]" class="block text-sm font-medium text-gray-700">X轴偏移量</label>
+                                        <input type="number" name="configs[watermark_configs][drivers][image][x]" id="configs[watermark_configs][drivers][image][x]" autocomplete="x" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" placeholder="X轴偏移量">
                                     </div>
                                     <div class="col-span-6 sm:col-span-3 mb-4">
-                                        <label for="configs[watermark_configs][driver][image][y]" class="block text-sm font-medium text-gray-700">Y轴偏移量</label>
-                                        <input type="number" name="configs[watermark_configs][driver][image][y]" id="configs[watermark_configs][driver][image][y]" autocomplete="y" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" placeholder="Y轴偏移量">
+                                        <label for="configs[watermark_configs][drivers][image][y]" class="block text-sm font-medium text-gray-700">Y轴偏移量</label>
+                                        <input type="number" name="configs[watermark_configs][drivers][image][y]" id="configs[watermark_configs][drivers][image][y]" autocomplete="y" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" placeholder="Y轴偏移量">
                                     </div>
                                 </div>
                             </div>
@@ -271,7 +280,11 @@
             $('form').submit(function (e) {
                 e.preventDefault();
                 axios.post(this.action, $(this).serialize()).then(response => {
-                    console.log(response.data);
+                    if (response.data.status) {
+                        toastr.success(response.data.message);
+                    } else {
+                        toastr.error(response.data.message);
+                    }
                 });
             });
         </script>

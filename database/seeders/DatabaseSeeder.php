@@ -28,11 +28,11 @@ class DatabaseSeeder extends Seeder
             ConfigKey::SiteKeywords => 'Lsky Pro,lsky,兰空图床',
             ConfigKey::SiteDescription => 'Lsky Pro, Your photo album on the cloud.',
             ConfigKey::IcpNo => '',
-            ConfigKey::IsEnableRegistration => 1,
-            ConfigKey::IsEnableGallery => 1,
-            ConfigKey::IsAllowGuestUpload => 1,
+            ConfigKey::IsEnableRegistration => true,
+            ConfigKey::IsEnableGallery => true,
+            ConfigKey::IsAllowGuestUpload => true,
             ConfigKey::UserInitialCapacity => 512000,
-            ConfigKey::IsUserNeedVerify => 1,
+            ConfigKey::IsUserNeedVerify => true,
             ConfigKey::MailConfigs => json_encode([
                 'default' => 'smtp',
                 'mailers' => [
@@ -97,7 +97,7 @@ class DatabaseSeeder extends Seeder
                 GroupConfigKey::AcceptedFileSuffixes => ['jpeg', 'jpg', 'png', 'gif', 'tif', 'bmp', 'ico', 'psd', 'webp'],
                 GroupConfigKey::PathNamingRule => '{Y}/{m}/{d}',
                 GroupConfigKey::FileNamingRule => '{uniqid}',
-                GroupConfigKey::CacheTtl => 2626560,
+                GroupConfigKey::ImageCacheTtl => 2626560,
             ])->toJson(),
         ])->transform(function ($value, $key) use ($date) {
             return ['name' => $key, 'value' => $value, 'updated_at' => $date, 'created_at' => $date];

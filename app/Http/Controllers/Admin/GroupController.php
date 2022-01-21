@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\GroupRequest;
 use App\Models\Group;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
@@ -57,9 +58,9 @@ class GroupController extends Controller
         return view('admin.group.edit', compact('group'));
     }
 
-    public function create(Request $request): Response
+    public function create(GroupRequest $request): Response
     {
-        return $this->success('success', $request->all());
+        return $this->success('success', $request->validated());
     }
 
     public function update(Request $request): Response

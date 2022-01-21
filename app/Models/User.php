@@ -86,7 +86,7 @@ class User extends Authenticatable implements MustVerifyEmail
                 UserConfigKey::DefaultAlbum => 0,
                 UserConfigKey::DefaultStrategy => 0,
                 UserConfigKey::DefaultPermission => ImagePermission::Private,
-                UserConfigKey::IsAutoClearPreview => 0,
+                UserConfigKey::IsAutoClearPreview => false,
             ])->merge($user->configs ?: []);
         });
     }

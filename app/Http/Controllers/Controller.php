@@ -67,7 +67,7 @@ class Controller extends BaseController
                     $configs = $image->group->configs->get(GroupConfigKey::WatermarkConfigs);
                     $contents = (string)$service->stickWatermark($contents, collect($configs))->encode();
                 }
-                $cacheTtl = (int)$image->group->configs->get(GroupConfigKey::CacheTtl, 0);
+                $cacheTtl = (int)$image->group->configs->get(GroupConfigKey::ImageCacheTtl, 0);
                 // 是否启用了缓存
                 if ($cacheTtl) {
                     Cache::remember($cacheKey, $cacheTtl, fn () => $contents);

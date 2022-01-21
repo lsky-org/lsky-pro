@@ -20,6 +20,12 @@ use App\Http\Controllers\User\ProfileController;
 
 use App\Http\Controllers\Admin\GroupController as AdminGroupController;
 
+Route::get('/test', function () {
+    $group = \App\Models\Group::first();
+    $group->configs = \App\Utils::config(\App\Enums\ConfigKey::GuestGroupConfigs);
+    $group->save();
+});
+
 Route::get('/', fn () => view('welcome'))->name('/');
 Route::post('upload', [Controller::class, 'upload']);
 Route::group(['middleware' => ['auth']], function () {

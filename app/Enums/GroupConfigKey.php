@@ -53,5 +53,5 @@ final class GroupConfigKey
     const FileNamingRule = 'file_naming_rule';
 
     /** @var string 图片缓存时间 */
-    const CacheTtl = 'cache_ttl';
+    const ImageCacheTtl = 'image_cache_ttl';
 }
