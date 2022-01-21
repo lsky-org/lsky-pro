@@ -3,10 +3,9 @@
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Route;
 use App\Enums\GroupConfigKey;
-use App\Utils;
 use App\Enums\ConfigKey;
 
-$extensions = Utils::config(ConfigKey::GroupConfigs)->get(GroupConfigKey::AcceptedFileSuffixes);
+$extensions = config('convention.app.'.ConfigKey::GroupConfigs)[GroupConfigKey::AcceptedFileSuffixes];
 Route::middleware('cache.headers:public;max_age=2628000;etag')->group(function () use ($extensions) {
     Route::any('{key}.{extension}', [
         Controller::class, 'output',
