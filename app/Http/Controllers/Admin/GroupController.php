@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Enums\ConfigKey;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\GroupRequest;
 use App\Models\Group;
@@ -15,6 +16,7 @@ class GroupController extends Controller
     public function __construct()
     {
         \Illuminate\Support\Facades\View::share([
+            'default' => config('convention.app.'.ConfigKey::GroupConfigs),
             'extensions' => ['jpeg', 'jpg', 'png', 'gif', 'tif', 'bmp', 'ico', 'psd', 'webp'],
             'positions' => [
                 'top-left' => '左上角',

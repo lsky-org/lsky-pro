@@ -175,7 +175,7 @@ class Image extends Model
     {
         return $this->belongsTo(Group::class, 'group_id', 'id')->withDefault(function (Group $group) {
             $group->name = '系统默认组';
-            $group->configs = $group::getDefaultConfigs();
+            $group->configs = $group::getGuestConfigs();
         });
     }
 

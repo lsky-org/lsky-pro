@@ -35,47 +35,47 @@
 
                             <div class="col-span-6">
                                 <label for="maximum_file_size" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>最大文件大小(KB)</label>
-                                <input type="number" name="configs[maximum_file_size]" id="maximum_file_size" autocomplete="maximum_file_size" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" placeholder="请输入上传文件的最大限制，单位kb">
+                                <input type="number" name="configs[maximum_file_size]" id="maximum_file_size" autocomplete="maximum_file_size" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" placeholder="请输入上传文件的最大限制，单位kb" value="5120">
                             </div>
 
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="concurrent_upload_num" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>并发上传限制</label>
-                                <input type="number" name="configs[concurrent_upload_num]" id="concurrent_upload_num" autocomplete="concurrent_upload_num" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" placeholder="请输入并发上传数量">
+                                <input type="number" name="configs[concurrent_upload_num]" id="concurrent_upload_num" autocomplete="concurrent_upload_num" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" placeholder="请输入并发上传数量" value="3">
                             </div>
 
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="limit_per_minute" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>每分钟上传限制</label>
-                                <input type="number" name="configs[limit_per_minute]" id="limit_per_minute" autocomplete="limit_per_minute" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" placeholder="请输入每分钟可以上传的图片数量">
+                                <input type="number" name="configs[limit_per_minute]" id="limit_per_minute" autocomplete="limit_per_minute" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" placeholder="请输入每分钟可以上传的图片数量" value="0">
                             </div>
 
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="limit_per_hour" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>每小时上传限制</label>
-                                <input type="number" name="configs[limit_per_hour]" id="limit_per_hour" autocomplete="limit_per_hour" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" placeholder="请输入每小时可以上传的图片数量">
+                                <input type="number" name="configs[limit_per_hour]" id="limit_per_hour" autocomplete="limit_per_hour" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" placeholder="请输入每小时可以上传的图片数量" value="0">
                             </div>
 
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="limit_per_day" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>每天上传限制</label>
-                                <input type="number" name="configs[limit_per_day]" id="limit_per_day" autocomplete="limit_per_day" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" placeholder="请输入每天可以上传的图片数量">
+                                <input type="number" name="configs[limit_per_day]" id="limit_per_day" autocomplete="limit_per_day" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" placeholder="请输入每天可以上传的图片数量" value="0">
                             </div>
 
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="limit_per_week" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>每周上传限制</label>
-                                <input type="number" name="configs[limit_per_week]" id="limit_per_week" autocomplete="limit_per_week" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" placeholder="请输入每周可以上传的图片数量">
+                                <input type="number" name="configs[limit_per_week]" id="limit_per_week" autocomplete="limit_per_week" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" placeholder="请输入每周可以上传的图片数量" value="0">
                             </div>
 
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="limit_per_month" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>每月上传限制</label>
-                                <input type="number" name="configs[limit_per_month]" id="limit_per_month" autocomplete="limit_per_month" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" placeholder="请输入每月可以上传的图片数量">
+                                <input type="number" name="configs[limit_per_month]" id="limit_per_month" autocomplete="limit_per_month" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" placeholder="请输入每月可以上传的图片数量" value="0">
                             </div>
 
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="path_naming_rule" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>路径命名规则</label>
-                                <input type="number" name="configs[path_naming_rule]" id="path_naming_rule" autocomplete="path_naming_rule" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" placeholder="请输入路径命名规则">
+                                <input type="text" name="configs[path_naming_rule]" id="path_naming_rule" autocomplete="path_naming_rule" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" placeholder="请输入路径命名规则" value="{Y}/{m}/{d}">
                             </div>
 
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="file_naming_rule" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>文件命名规则</label>
-                                <input type="number" name="configs[file_naming_rule]" id="file_naming_rule" autocomplete="file_naming_rule" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" placeholder="请输入文件命名规则">
+                                <input type="text" name="configs[file_naming_rule]" id="file_naming_rule" autocomplete="file_naming_rule" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" placeholder="请输入文件命名规则" value="{uniqid}">
                             </div>
 
                             <div class="col-span-6">
@@ -148,7 +148,7 @@
 
                             <div class="col-span-6 mb-4">
                                 <label for="configs[image_cache_ttl]" class="block text-sm font-medium text-gray-700">图片缓存时间(秒)</label>
-                                <input type="number" name="configs[image_cache_ttl]" id="configs[image_cache_ttl]" autocomplete="image_cache_ttl" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" placeholder="请输入受保护图片的缓存时间，不填或填0表示不缓存">
+                                <input type="number" name="configs[image_cache_ttl]" id="configs[image_cache_ttl]" autocomplete="image_cache_ttl" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" placeholder="请输入受保护图片的缓存时间，不填或填0表示不缓存" value="2626560">
                             </div>
                         </div>
 

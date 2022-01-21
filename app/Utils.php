@@ -30,7 +30,7 @@ class Utils
                         $value = (bool) $value;
                         break;
                     case ConfigKey::MailConfigs:
-                    case ConfigKey::GuestGroupConfigs:
+                    case ConfigKey::GroupConfigs:
                         $value = collect(json_decode($value, true));
                         break;
                     case ConfigKey::UserInitialCapacity:

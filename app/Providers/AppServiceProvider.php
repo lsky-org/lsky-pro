@@ -28,7 +28,7 @@ class AppServiceProvider extends ServiceProvider
     {
         // 初始化视图中的默认数据
         View::composer('*', function (\Illuminate\View\View $view) {
-            $configs = Auth::check() && Auth::user()->group ? Auth::user()->group->configs : Group::getDefaultConfigs();
+            $configs = Auth::check() && Auth::user()->group ? Auth::user()->group->configs : Group::getGuestConfigs();
             $view->with('groupConfigs', $configs);
         });
     }

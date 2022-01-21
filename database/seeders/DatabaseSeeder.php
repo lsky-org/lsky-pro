@@ -23,84 +23,13 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $date = Carbon::now()->format('Y-m-d H:i:s');
-        $array = collect([
-            ConfigKey::SiteName => 'Lsky Pro',
-            ConfigKey::SiteKeywords => 'Lsky Pro,lsky,兰空图床',
-            ConfigKey::SiteDescription => 'Lsky Pro, Your photo album on the cloud.',
-            ConfigKey::IcpNo => '',
-            ConfigKey::IsEnableRegistration => true,
-            ConfigKey::IsEnableGallery => true,
-            ConfigKey::IsAllowGuestUpload => true,
-            ConfigKey::UserInitialCapacity => 512000,
-            ConfigKey::IsUserNeedVerify => true,
-            ConfigKey::MailConfigs => json_encode([
-                'default' => 'smtp',
-                'mailers' => [
-                    SmtpOption::Host => '',
-                    SmtpOption::Port => 25,
-                    SmtpOption::Encryption => 'tls',
-                    SmtpOption::Username => '',
-                    SmtpOption::Password => '',
-                    SmtpOption::Timeout => null,
-                    SmtpOption::AuthMode => null,
-                ],
-            ]),
-            ConfigKey::GuestGroupConfigs => collect([
-                GroupConfigKey::MaximumFileSize => 5120,
-                GroupConfigKey::ConcurrentUploadNum => 3,
-                GroupConfigKey::IsEnableScan => false,
-                GroupConfigKey::IsEnableWatermark => false,
-                GroupConfigKey::IsEnableOriginalProtection => false,
-                GroupConfigKey::ScannedAction => 'mark', // in mark or delete
-                GroupConfigKey::ScanConfigs => [
-                    'driver' => 'aliyun',
-                    'drivers' => [
-                        'aluyun' => [
-                            AliyunOption::AccessKeyId => '',
-                            AliyunOption::AccessKeySecret => '',
-                            AliyunOption::RegionId => '',
-                            AliyunOption::Scenes => ['porn'],
-                            AliyunOption::BizType => '',
-                        ],
-                    ],
-                ],
-                GroupConfigKey::WatermarkConfigs => [
-                    'driver' => 'font',
-                    'drivers' => [
-                        'font' => [
-                            FontOption::Text => 'Lsky Pro',
-                            FontOption::Position => 'bottom-right',
-                            FontOption::Angle => 0,
-                            FontOption::Size => 50,
-                            FontOption::Font => '',
-                            FontOption::Color => '#000000',
-                            FontOption::X => 10,
-                            FontOption::Y => 10,
-                        ],
-                        'image' => [
-                            ImageOption::Image => '',
-                            ImageOption::Position => 'bottom-right',
-                            ImageOption::Opacity => 100,
-                            ImageOption::Rotate => 0,
-                            ImageOption::Width => 0,
-                            ImageOption::Height => 0,
-                            ImageOption::X => 10,
-                            ImageOption::Y => 10,
-                        ]
-                    ],
-                ],
-                GroupConfigKey::LimitPerMinute => 20,
-                GroupConfigKey::LimitPerHour => 100,
-                GroupConfigKey::LimitPerDay => 300,
-                GroupConfigKey::LimitPerWeek => 600,
-                GroupConfigKey::LimitPerMonth => 999,
-                GroupConfigKey::AcceptedFileSuffixes => ['jpeg', 'jpg', 'png', 'gif', 'tif', 'bmp', 'ico', 'psd', 'webp'],
-                GroupConfigKey::PathNamingRule => '{Y}/{m}/{d}',
-                GroupConfigKey::FileNamingRule => '{uniqid}',
-                GroupConfigKey::ImageCacheTtl => 2626560,
-            ])->toJson(),
-        ])->transform(function ($value, $key) use ($date) {
-            return ['name' => $key, 'value' => $value, 'updated_at' => $date, 'created_at' => $date];
+        $array = collect(config('convention.app'))->transform(function ($value, $key) use ($date) {
+            return [
+                'name' => $key,
+                'value' => is_array($value) ? json_encode($value, JSON_UNESCAPED_UNICODE) : $value,
+                'updated_at' => $date,
+                'created_at' => $date,
+            ];
         })->values()->toArray();
         DB::table('configs')->insert($array);
     }

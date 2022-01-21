@@ -38,19 +38,19 @@ class Group extends Model
     ];
 
     /**
-     * 默认组配置，同时也属于访客组默认配置
+     * 获取访客组默认配置
      *
      * @return Collection
      */
-    public static function getDefaultConfigs(): Collection
+    public static function getGuestConfigs(): Collection
     {
-        return Utils::config(ConfigKey::GuestGroupConfigs);
+        return Utils::config(ConfigKey::GroupConfigs);
     }
 
     protected static function booted()
     {
         static::creating(function (self $group) {
-            $group->configs = self::getDefaultConfigs()->merge($group->configs ?: []);
+            $group->configs = config('convention.app.'.ConfigKey::GroupConfigs)->merge($group->configs ?: []);
         });
     }
 
