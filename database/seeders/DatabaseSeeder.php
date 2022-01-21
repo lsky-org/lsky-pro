@@ -47,7 +47,7 @@ class DatabaseSeeder extends Seeder
             ConfigKey::GuestGroupConfigs => collect([
                 GroupConfigKey::MaximumFileSize => 5120,
                 GroupConfigKey::ConcurrentUploadNum => 3,
-                GroupConfigKey::IsEnableReview => false,
+                GroupConfigKey::IsEnableScan => false,
                 GroupConfigKey::IsEnableWatermark => false,
                 GroupConfigKey::IsEnableOriginalProtection => false,
                 GroupConfigKey::WatermarkConfigs => [
