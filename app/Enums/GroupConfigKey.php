@@ -13,6 +13,9 @@ final class GroupConfigKey
     /** @var string 上传是否需要审查 */
     const IsEnableScan = 'is_enable_scan';
 
+    /** @var string 审查配置 */
+    const ScanConfigs = 'scan_configs';
+
     /** @var string 是否启用原图保护功能 */
     const IsEnableOriginalProtection = 'is_enable_original_protection';
 

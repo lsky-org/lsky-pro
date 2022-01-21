@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Enums\ConfigKey;
 use App\Enums\GroupConfigKey;
 use App\Enums\Mail\SmtpOption;
+use App\Enums\Scan\AliyunOption;
 use App\Enums\Watermark\FontOption;
 use App\Enums\Watermark\ImageOption;
 use App\Models\Group;
@@ -50,6 +51,18 @@ class DatabaseSeeder extends Seeder
                 GroupConfigKey::IsEnableScan => false,
                 GroupConfigKey::IsEnableWatermark => false,
                 GroupConfigKey::IsEnableOriginalProtection => false,
+                GroupConfigKey::ScanConfigs => [
+                    'driver' => 'aliyun',
+                    'drivers' => [
+                        'aluyun' => [
+                            AliyunOption::AccessKeyId => '',
+                            AliyunOption::AccessKeySecret => '',
+                            AliyunOption::RegionId => '',
+                            AliyunOption::Scenes => ['porn'],
+                            AliyunOption::BizType => '',
+                        ],
+                    ],
+                ],
                 GroupConfigKey::WatermarkConfigs => [
                     'driver' => 'font',
                     'drivers' => [

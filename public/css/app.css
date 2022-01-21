@@ -716,6 +716,9 @@ select {
 .col-span-6 {
   grid-column: span 6 / span 6;
 }
+.col-span-3 {
+  grid-column: span 3 / span 3;
+}
 .m-2 {
   margin: 0.5rem;
 }
