@@ -2,15 +2,8 @@
 
 namespace App\Http\Requests;
 
-use App\Http\Api;
-use Illuminate\Contracts\Validation\Validator;
-use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Exceptions\HttpResponseException;
-
 class ImageRenameRequest extends FormRequest
 {
-    use Api;
-
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -43,10 +36,5 @@ class ImageRenameRequest extends FormRequest
             'name.max' => '名称长度不能超过 50 个字符',
             'name.string' => '名称格式不正确'
         ];
-    }
-
-    protected function failedValidation(Validator $validator)
-    {
-        throw (new HttpResponseException($this->error($validator->errors()->first())));
     }
 }

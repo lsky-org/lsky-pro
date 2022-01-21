@@ -2,25 +2,8 @@
 
 namespace App\Http\Requests;
 
-use App\Http\Api;
-use Illuminate\Contracts\Validation\Validator;
-use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Exceptions\HttpResponseException;
-
 class UserSettingRequest extends FormRequest
 {
-    use Api;
-
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
-    {
-        return true;
-    }
-
     /**
      * Get the validation rules that apply to the request.
      *
@@ -54,10 +37,5 @@ class UserSettingRequest extends FormRequest
             'configs.default_permission.in' => '权限值不正确',
             'configs.is_auto_clear_preview.boolean' => '是否自动清除预览选择错误'
         ];
-    }
-
-    protected function failedValidation(Validator $validator)
-    {
-        throw (new HttpResponseException($this->error($validator->errors()->first())));
     }
 }

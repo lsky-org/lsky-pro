@@ -15,7 +15,7 @@
                     <a data-target="watermark" href="javascript:void(0)" class="block rounded-t-lg px-3 py-2 bg-gray-200 group-hover:bg-white">水印配置</a>
                 </li>
             </ul>
-            <form action="#" method="POST">
+            <form action="{{ route('admin.group.create') }}" method="POST">
                 <div class="overflow-hidden rounded-md rounded-l-none">
                     <div class="px-4 py-5 bg-white sm:p-6">
                         <div data-tab="basic" class="grid grid-cols-6 gap-6">
@@ -71,14 +71,14 @@
 
                             <div class="col-span-6">
                                 <x-fieldset title="是否默认" faq="设置默认后，新用户注册以后将会属于该默认角色组。">
-                                    <x-switch id="is_default_yes" name="configs[is_default]" value="1"></x-switch>
+                                    <x-switch id="configs[is_default]" name="configs[is_default]" value="1"></x-switch>
                                 </x-fieldset>
                             </div>
 
                             <div class="col-span-6">
                                 <x-fieldset title="允许上传的图片类型">
                                     @foreach($extensions as $extension)
-                                        <x-fieldset-checkbox id="{{ $extension }}" name="{{ $extension }}" checked>
+                                        <x-fieldset-checkbox id="configs[accepted_file_suffixes]_{{ $extension }}" name="configs[accepted_file_suffixes][]" value="{{ $extension }}" checked>
                                             {{ strtoupper($extension) }}
                                         </x-fieldset-checkbox>
                                     @endforeach
@@ -89,7 +89,7 @@
                         <div data-tab="review" class="hidden grid grid-cols-6 gap-6">
                             <div class="col-span-6 mb-4">
                                 <x-fieldset title="图片审核" faq="设置上传是否需要应用第三方审查，违规的图片会被标记为不健康的图片，或直接被删除。">
-                                    <x-switch id="is_enable_review_no" name="configs[is_enable_review]" value="1"></x-switch>
+                                    <x-switch id="configs[is_enable_review]" name="configs[is_enable_review]" value="1"></x-switch>
                                 </x-fieldset>
                             </div>
                             <div class="col-span-6 mb-4">
@@ -133,7 +133,7 @@
                         <div data-tab="protection" class="hidden grid grid-cols-6 gap-6">
                             <div class="col-span-6 mb-4">
                                 <x-fieldset title="原图保护" faq="设置该角色组下的用户上传的图片是否应用原图保护功能，开启后图片<b>不返回直链</b>">
-                                    <x-switch id="is_enable_original_protection_yes" name="configs[is_enable_original_protection]" value="1"></x-switch>
+                                    <x-switch id="configs[is_enable_original_protection]" name="configs[is_enable_original_protection]" value="1"></x-switch>
                                 </x-fieldset>
                             </div>
 
@@ -147,7 +147,7 @@
                             <p class="mb-3 text-red-600 text-sm"><i class="fas fa-exclamation"></i> 开启水印功能前请注意考虑图片版权问题。</p>
                             <div class="col-span-6 mb-4">
                                 <x-fieldset title="开启水印" faq="请注意，水印功能仅在开启了「原图保护」功能的情况下生效。">
-                                    <x-switch id="is_enable_watermark_yes" name="configs[is_enable_watermark]" value="1"></x-switch>
+                                    <x-switch id="configs[is_enable_watermark]" name="configs[is_enable_watermark]" value="1"></x-switch>
                                 </x-fieldset>
                                 <div class="col-span-6 mt-4 mb-4">
                                     <x-fieldset title="水印类型">
@@ -266,6 +266,13 @@
 
             $('[data-select]').click(function () {
                 setSelected();
+            });
+
+            $('form').submit(function (e) {
+                e.preventDefault();
+                axios.post(this.action, $(this).serialize()).then(response => {
+                    console.log(response.data);
+                });
             });
         </script>
     @endpush

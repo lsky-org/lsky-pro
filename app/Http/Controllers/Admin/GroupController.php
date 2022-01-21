@@ -57,18 +57,18 @@ class GroupController extends Controller
         return view('admin.group.edit', compact('group'));
     }
 
-    public function create(): Response
+    public function create(Request $request): Response
     {
-
+        return $this->success('success', $request->all());
     }
 
-    public function update(): Response
+    public function update(Request $request): Response
     {
-
+        return $this->success('success', $request->all());
     }
 
     public function delete(Request $request): Response
     {
-
+        return $this->success('success', $request->all());
     }
 }
