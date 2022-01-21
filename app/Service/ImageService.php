@@ -133,7 +133,7 @@ class ImageService
         })->first();
         foreach ($array as $key => $item) {
             $value = $configs->get($item['key'], 0);
-            if ($statistics->$key >= $value) {
+            if ($value && $statistics->$key >= $value) {
                 throw new UploadException("每{$item['str']}内你最多可以上传 {$value} 张图片");
             }
         }

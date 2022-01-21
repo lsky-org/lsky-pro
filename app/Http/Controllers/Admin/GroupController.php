@@ -18,7 +18,6 @@ class GroupController extends Controller
     {
         \Illuminate\Support\Facades\View::share([
             'default' => collect(config('convention.app.'.ConfigKey::GroupConfigs)),
-            'extensions' => config('convention.app.'.ConfigKey::GroupConfigs)[GroupConfigKey::AcceptedFileSuffixes],
             'positions' => [
                 'top-left' => '左上角',
                 'top' => '上中',
