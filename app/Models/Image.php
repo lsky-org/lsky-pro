@@ -5,7 +5,7 @@ namespace App\Models;
 use App\Enums\GroupConfigKey;
 use App\Enums\Strategy\LocalOption;
 use App\Enums\StrategyKey;
-use App\Service\ImageService;
+use App\Services\ImageService;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;

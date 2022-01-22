@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Enums\ConfigKey;
-use App\Enums\GroupConfigKey;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\GroupRequest;
 use App\Models\Group;
@@ -74,9 +73,9 @@ class GroupController extends Controller
         return $this->success('success', $request->validated());
     }
 
-    public function update(Request $request): Response
+    public function update(GroupRequest $request): Response
     {
-        return $this->success('success', $request->all());
+        return $this->success('success', $request->validated());
     }
 
     public function delete(Request $request): Response

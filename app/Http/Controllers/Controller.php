@@ -7,7 +7,7 @@ use App\Exceptions\UploadException;
 use App\Http\Api;
 use App\Models\Image;
 use App\Models\User;
-use App\Service\ImageService;
+use App\Services\ImageService;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;

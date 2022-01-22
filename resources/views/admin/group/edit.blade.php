@@ -25,6 +25,7 @@
                                 <label for="name" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>组名称</label>
                                 @if($group->id == 0)
                                     <input type="text" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md bg-gray-100" value="{{ $group->name }}" disabled readonly>
+                                    <input type="hidden" name="name" id="name" value="{{ $group->name }}">
                                 @else
                                     <input type="text" name="name" id="name" autocomplete="name" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" placeholder="请输入组名称" value="{{ $group->name }}">
                                 @endif
