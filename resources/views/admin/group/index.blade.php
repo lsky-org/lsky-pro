@@ -10,6 +10,16 @@
         </div>
 
         <x-table :columns="['ID', '名称', '是否默认', '用户数量', '策略数量', '操作']">
+            <tr data-id="0">
+                <td class="px-6 py-4 whitespace-nowrap">-</td>
+                <td class="px-6 py-4 whitespace-nowrap name">系统默认组</td>
+                <td class="px-6 py-4 whitespace-nowrap">-</td>
+                <td class="px-6 py-4 whitespace-nowrap">-</td>
+                <td class="px-6 py-4 whitespace-nowrap">-</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
+                    <a href="{{ route('admin.group.edit', ['id' => 0]) }}" class="text-indigo-600 hover:text-indigo-900">编辑</a>
+                </td>
+            </tr>
             @foreach($groups as $group)
             <tr data-id="{{ $group->id }}">
                 <td class="px-6 py-4 whitespace-nowrap">{{ $group->id }}</td>

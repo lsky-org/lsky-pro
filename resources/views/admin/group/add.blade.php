@@ -1,13 +1,6 @@
 <x-app-layout>
     <div class="my-6 md:my-10">
-        @if(! ini_get('file_uploads'))
-            <p class="bg-red-500 p-2 mb-2 rounded text-sm text-white">
-                <i class="fas fa-exclamation-circle"></i> 系统监测到运行环境关闭了 HTTP 上传文件权限(file_uploads=off)，请更改 PHP 此项配置，否则无法上传文件。
-            </p>
-        @endif
-        <p class="bg-yellow-500 p-2 mb-4 rounded text-sm text-white">
-            <i class="fas fa-exclamation-circle"></i> 系统运行环境允许上传大小的最大值为 {{ ini_get('upload_max_filesize') }}，最大 POST 数据大小为 {{ ini_get('post_max_size') }}，上传文件大小不得超过这两项配置值。
-        </p>
+        @include('admin.group.tips')
 
         <div class="mt-5 md:mt-0 md:col-span-2">
             <ul id="tabs" class="flex space-x-2 text-sm">
@@ -35,47 +28,47 @@
 
                             <div class="col-span-6">
                                 <label for="maximum_file_size" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>最大文件大小(KB)</label>
-                                <input type="number" name="configs[maximum_file_size]" id="maximum_file_size" autocomplete="maximum_file_size" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" placeholder="请输入上传文件的最大限制，单位kb" value="{{ $default->get(\App\Enums\GroupConfigKey::MaximumFileSize) }}">
+                                <input type="number" name="configs[maximum_file_size]" id="maximum_file_size" autocomplete="maximum_file_size" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" placeholder="请输入上传文件的最大限制，单位kb" value="{{ $default->get('maximum_file_size') }}">
                             </div>
 
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="concurrent_upload_num" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>并发上传限制</label>
-                                <input type="number" name="configs[concurrent_upload_num]" id="concurrent_upload_num" autocomplete="concurrent_upload_num" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" placeholder="请输入并发上传数量" value="{{ $default->get(\App\Enums\GroupConfigKey::ConcurrentUploadNum) }}">
+                                <input type="number" name="configs[concurrent_upload_num]" id="concurrent_upload_num" autocomplete="concurrent_upload_num" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" placeholder="请输入并发上传数量" value="{{ $default->get('concurrent_upload_num') }}">
                             </div>
 
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="limit_per_minute" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>每分钟上传限制</label>
-                                <input type="number" name="configs[limit_per_minute]" id="limit_per_minute" autocomplete="limit_per_minute" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" placeholder="请输入每分钟可以上传的图片数量" value="{{ $default->get(\App\Enums\GroupConfigKey::LimitPerMinute) }}">
+                                <input type="number" name="configs[limit_per_minute]" id="limit_per_minute" autocomplete="limit_per_minute" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" placeholder="请输入每分钟可以上传的图片数量" value="{{ $default->get('limit_per_minute') }}">
                             </div>
 
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="limit_per_hour" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>每小时上传限制</label>
-                                <input type="number" name="configs[limit_per_hour]" id="limit_per_hour" autocomplete="limit_per_hour" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" placeholder="请输入每小时可以上传的图片数量" value="{{ $default->get(\App\Enums\GroupConfigKey::LimitPerHour) }}">
+                                <input type="number" name="configs[limit_per_hour]" id="limit_per_hour" autocomplete="limit_per_hour" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" placeholder="请输入每小时可以上传的图片数量" value="{{ $default->get('limit_per_hour') }}">
                             </div>
 
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="limit_per_day" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>每天上传限制</label>
-                                <input type="number" name="configs[limit_per_day]" id="limit_per_day" autocomplete="limit_per_day" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" placeholder="请输入每天可以上传的图片数量" value="{{ $default->get(\App\Enums\GroupConfigKey::LimitPerDay) }}">
+                                <input type="number" name="configs[limit_per_day]" id="limit_per_day" autocomplete="limit_per_day" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" placeholder="请输入每天可以上传的图片数量" value="{{ $default->get('limit_per_day') }}">
                             </div>
 
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="limit_per_week" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>每周上传限制</label>
-                                <input type="number" name="configs[limit_per_week]" id="limit_per_week" autocomplete="limit_per_week" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" placeholder="请输入每周可以上传的图片数量" value="{{ $default->get(\App\Enums\GroupConfigKey::LimitPerWeek) }}">
+                                <input type="number" name="configs[limit_per_week]" id="limit_per_week" autocomplete="limit_per_week" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" placeholder="请输入每周可以上传的图片数量" value="{{ $default->get('limit_per_week') }}">
                             </div>
 
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="limit_per_month" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>每月上传限制</label>
-                                <input type="number" name="configs[limit_per_month]" id="limit_per_month" autocomplete="limit_per_month" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" placeholder="请输入每月可以上传的图片数量" value="{{ $default->get(\App\Enums\GroupConfigKey::LimitPerMonth) }}">
+                                <input type="number" name="configs[limit_per_month]" id="limit_per_month" autocomplete="limit_per_month" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" placeholder="请输入每月可以上传的图片数量" value="{{ $default->get('limit_per_month') }}">
                             </div>
 
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="path_naming_rule" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>路径命名规则</label>
-                                <input type="text" name="configs[path_naming_rule]" id="path_naming_rule" autocomplete="path_naming_rule" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" placeholder="请输入路径命名规则" value="{{ $default->get(\App\Enums\GroupConfigKey::PathNamingRule) }}">
+                                <input type="text" name="configs[path_naming_rule]" id="path_naming_rule" autocomplete="path_naming_rule" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" placeholder="请输入路径命名规则" value="{{ $default->get('path_naming_rule') }}">
                             </div>
 
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="file_naming_rule" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>文件命名规则</label>
-                                <input type="text" name="configs[file_naming_rule]" id="file_naming_rule" autocomplete="file_naming_rule" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" placeholder="请输入文件命名规则" value="{{ $default->get(\App\Enums\GroupConfigKey::FileNamingRule) }}">
+                                <input type="text" name="configs[file_naming_rule]" id="file_naming_rule" autocomplete="file_naming_rule" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" placeholder="请输入文件命名规则" value="{{ $default->get('file_naming_rule') }}">
                             </div>
 
                             <div class="col-span-6">
@@ -86,7 +79,7 @@
 
                             <div class="col-span-6">
                                 <x-fieldset title="允许上传的图片类型">
-                                    @foreach($default->get(\App\Enums\GroupConfigKey::AcceptedFileSuffixes) as $extension)
+                                    @foreach($default->get('accepted_file_suffixes') as $extension)
                                         <x-fieldset-checkbox id="configs[accepted_file_suffixes]_{{ $extension }}" name="configs[accepted_file_suffixes][]" value="{{ $extension }}" checked>
                                             {{ strtoupper($extension) }}
                                         </x-fieldset-checkbox>
@@ -98,7 +91,7 @@
                         <div data-tab="review" class="hidden grid grid-cols-6 gap-6">
                             <div class="col-span-6 mb-4">
                                 <x-fieldset title="图片审核" faq="设置上传是否需要应用第三方审查，违规的图片会被标记为不健康的图片，或直接被删除。">
-                                    <x-switch id="configs[is_enable_review]" name="configs[is_enable_review]" value="1"></x-switch>
+                                    <x-switch id="configs[is_enable_scan]" name="configs[is_enable_scan]" value="1"></x-switch>
                                 </x-fieldset>
                             </div>
                             <div class="col-span-6 mb-4">

@@ -42,7 +42,7 @@ return [
             GroupConfigKey::ScanConfigs => [
                 'driver' => 'aliyun',
                 'drivers' => [
-                    'aluyun' => [
+                    'aliyun' => [
                         AliyunOption::AccessKeyId => '',
                         AliyunOption::AccessKeySecret => '',
                         AliyunOption::RegionId => '',

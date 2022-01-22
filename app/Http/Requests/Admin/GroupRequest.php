@@ -15,7 +15,7 @@ class GroupRequest extends FormRequest
     public function rules()
     {
         $requiredIfReview = function ($driver) {
-            return Rule::requiredIf($this->input('configs.is_enable_review') && $this->input('configs.scan_configs.driver') === $driver);
+            return Rule::requiredIf($this->input('configs.is_enable_scan') && $this->input('configs.scan_configs.driver') === $driver);
         };
 
         $requiredIfWatermark = function ($driver) {
@@ -37,12 +37,12 @@ class GroupRequest extends FormRequest
             'configs.file_naming_rule' => 'max:400',
             'configs.accepted_file_suffixes' => 'required|array|in:jpeg,jpg,png,gif,tif,bmp,ico,psd,webp',
 
-            'configs.is_enable_review' => 'boolean',
+            'configs.is_enable_scan' => 'boolean',
             'configs.scanned_action' => [
-                'exclude_if:configs.is_enable_review,false',
+                'exclude_if:configs.is_enable_scan,false',
                 'in:mark,delete',
             ],
-            'configs.scan_configs.driver' => ['exclude_if:configs.is_enable_review,false', 'in:aliyun',],
+            'configs.scan_configs.driver' => ['exclude_if:configs.is_enable_scan,false', 'in:aliyun',],
             'configs.scan_configs.drivers.aliyun.access_key_id' => [$requiredIfReview('aliyun')],
             'configs.scan_configs.drivers.aliyun.access_key_secret' => [$requiredIfReview('aliyun')],
             'configs.scan_configs.drivers.aliyun.biz_type' => [$requiredIfReview('aliyun')],
@@ -105,7 +105,7 @@ class GroupRequest extends FormRequest
             'configs.file_naming_rule' => '文件命名规则',
             'configs.accepted_file_suffixes' => '允许上传的文件后缀',
 
-            'configs.is_enable_review' => '是否启用图片审核',
+            'configs.is_enable_scan' => '是否启用图片审核',
             'configs.scanned_action' => '图片审核动作',
             'configs.scan_configs.driver' => '图片审核驱动',
             'configs.scan_configs.drivers.aliyun.access_key_id' => 'AccessKeyId',

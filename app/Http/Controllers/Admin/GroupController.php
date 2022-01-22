@@ -7,6 +7,7 @@ use App\Enums\GroupConfigKey;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\GroupRequest;
 use App\Models\Group;
+use App\Utils;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -56,7 +57,15 @@ class GroupController extends Controller
 
     public function edit(Request $request): View
     {
-        $group = Group::query()->findOrFail($request->route('id'));
+        if ($request->route('id') == 0) {
+            $group = new Group([
+                'id' => 0,
+                'name' => '系统默认组',
+                'configs' => Utils::config(ConfigKey::GroupConfigs),
+            ]);
+        } else {
+            $group = Group::query()->findOrFail($request->route('id'));
+        }
         return view('admin.group.edit', compact('group'));
     }
 
