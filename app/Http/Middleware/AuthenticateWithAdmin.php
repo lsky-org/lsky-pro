@@ -10,7 +10,7 @@ class AuthenticateWithAdmin extends Authenticate
 {
     public function handle($request, Closure $next, ...$guards)
     {
-        parent::handle($request, $next, ...$guards);
+        $this->authenticate($request, $guards);
 
         /** @var User $user */
         $user = Auth::user();
