@@ -9,11 +9,26 @@
             </form>
         </div>
 
-        <x-table :columns="['ID', '名称', '是否默认', '用户数量', '策略数量', '操作']">
+        <x-table :columns="['ID', '名称', '是否默认', '图片审核', '原图保护', '水印' ,'用户数量', '策略数量', '操作']">
             <tr data-id="0">
                 <td class="px-6 py-4 whitespace-nowrap">-</td>
                 <td class="px-6 py-4 whitespace-nowrap name">系统默认组</td>
                 <td class="px-6 py-4 whitespace-nowrap">-</td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $default['is_enable_scan'] ? 'text-green-800' : 'text-red-800' }}">
+                        <i class="text-lg fas fa-{{ $default['is_enable_scan'] ? 'check-circle' : 'times-circle' }}"></i>
+                    </span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $default['is_enable_original_protection'] ? 'text-green-800' : 'text-red-800' }}">
+                        <i class="text-lg fas fa-{{ $default['is_enable_original_protection'] ? 'check-circle' : 'times-circle' }}"></i>
+                    </span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $default['is_enable_watermark'] ? 'text-green-800' : 'text-red-800' }}">
+                        <i class="text-lg fas fa-{{ $default['is_enable_watermark'] ? 'check-circle' : 'times-circle' }}"></i>
+                    </span>
+                </td>
                 <td class="px-6 py-4 whitespace-nowrap">-</td>
                 <td class="px-6 py-4 whitespace-nowrap">-</td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
@@ -27,6 +42,21 @@
                 <td class="px-6 py-4 whitespace-nowrap">
                     <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $group->is_default ? 'text-green-800' : 'text-red-800' }}">
                         <i class="text-lg fas fa-{{ $group->is_default ? 'check-circle' : 'times-circle' }}"></i>
+                    </span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $group->configs['is_enable_scan'] ? 'text-green-800' : 'text-red-800' }}">
+                        <i class="text-lg fas fa-{{ $group->configs['is_enable_scan'] ? 'check-circle' : 'times-circle' }}"></i>
+                    </span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $group->configs['is_enable_original_protection'] ? 'text-green-800' : 'text-red-800' }}">
+                        <i class="text-lg fas fa-{{ $group->configs['is_enable_original_protection'] ? 'check-circle' : 'times-circle' }}"></i>
+                    </span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $group->configs['is_enable_watermark'] ? 'text-green-800' : 'text-red-800' }}">
+                        <i class="text-lg fas fa-{{ $group->configs['is_enable_watermark'] ? 'check-circle' : 'times-circle' }}"></i>
                     </span>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap">{{ $group->users_count }}</td>
@@ -61,7 +91,7 @@
                 }).then((result) => {
                     if (result.isConfirmed) {
                         let id = $(this).closest('tr').data('id');
-                        axios.delete(`/groups/${id}`).then(response => {
+                        axios.delete(`/admin/groups/${id}`).then(response => {
                             if (response.data.status) {
                                 history.go(0);
                             } else {

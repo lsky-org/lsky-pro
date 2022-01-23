@@ -2,6 +2,10 @@
     <div class="my-6 md:my-10">
         @include('admin.group.tips')
 
+        <p class="bg-blue-500 p-2 mb-2 rounded text-sm text-white">
+            <i class="fas fa-exclamation-circle"></i> 角色组设置默认以后新用户注册会归属该角色组，系统可以设置多个默认角色组，出现多个默认组，新用户将会以随机的方式归属某一个默认角色组。
+        </p>
+
         <div class="mt-5 md:mt-0 md:col-span-2">
             <ul id="tabs" class="flex space-x-2 text-sm">
                 <li class="group">
@@ -275,6 +279,9 @@
                 axios.post(this.action, $(this).serialize()).then(response => {
                     if (response.data.status) {
                         toastr.success(response.data.message);
+                        setTimeout(function () {
+                            window.location.href = '{{ route('admin.groups') }}';
+                        }, 3000);
                     } else {
                         toastr.error(response.data.message);
                     }

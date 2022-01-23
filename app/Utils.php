@@ -12,8 +12,8 @@ class Utils
     /**
      * 获取系统配置，获取全部配置时将返回
      *
-     * @param string $name
-     * @param mixed|null $default
+     * @param  string  $name
+     * @param  mixed|null  $default
      *
      * @return mixed
      */
@@ -47,7 +47,7 @@ class Utils
     /**
      * 转换字段单位
      *
-     * @param int|float $size 字节b
+     * @param  int|float  $size  字节b
      * @return string
      */
     public static function formatSize(int|float $size): string
@@ -63,6 +63,24 @@ class Utils
             $i = $n - 1;
         }
 
-        return sprintf("%.2f", $size / pow($base, $i)) . ' ' . $unit[$i] . 'B';
+        return sprintf("%.2f", $size / pow($base, $i)).' '.$unit[$i].'B';
+    }
+
+    /**
+     * 递归过滤数组元素
+     *
+     * @param  array  $array
+     * @param  callable|null  $callback
+     * @param  int  $mode
+     * @return array
+     */
+    public static function filter(array $array, callable $callback = null, int $mode = 0): array
+    {
+        foreach ($array as &$value) {
+            if (is_array($value)) {
+                $value = self::filter($value);
+            }
+        }
+        return array_filter($array, $callback, $mode);
     }
 }

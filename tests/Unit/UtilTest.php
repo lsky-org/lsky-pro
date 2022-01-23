@@ -10,11 +10,6 @@ use Tests\TestCase;
 
 class UtilTest extends TestCase
 {
-    /**
-     * A basic unit test example.
-     *
-     * @return void
-     */
     public function test_config()
     {
         Cache::forget('configs');
@@ -36,6 +31,31 @@ class UtilTest extends TestCase
         }
 
         if (is_bool(Utils::config(ConfigKey::IsAllowGuestUpload))) {
+            $this->assertTrue(true);
+        }
+    }
+
+    public function test_array_filter_recursive()
+    {
+
+        $array = Utils::filter([
+            'name' => 'Lsky',
+            'age' => null,
+            'configs' => [
+                'one' => null,
+                'two' => 1
+            ]
+        ]);
+
+        if (! array_key_exists('age', $array)) {
+            $this->assertTrue(true);
+        }
+
+        if (! array_key_exists('one', $array['configs'])) {
+            $this->assertTrue(true);
+        }
+
+        if (! array_key_exists('two', $array['configs'])) {
             $this->assertTrue(true);
         }
     }

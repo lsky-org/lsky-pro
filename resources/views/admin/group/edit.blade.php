@@ -2,6 +2,12 @@
     <div class="my-6 md:my-10">
         @include('admin.group.tips')
 
+        @if($group->id == 0)
+        <p class="bg-blue-500 p-2 mb-2 rounded text-sm text-white">
+            <i class="fas fa-exclamation-circle"></i> 当前编辑的是系统默认组，所有访客、以及未被设置角色组的用户上传的图片将会受这个角色组控制。
+        </p>
+        @endif
+
         <div class="mt-5 md:mt-0 md:col-span-2">
             <ul id="tabs" class="flex space-x-2 text-sm">
                 <li class="group">
@@ -132,7 +138,7 @@
                                 <div class="col-span-6 sm:col-span-3 mb-4">
                                     <x-fieldset title="审核场景">
                                         @foreach($scanAliyunScenes as $key => $scene)
-                                            <x-fieldset-checkbox id="configs[scan_configs][drivers][aliyun][scenes][]_{{ $key }}" name="configs[scan_configs][drivers][aliyun][scenes][]" value="{{ $key }}" :checked="in_array($scene, $group->configs['scan_configs']['drivers']['aliyun']['scenes'])">{{ $scene }}</x-fieldset-checkbox>
+                                            <x-fieldset-checkbox id="configs[scan_configs][drivers][aliyun][scenes][]_{{ $key }}" name="configs[scan_configs][drivers][aliyun][scenes][]" value="{{ $key }}" :checked="in_array($key, $group->configs['scan_configs']['drivers']['aliyun']['scenes'])">{{ $scene }}</x-fieldset-checkbox>
                                         @endforeach
                                     </x-fieldset>
                                 </div>
@@ -247,7 +253,7 @@
                     </div>
                     <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">
                         <x-button type="button" class="bg-gray-500" onclick="history.go(-1)">取消</x-button>
-                        <x-button>确认创建</x-button>
+                        <x-button>确认保存</x-button>
                     </div>
                 </div>
             </form>

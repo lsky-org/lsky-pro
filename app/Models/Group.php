@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Enums\ConfigKey;
-use App\Enums\GroupConfigKey;
 use App\Utils;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -34,7 +33,7 @@ class Group extends Model
 
     protected $casts = [
         'is_default' => 'bool',
-        'configs' => 'collection',
+        'configs' => 'collection'
     ];
 
     /**
@@ -47,11 +46,33 @@ class Group extends Model
         return Utils::config(ConfigKey::GroupConfigs);
     }
 
-    protected static function booted()
+    /**
+     * 格式化配置，设置默认配置以及将字符串数字转换为数字
+     *
+     * @param $configs
+     * @return array
+     */
+    public static function parseConfigs($configs): array
     {
-        static::creating(function (self $group) {
-            $group->configs = config('convention.app.'.ConfigKey::GroupConfigs)->merge($group->configs ?: []);
+        if ($configs instanceof Collection) {
+            $configs = $configs->toArray();
+        }
+
+        $array = array_replace_recursive(config('convention.app.'.ConfigKey::GroupConfigs), Utils::filter($configs));
+        array_walk_recursive($array, function (&$item) {
+            if (ctype_digit($item)) {
+                $item += 0;
+            }
+            if (is_null($item)) {
+                unset($item);
+            }
         });
+        return $array;
+    }
+
+    public function setConfigsAttribute($value)
+    {
+        $this->attributes['configs'] = json_encode(self::parseConfigs($value), JSON_UNESCAPED_UNICODE);
     }
 
     public function users(): HasMany

@@ -1,15 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Admin;
 
 use App\Enums\ConfigKey;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\GroupRequest;
+use App\Models\Config;
 use App\Models\Group;
 use App\Utils;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\View\View;
 
 class GroupController extends Controller
@@ -33,7 +37,7 @@ class GroupController extends Controller
             'scanAliyunScenes' => [
                 'porn' => '智能鉴黄',
                 'terrorism' => '暴恐涉政',
-                'ad' => '暴恐涉政',
+                'ad' => '图文违规',
                 'qrcode' => '二维码',
                 'live' => '不良场景',
                 'logo' => 'Logo',
@@ -70,16 +74,37 @@ class GroupController extends Controller
 
     public function create(GroupRequest $request): Response
     {
-        return $this->success('success', $request->validated());
+        $group = new Group();
+        $group->fill($request->validated());
+        $group->save();
+        return $this->success('创建成功');
     }
 
     public function update(GroupRequest $request): Response
     {
-        return $this->success('success', $request->validated());
+        if ($request->route('id') == 0) {
+            Config::query()->where('name', ConfigKey::GroupConfigs)->update([
+                'value' => collect(Group::parseConfigs($request->validated('configs'))),
+            ]);
+            // 删除配置缓存
+            Cache::forget('configs');
+        } else {
+            /** @var Group $group */
+            $group = Group::query()->findOrFail($request->route('id'));
+            $group->fill($request->validated());
+            if (!$group->save()) {
+                return $this->error('保存失败');
+            }
+        }
+
+        return $this->success('保存成功');
     }
 
     public function delete(Request $request): Response
     {
-        return $this->success('success', $request->all());
+        if ($group = Group::query()->find($request->route('id'))) {
+            $group->delete();
+        }
+        return $this->success('删除成功');
     }
 }
