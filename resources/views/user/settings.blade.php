@@ -8,17 +8,17 @@
                     <div class="grid grid-cols-6 gap-6">
                         <div class="col-span-6 sm:col-span-3">
                             <label for="email" class="block text-sm font-medium text-gray-700">邮箱</label>
-                            <input type="text" id="email" autocomplete="email" class="mt-1 block w-full shadow-sm sm:text-sm bg-gray-100 border-gray-300 rounded-md" value="{{ Auth::user()->email }}" disabled readonly>
+                            <x-input type="text" id="email" autocomplete="email" value="{{ Auth::user()->email }}" disabled readonly/>
                         </div>
 
                         <div class="col-span-6 sm:col-span-3">
                             <label for="name" class="block text-sm font-medium text-gray-700">昵称</label>
-                            <input type="text" name="name" id="name" autocomplete="name" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" value="{{ Auth::user()->name }}">
+                            <x-input type="text" name="name" id="name" autocomplete="name" value="{{ Auth::user()->name }}"/>
                         </div>
 
                         <div class="col-span-6 sm:col-span-3">
                             <label for="default_strategy" class="block text-sm font-medium text-gray-700">默认上传策略</label>
-                            <select id="default_strategy" name="configs[default_strategy]" autocomplete="default-strategy" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                            <x-select id="default_strategy" name="configs[default_strategy]" autocomplete="default-strategy">
                                 @if(Auth::user()->group)
                                     <option value="0">未选择</option>
                                     @foreach(Auth::user()->group->strategies as $strategy)
@@ -27,12 +27,12 @@
                                 @else
                                     <option value="0">系统默认</option>
                                 @endif
-                            </select>
+                            </x-select>
                         </div>
 
                         <div class="col-span-6 sm:col-span-3">
                             <label for="default_album" class="block text-sm font-medium text-gray-700">默认上传相册</label>
-                            <select id="default_album" name="configs[default_album]" autocomplete="default-album" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                            <x-select id="default_album" name="configs[default_album]" autocomplete="default-album">
                                 @if(Auth::user()->albums->isNotEmpty())
                                     <option value="0">未选择</option>
                                     @foreach(Auth::user()->albums as $album)
@@ -41,12 +41,12 @@
                                 @else
                                     <option value="0">没有可用相册</option>
                                 @endif
-                            </select>
+                            </x-select>
                         </div>
 
                         <div class="col-span-6">
                             <label for="password" class="block text-sm font-medium text-gray-700">密码</label>
-                            <input type="password" name="password" id="password" placeholder="不修改请留空" autocomplete="password" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                            <x-input type="password" name="password" id="password" placeholder="不修改请留空" autocomplete="password" />
                         </div>
 
                         <div class="col-span-6">
@@ -57,11 +57,11 @@
                                 </div>
                                 <div class="mt-4 space-x-6 flex items-center">
                                     <div class="flex items-center">
-                                        <input id="is_auto_clear_preview_yes" name="configs[is_auto_clear_preview]" type="radio" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300" value="1" {{ Auth::user()->configs->get(\App\Enums\UserConfigKey::IsAutoClearPreview) ? 'checked' : '' }}>
+                                        <x-radio id="is_auto_clear_preview_yes" name="configs[is_auto_clear_preview]" value="1" checked="{{ Auth::user()->configs->get(\App\Enums\UserConfigKey::IsAutoClearPreview) ? 'checked' : '' }}" />
                                         <label for="is_auto_clear_preview_yes" class="ml-3 block text-sm font-medium text-gray-700">是</label>
                                     </div>
                                     <div class="flex items-center">
-                                        <input id="is_auto_clear_preview_no" name="configs[is_auto_clear_preview]" type="radio" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300" value="0" {{ ! Auth::user()->configs->get(\App\Enums\UserConfigKey::IsAutoClearPreview) ? 'checked' : '' }}>
+                                        <x-radio id="is_auto_clear_preview_no" name="configs[is_auto_clear_preview]" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300" value="0" checked="{{ ! Auth::user()->configs->get(\App\Enums\UserConfigKey::IsAutoClearPreview) ? 'checked' : '' }}" />
                                         <label for="is_auto_clear_preview_no" class="ml-3 block text-sm font-medium text-gray-700">否</label>
                                     </div>
                                 </div>
@@ -76,11 +76,11 @@
                                 </div>
                                 <div class="mt-4 space-x-6 flex items-center">
                                     <div class="flex items-center">
-                                        <input id="private" name="configs[default_permission]" type="radio" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300" value="{{ \App\Enums\ImagePermission::Private }}" {{ Auth::user()->configs->get(\App\Enums\UserConfigKey::DefaultPermission) == \App\Enums\ImagePermission::Private ? 'checked' : '' }}>
+                                        <x-radio id="private" name="configs[default_permission]" type="radio" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300" value="{{ \App\Enums\ImagePermission::Private }}" checked="{{ Auth::user()->configs->get(\App\Enums\UserConfigKey::DefaultPermission) == \App\Enums\ImagePermission::Private ? 'checked' : '' }}" />
                                         <label for="private" class="ml-3 block text-sm font-medium text-gray-700">私有</label>
                                     </div>
                                     <div class="flex items-center">
-                                        <input id="public" name="configs[default_permission]" type="radio" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300" value="{{ \App\Enums\ImagePermission::Public }}" {{ Auth::user()->configs->get(\App\Enums\UserConfigKey::DefaultPermission) == \App\Enums\ImagePermission::Public ? 'checked' : '' }}>
+                                        <x-radio id="public" name="configs[default_permission]" type="radio" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300" value="{{ \App\Enums\ImagePermission::Public }}" checked="{{ Auth::user()->configs->get(\App\Enums\UserConfigKey::DefaultPermission) == \App\Enums\ImagePermission::Public ? 'checked' : '' }}" />
                                         <label for="public" class="ml-3 block text-sm font-medium text-gray-700">公开</label>
                                     </div>
                                 </div>
