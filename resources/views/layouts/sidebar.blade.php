@@ -60,7 +60,7 @@
                     <x-slot name="icon"><i class="fas fa-images text-blue-500"></i></x-slot>
                     <x-slot name="name">图片管理</x-slot>
                 </x-nav-link>
-                <x-nav-link :active="request()->is('admin/strategies*')">
+                <x-nav-link :href="route('admin.strategies')" :active="request()->is('admin/strategies*')">
                     <x-slot name="icon"><i class="fas fa-hdd text-blue-500"></i></x-slot>
                     <x-slot name="name">储存策略</x-slot>
                 </x-nav-link>

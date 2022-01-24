@@ -19,6 +19,7 @@ use App\Http\Controllers\User\AlbumController;
 use App\Http\Controllers\User\ProfileController;
 
 use App\Http\Controllers\Admin\GroupController as AdminGroupController;
+use App\Http\Controllers\Admin\StrategyController as AdminStrategyController;
 
 Route::get('/', fn () => view('welcome'))->name('/');
 Route::post('upload', [Controller::class, 'upload']);
@@ -50,6 +51,15 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth.admin']], function () 
         Route::get('{id}', [AdminGroupController::class, 'edit'])->name('admin.group.edit');
         Route::put('{id}', [AdminGroupController::class, 'update'])->name('admin.group.update');
         Route::delete('{id}', [AdminGroupController::class, 'delete'])->name('admin.group.delete');
+    });
+
+    Route::group(['prefix' => 'strategies'], function () {
+        Route::get('', [AdminStrategyController::class, 'index'])->name('admin.strategies');
+        Route::get('create', [AdminStrategyController::class, 'add'])->name('admin.strategy.add');
+        Route::post('create', [AdminStrategyController::class, 'create'])->name('admin.strategy.create');
+        Route::get('{id}', [AdminStrategyController::class, 'edit'])->name('admin.strategy.edit');
+        Route::put('{id}', [AdminStrategyController::class, 'update'])->name('admin.strategy.update');
+        Route::delete('{id}', [AdminStrategyController::class, 'delete'])->name('admin.strategy.delete');
     });
 });
 

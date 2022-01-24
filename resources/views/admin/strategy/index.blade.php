@@ -1,0 +1,67 @@
+@section('title', '角色组管理')
+
+<x-app-layout>
+    <div class="my-6 md:my-10">
+        <div class="mb-3 flex justify-between w-full">
+            <x-button type="button" onclick="window.location.href = '{{ route('admin.strategy.create') }}'">创建储存策略</x-button>
+            <form class="h-9.5" action="{{ route('admin.strategies') }}" method="get">
+                <x-input class="text-sm h-full px-2" name="keywords" placeholder="输入关键字回车搜索..." value="{{ request('keywords') }}" />
+            </form>
+        </div>
+
+        <x-table :columns="['ID', '名称', '驱动', '图片数量', '已使用储存', '操作']">
+            @foreach($strategies as $strategy)
+            <tr data-id="{{ $strategy->id }}">
+                <td class="px-6 py-4 whitespace-nowrap">{{ $strategy->id }}</td>
+                <td class="px-6 py-4 whitespace-nowrap name">{{ $strategy->name }}</td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="rounded-md bg-blue-500 text-sm text-white p-1">
+                        {{ \App\Models\Strategy::DRIVERS[$strategy->key] }}
+                    </span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">{{ $strategy->images_count }}</td>
+                <td class="px-6 py-4 whitespace-nowrap">{{ \App\Utils::formatSize($strategy->images_sum_size * 1024) }}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
+                    <a href="{{ route('admin.strategy.edit', ['id' => $strategy->id]) }}" class="text-indigo-600 hover:text-indigo-900">编辑</a>
+                    <a href="javascript:void(0)" data-operate="delete" class="text-red-600 hover:text-red-900">删除</a>
+                </td>
+            </tr>
+            @endforeach
+        </x-table>
+        @if($strategies->isEmpty())
+            <x-no-data message="没有找到任何储存策略"/>
+        @else
+            <div class="mt-4">
+                {{ $strategies->links() }}
+            </div>
+        @endif
+    </div>
+
+    @push('scripts')
+        <script>
+            $('[data-operate="delete"]').click(function () {
+                Swal.fire({
+                    title: `确认删除储存策略【${$(this).closest('tr').find('td.name').text()}】吗?`,
+                    text: "如果某个组下面没有储存策略，该组下面的用户则会默认使用本地储存。",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: '确认删除',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        let id = $(this).closest('tr').data('id');
+                        axios.delete(`/admin/strategies/${id}`).then(response => {
+                            if (response.data.status) {
+                                history.go(0);
+                            } else {
+                                toastr.error(response.data.message);
+                            }
+                        });
+                    }
+                })
+            });
+        </script>
+    @endpush
+
+</x-app-layout>
