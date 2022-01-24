@@ -51,8 +51,8 @@
                             <div class="col-span-3 sm:col-span-2">
                                 <label for="configs[domain]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>访问域名</label>
                                 <div class="mt-1 flex rounded-md shadow-sm">
-                                    <x-input type="text" name="configs[domain]" id="configs[domain]" placeholder="请输入图片访问域名，需要加 http(s)://" />
-                                    <span class="inline-flex items-center px-3 rounded-r-md border border-l-0 border-gray-300 bg-gray-50 text-gray-500 text-sm">/uploads</span>
+                                    <input type="text" name="configs[domain]" id="configs[domain]" class="mt-1 block w-full rounded-l-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0" placeholder="请输入图片访问域名，需要加 http(s)://" />
+                                    <span class="mt-1 inline-flex items-center px-3 rounded-r-md border border-l-0 border-gray-300 bg-gray-50 text-gray-500 text-sm">/uploads</span>
                                 </div>
                             </div>
                         </div>
