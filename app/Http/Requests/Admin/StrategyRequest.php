@@ -14,6 +14,21 @@ class StrategyRequest extends FormRequest
      */
     public function rules()
     {
-        return [];
+        return [
+            'name' => 'required|max:60',
+            'intro' => 'max:2000',
+            'configs.root' => 'max:1000',
+            'configs.domain' => 'required|url',
+        ];
+    }
+
+    public function attributes()
+    {
+        return [
+            'name' => '名称',
+            'intro' => '简介',
+            'configs.root' => '储存路径',
+            'configs.domain' => '访问域名',
+        ];
     }
 }

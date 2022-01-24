@@ -15,4 +15,7 @@ final class KodoOption
 
     /** @var string Bucket */
     const Bucket = 'bucket';
+
+    /** @var string 根目录 */
+    const Root = 'root';
 }

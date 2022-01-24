@@ -1,4 +1,4 @@
-@section('title', '角色组管理')
+@section('title', '储存策略管理')
 
 <x-app-layout>
     <div class="my-6 md:my-10">

@@ -8,7 +8,6 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -56,10 +55,8 @@ class Strategy extends Model
 
     protected static function booted()
     {
-        static::creating(function (self $strategy) {
-            $strategy->configs = collect([
-                LocalOption::Domain => rtrim(env('APP_URL'), '/').'/uploads',
-            ]);
+        static::saving(function (self $strategy) {
+            $strategy->configs['domain'] = rtrim($strategy->configs['domain'], '/').'/uploads';
         });
     }
 
