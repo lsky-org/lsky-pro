@@ -83,4 +83,25 @@ class Utils
         }
         return array_filter($array, $callback, $mode);
     }
+
+    /**
+     * 格式化配置，设置默认配置以及将字符串数字转换为数字
+     *
+     * @param array $defaults 默认配置
+     * @param array $configs 新配置
+     * @return array
+     */
+    public static function parseConfigs(array $defaults, array $configs): array
+    {
+        $array = array_replace_recursive($defaults, Utils::filter($configs));
+        array_walk_recursive($array, function (&$item) {
+            if (ctype_digit($item)) {
+                $item += 0;
+            }
+            if (is_null($item)) {
+                unset($item);
+            }
+        });
+        return $array;
+    }
 }

@@ -21,27 +21,9 @@ class GroupController extends Controller
     public function __construct()
     {
         \Illuminate\Support\Facades\View::share([
-            'default' => collect(config('convention.app.'.ConfigKey::GroupConfigs)),
-            'positions' => [
-                'top-left' => '左上角',
-                'top' => '上中',
-                'top-right' => '右上角',
-                'left' => '左边',
-                'center' => '中间',
-                'right' => '右边',
-                'bottom-left' => '左下角',
-                'bottom' => '下中',
-                'bottom-right' => '右下角',
-                'tiled' => '平铺',
-            ],
-            'scanAliyunScenes' => [
-                'porn' => '智能鉴黄',
-                'terrorism' => '暴恐涉政',
-                'ad' => '图文违规',
-                'qrcode' => '二维码',
-                'live' => '不良场景',
-                'logo' => 'Logo',
-            ]
+            'default' => Group::getDefaultConfigs(),
+            'positions' => Group::POSITIONS,
+            'scanAliyunScenes' => Group::SCENES,
         ]);
     }
 
@@ -83,9 +65,12 @@ class GroupController extends Controller
     public function update(GroupRequest $request): Response
     {
         if ($request->route('id') == 0) {
-            Config::query()->where('name', ConfigKey::GroupConfigs)->update([
-                'value' => collect(Group::parseConfigs($request->validated('configs'))),
-            ]);
+            $configs = Utils::parseConfigs(Group::getDefaultConfigs()->toArray(), $request->validated('configs'));
+            if (! Config::query()->where('name', ConfigKey::GroupConfigs)->update([
+                'value' => collect($configs)->toJson(),
+            ])) {
+                return $this->error('保存失败');
+            }
             // 删除配置缓存
             Cache::forget('configs');
         } else {

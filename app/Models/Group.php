@@ -4,7 +4,9 @@ namespace App\Models;
 
 use App\Enums\ConfigKey;
 use App\Utils;
+use Barryvdh\Debugbar\Facades\Debugbar;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -36,6 +38,45 @@ class Group extends Model
         'configs' => 'collection'
     ];
 
+    const POSITIONS = [
+        'top-left' => '左上角',
+        'top' => '上中',
+        'top-right' => '右上角',
+        'left' => '左边',
+        'center' => '中间',
+        'right' => '右边',
+        'bottom-left' => '左下角',
+        'bottom' => '下中',
+        'bottom-right' => '右下角',
+        'tiled' => '平铺',
+    ];
+
+    const SCENES = [
+        'porn' => '智能鉴黄',
+        'terrorism' => '暴恐涉政',
+        'ad' => '图文违规',
+        'qrcode' => '二维码',
+        'live' => '不良场景',
+        'logo' => 'Logo',
+    ];
+
+    protected static function booted()
+    {
+        static::saving(function (self $group) {
+            $group->configs = Utils::parseConfigs(self::getDefaultConfigs()->toArray(), $group->configs->toArray());
+        });
+    }
+
+    /**
+     * 获取组默认配置
+     *
+     * @return Collection
+     */
+    public static function getDefaultConfigs(): Collection
+    {
+        return collect(config('convention.app.'.ConfigKey::GroupConfigs));
+    }
+
     /**
      * 获取访客组默认配置
      *
@@ -44,35 +85,6 @@ class Group extends Model
     public static function getGuestConfigs(): Collection
     {
         return Utils::config(ConfigKey::GroupConfigs);
-    }
-
-    /**
-     * 格式化配置，设置默认配置以及将字符串数字转换为数字
-     *
-     * @param $configs
-     * @return array
-     */
-    public static function parseConfigs($configs): array
-    {
-        if ($configs instanceof Collection) {
-            $configs = $configs->toArray();
-        }
-
-        $array = array_replace_recursive(config('convention.app.'.ConfigKey::GroupConfigs), Utils::filter($configs));
-        array_walk_recursive($array, function (&$item) {
-            if (ctype_digit($item)) {
-                $item += 0;
-            }
-            if (is_null($item)) {
-                unset($item);
-            }
-        });
-        return $array;
-    }
-
-    public function setConfigsAttribute($value)
-    {
-        $this->attributes['configs'] = json_encode(self::parseConfigs($value), JSON_UNESCAPED_UNICODE);
     }
 
     public function users(): HasMany
