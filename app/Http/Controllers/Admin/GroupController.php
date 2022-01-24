@@ -23,7 +23,7 @@ class GroupController extends Controller
         \Illuminate\Support\Facades\View::share([
             'default' => Group::getDefaultConfigs(),
             'positions' => Group::POSITIONS,
-            'scanAliyunScenes' => Group::SCENES,
+            'scenes' => Group::SCENES,
         ]);
     }
 

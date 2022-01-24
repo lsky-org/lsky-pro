@@ -128,7 +128,7 @@
                                 </div>
                                 <div class="col-span-6 sm:col-span-3 mb-4">
                                     <x-fieldset title="审核场景">
-                                        @foreach($scanAliyunScenes as $key => $scene)
+                                        @foreach($scenes as $key => $scene)
                                             <x-fieldset-checkbox id="configs[scan_configs][drivers][aliyun][scenes][]_{{ $key }}" name="configs[scan_configs][drivers][aliyun][scenes][]" value="{{ $key }}">{{ $scene }}</x-fieldset-checkbox>
                                         @endforeach
                                     </x-fieldset>
