@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * @property int $id
- * @property string $key
+ * @property int $key
  * @property string $name
  * @property string $intro
  * @property \Illuminate\Support\Collection $configs
@@ -57,7 +57,13 @@ class Strategy extends Model
     protected static function booted()
     {
         static::saving(function (self $strategy) {
-            $strategy->configs['domain'] = rtrim($strategy->configs['domain'], '/').'/uploads';
+            $strategy->configs['root'] = $strategy->configs->get('root', '');
+            $strategy->configs['domain'] = rtrim($strategy->configs->get('domain', env('APP_URL')), '/').'/uploads';
+
+            // 本地储存，创建符号链接
+            if ($strategy->key === StrategyKey::Local) {
+                // TODO
+            }
         });
     }
 
@@ -70,7 +76,7 @@ class Strategy extends Model
 
     public function groups(): BelongsToMany
     {
-        return $this->belongsToMany(Group::class, 'group_strategy', 'group_id', 'strategy_id');
+        return $this->belongsToMany(Group::class, 'group_strategy', 'strategy_id', 'group_id');
     }
 
     public function images(): HasMany

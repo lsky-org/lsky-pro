@@ -7,6 +7,7 @@ use App\Http\Requests\Admin\StrategyRequest;
 use App\Models\Group;
 use App\Models\Strategy;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
@@ -29,6 +30,7 @@ class StrategyController extends Controller
 
     public function edit(Request $request): View
     {
+        /** @var Strategy $strategy */
         $strategy = Strategy::query()->findOrFail($request->route('id'));
         return view('admin.strategy.edit', compact('strategy'));
     }
@@ -52,12 +54,25 @@ class StrategyController extends Controller
 
     public function update(StrategyRequest $request): Response
     {
-        /** @var Strategy $group */
-        $group = Strategy::query()->findOrFail($request->route('id'));
-        $group->fill($request->validated());
-        if (!$group->save()) {
-            return $this->error('保存失败');
-        }
+        $validated = $request->validated();
+        /** @var Strategy $strategy */
+        $strategy = Strategy::query()->findOrFail($request->route('id'));
+        $strategy->fill($request->validated());
+        DB::transaction(function () use ($strategy, $validated) {
+            $strategy->save();
+            $strategy->groups->each(function (Group $group) {
+                /** @var Pivot $pivot */
+                $pivot = $group->pivot;
+                $pivot->delete();
+            });
+            DB::table('group_strategy')->insert(
+                Group::query()
+                    ->whereIn('id', $validated['groups'] ?: [])
+                    ->pluck('id')
+                    ->transform(fn ($id) => ['group_id' => $id, 'strategy_id' => $strategy->id])
+                    ->toArray()
+            );
+        });
         return $this->success('保存成功');
     }
 
