@@ -15,8 +15,10 @@ class StrategyRequest extends FormRequest
     public function rules()
     {
         return [
+            'groups' => 'array',
             'name' => 'required|max:60',
             'intro' => 'max:2000',
+            'key' => 'required|integer',
             'configs.root' => 'max:1000',
             'configs.domain' => 'required|url',
         ];

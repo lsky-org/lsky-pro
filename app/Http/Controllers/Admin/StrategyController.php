@@ -4,10 +4,12 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StrategyRequest;
+use App\Models\Group;
 use App\Models\Strategy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 class StrategyController extends Controller
@@ -33,9 +35,18 @@ class StrategyController extends Controller
 
     public function create(StrategyRequest $request): Response
     {
-        $group = new Strategy();
-        $group->fill($request->validated());
-        $group->save();
+        $validated = $request->validated();
+        $strategy = new Strategy($validated);
+        DB::transaction(function () use ($strategy, $validated) {
+            $strategy->save();
+            DB::table('group_strategy')->insert(
+                Group::query()
+                ->whereIn('id', $validated['groups'] ?: [])
+                ->pluck('id')
+                ->transform(fn ($id) => ['group_id' => $id, 'strategy_id' => $strategy->id])
+                ->toArray()
+            );
+        });
         return $this->success('创建成功');
     }
 

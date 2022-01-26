@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\Strategy\LocalOption;
 use App\Enums\StrategyKey;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -58,6 +59,13 @@ class Strategy extends Model
         static::saving(function (self $strategy) {
             $strategy->configs['domain'] = rtrim($strategy->configs['domain'], '/').'/uploads';
         });
+    }
+
+    public function intro(): Attribute
+    {
+        return new Attribute(
+            set: fn ($value) => $value ?: '',
+        );
     }
 
     public function groups(): BelongsToMany

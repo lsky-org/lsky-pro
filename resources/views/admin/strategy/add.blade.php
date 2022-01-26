@@ -10,12 +10,10 @@
                         <div class="col-span-6">
                             <label class="block">
                                 <span class="text-gray-700">选择角色组</span>
-                                <x-select class="block w-full mt-1 form-multiselect" multiple>
-                                    <option>Option 1</option>
-                                    <option>Option 2</option>
-                                    <option>Option 3</option>
-                                    <option>Option 4</option>
-                                    <option>Option 5</option>
+                                <x-select name="groups[]" class="block w-full mt-1 form-multiselect" multiple>
+                                    @foreach(\App\Models\Group::query()->get() as $group)
+                                    <option value="{{ $group->id }}">{{ $group->name }}</option>
+                                    @endforeach
                                 </x-select>
                             </label>
                         </div>
