@@ -28,6 +28,6 @@ final class StrategyKey
     /** @var int Ftp */
     const Ftp = 8;
 
-    /** @var int WebDev */
+    /** @var int WebDav */
     const Webdav = 9;
 }
