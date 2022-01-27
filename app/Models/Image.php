@@ -183,7 +183,10 @@ class Image extends Model
     {
         return $this->belongsTo(Strategy::class, 'strategy_id', 'id')->withDefault(function (Strategy $strategy) {
             $strategy->key = StrategyKey::Local;
-            $strategy->configs = collect([LocalOption::Root => config('filesystems.disks.uploads.root')]);
+            $strategy->configs = collect([
+                LocalOption::Root => config('filesystems.disks.uploads.root'),
+                LocalOption::Domain => config('filesystems.disks.uploads.url'),
+            ]);
         });
     }
 
