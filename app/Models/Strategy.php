@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Filesystem\Filesystem;
 
 /**
  * @property int $id
@@ -58,11 +59,14 @@ class Strategy extends Model
     {
         static::saving(function (self $strategy) {
             $strategy->configs['root'] = $strategy->configs->get('root', '');
-            $strategy->configs['domain'] = rtrim($strategy->configs->get('domain', env('APP_URL')), '/').'/uploads';
+            $strategy->configs['symlink'] = $strategy->configs->get('symlink', '');
+            $strategy->configs['domain'] = rtrim($strategy->configs->get('domain', env('APP_URL')), '/').'/'.$strategy->configs['symlink'];
 
-            // 本地储存，创建符号链接
-            if ($strategy->key === StrategyKey::Local) {
-                // TODO
+            // 本地储存，创建/修改符号链接
+            if ($strategy->key == StrategyKey::Local && $strategy->configs['root']) {
+                // TODO 删除已存在的符号链接
+
+                (new Filesystem())->link($strategy->configs['root'], public_path($strategy->configs['symlink']));
             }
         });
     }

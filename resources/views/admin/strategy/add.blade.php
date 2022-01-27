@@ -41,17 +41,21 @@
                             <div class="col-span-6 sm:col-span-3 mb-4">
                                 <label for="configs[root]" class="block text-sm font-medium text-gray-700">储存路径</label>
                                 <x-input type="text" name="configs[root]" id="configs[root]" autocomplete="text" placeholder="图片保存位置，可为空" />
-                                <small class="text-yellow-500"><i class="fas fa-exclamation"></i> 储存路径设置错误或没有读写权限可能会导致图片保存失败</small>
+                                <small class="text-orange-500"><i class="fas fa-exclamation"></i> 储存路径设置错误或没有读写权限可能会导致图片保存失败。如果储存路径与其他策略相同，那么请注意使用角色组的路径命名规则、文件命名规则来区分不同文件夹，否则可能会因为名称重复而导致图片物理文件被覆盖。</small>
                             </div>
                         </div>
 
                         <div class="col-span-6 mb-4 hidden" data-driver="{{ \App\Enums\StrategyKey::Local }}">
-                            <div class="col-span-3 sm:col-span-2">
+                            <div class="col-span-3 sm:col-span-2 mb-4">
+                                <label for="configs[symlink]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>符号链接</label>
+                                <x-input type="text" name="configs[symlink]" id="configs[symlink]" class="mt-1 block w-full rounded-l-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" placeholder="请输入符号链接名称" />
+                                <small class="text-orange-500"><i class="fas fa-exclamation"></i>
+                                    符号链接相对 public 目录，假如填写的符号链接名称为 uploads，那么上传图片后返回的链接类似：http://domain.com/<span class="text-red-500">uploads</span>/20210104/abcdefg.jpg，符号链接不能与其他策略重复。
+                                </small>
+                            </div>
+                            <div class="col-span-3 sm:col-span-2 mb-4">
                                 <label for="configs[domain]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>访问域名</label>
-                                <div class="mt-1 flex rounded-md shadow-sm">
-                                    <input type="text" name="configs[domain]" id="configs[domain]" class="mt-1 block w-full rounded-l-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" placeholder="请输入图片访问域名，需要加 http(s)://" />
-                                    <span class="mt-1 inline-flex items-center px-3 rounded-r-md border border-l-0 border-gray-300 bg-gray-50 text-gray-500 text-sm">/uploads</span>
-                                </div>
+                                <x-input type="text" name="configs[domain]" id="configs[domain]" class="mt-1 block w-full rounded-l-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" placeholder="请输入图片访问域名，需要加 http(s)://" />
                             </div>
                         </div>
                     </div>
