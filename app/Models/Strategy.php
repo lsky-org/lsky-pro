@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Enums\Strategy\LocalOption;
 use App\Enums\StrategyKey;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -59,15 +58,20 @@ class Strategy extends Model
     {
         static::saving(function (self $strategy) {
             $strategy->configs['root'] = $strategy->configs->get('root', '');
-            $strategy->configs['symlink'] = $strategy->configs->get('symlink', '');
-            $strategy->configs['domain'] = rtrim($strategy->configs->get('domain', env('APP_URL')), '/').'/'.$strategy->configs['symlink'];
+            $strategy->configs['domain'] = rtrim($strategy->configs->get('domain', env('APP_URL')), '/');
 
-            // 本地储存，创建/修改符号链接
-            if ($strategy->key == StrategyKey::Local && $strategy->configs['root']) {
-                // TODO 删除已存在的符号链接
-
-                (new Filesystem())->link($strategy->configs['root'], public_path($strategy->configs['symlink']));
-            }
+            // TODO 本地储存，创建/修改符号链接
+            /*if ($strategy->key == StrategyKey::Local && $strategy->configs['root']) {
+                $link = ($strategy->getOriginal('configs')['symlink'] ?? '');
+                if ($link && $link !== $strategy->configs['symlink']) {
+                    // 删除已存在的符号链接
+                    @unlink($link);
+                }
+                $link = public_path($strategy->configs['symlink']);
+                if (! realpath($link)) {
+                    (new Filesystem())->link($strategy->configs['root'], $link);
+                }
+            }*/
         });
     }
 
