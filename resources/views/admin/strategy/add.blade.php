@@ -49,9 +49,6 @@
                             <div class="col-span-3 sm:col-span-2 mb-4">
                                 <label for="configs[domain]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>访问域名</label>
                                 <x-input type="text" name="configs[domain]" id="configs[domain]" class="mt-1 block w-full rounded-l-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" placeholder="请输入图片访问域名，需要加 http(s)://" />
-                                <small class="text-orange-500"><i class="fas fa-exclamation"></i>
-                                    注意：本地储存访问域名必须有一个后缀，例如 https://www.lsky.pro/<span class="text-red-600">uploads</span>/20220104/1.jpg 中的 uploads 就是后缀，系统会根据这个后缀生成符号链接。 符号链接相对 public 目录，不能与其他策略重复。
-                                </small>
                             </div>
                         </div>
                     </div>

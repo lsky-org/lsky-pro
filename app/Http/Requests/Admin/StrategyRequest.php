@@ -21,8 +21,6 @@ class StrategyRequest extends FormRequest
             'key' => 'required|integer',
             'configs.root' => 'max:1000',
             'configs.domain' => 'required|url',
-
-            'configs.symlink' => 'required_if:key,1',
         ];
     }
 
@@ -34,15 +32,6 @@ class StrategyRequest extends FormRequest
             'key' => '策略',
             'configs.root' => '储存路径',
             'configs.domain' => '访问域名',
-
-            'configs.symlink' => '符号链接'
-        ];
-    }
-
-    public function messages()
-    {
-        return [
-            'configs.symlink.required_if' => '请输入符号链接',
         ];
     }
 }
