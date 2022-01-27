@@ -20,7 +20,7 @@ class StrategyRequest extends FormRequest
             'intro' => 'max:2000',
             'key' => 'required|integer',
             'configs.root' => 'max:1000',
-            'configs.domain' => 'required|url',
+            'configs.url' => 'required|url',
         ];
     }
 
@@ -31,7 +31,7 @@ class StrategyRequest extends FormRequest
             'intro' => '简介',
             'key' => '策略',
             'configs.root' => '储存路径',
-            'configs.domain' => '访问域名',
+            'configs.url' => '访问域名',
         ];
     }
 }

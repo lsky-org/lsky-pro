@@ -132,7 +132,7 @@ class Image extends Model
             if ($this->group->configs->get(GroupConfigKey::IsEnableOriginalProtection)) {
                 return asset("{$this->key}.{$this->extension}");
             } else {
-                return rtrim($this->strategy->configs->get('domain'), '/').'/'.$this->pathname;
+                return rtrim($this->strategy->configs->get('url'), '/').'/'.$this->pathname;
             }
         });
     }
@@ -183,10 +183,7 @@ class Image extends Model
     {
         return $this->belongsTo(Strategy::class, 'strategy_id', 'id')->withDefault(function (Strategy $strategy) {
             $strategy->key = StrategyKey::Local;
-            $strategy->configs = collect([
-                LocalOption::Root => config('filesystems.disks.uploads.root'),
-                LocalOption::Domain => config('filesystems.disks.uploads.url'),
-            ]);
+            $strategy->configs = collect(config('filesystems.disks.uploads'));
         });
     }
 

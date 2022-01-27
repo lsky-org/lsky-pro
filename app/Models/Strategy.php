@@ -57,7 +57,7 @@ class Strategy extends Model
     {
         static::saving(function (self $strategy) {
             $strategy->configs['root'] = $strategy->configs->get('root', '');
-            $strategy->configs['domain'] = rtrim($strategy->configs->get('domain', env('APP_URL')), '/');
+            $strategy->configs['url'] = rtrim($strategy->configs->get('url', env('APP_URL')), '/');
             // TODO 本地储存，创建/修改符号链接
         });
     }

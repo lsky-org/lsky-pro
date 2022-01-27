@@ -5,7 +5,7 @@ namespace App\Enums\Strategy;
 final class KodoOption
 {
     /** @var string 访问域名 */
-    const Domain = 'domain';
+    const Url = 'url';
 
     /** @var string AccessKey */
     const AccessKey = 'access_key';
