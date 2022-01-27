@@ -125,9 +125,6 @@ class Image extends Model
     public function url(): Attribute
     {
         return new Attribute(function () {
-            if (!$this->strategy) {
-                return Storage::disk('uploads')->url($this->pathname);
-            }
             // 是否启用原图保护功能
             if ($this->group->configs->get(GroupConfigKey::IsEnableOriginalProtection)) {
                 return asset("{$this->key}.{$this->extension}");
