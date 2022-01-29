@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Filesystem\Filesystem;
 
 /**
  * @property int $id
@@ -58,8 +59,15 @@ class Strategy extends Model
         static::saving(function (self $strategy) {
             $strategy->configs['root'] = $strategy->configs->get('root', '');
             $strategy->configs['url'] = rtrim($strategy->configs->get('url', env('APP_URL')), '/');
-            // TODO 本地储存，创建/修改符号链接
+            $symlink = Strategy::getRootPath($strategy->configs['url']);
+            (new Filesystem())->link($strategy->configs['root'], $symlink);
         });
+    }
+
+    public static function getRootPath($url): string
+    {
+        $path = (parse_url($url)['path'] ?? '');
+        return current(array_filter(explode('/', $path)));
     }
 
     public function intro(): Attribute
