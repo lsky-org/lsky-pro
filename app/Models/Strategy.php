@@ -57,10 +57,18 @@ class Strategy extends Model
     protected static function booted()
     {
         static::saving(function (self $strategy) {
-            $strategy->configs['root'] = $strategy->configs->get('root', '');
-            $strategy->configs['url'] = rtrim($strategy->configs->get('url', env('APP_URL')), '/');
-            $symlink = Strategy::getRootPath($strategy->configs['url']);
-            (new Filesystem())->link($strategy->configs['root'], $symlink);
+            $strategy->configs['root'] = $strategy->configs->get('root');
+            $strategy->configs['url'] = rtrim($strategy->configs->get('url'), '/');
+            if ($strategy->key == StrategyKey::Local) {
+                $symlink = self::getRootPath($strategy->configs['url']);
+                $target = $strategy->configs['root'] ?: config('filesystems.disks.uploads.root');
+                (new Filesystem())->link($target, $symlink);
+                // 是否需要移除旧的符号链接
+                $oldSymlink = self::getRootPath($strategy->getOriginal('configs')['url']);
+                if ($oldSymlink != $symlink) {
+                    @unlink($oldSymlink);
+                }
+            }
         });
     }
 

@@ -21,11 +21,13 @@ class StrategyRequest extends FormRequest
             'intro' => 'max:2000',
             'key' => 'required|integer',
             'configs.root' => ['max:1000', function ($attribute, $value, $fail) {
-                if (! is_dir($value)) {
-                    return $fail('储存路径不存在');
-                }
-                if (! is_writeable($value)) {
-                    return $fail('储存路径没有写入权限');
+                if ($value) {
+                    if (! is_dir($value)) {
+                        return $fail('储存路径不存在');
+                    }
+                    if (! is_writeable($value)) {
+                        return $fail('储存路径没有写入权限');
+                    }
                 }
             }],
             'configs.url' => ['required', 'url', function ($attribute, $value, $fail) {
