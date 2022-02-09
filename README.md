@@ -1,41 +1,64 @@
-<img align="right" width="100" src="https://raw.githubusercontent.com/wisp-x/lsky-pro/82988ebe2edd32264d609b26bf9132b3dce7c39e/public/static/app/images/icon.png" alt="Lsky Pro Logo"/>
+<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
 
-<h1 align="left"><a href="https://www.lsky.pro">Lsky Pro</a></h1>
+<p align="center">
+<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+</p>
 
-☁ Your photo album on the cloud.
+## About Laravel
 
-[![PHP](https://img.shields.io/badge/PHP->=8.0-orange.svg)](http://php.net)
-[![Release](https://img.shields.io/github/v/release/wisp-x/lsky-pro)](https://github.com/wisp-x/lsky-pro/releases)
-[![Issues](https://img.shields.io/github/issues/wisp-x/lsky-pro)](https://github.com/wisp-x/lsky-pro/issues)
-[![Code size](https://img.shields.io/github/languages/code-size/wisp-x/lsky-pro?color=blueviolet)](https://github.com/wisp-x/lsky-pro)
-[![Repo size](https://img.shields.io/github/repo-size/wisp-x/lsky-pro?color=eb56fd)](https://github.com/wisp-x/lsky-pro)
-[![Last commit](https://img.shields.io/github/last-commit/wisp-x/lsky-pro/dev)](https://github.com/wisp-x/lsky-pro/commits/dev)
-[![License](https://img.shields.io/badge/license-GPL_V3.0-yellowgreen.svg)](https://github.com/wisp-x/lsky-pro/blob/master/LICENSE)
+Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
 
-[文档](https://www.kancloud.cn/wispx/lsky-pro) &nbsp;
-[演示](https://pic.iqy.ink) &nbsp;
-[Telegram 群组](https://t.me/lsky_pro)
+- [Simple, fast routing engine](https://laravel.com/docs/routing).
+- [Powerful dependency injection container](https://laravel.com/docs/container).
+- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
+- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
+- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
+- [Robust background job processing](https://laravel.com/docs/queues).
+- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
 
-> ⚠️ 当前分支为 2.0 版本开发分支，[查看 2.0 版本详细说明](https://github.com/wisp-x/lsky-pro/issues/281)  
-> 历史版本请点击[这里](https://github.com/wisp-x/lsky-pro/releases) ，发现 bug 可发送邮件至邮箱：i@wispx.cn，或提交 [issues](https://github.com/wisp-x/lsky-pro/issues)
+Laravel is accessible, powerful, and provides tools required for large, robust applications.
 
-### 📧 联系我
-- Email: i@wispx.cn
+## Learning Laravel
 
-### 💰 捐赠
-Lsky Pro 的开发和更新等，都是作者在空余时间独立开发，并免费开源使用，如果您认可我的作品，并且觉得对你有所帮助我愿意接受来自各方面的捐赠😃。
-<table width="100%">
-    <tr>
-        <th>支付宝</th>
-        <th>微信</th>
-    </tr>
-    <tr>
-        <td><img src="https://raw.githubusercontent.com/wisp-x/lsky-pro/82988ebe2edd32264d609b26bf9132b3dce7c39e/public/static/app/images/demo/alipay.png"></td>
-        <td><img src="https://raw.githubusercontent.com/wisp-x/lsky-pro/82988ebe2edd32264d609b26bf9132b3dce7c39e/public/static/app/images/demo/wechat.jpeg"></td>
-    </tr>
-</table>
+Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
 
-### 📃 开源许可
-[GPL 3.0](https://opensource.org/licenses/GPL-3.0)
+If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
 
-Copyright (c) 2018-present Lsky Pro.
+## Laravel Sponsors
+
+We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+
+### Premium Partners
+
+- **[Vehikl](https://vehikl.com/)**
+- **[Tighten Co.](https://tighten.co)**
+- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
+- **[64 Robots](https://64robots.com)**
+- **[Cubet Techno Labs](https://cubettech.com)**
+- **[Cyber-Duck](https://cyber-duck.co.uk)**
+- **[Many](https://www.many.co.uk)**
+- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
+- **[DevSquad](https://devsquad.com)**
+- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
+- **[OP.GG](https://op.gg)**
+- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
+- **[Lendio](https://lendio.com)**
+
+## Contributing
+
+Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+
+## Code of Conduct
+
+In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+
+## Security Vulnerabilities
+
+If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+
+## License
+
+The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).

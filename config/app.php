@@ -69,7 +69,7 @@ return [
     |
     */
 
-    'timezone' => 'PRC',
+    'timezone' => 'UTC',
 
     /*
     |--------------------------------------------------------------------------
@@ -82,7 +82,7 @@ return [
     |
     */
 
-    'locale' => 'zh_CN',
+    'locale' => 'en',
 
     /*
     |--------------------------------------------------------------------------
@@ -190,8 +190,8 @@ return [
     |
     */
 
-    'aliases' => array_merge(Facade::defaultAliases(), [
+    'aliases' => Facade::defaultAliases()->merge([
         // ...
-    ]),
+    ])->toArray(),
 
 ];
