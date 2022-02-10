@@ -52,7 +52,7 @@
                     <x-slot name="icon"><i class="fas fa-users text-blue-500"></i></x-slot>
                     <x-slot name="name">角色组</x-slot>
                 </x-nav-link>
-                <x-nav-link :active="request()->is('admin/users*')">
+                <x-nav-link :href="route('admin.users')" :active="request()->is('admin/users*')">
                     <x-slot name="icon"><i class="fas fa-users-cog text-blue-500"></i></x-slot>
                     <x-slot name="name">用户管理</x-slot>
                 </x-nav-link>

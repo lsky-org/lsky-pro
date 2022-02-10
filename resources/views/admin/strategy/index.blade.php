@@ -2,12 +2,12 @@
 
 <x-app-layout>
     <div class="my-6 md:my-10">
-        <div class="mb-3 flex justify-between w-full">
-            <x-button type="button" onclick="window.location.href = '{{ route('admin.strategy.create') }}'">创建储存策略</x-button>
-            <form class="h-9.5" action="{{ route('admin.strategies') }}" method="get">
-                <x-input class="text-sm h-full px-2" name="keywords" placeholder="输入关键字回车搜索..." value="{{ request('keywords') }}" />
-            </form>
-        </div>
+        <form action="{{ route('admin.strategies') }}" method="get">
+            <div class="mb-3 flex justify-between w-full">
+                <x-button type="button" onclick="window.location.href = '{{ route('admin.strategy.create') }}'">创建储存策略</x-button>
+                <input class="px-2 text-sm rounded-md bg-white border-transparent focus:border-gray-500 focus:bg-white focus:ring-0" name="keywords" placeholder="输入名称回车搜索..." value="{{ request('keywords') }}" />
+            </div>
+        </form>
 
         <x-table :columns="['ID', '名称', '驱动', '图片数量', '已使用储存', '操作']">
             @foreach($strategies as $strategy)

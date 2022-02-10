@@ -20,6 +20,7 @@ use App\Http\Controllers\User\ProfileController;
 
 use App\Http\Controllers\Admin\GroupController as AdminGroupController;
 use App\Http\Controllers\Admin\StrategyController as AdminStrategyController;
+use App\Http\Controllers\Admin\UserController as AdminUserController;
 
 Route::get('/', fn () => view('welcome'))->name('/');
 Route::post('upload', [Controller::class, 'upload']);
@@ -44,6 +45,13 @@ Route::group(['middleware' => ['auth']], function () {
 });
 
 Route::group(['prefix' => 'admin', 'middleware' => ['auth.admin']], function () {
+    Route::group(['prefix' => 'users'], function () {
+        Route::get('', [AdminUserController::class, 'index'])->name('admin.users');
+        Route::get('{id}', [AdminUserController::class, 'edit'])->name('admin.user.edit');
+        Route::put('{id}', [AdminUserController::class, 'update'])->name('admin.user.update');
+        Route::delete('{id}', [AdminUserController::class, 'delete'])->name('admin.user.delete');
+    });
+
     Route::group(['prefix' => 'groups'], function () {
         Route::get('', [AdminGroupController::class, 'index'])->name('admin.groups');
         Route::get('create', [AdminGroupController::class, 'add'])->name('admin.group.add');
