@@ -16,7 +16,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\User\ImageController;
 use App\Http\Controllers\User\AlbumController;
-use App\Http\Controllers\User\ProfileController;
 
 use App\Http\Controllers\Admin\GroupController as AdminGroupController;
 use App\Http\Controllers\Admin\StrategyController as AdminStrategyController;
@@ -26,6 +25,10 @@ Route::get('/', fn () => view('welcome'))->name('/');
 Route::post('upload', [Controller::class, 'upload']);
 Route::group(['middleware' => ['auth']], function () {
     Route::get('dashboard', [UserController::class, 'dashboard'])->name('dashboard');
+    Route::get('gallery', [UserController::class, 'gallery'])->name('gallery');
+    Route::get('settings', [UserController::class, 'settings'])->name('settings');
+    Route::put('settings', [UserController::class, 'update'])->name('settings.update');
+
     Route::get('upload', fn () => view('user.upload'))->name('upload');
     Route::get('images', [ImageController::class, 'index'])->name('images');
     Route::group(['prefix' => 'user'], function () {
@@ -40,8 +43,6 @@ Route::group(['middleware' => ['auth']], function () {
         Route::put('albums/{id}', [AlbumController::class, 'update'])->name('user.album.update');
         Route::delete('albums/{id}', [AlbumController::class, 'delete'])->name('user.album.delete');
     });
-    Route::get('settings', [ProfileController::class, 'settings'])->name('settings');
-    Route::put('settings', [ProfileController::class, 'update'])->name('settings.update');
 });
 
 Route::group(['prefix' => 'admin', 'middleware' => ['auth.admin']], function () {

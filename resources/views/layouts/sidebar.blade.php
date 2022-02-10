@@ -33,7 +33,7 @@
             </div>
             <div class="flex flex-col space-y-2 mb-5">
                 <p class="text-gray-400 text-sm mx-4">公共</p>
-                <x-nav-link :active="request()->routeIs('gallery')">
+                <x-nav-link :href="route('gallery')" :active="request()->routeIs('gallery')">
                     <x-slot name="icon"><i class="fas fa-chalkboard text-blue-500"></i></x-slot>
                     <x-slot name="name">画廊</x-slot>
                 </x-nav-link>
