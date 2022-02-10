@@ -50,41 +50,17 @@
                         </div>
 
                         <div class="col-span-6">
-                            <fieldset>
-                                <div>
-                                    <legend class="text-base font-medium text-gray-900">是否自动清除预览</legend>
-                                    <p class="text-sm text-gray-500">设置上传时，文件上传完成以后是否自动清除预览图片</p>
-                                </div>
-                                <div class="mt-4 space-x-6 flex items-center">
-                                    <div class="flex items-center">
-                                        <input type="radio" id="is_auto_clear_preview_yes" name="configs[is_auto_clear_preview]" value="1" {{ Auth::user()->configs->get(\App\Enums\UserConfigKey::IsAutoClearPreview) ? 'checked' : '' }} />
-                                        <label for="is_auto_clear_preview_yes" class="ml-3 block text-sm font-medium text-gray-700">是</label>
-                                    </div>
-                                    <div class="flex items-center">
-                                        <input type="radio" id="is_auto_clear_preview_no" name="configs[is_auto_clear_preview]" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300" value="0" {{ ! Auth::user()->configs->get(\App\Enums\UserConfigKey::IsAutoClearPreview) ? 'checked' : '' }} />
-                                        <label for="is_auto_clear_preview_no" class="ml-3 block text-sm font-medium text-gray-700">否</label>
-                                    </div>
-                                </div>
-                            </fieldset>
+                            <x-fieldset title="是否自动清除预览" faq="设置上传时，文件上传完成以后是否自动清除预览图片">
+                                <x-fieldset-radio id="is_auto_clear_preview_yes" name="configs[is_auto_clear_preview]" value="1" :checked="Auth::user()->configs->get(\App\Enums\UserConfigKey::IsAutoClearPreview)">是</x-fieldset-radio>
+                                <x-fieldset-radio id="is_auto_clear_preview_no" name="configs[is_auto_clear_preview]" value="0" :checked="! Auth::user()->configs->get(\App\Enums\UserConfigKey::IsAutoClearPreview)">否</x-fieldset-radio>
+                            </x-fieldset>
                         </div>
 
                         <div class="col-span-6">
-                            <fieldset>
-                                <div>
-                                    <legend class="text-base font-medium text-gray-900">图片默认权限</legend>
-                                    <p class="text-sm text-gray-500">设置上传的图片默认的权限(公开还是私有，公开的图片将会出现在画廊中，你也可以通过图片管理单独设置权限)</p>
-                                </div>
-                                <div class="mt-4 space-x-6 flex items-center">
-                                    <div class="flex items-center">
-                                        <input id="private" name="configs[default_permission]" type="radio" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300" value="{{ \App\Enums\ImagePermission::Private }}" {{ Auth::user()->configs->get(\App\Enums\UserConfigKey::DefaultPermission) == \App\Enums\ImagePermission::Private ? 'checked' : '' }} />
-                                        <label for="private" class="ml-3 block text-sm font-medium text-gray-700">私有</label>
-                                    </div>
-                                    <div class="flex items-center">
-                                        <input id="public" name="configs[default_permission]" type="radio" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300" value="{{ \App\Enums\ImagePermission::Public }}" {{ Auth::user()->configs->get(\App\Enums\UserConfigKey::DefaultPermission) == \App\Enums\ImagePermission::Public ? 'checked' : '' }} />
-                                        <label for="public" class="ml-3 block text-sm font-medium text-gray-700">公开</label>
-                                    </div>
-                                </div>
-                            </fieldset>
+                            <x-fieldset title="图片默认权限" faq="设置上传的图片默认的权限(公开还是私有，公开的图片将会出现在画廊中，你也可以通过图片管理单独设置权限)">
+                                <x-fieldset-radio id="private" name="configs[default_permission]" value="{{ \App\Enums\ImagePermission::Private }}" :checked="Auth::user()->configs->get(\App\Enums\UserConfigKey::DefaultPermission) == \App\Enums\ImagePermission::Private">私有</x-fieldset-radio>
+                                <x-fieldset-radio id="public" name="configs[default_permission]" value="{{ \App\Enums\ImagePermission::Public }}" :checked="Auth::user()->configs->get(\App\Enums\UserConfigKey::DefaultPermission) == \App\Enums\ImagePermission::Public">公开</x-fieldset-radio>
+                            </x-fieldset>
                         </div>
                     </div>
                 </div>
