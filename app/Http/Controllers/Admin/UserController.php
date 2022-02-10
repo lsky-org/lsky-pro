@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\UserRequest;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 class UserController extends Controller
@@ -20,5 +23,35 @@ class UserController extends Controller
         })->with('group')->withSum('images', 'size')->latest()->paginate();
         $statuses = [-1 => '全部', 1 => '正常', 0 => '冻结'];
         return view('admin.user.index', compact('users', 'statuses'));
+    }
+
+    public function edit(Request $request): View
+    {
+        $user = User::query()->findOrFail($request->route('id'));
+        return view('admin.user.edit', compact('user'));
+    }
+
+    public function update(UserRequest $request): Response
+    {
+        /** @var User $user */
+        $user = User::query()->findOrFail($request->route('id'));
+        $user->fill($request->validated());
+        if (!$user->save()) {
+            return $this->error('保存失败');
+        }
+        return $this->success('保存成功');
+    }
+
+    public function delete(Request $request): Response
+    {
+        /** @var User $user */
+        if ($user = User::query()->find($request->route('id'))) {
+            DB::transaction(function () use ($user) {
+                $user->images()->update(['user_id' => null]);
+                $user->albums()->delete();
+                $user->delete();
+            });
+        }
+        return $this->success('删除成功');
     }
 }
