@@ -167,7 +167,7 @@
                                     <div class="col-span-6 sm:col-span-3 mb-4">
                                         <label for="configs[watermark_configs][drivers][font][font]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>字体文件</label>
                                         <x-input type="text" name="configs[watermark_configs][drivers][font][font]" id="configs[watermark_configs][drivers][font][font]" autocomplete="text" placeholder="请输入字体文件路径，例如：fonts/lsky.ttf" />
-                                        <small class="text-yellow-500">请将下载的字体文件放置程序根目录的 {{ public_path() }} 目录下</small>
+                                        <small class="text-yellow-500">请将字体文件放置 {{ public_path() }} 目录下</small>
                                     </div>
                                     <div class="col-span-6 sm:col-span-3 mb-4">
                                         <label for="configs[watermark_configs][drivers][font][position]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>水印位置</label>
@@ -206,7 +206,7 @@
                                     <div class="col-span-6 sm:col-span-3 mb-4">
                                         <label for="configs[watermark_configs][drivers][image][image]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>水印图片</label>
                                         <x-input type="text" name="configs[watermark_configs][drivers][image][image]" id="configs[watermark_configs][drivers][image][image]" autocomplete="image" placeholder="请输入水印路径，例如：images/lsky.png" />
-                                        <small class="text-yellow-500">请将水印图片放置程序根目录的 {{ public_path() }} 目录下</small>
+                                        <small class="text-yellow-500">请将水印图片放置 {{ public_path() }} 目录下</small>
                                     </div>
                                     <div class="col-span-6 sm:col-span-3 mb-4">
                                         <label for="configs[watermark_configs][drivers][image][position]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>水印位置</label>
