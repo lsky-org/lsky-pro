@@ -41,7 +41,7 @@
     >
 
     </div>
-    <x-container class="flex flex-col overflow-y-auto absolute pb-14 top-14 left-0 right-0 bottom-0 transition-all duration-300 min-h-screen h-full">
+    <x-container full="{{ $is_full }}" class="flex flex-col overflow-y-auto absolute pb-14 top-14 left-0 right-0 bottom-0 transition-all duration-300 min-h-screen h-full">
         {{ $slot }}
     </x-container>
 </div>
