@@ -15,17 +15,17 @@
                 <td class="px-6 py-4 whitespace-nowrap name">系统默认组</td>
                 <td class="px-6 py-4 whitespace-nowrap">-</td>
                 <td class="px-6 py-4 whitespace-nowrap">
-                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $default['is_enable_scan'] ? 'text-green-800' : 'text-red-800' }}">
+                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $default['is_enable_scan'] ? 'text-green-500' : 'text-rose-500' }}">
                         <i class="text-lg fas fa-{{ $default['is_enable_scan'] ? 'check-circle' : 'times-circle' }}"></i>
                     </span>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap">
-                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $default['is_enable_original_protection'] ? 'text-green-800' : 'text-red-800' }}">
+                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $default['is_enable_original_protection'] ? 'text-green-500' : 'text-rose-500' }}">
                         <i class="text-lg fas fa-{{ $default['is_enable_original_protection'] ? 'check-circle' : 'times-circle' }}"></i>
                     </span>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap">
-                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $default['is_enable_watermark'] ? 'text-green-800' : 'text-red-800' }}">
+                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $default['is_enable_watermark'] ? 'text-green-500' : 'text-rose-500' }}">
                         <i class="text-lg fas fa-{{ $default['is_enable_watermark'] ? 'check-circle' : 'times-circle' }}"></i>
                     </span>
                 </td>
@@ -40,22 +40,22 @@
                 <td class="px-6 py-4 whitespace-nowrap">{{ $group->id }}</td>
                 <td class="px-6 py-4 whitespace-nowrap name">{{ $group->name }}</td>
                 <td class="px-6 py-4 whitespace-nowrap">
-                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $group->is_default ? 'text-green-800' : 'text-red-800' }}">
+                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $group->is_default ? 'text-green-500' : 'text-rose-500' }}">
                         <i class="text-lg fas fa-{{ $group->is_default ? 'check-circle' : 'times-circle' }}"></i>
                     </span>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap">
-                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $group->configs['is_enable_scan'] ? 'text-green-800' : 'text-red-800' }}">
+                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $group->configs['is_enable_scan'] ? 'text-green-500' : 'text-rose-500' }}">
                         <i class="text-lg fas fa-{{ $group->configs['is_enable_scan'] ? 'check-circle' : 'times-circle' }}"></i>
                     </span>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap">
-                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $group->configs['is_enable_original_protection'] ? 'text-green-800' : 'text-red-800' }}">
+                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $group->configs['is_enable_original_protection'] ? 'text-green-500' : 'text-rose-500' }}">
                         <i class="text-lg fas fa-{{ $group->configs['is_enable_original_protection'] ? 'check-circle' : 'times-circle' }}"></i>
                     </span>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap">
-                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $group->configs['is_enable_watermark'] ? 'text-green-800' : 'text-red-800' }}">
+                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $group->configs['is_enable_watermark'] ? 'text-green-500' : 'text-rose-500' }}">
                         <i class="text-lg fas fa-{{ $group->configs['is_enable_watermark'] ? 'check-circle' : 'times-circle' }}"></i>
                     </span>
                 </td>
