@@ -16,6 +16,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\User\ImageController;
 use App\Http\Controllers\User\AlbumController;
+use App\Http\Controllers\Common\GalleryController;
 
 use App\Http\Controllers\Admin\GroupController as AdminGroupController;
 use App\Http\Controllers\Admin\StrategyController as AdminStrategyController;
@@ -25,7 +26,7 @@ Route::get('/', fn () => view('welcome'))->name('/');
 Route::post('upload', [Controller::class, 'upload']);
 Route::group(['middleware' => ['auth']], function () {
     Route::get('dashboard', [UserController::class, 'dashboard'])->name('dashboard');
-    Route::get('gallery', [UserController::class, 'gallery'])->name('gallery');
+    Route::get('gallery', [GalleryController::class, 'index'])->name('gallery');
     Route::get('settings', [UserController::class, 'settings'])->name('settings');
     Route::put('settings', [UserController::class, 'update'])->name('settings.update');
 

@@ -36,16 +36,6 @@ class UserController extends Controller
         return view('user.settings');
     }
 
-    public function gallery(): View
-    {
-        return view('user.gallery');
-    }
-
-    public function works(): Response
-    {
-        return $this->success();
-    }
-
     public function update(UserSettingRequest $request): Response
     {
         /** @var User $user */
