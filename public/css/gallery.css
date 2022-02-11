@@ -8,44 +8,47 @@
 }
 .grid-sizer,
 .grid-item {
-  width: calc(50% - 10px);
+  padding: 8px;
+  width: calc(50%);
 }
 .grid-item {
   float: left;
+}
+.grid-item > div {
   transition: all 0.3s;
 }
-.grid-item:hover {
+.grid-item > div:hover {
   margin-top: -5px;
   box-shadow: 15.8px 21.3px 83.8px rgba(0, 0, 0, 0.07), 102px 137px 196px rgba(0, 0, 0, 0.035);
 }
 @media screen and (min-width: 640px) {
   .grid-sizer,
   .grid-item {
-    width: calc(33.333% - 11px);
+    width: calc(33.333%);
   }
 }
 @media screen and (min-width: 768px) {
   .grid-sizer,
   .grid-item {
-    width: calc(25% - 11px);
+    width: calc(25%);
   }
 }
 @media screen and (min-width: 1024px) {
   .grid-sizer,
   .grid-item {
-    width: calc(20% - 11px);
+    width: calc(20%);
   }
 }
 @media screen and (min-width: 1280px) {
   .grid-sizer,
   .grid-item {
-    width: calc(12.5% - 11px);
+    width: calc(12.5%);
   }
 }
 @media screen and (min-width: 1536px) {
   .grid-sizer,
   .grid-item {
-    width: calc(10% - 11px);
+    width: calc(10%);
   }
 }
 
