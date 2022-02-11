@@ -13,7 +13,6 @@ class AppLayout extends Component
      */
     public function render()
     {
-        $is_full = request()->routeIs('images', 'gallery');
-        return view('layouts.app', compact('is_full'));
+        return view('layouts.app');
     }
 }

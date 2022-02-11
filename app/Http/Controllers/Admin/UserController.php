@@ -5,10 +5,13 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\UserRequest;
 use App\Models\User;
+use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 class UserController extends Controller
@@ -36,6 +39,14 @@ class UserController extends Controller
         /** @var User $user */
         $user = User::query()->findOrFail($request->route('id'));
         $user->fill($request->validated());
+        if ($password = $request->validated('password')) {
+            $user->forceFill([
+                'password' => Hash::make($password),
+                'remember_token' => Str::random(60),
+            ]);
+
+            event(new PasswordReset($user));
+        }
         if (!$user->save()) {
             return $this->error('保存失败');
         }

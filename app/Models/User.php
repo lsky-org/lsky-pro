@@ -12,8 +12,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 use Laravel\Sanctum\HasApiTokens;
 
 /**
@@ -90,15 +88,6 @@ class User extends Authenticatable implements MustVerifyEmail
                 UserConfigKey::DefaultPermission => ImagePermission::Private,
                 UserConfigKey::IsAutoClearPreview => false,
             ])->merge($user->configs ?: []);
-        });
-
-        static::saving(function (self $user) {
-            if ($user->password) {
-                $user->password = Hash::make($user->password);
-                $user->remember_token = Str::random(60);
-            } else {
-                unset($user->password);
-            }
         });
     }
 
