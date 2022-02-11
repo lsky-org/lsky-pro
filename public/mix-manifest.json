@@ -2,6 +2,7 @@
     "/js/app.js": "/js/app.js",
     "/css/app.css": "/css/app.css",
     "/css/context-js/context-js.css": "/css/context-js/context-js.css",
+    "/css/gallery.css": "/css/gallery.css",
     "/css/common.css": "/css/common.css",
     "/css/fontawesome.css": "/css/fontawesome.css",
     "/js/blueimp-file-upload/jquery.ui.widget.js": "/js/blueimp-file-upload/jquery.ui.widget.js",
@@ -16,5 +17,7 @@
     "/js/clipboard/index.browser.js": "/js/clipboard/index.browser.js",
     "/js/dragselect/ds.min.js": "/js/dragselect/ds.min.js",
     "/js/context-js/context-js.js": "/js/context-js/context-js.js",
-    "/js/echarts/echarts.min.js": "/js/echarts/echarts.min.js"
+    "/js/echarts/echarts.min.js": "/js/echarts/echarts.min.js",
+    "/js/masonry/masonry.pkgd.min.js": "/js/masonry/masonry.pkgd.min.js",
+    "/js/imagesloaded/imagesloaded.pkgd.min.js": "/js/imagesloaded/imagesloaded.pkgd.min.js"
 }

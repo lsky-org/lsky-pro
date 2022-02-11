@@ -26,6 +26,7 @@ return new class extends Migration
             $table->rememberToken();
             $table->boolean('is_adminer')->default(false)->comment('是否为管理员');
             $table->decimal('capacity', 20)->default(0)->comment('总容量(kb)');
+            $table->string('url')->default('')->comment('个人主页');
             $table->json('configs')->comment('配置');
             $table->unsignedBigInteger('image_num')->default(0)->comment('图片数量');
             $table->unsignedBigInteger('album_num')->default(0)->comment('相册数量');

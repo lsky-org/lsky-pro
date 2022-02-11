@@ -13,6 +13,7 @@ class UserSettingRequest extends FormRequest
     {
         return [
             'name' => 'required|between:2,20',
+            'url' => 'url',
             'password' => 'nullable|between:6,32',
             'configs' => 'array',
             'configs.default_album' => 'required|numeric',
@@ -27,6 +28,7 @@ class UserSettingRequest extends FormRequest
         return [
             'name.required' => '昵称不能为空',
             'name.between' => '昵称必须在 2-20 个字符之间',
+            'url.url' => '个人主页地址格式不正确',
             'password.between' => '昵称必须在 6-32 个字符之间',
             'configs.array' => '配置值不正确',
             'configs.default_album.required' => '默认相册选择错误',

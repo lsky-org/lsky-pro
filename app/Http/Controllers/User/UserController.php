@@ -41,11 +41,17 @@ class UserController extends Controller
         return view('user.gallery');
     }
 
+    public function works(): Response
+    {
+        return $this->success();
+    }
+
     public function update(UserSettingRequest $request): Response
     {
         /** @var User $user */
         $user = Auth::user();
         $user->name = $request->validated('name');
+        $user->url = $request->validated('url');
         $user->configs = $user->configs->merge(collect($request->validated('configs'))->transform(function ($value) {
             return (int)$value;
         }));

@@ -10,6 +10,29 @@ use Illuminate\Support\Facades\Cache;
 class Utils
 {
     /**
+     * 获取头像地址
+     *
+     * @param $email
+     * @param int $s
+     * @param string $d
+     * @param string $r
+     * @return string
+     */
+    public static function getAvatar($email, int $s = 96, string $d = 'mp', string $r = 'g'): string
+    {
+        preg_match_all('/((\d)*)@qq.com/', $email, $vai);
+        if (empty($vai['1']['0'])) {
+            $url = 'https://gravatar.cat.net/avatar/';
+            $url .= md5(strtolower(trim($email)));
+            $url .= "?s=$s&d=$d&r=$r";
+            return $url;
+        } else {
+            $url = 'https://q2.qlogo.cn/headimg_dl?dst_uin='.$vai['1']['0'].'&spec=100';
+        }
+        return $url;
+    }
+
+    /**
      * 获取系统配置，获取全部配置时将返回
      *
      * @param  string  $name
@@ -87,8 +110,8 @@ class Utils
     /**
      * 格式化配置，设置默认配置以及将字符串数字转换为数字
      *
-     * @param array $defaults 默认配置
-     * @param array $configs 新配置
+     * @param  array  $defaults  默认配置
+     * @param  array  $configs  新配置
      * @return array
      */
     public static function parseConfigs(array $defaults, array $configs): array

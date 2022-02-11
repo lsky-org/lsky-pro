@@ -45,6 +45,11 @@
                         </div>
 
                         <div class="col-span-6">
+                            <label for="url" class="block text-sm font-medium text-gray-700">个人主页</label>
+                            <x-input type="url" name="url" id="url" autocomplete="url" value="{{ Auth::user()->url }}" placeholder="个人主页地址，http(s)://"/>
+                        </div>
+
+                        <div class="col-span-6">
                             <label for="password" class="block text-sm font-medium text-gray-700">密码</label>
                             <x-input type="password" name="password" id="password" placeholder="不修改请留空" autocomplete="password" />
                         </div>
