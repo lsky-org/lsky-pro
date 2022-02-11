@@ -14,7 +14,7 @@ class GalleryController extends Controller
         $images = Image::query()
             ->with('user')
             ->where('is_unhealthy', false)
-//            ->where('permission', ImagePermission::Public)
+            ->where('permission', ImagePermission::Public)
             ->latest()
             ->simplePaginate(40);
         return view('common.gallery', compact('images'));

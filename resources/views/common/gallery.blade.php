@@ -33,7 +33,8 @@
             <x-no-data message="暂时没有可展示的图片，再等等看吧～" />
         @endif
     </div>
-@push('scripts')
+
+    @push('scripts')
         <script src="{{ asset('js/masonry/masonry.pkgd.min.js') }}"></script>
         <script src="{{ asset('js/imagesloaded/imagesloaded.pkgd.min.js') }}"></script>
         <script>
