@@ -20,9 +20,9 @@
                                 <img class="grow object-cover object-center w-full h-full" src="{{ $image->thumb_url }}"/>
                             </div>
                         </a>
-                        <a target="_blank" href="{{ $image->user->url ?: 'javascript:void(0)' }}" class="flex justify-between items-center px-3 py-2 bg-white overflow-hidden">
+                        <a target="_blank" href="{{ $image->user->url ?: 'javascript:void(0)' }}" class="flex justify-between items-center px-3 py-2 bg-white overflow-hidden group">
                             <img src="{{ $image->user->avatar }}" class="w-6 h-6 rounded-full">
-                            <p class="ml-2 truncate">{{ $image->user->name }}</p>
+                            <p class="ml-2 truncate group-hover:text-blue-500">{{ $image->user->name }}</p>
                         </a>
                     </div>
                 </div>
