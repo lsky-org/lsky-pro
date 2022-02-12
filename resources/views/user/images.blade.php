@@ -681,8 +681,8 @@
                         if (response.data.status) {
                             let image = response.data.data.image;
                             let content = $('#image-detail-tpl').html()
-                                .replace(/__album_name__/g, image.album ? image.album.name : '无')
-                                .replace(/__strategy_name__/g, image.strategy.name)
+                                .replace(/__album_name__/g, image.album ? image.album.name : '-')
+                                .replace(/__strategy_name__/g, image.strategy.name || '-')
                                 .replace(/__filename__/g, image.filename)
                                 .replace(/__origin_name__/g, image.origin_name)
                                 .replace(/__size__/g, utils.formatSize(image.size * 1024))
