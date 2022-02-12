@@ -1,7 +1,7 @@
 @section('title', '仪表盘')
 
 <x-app-layout>
-    <div class="my-6 md:my-10">
+    <div class="my-6 md:my-9">
         <div class="space-y-6 md:space-y-0 md:grid md:grid-cols-2 xl:grid-cols-4 md:gap-x-4 xl:gap-x-8 md:gap-y-4 xl:gap-y-8">
             <div class="flex bg-white rounded p-4 space-x-4">
                 <i class="fas fa-images text-amber-500 text-5xl"></i>

@@ -44,7 +44,7 @@
             </div>
             <div class="flex flex-col space-y-2 mb-5">
                 <p class="text-gray-400 text-sm mx-4">系统</p>
-                <x-nav-link :active="request()->is('admin/console*')">
+                <x-nav-link :href="route('admin.console')" :active="request()->is('admin/console*')">
                     <x-slot name="icon"><i class="fas fa-terminal text-blue-500"></i></x-slot>
                     <x-slot name="name">控制台</x-slot>
                 </x-nav-link>

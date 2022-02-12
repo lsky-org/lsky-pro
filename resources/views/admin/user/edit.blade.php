@@ -1,7 +1,7 @@
 @section('title', '编辑用户')
 
 <x-app-layout>
-    <div class="my-6 md:my-10">
+    <div class="my-6 md:my-9">
 
         <div class="mt-5 md:mt-0 md:col-span-2">
             <form action="{{ route('admin.user.update', ['id' => $user->id ?: '0']) }}" method="POST">

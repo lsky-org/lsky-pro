@@ -1,7 +1,7 @@
 @section('title', '创建角色组')
 
 <x-app-layout>
-    <div class="my-6 md:my-10">
+    <div class="my-6 md:my-9">
         @include('admin.group.tips')
 
         <p class="bg-blue-500 p-2 mb-2 rounded text-sm text-white">

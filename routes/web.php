@@ -18,6 +18,7 @@ use App\Http\Controllers\User\ImageController;
 use App\Http\Controllers\User\AlbumController;
 use App\Http\Controllers\Common\GalleryController;
 
+use App\Http\Controllers\Admin\ConsoleController as AdminConsoleController;
 use App\Http\Controllers\Admin\GroupController as AdminGroupController;
 use App\Http\Controllers\Admin\StrategyController as AdminStrategyController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
@@ -47,6 +48,8 @@ Route::group(['middleware' => ['auth']], function () {
 });
 
 Route::group(['prefix' => 'admin', 'middleware' => ['auth.admin']], function () {
+    Route::get('console', [AdminConsoleController::class, 'index'])->name('admin.console');
+
     Route::group(['prefix' => 'users'], function () {
         Route::get('', [AdminUserController::class, 'index'])->name('admin.users');
         Route::get('{id}', [AdminUserController::class, 'edit'])->name('admin.user.edit');

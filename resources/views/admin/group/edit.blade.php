@@ -1,7 +1,7 @@
 @section('title', '编辑角色组')
 
 <x-app-layout>
-    <div class="my-6 md:my-10">
+    <div class="my-6 md:my-9">
         @include('admin.group.tips')
 
         @if($group->id == 0)

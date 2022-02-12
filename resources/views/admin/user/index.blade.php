@@ -1,7 +1,7 @@
 @section('title', '用户管理')
 
 <x-app-layout>
-    <div class="my-6 md:my-10">
+    <div class="my-6 md:my-9">
         <form id="search-form" action="{{ route('admin.users') }}" method="get">
             <div class="mb-3 flex justify-between">
                 <select name="status" class="text-sm rounded-md bg-white border-transparent focus:border-gray-500 focus:bg-white focus:ring-0" onchange="$('#search-form').submit()">

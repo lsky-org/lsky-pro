@@ -4,6 +4,7 @@ namespace App;
 
 use App\Enums\ConfigKey;
 use App\Models\Config;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 
@@ -65,6 +66,23 @@ class Utils
             });
         });
         return '' === $name ? $configs : $configs->get($name, $default);
+    }
+
+    /**
+     * 生成连续日期.
+     * @param  string  $start  开始日期
+     * @param  string  $end  结束日期
+     * @param  string  $unit  day=日，month=月，year=年
+     * @return array
+     */
+    public static function makeDateRange(string $start, string $end, string $unit = 'day'): array
+    {
+        $array = [];
+        $format = ['day' => 'Y-m-d', 'month' => 'Y-m', 'year' => 'Y'][$unit] ?? 'Y-m-d';
+        Carbon::create($start)->range($end, 1, $unit)->forEach(function (Carbon $item) use (&$array, $format) {
+            $array[] = $item->format($format);
+        });
+        return $array;
     }
 
     /**

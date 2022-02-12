@@ -1,7 +1,7 @@
 @section('title', '创建储存策略')
 
 <x-app-layout>
-    <div class="my-6 md:my-10">
+    <div class="my-6 md:my-9">
         <div class="md:mt-0 md:col-span-2">
             <form action="{{ route('admin.strategy.create') }}" method="POST">
                 <div class="overflow-hidden rounded-md">

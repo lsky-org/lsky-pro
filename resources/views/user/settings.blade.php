@@ -1,7 +1,7 @@
 @section('title', '设置')
 
 <x-app-layout>
-    <div class="my-6 md:my-10">
+    <div class="my-6 md:my-9">
         <form action="{{ route('settings.update') }}" method="POST">
             <div class="overflow-hidden sm:rounded-md">
                 <div class="px-4 py-5 bg-white sm:p-6">

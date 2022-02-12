@@ -1,7 +1,7 @@
 @section('title', '角色组管理')
 
 <x-app-layout>
-    <div class="my-6 md:my-10">
+    <div class="my-6 md:my-9">
         <form action="{{ route('admin.groups') }}" method="get">
             <div class="mb-3 flex justify-between w-full">
                 <x-button type="button" onclick="window.location.href = '{{ route('admin.group.create') }}'">创建角色组</x-button>
