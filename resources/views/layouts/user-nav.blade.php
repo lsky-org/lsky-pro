@@ -14,7 +14,7 @@
             @csrf
             <x-dropdown-link href="{{ route('upload') }}">上传图片</x-dropdown-link>
             <x-dropdown-link href="{{ route('dashboard') }}">仪表盘</x-dropdown-link>
-            <x-dropdown-link href="{{ route('/') }}">设置</x-dropdown-link>
+            <x-dropdown-link href="{{ route('settings') }}">设置</x-dropdown-link>
             <x-dropdown-link :href="route('logout')" onclick="event.preventDefault(); this.closest('form').submit();">
                 {{ __('Log Out') }}
             </x-dropdown-link>
