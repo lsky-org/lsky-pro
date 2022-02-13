@@ -4,6 +4,8 @@ namespace App\Enums\Mail;
 
 final class SmtpOption
 {
+    const Transport = 'smtp';
+
     /** @var string 主机地址 */
     const Host = 'host';
 
@@ -21,7 +23,4 @@ final class SmtpOption
 
     /** @var string 超时时间 */
     const Timeout = 'timeout';
-
-    /** @var string 认证模式 */
-    const AuthMode = 'auth_mode';
 }

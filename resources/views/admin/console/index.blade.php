@@ -4,7 +4,7 @@
     @if(config('app.debug'))
         <p class="mt-4 p-2 rounded-md text-sm bg-red-500 text-white">
             <i class="fas fa-exclamation-triangle"></i>
-            当前系统 debug 已被打开，敏感信息暴露在外，可能会被利用从而影响系统稳定性，生产环境中请务必关闭 debug ！
+            当前系统 debug 已被打开，敏感信息暴露在外，可能会被利用从而影响系统稳定性，生产环境中请务必关闭！
         </p>
     @endif
     <div class="my-6 md:my-9">

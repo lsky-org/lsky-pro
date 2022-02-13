@@ -64,7 +64,7 @@
                     <x-slot name="icon"><i class="fas fa-hdd text-blue-500"></i></x-slot>
                     <x-slot name="name">储存策略</x-slot>
                 </x-nav-link>
-                <x-nav-link :active="request()->is('admin/settings*')">
+                <x-nav-link :href="route('admin.settings')" :active="request()->is('admin/settings*')">
                     <x-slot name="icon"><i class="fas fa-cogs text-blue-500"></i></x-slot>
                     <x-slot name="name">系统设置</x-slot>
                 </x-nav-link>

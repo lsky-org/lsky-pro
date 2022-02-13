@@ -23,13 +23,15 @@ return [
         ConfigKey::MailConfigs => [
             'default' => 'smtp',
             'mailers' => [
-                SmtpOption::Host => '',
-                SmtpOption::Port => 25,
-                SmtpOption::Encryption => 'tls',
-                SmtpOption::Username => '',
-                SmtpOption::Password => '',
-                SmtpOption::Timeout => null,
-                SmtpOption::AuthMode => null,
+                'smtp' => [
+                    SmtpOption::Transport => 'smtp',
+                    SmtpOption::Host => '',
+                    SmtpOption::Port => 25,
+                    SmtpOption::Encryption => 'tls',
+                    SmtpOption::Username => '',
+                    SmtpOption::Password => '',
+                    SmtpOption::Timeout => null,
+                ]
             ],
         ],
         ConfigKey::GroupConfigs => [

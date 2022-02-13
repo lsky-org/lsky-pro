@@ -22,6 +22,7 @@ use App\Http\Controllers\Admin\ConsoleController as AdminConsoleController;
 use App\Http\Controllers\Admin\GroupController as AdminGroupController;
 use App\Http\Controllers\Admin\StrategyController as AdminStrategyController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
+use App\Http\Controllers\Admin\SettingController as AdminSettingController;
 
 Route::get('/', fn () => view('welcome'))->name('/');
 Route::post('upload', [Controller::class, 'upload']);
@@ -73,6 +74,11 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth.admin']], function () 
         Route::get('{id}', [AdminStrategyController::class, 'edit'])->name('admin.strategy.edit');
         Route::put('{id}', [AdminStrategyController::class, 'update'])->name('admin.strategy.update');
         Route::delete('{id}', [AdminStrategyController::class, 'delete'])->name('admin.strategy.delete');
+    });
+
+    Route::group(['prefix' => 'settings'], function () {
+        Route::get('', [AdminSettingController::class, 'index'])->name('admin.settings');
+        Route::put('save', [AdminSettingController::class, 'save'])->name('admin.settings.save');
     });
 });
 
