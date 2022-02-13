@@ -47,7 +47,7 @@
                 </x-slot>
 
                 <x-slot name="content">
-                    <x-dropdown-link href="javascript:void(0)" @click="setOrderBy('newest1'); open = false">最新
+                    <x-dropdown-link href="javascript:void(0)" @click="setOrderBy('newest'); open = false">最新
                     </x-dropdown-link>
                     <x-dropdown-link href="javascript:void(0)" @click="setOrderBy('earliest'); open = false">最早
                     </x-dropdown-link>
