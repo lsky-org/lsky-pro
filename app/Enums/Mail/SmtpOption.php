@@ -23,4 +23,10 @@ final class SmtpOption
 
     /** @var string 超时时间 */
     const Timeout = 'timeout';
+
+    /** @var string 发件人地址 */
+    const FromAddress = 'from_address';
+
+    /** @var string 发件人名称 */
+    const FromName = 'from_name';
 }
