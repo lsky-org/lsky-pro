@@ -32,8 +32,8 @@ final class ConfigKey
     const IsUserNeedVerify = 'is_user_need_verify';
 
     /** @var string 邮件配置 */
-    const MailConfigs = 'mail_configs';
+    const Mail = 'mail';
 
     /** @var string 角色组默认配置 */
-    const GroupConfigs = 'group_configs';
+    const Group = 'group';
 }

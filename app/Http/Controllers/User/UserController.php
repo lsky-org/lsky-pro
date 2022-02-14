@@ -22,7 +22,7 @@ class UserController extends Controller
         $user = Auth::user();
 
         // 组配置
-        $configs = Utils::config(ConfigKey::GroupConfigs);
+        $configs = Utils::config(ConfigKey::Group);
         if ($user->group) {
             $configs = $user->group->configs;
         }

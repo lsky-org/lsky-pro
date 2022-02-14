@@ -22,11 +22,11 @@ class UtilTest extends TestCase
             $this->assertTrue(true);
         }
 
-        if (Utils::config(ConfigKey::MailConfigs) instanceof Collection) {
+        if (Utils::config(ConfigKey::Mail) instanceof Collection) {
             $this->assertTrue(true);
         }
 
-        if (is_array(Utils::config(ConfigKey::MailConfigs.'.mailers'))) {
+        if (is_array(Utils::config(ConfigKey::Mail.'.mailers'))) {
             $this->assertTrue(true);
         }
 

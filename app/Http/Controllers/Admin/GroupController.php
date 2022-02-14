@@ -46,7 +46,7 @@ class GroupController extends Controller
             $group = new Group([
                 'id' => 0,
                 'name' => '系统默认组',
-                'configs' => Utils::config(ConfigKey::GroupConfigs),
+                'configs' => Utils::config(ConfigKey::Group),
             ]);
         } else {
             $group = Group::query()->findOrFail($request->route('id'));
@@ -66,7 +66,7 @@ class GroupController extends Controller
     {
         if ($request->route('id') == 0) {
             $configs = Utils::parseConfigs(Group::getDefaultConfigs()->toArray(), $request->validated('configs'));
-            if (! Config::query()->where('name', ConfigKey::GroupConfigs)->update([
+            if (! Config::query()->where('name', ConfigKey::Group)->update([
                 'value' => collect($configs)->toJson(),
             ])) {
                 return $this->error('保存失败');

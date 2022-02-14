@@ -74,7 +74,7 @@ class Group extends Model
      */
     public static function getDefaultConfigs(): Collection
     {
-        return collect(config('convention.app.'.ConfigKey::GroupConfigs));
+        return collect(config('convention.app.'.ConfigKey::Group));
     }
 
     /**
@@ -84,7 +84,7 @@ class Group extends Model
      */
     public static function getGuestConfigs(): Collection
     {
-        return Utils::config(ConfigKey::GroupConfigs);
+        return Utils::config(ConfigKey::Group);
     }
 
     public function users(): HasMany

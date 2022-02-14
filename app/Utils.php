@@ -53,8 +53,8 @@ class Utils
                     case ConfigKey::IsUserNeedVerify:
                         $value = (bool) $value;
                         break;
-                    case ConfigKey::MailConfigs:
-                    case ConfigKey::GroupConfigs:
+                    case ConfigKey::Mail:
+                    case ConfigKey::Group:
                         $value = collect(json_decode($value, true));
                         break;
                     case ConfigKey::UserInitialCapacity:

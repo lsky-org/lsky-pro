@@ -72,46 +72,46 @@
         <p class="mb-3 font-semibold text-lg text-gray-700">邮件配置</p>
         <div class="relative p-4 rounded-md bg-white mb-8 space-y-4">
             <x-fieldset title="发信驱动">
-                <x-fieldset-radio id="mail_configs[default]" name="mail_configs[default]" data-select="mailer" value="smtp" checked>SMTP</x-fieldset-radio>
+                <x-fieldset-radio id="mail[default]" name="mail[default]" data-select="mailer" value="smtp" checked>SMTP</x-fieldset-radio>
             </x-fieldset>
 
             <div class="mb-4 hidden" data-mailer-driver="smtp">
                 <form action="{{ route('admin.settings.save') }}" class="space-y-4">
                     <div>
-                        <label for="mail_configs[mailers][smtp][host]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>主机地址</label>
-                        <x-input type="text" name="mail_configs[mailers][smtp][host]" id="mail_configs[mailers][smtp][host]" value="{{ $configs['mail_configs']['mailers']['smtp']['host'] }}" placeholder="请输入 SMTP 主机地址"/>
+                        <label for="mail[mailers][smtp][host]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>主机地址</label>
+                        <x-input type="text" name="mail[mailers][smtp][host]" id="mail[mailers][smtp][host]" value="{{ $configs['mail']['mailers']['smtp']['host'] }}" placeholder="请输入 SMTP 主机地址"/>
                     </div>
                     <div>
-                        <label for="mail_configs[mailers][smtp][port]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>连接端口</label>
-                        <x-input type="number" name="mail_configs[mailers][smtp][port]" id="mail_configs[mailers][smtp][port]" value="{{ $configs['mail_configs']['mailers']['smtp']['port'] }}" placeholder="请输入 SMTP 主机连接端口"/>
+                        <label for="mail[mailers][smtp][port]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>连接端口</label>
+                        <x-input type="number" name="mail[mailers][smtp][port]" id="mail[mailers][smtp][port]" value="{{ $configs['mail']['mailers']['smtp']['port'] }}" placeholder="请输入 SMTP 主机连接端口"/>
                     </div>
                     <div>
-                        <label for="mail_configs[mailers][smtp][username]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>用户名</label>
-                        <x-input type="text" name="mail_configs[mailers][smtp][username]" id="mail_configs[mailers][smtp][username]" value="{{ $configs['mail_configs']['mailers']['smtp']['username'] }}" placeholder="请输入用户名"/>
+                        <label for="mail[mailers][smtp][username]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>用户名</label>
+                        <x-input type="text" name="mail[mailers][smtp][username]" id="mail[mailers][smtp][username]" value="{{ $configs['mail']['mailers']['smtp']['username'] }}" placeholder="请输入用户名"/>
                     </div>
                     <div>
-                        <label for="mail_configs[mailers][smtp][password]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>密码</label>
-                        <x-input type="text" name="mail_configs[mailers][smtp][password]" id="mail_configs[mailers][smtp][password]" value="{{ $configs['mail_configs']['mailers']['smtp']['password'] }}" placeholder="请输入密码"/>
+                        <label for="mail[mailers][smtp][password]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>密码</label>
+                        <x-input type="text" name="mail[mailers][smtp][password]" id="mail[mailers][smtp][password]" value="{{ $configs['mail']['mailers']['smtp']['password'] }}" placeholder="请输入密码"/>
                     </div>
                     <div>
-                        <label for="mail_configs[mailers][smtp][encryption]" class="block text-sm font-medium text-gray-700">加密方式</label>
-                        <x-input type="text" name="mail_configs[mailers][smtp][encryption]" id="mail_configs[mailers][smtp][encryption]" value="{{ $configs['mail_configs']['mailers']['smtp']['encryption'] }}" placeholder="请输入加密方式(ssl, tls)"/>
+                        <label for="mail[mailers][smtp][encryption]" class="block text-sm font-medium text-gray-700">加密方式</label>
+                        <x-input type="text" name="mail[mailers][smtp][encryption]" id="mail[mailers][smtp][encryption]" value="{{ $configs['mail']['mailers']['smtp']['encryption'] }}" placeholder="请输入加密方式(ssl, tls)"/>
                     </div>
                     <div>
-                        <label for="mail_configs[mailers][smtp][timeout]" class="block text-sm font-medium text-gray-700">连接超时时间(秒)</label>
-                        <x-input type="number" name="mail_configs[mailers][smtp][timeout]" id="mail_configs[mailers][smtp][timeout]" value="{{ $configs['mail_configs']['mailers']['smtp']['timeout'] }}" placeholder="请输入连接超时时间(秒)"/>
+                        <label for="mail[mailers][smtp][timeout]" class="block text-sm font-medium text-gray-700">连接超时时间(秒)</label>
+                        <x-input type="number" name="mail[mailers][smtp][timeout]" id="mail[mailers][smtp][timeout]" value="{{ $configs['mail']['mailers']['smtp']['timeout'] }}" placeholder="请输入连接超时时间(秒)"/>
                     </div>
                     <div>
-                        <label for="mail_configs[mailers][smtp][from_address]" class="block text-sm font-medium text-gray-700">发件人地址</label>
-                        <x-input type="email" name="mail_configs[mailers][smtp][from_address]" id="mail_configs[mailers][smtp][from_address]" value="{{ $configs['mail_configs']['mailers']['smtp']['from_address'] ?? '' }}" placeholder="请输入发件人邮箱地址"/>
+                        <label for="mail[mailers][smtp][from_address]" class="block text-sm font-medium text-gray-700">发件人地址</label>
+                        <x-input type="email" name="mail[from][address]" id="mail[from][address]" value="{{ $configs['mail']['from']['address'] ?? '' }}" placeholder="请输入发件人邮箱地址"/>
                     </div>
                     <div>
-                        <label for="mail_configs[mailers][smtp][from_name]" class="block text-sm font-medium text-gray-700">发件人名称</label>
-                        <x-input type="text" name="mail_configs[mailers][smtp][from_name]" id="mail_configs[mailers][smtp][from_name]" value="{{ $configs['mail_configs']['mailers']['smtp']['from_name'] ?? '' }}" placeholder="请输入发件人名称"/>
+                        <label for="mail[mailers][smtp][from_name]" class="block text-sm font-medium text-gray-700">发件人名称</label>
+                        <x-input type="text" name="mail[from][name]" id="mail[from][name]" value="{{ $configs['mail']['from']['name'] ?? '' }}" placeholder="请输入发件人名称"/>
                     </div>
 
-                    <input type="hidden" name="mail_configs[default]" value="smtp">
-                    <input type="hidden" name="mail_configs[mailers][smtp][transport]" value="smtp">
+                    <input type="hidden" name="mail[default]" value="smtp">
+                    <input type="hidden" name="mail[mailers][smtp][transport]" value="smtp">
 
                     <div class="text-right">
                         <x-button type="submit">保存更改</x-button>

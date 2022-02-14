@@ -20,7 +20,7 @@ return [
         ConfigKey::IsAllowGuestUpload => 1,
         ConfigKey::UserInitialCapacity => 512000,
         ConfigKey::IsUserNeedVerify => 1,
-        ConfigKey::MailConfigs => [
+        ConfigKey::Mail => [
             'default' => 'smtp',
             'mailers' => [
                 'smtp' => [
@@ -34,7 +34,7 @@ return [
                 ]
             ],
         ],
-        ConfigKey::GroupConfigs => [
+        ConfigKey::Group => [
             GroupConfigKey::MaximumFileSize => 5120,
             GroupConfigKey::ConcurrentUploadNum => 3,
             GroupConfigKey::IsEnableScan => 0,
