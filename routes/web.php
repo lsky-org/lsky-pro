@@ -84,6 +84,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth.admin']], function () 
     Route::group(['prefix' => 'settings'], function () {
         Route::get('', [AdminSettingController::class, 'index'])->name('admin.settings');
         Route::put('save', [AdminSettingController::class, 'save'])->name('admin.settings.save');
+        Route::post('mail-test', [AdminSettingController::class, 'mailTest'])->name('admin.settings.mail.test');
     });
 });
 

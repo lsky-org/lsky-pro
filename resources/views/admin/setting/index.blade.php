@@ -118,6 +118,7 @@
                     <input type="hidden" name="mail[mailers][smtp][transport]" value="smtp">
 
                     <div class="text-right">
+                        <x-button type="button" id="mail-test" class="bg-yellow-500">测试</x-button>
                         <x-button type="submit">保存更改</x-button>
                     </div>
                 </form>
@@ -145,6 +146,36 @@
                 axios.put(this.action, $(this).serialize()).then(function (response) {
                     toastr[response.data.status ? 'success' : 'error'](response.data.message)
                 });
+            });
+
+            $('#mail-test').click(function () {
+                Swal.fire({
+                    title: '请输入接收测试邮件的邮箱',
+                    input: 'text',
+                    inputValue: '',
+                    inputAttributes: {
+                        type: 'email',
+                        autocapitalize: 'off'
+                    },
+                    showCancelButton: true,
+                    confirmButtonText: '确认',
+                    showLoaderOnConfirm: true,
+                    preConfirm: (value) => {
+                        return axios.post('{{ route('admin.settings.mail.test') }}', {
+                            email: value,
+                        }).then(response => {
+                            if (! response.data.status) {
+                                throw new Error(response.data.message)
+                            }
+                            return response.data;
+                        }).catch(error => Swal.showValidationMessage(error));
+                    },
+                    allowOutsideClick: () => !Swal.isLoading()
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        toastr[result.value.status ? 'success' : 'warning'](result.value.message);
+                    }
+                })
             });
         </script>
     @endpush
