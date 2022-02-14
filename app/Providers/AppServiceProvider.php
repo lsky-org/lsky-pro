@@ -30,6 +30,8 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         // 覆盖默认配置
+        Config::set('app.name', Utils::config(ConfigKey::SiteName));
+        Config::set('app.url', request()->getSchemeAndHttpHost());
         Config::set('mail', array_merge(\config('mail'), Utils::config(ConfigKey::Mail)->toArray()));
 
         // 初始化视图中的默认数据

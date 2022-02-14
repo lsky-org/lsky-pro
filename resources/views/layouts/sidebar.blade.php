@@ -4,7 +4,7 @@
     'w-3/4': sidebarOpened
 }">
     <div class="px-6 h-14 flex justify-between sm:justify-center items-center bg-gray-600 text-white text-xl">
-        <a href="/" class="truncate">Lsky Pro</a>
+        <a href="/" class="truncate">{{ \App\Utils::config(\App\Enums\ConfigKey::SiteName) }}</a>
         <a href="javascript:void(0)" class="sm:hidden block" @click="sidebarOpened = false"><i class="fas fa-times"></i></a>
     </div>
 
@@ -31,17 +31,23 @@
                     <x-slot name="name">设置</x-slot>
                 </x-nav-link>
             </div>
+            @if(\App\Utils::config(\App\Enums\ConfigKey::IsEnableGallery) || \App\Utils::config(\App\Enums\ConfigKey::IsEnableApi))
             <div class="flex flex-col space-y-2 mb-5">
                 <p class="text-gray-400 text-sm mx-4">公共</p>
+                @if(\App\Utils::config(\App\Enums\ConfigKey::IsEnableGallery))
                 <x-nav-link :href="route('gallery')" :active="request()->routeIs('gallery')">
                     <x-slot name="icon"><i class="fas fa-chalkboard text-blue-500"></i></x-slot>
                     <x-slot name="name">画廊</x-slot>
                 </x-nav-link>
-                <x-nav-link :active="request()->routeIs('apis')">
+                @endif
+                @if(\App\Utils::config(\App\Enums\ConfigKey::IsEnableApi))
+                <x-nav-link :href="route('api')" :active="request()->routeIs('apis')">
                     <x-slot name="icon"><i class="fas fa-link text-blue-500"></i></x-slot>
                     <x-slot name="name">接口</x-slot>
                 </x-nav-link>
+                @endif
             </div>
+            @endif
             <div class="flex flex-col space-y-2 mb-5">
                 <p class="text-gray-400 text-sm mx-4">系统</p>
                 <x-nav-link :href="route('admin.console')" :active="request()->is('admin/console*')">

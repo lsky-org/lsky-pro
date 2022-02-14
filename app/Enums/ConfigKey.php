@@ -10,6 +10,9 @@ final class ConfigKey
     /** @var string 是否启用画廊 */
     const IsEnableGallery = 'is_enable_gallery';
 
+    /** @var string 是否启用接口 */
+    const IsEnableApi = 'is_enable_api';
+
     /** @var string 站点名称 */
     const SiteName = 'site_name';
 

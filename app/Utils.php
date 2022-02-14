@@ -49,6 +49,7 @@ class Utils
                 switch ($key) {
                     case ConfigKey::IsAllowGuestUpload:
                     case ConfigKey::IsEnableGallery:
+                    case ConfigKey::IsEnableApi:
                     case ConfigKey::IsEnableRegistration:
                     case ConfigKey::IsUserNeedVerify:
                         $value = (bool) $value;

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\ConfigKey;
 use App\Enums\ImagePermission;
 use App\Enums\UserConfigKey;
 use App\Utils;
@@ -87,6 +88,9 @@ class User extends Authenticatable implements MustVerifyEmail
     protected static function booted()
     {
         static::creating(function (self $user) {
+            // 初始容量
+            $user->capacity = Utils::config(ConfigKey::UserInitialCapacity);
+
             $user->configs = collect([
                 UserConfigKey::DefaultAlbum => 0,
                 UserConfigKey::DefaultStrategy => 0,

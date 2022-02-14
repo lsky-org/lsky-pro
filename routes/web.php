@@ -17,6 +17,7 @@ use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\User\ImageController;
 use App\Http\Controllers\User\AlbumController;
 use App\Http\Controllers\Common\GalleryController;
+use App\Http\Controllers\Common\ApiController;
 
 use App\Http\Controllers\Admin\ConsoleController as AdminConsoleController;
 use App\Http\Controllers\Admin\GroupController as AdminGroupController;
@@ -31,6 +32,10 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('gallery', [GalleryController::class, 'index'])->name('gallery');
     Route::get('settings', [UserController::class, 'settings'])->name('settings');
     Route::put('settings', [UserController::class, 'update'])->name('settings.update');
+
+    Route::group(['prefix' => 'api'], function () {
+        Route::get('', [ApiController::class, 'index'])->name('api');
+    });
 
     Route::get('upload', fn () => view('user.upload'))->name('upload');
     Route::get('images', [ImageController::class, 'index'])->name('images');

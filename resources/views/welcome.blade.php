@@ -3,14 +3,16 @@
         <header class="w-full h-14 bg-gray-700 text-white flex justify-center fixed top-0 z-[9]">
             <div class="container mx-auto px-5 sm:px-10 md:px-10 lg:px-10 xl:px-10 2xl:px-60 flex justify-between items-center">
                 <div class="flex justify-start items-center max-w-[70%]">
-                    <a href="{{ route('/') }}" class="text-white text-xl truncate">Lsky Pro</a>
+                    <a href="{{ route('/') }}" class="text-white text-xl truncate">{{ \App\Utils::config(\App\Enums\ConfigKey::SiteName) }}</a>
                 </div>
                 <div class="flex justify-end items-center space-x-3">
                     @if(Auth::check())
                         @include('layouts.user-nav')
                     @else
                         <a href="{{ route('login') }}" class="text-gray-300 hover:bg-gray-600 hover:text-white px-3 py-2 rounded-md text-sm font-medium">登录</a>
+                        @if(\App\Utils::config(\App\Enums\ConfigKey::IsEnableRegistration))
                         <a href="{{ route('register') }}" class="text-gray-300 hover:bg-gray-600 hover:text-white px-3 py-2 rounded-md text-sm font-medium">注册</a>
+                        @endif
                     @endif
                 </div>
             </div>

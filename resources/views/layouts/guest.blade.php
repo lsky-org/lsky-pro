@@ -4,10 +4,10 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
         <meta name="csrf-token" content="{{ csrf_token() }}">
-        <meta name="keywords" content="Lsky Pro"/>
-        <meta name="description" content="Lsky Pro, Your photo album on the cloud."/>
+        <meta name="keywords" content="{{ \App\Utils::config(\App\Enums\ConfigKey::SiteKeywords) }}"/>
+        <meta name="description" content="{{ \App\Utils::config(\App\Enums\ConfigKey::SiteDescription) }}"/>
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+        <title>{{ \App\Utils::config(\App\Enums\ConfigKey::SiteName) }}</title>
 
         <!-- Fonts -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">

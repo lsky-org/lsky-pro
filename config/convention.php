@@ -17,6 +17,7 @@ return [
         ConfigKey::IcpNo => '',
         ConfigKey::IsEnableRegistration => 1,
         ConfigKey::IsEnableGallery => 1,
+        ConfigKey::IsEnableApi => 1,
         ConfigKey::IsAllowGuestUpload => 1,
         ConfigKey::UserInitialCapacity => 512000,
         ConfigKey::IsUserNeedVerify => 1,

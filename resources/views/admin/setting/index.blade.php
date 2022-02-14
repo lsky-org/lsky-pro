@@ -40,6 +40,10 @@
                     <input type="hidden" name="is_enable_gallery" value="0">
                     <x-switch name="is_enable_gallery" value="1" :checked="(bool) $configs['is_enable_gallery']" />
                 </x-fieldset>
+                <x-fieldset title="是否启用接口" faq="启用或关闭接口功能，关闭后将无法通过接口上传图片、管理图片等操作。">
+                    <input type="hidden" name="is_enable_api" value="0">
+                    <x-switch name="is_enable_api" value="1" :checked="(bool) $configs['is_enable_api']" />
+                </x-fieldset>
                 <x-fieldset title="是否允许游客上传" faq="启用或关闭游客上传功能，游客上传受「系统默认组」控制。">
                     <input type="hidden" name="is_allow_guest_upload" value="0">
                     <x-switch name="is_allow_guest_upload" value="1" :checked="(bool) $configs['is_allow_guest_upload']" />

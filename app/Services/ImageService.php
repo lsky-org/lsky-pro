@@ -13,7 +13,6 @@ use App\Enums\UserStatus;
 use App\Enums\Watermark\FontOption;
 use App\Enums\Watermark\ImageOption;
 use App\Exceptions\UploadException;
-use App\Models\Group;
 use App\Models\Image;
 use App\Models\Strategy;
 use App\Models\User;
