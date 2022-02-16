@@ -2,7 +2,7 @@
 
 <x-app-layout>
     <div class="my-6 md:my-9">
-        api
+        {{ Auth::user()->tokens }}
     </div>
 
     @push('scripts')
