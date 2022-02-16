@@ -16,6 +16,8 @@
         "league/flysystem-aws-s3-v3": "^3.0",
         "league/flysystem-ftp": "^3.0",
         "league/flysystem-sftp": "^3.0",
+        "overtrue/flysystem-cos": "^5.0",
+        "overtrue/flysystem-qiniu": "^3.0",
         "thibaud-dauce/flysystem-webdav": "^0.1.0"
     },
     "require-dev": {
