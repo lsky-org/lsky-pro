@@ -62,7 +62,7 @@
                     <x-slot name="icon"><i class="fas fa-users-cog text-blue-500"></i></x-slot>
                     <x-slot name="name">用户管理</x-slot>
                 </x-nav-link>
-                <x-nav-link :active="request()->is('admin/images*')">
+                <x-nav-link :href="route('admin.images')" :active="request()->is('admin/images*')">
                     <x-slot name="icon"><i class="fas fa-images text-blue-500"></i></x-slot>
                     <x-slot name="name">图片管理</x-slot>
                 </x-nav-link>

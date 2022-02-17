@@ -109,6 +109,28 @@ class Utils
     }
 
     /**
+     * 格式化数字
+     *
+     * @param int|string $n 数字
+     * @param int $precision 精度
+     * @return int
+     */
+    public static function shortenNumber(int|string $n, int $precision = 1): int
+    {
+        if ($n < 1e+3) {
+            return number_format($n);
+        } else if ($n < 1e+6) {
+            return number_format($n / 1e+3, $precision) . 'k';
+        } else if ($n < 1e+9) {
+            return number_format($n / 1e+6, $precision) . 'm';
+        } else if ($n < 1e+12) {
+            return number_format($n / 1e+9, $precision) . 'b';
+        }
+
+        return $n;
+    }
+
+    /**
      * 递归过滤数组元素
      *
      * @param  array  $array
