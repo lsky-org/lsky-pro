@@ -5577,9 +5577,15 @@ module.exports = {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var alpinejs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! alpinejs */ "./node_modules/alpinejs/dist/module.esm.js");
+/* harmony import */ var _stores_sidebar__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./stores/sidebar */ "./resources/js/stores/sidebar.js");
+/* harmony import */ var _stores_modal__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./stores/modal */ "./resources/js/stores/modal.js");
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 
+
+
+alpinejs__WEBPACK_IMPORTED_MODULE_0__["default"].store('sidebar', _stores_sidebar__WEBPACK_IMPORTED_MODULE_1__["default"]);
+alpinejs__WEBPACK_IMPORTED_MODULE_0__["default"].store('modal', _stores_modal__WEBPACK_IMPORTED_MODULE_2__["default"]);
 window.Alpine = alpinejs__WEBPACK_IMPORTED_MODULE_0__["default"];
 alpinejs__WEBPACK_IMPORTED_MODULE_0__["default"].start();
 window.utils = {
@@ -5794,6 +5800,47 @@ axios.interceptors.response.use(function (response) {
 //     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
 //     forceTLS: true
 // });
+
+/***/ }),
+
+/***/ "./resources/js/stores/modal.js":
+/*!**************************************!*\
+  !*** ./resources/js/stores/modal.js ***!
+  \**************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  open: false,
+  loading: false,
+  toggle: function toggle() {
+    this.open = !this.open;
+  }
+});
+
+/***/ }),
+
+/***/ "./resources/js/stores/sidebar.js":
+/*!****************************************!*\
+  !*** ./resources/js/stores/sidebar.js ***!
+  \****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  open: false,
+  toggle: function toggle() {
+    this.open = !this.open;
+  }
+});
 
 /***/ }),
 

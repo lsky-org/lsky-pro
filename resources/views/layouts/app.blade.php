@@ -22,7 +22,7 @@
     <script src="{{ asset('js/app.js') }}"></script>
 </head>
 <body class="font-sans antialiased overflow-hidden">
-<div class="min-h-screen bg-gray-100" x-data="{sidebarOpened: false}" x-cloak>
+<div class="min-h-screen bg-gray-100" x-data x-cloak>
     @include('layouts.sidebar')
     @include('layouts.header')
     <div
@@ -33,10 +33,10 @@
         x-transition:leave-start="opacity-100"
         x-transition:leave-end="opacity-0"
         class="z-[9] bg-black bg-opacity-75 transition-opacity h-full w-full fixed inset-0 sm:hidden"
-        x-show="sidebarOpened"
-        @click.outside="sidebarOpened = false"
-        @close.stop="sidebarOpened = false"
-        @click="sidebarOpened = ! sidebarOpened"
+        x-show="$store.sidebar.open"
+        @click.outside="$store.sidebar.open = false"
+        @close.stop="$store.sidebar.open = false"
+        @click="$store.sidebar.toggle()"
         style="display: none"
     >
 

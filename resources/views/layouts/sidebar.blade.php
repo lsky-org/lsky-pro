@@ -1,11 +1,11 @@
 <nav class="transition-all duration-300 -left-64 sm:left-0 h-screen sm:w-64 bg-white fixed z-10 shadow-lg sm:shadow-none" :class="{
-    '-left-64': ! sidebarOpened,
-    'left-0': sidebarOpened,
-    'w-3/4': sidebarOpened
+    '-left-64': ! $store.sidebar.open,
+    'left-0': $store.sidebar.open,
+    'w-3/4': $store.sidebar.open
 }">
     <div class="px-6 h-14 flex justify-between sm:justify-center items-center bg-gray-600 text-white text-xl">
         <a href="/" class="truncate">{{ \App\Utils::config(\App\Enums\ConfigKey::SiteName) }}</a>
-        <a href="javascript:void(0)" class="sm:hidden block" @click="sidebarOpened = false"><i class="fas fa-times"></i></a>
+        <a href="javascript:void(0)" class="sm:hidden block" @click="$store.sidebar.open = false"><i class="fas fa-times"></i></a>
     </div>
 
     <div class="flex flex-col justify-between container mx-auto p-4 pb-12 h-full overflow-scroll overscroll-contain scrollbar-none">
