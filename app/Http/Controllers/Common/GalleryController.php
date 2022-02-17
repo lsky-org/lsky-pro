@@ -22,6 +22,7 @@ class GalleryController extends Controller
     {
         $images = Image::query()
             ->with('user')
+            ->whereNotNull('user_id')
             ->where('is_unhealthy', false)
             ->where('permission', ImagePermission::Public)
             ->latest()
