@@ -54,7 +54,7 @@ class ImageController extends Controller
                         break;
                 }
             })->when($request->query('keyword'), function (Builder $builder, $keyword) {
-                $builder->whereRaw("concat(IFNULL(origin_name,''),IFNULL(alias_name,'')) like ?", ["%{$keyword}%"]);
+                $builder->whereRaw("concat(origin_name,alias_name) like ?", ["%{$keyword}%"]);
             })->when((int) $request->query('album_id'), function (Builder $builder, $albumId) {
                 $builder->where('album_id', $albumId);
             }, function (Builder $builder) {
