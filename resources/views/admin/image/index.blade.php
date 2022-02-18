@@ -160,7 +160,7 @@
         <script>
             let modal = Alpine.store('modal');
 
-            function del(id, callback) {
+            function del(id) {
                 Swal.fire({
                     title: `确认删除该图片吗?`,
                     text: "记录与物理文件将会一起删除。",
@@ -172,13 +172,21 @@
                 }).then((result) => {
                     if (result.isConfirmed) {
                         axios.delete(`/admin/images/${id}`).then(response => {
-                            callback && callback(response);
+                            if (response.data.status) {
+                                modal = false;
+                                toastr.success(response.data.message);
+                                setTimeout(function () {
+                                    history.go(0);
+                                }, 1000);
+                            } else {
+                                toastr.error(response.data.message);
+                            }
                         });
                     }
                 });
             }
 
-            $('.item').click(function () {
+            $('.item').click(function (e) {
                 let image = $(this).data('json');
                 let html = $('#image-tpl').html()
                     .replace(/__id__/g, image.id)
@@ -216,19 +224,13 @@
                 modal.open = true;
             });
 
-            $(document).on('click', '.delete', function (e) {
+            $('.item .delete').click(function (e) {
                 e.stopPropagation();
-                del($(this).data('id'), function (response) {
-                    if (response.data.status) {
-                        modal = false;
-                        toastr.success(response.data.message);
-                        setTimeout(function () {
-                            history.go(0);
-                        }, 1000);
-                    } else {
-                        toastr.error(response.data.message);
-                    }
-                });
+                del($(this).data('id'));
+            });
+
+            $('#modal-content').on('click', '.delete', function (e) {
+                del($(this).data('id'));
             });
         </script>
     @endpush
