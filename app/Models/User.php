@@ -83,6 +83,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
     ];
 
+    protected $appends = ['avatar'];
+
     protected static function booted()
     {
         static::creating(function (self $user) {

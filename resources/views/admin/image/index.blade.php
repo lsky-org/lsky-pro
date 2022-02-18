@@ -5,7 +5,7 @@
         @if($images->isNotEmpty())
             <div class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 2xl:grid-cols-8 gap-2">
                 @foreach($images as $image)
-                <div data-json='@json($image)' class="item relative flex flex-col items-center justify-center overflow-hidden rounded-md cursor-pointer group">
+                <div data-json='{{ $image->toJson() }}' class="item relative flex flex-col items-center justify-center overflow-hidden rounded-md cursor-pointer group">
                     @if($image->extension === 'gif')
                         <span class="absolute top-1 left-1 z-[1] bg-white rounded-md text-sm px-1 py-0">Gif</span>
                     @endif

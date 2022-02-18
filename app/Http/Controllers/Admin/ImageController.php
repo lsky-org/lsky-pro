@@ -20,7 +20,6 @@ class ImageController extends Controller
         }, 'album', 'group', 'strategy'])->latest()->paginate(40);
         $images->getCollection()->each(function (Image $image) {
             $image->append('url', 'pathname');
-            $image->user->append('avatar');
             $image->album?->setVisible(['name']);
             $image->group?->setVisible(['name']);
             $image->strategy?->setVisible(['name']);
