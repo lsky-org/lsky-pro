@@ -4,10 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StrategyRequest;
-use App\Models\Group;
 use App\Models\Strategy;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
@@ -41,13 +39,7 @@ class StrategyController extends Controller
         $strategy = new Strategy($validated);
         DB::transaction(function () use ($strategy, $validated) {
             $strategy->save();
-            DB::table('group_strategy')->insert(
-                Group::query()
-                ->whereIn('id', $validated['groups'] ?: [])
-                ->pluck('id')
-                ->transform(fn ($id) => ['group_id' => $id, 'strategy_id' => $strategy->id])
-                ->toArray()
-            );
+            $strategy->groups()->attach($validated['groups']);
         });
         return $this->success('创建成功');
     }
@@ -60,18 +52,7 @@ class StrategyController extends Controller
         $strategy->fill($request->validated());
         DB::transaction(function () use ($strategy, $validated) {
             $strategy->save();
-            $strategy->groups->each(function (Group $group) {
-                /** @var Pivot $pivot */
-                $pivot = $group->pivot;
-                $pivot->delete();
-            });
-            DB::table('group_strategy')->insert(
-                Group::query()
-                    ->whereIn('id', $validated['groups'] ?: [])
-                    ->pluck('id')
-                    ->transform(fn ($id) => ['group_id' => $id, 'strategy_id' => $strategy->id])
-                    ->toArray()
-            );
+            $strategy->groups()->sync($validated['groups']);
         });
         return $this->success('保存成功');
     }
