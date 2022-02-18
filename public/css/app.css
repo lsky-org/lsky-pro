@@ -706,6 +706,9 @@ select {
 .right-4 {
   right: 1rem;
 }
+.left-1 {
+  left: 0.25rem;
+}
 .z-0 {
   z-index: 0;
 }
@@ -969,6 +972,9 @@ select {
 }
 .w-4 {
   width: 1rem;
+}
+.w-24 {
+  width: 6rem;
 }
 .min-w-full {
   min-width: 100%;

@@ -6,6 +6,9 @@
             <div class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 2xl:grid-cols-8 gap-2">
                 @foreach($images as $image)
                 <div data-json='@json($image)' class="item relative flex flex-col items-center justify-center overflow-hidden rounded-md cursor-pointer group">
+                    @if($image->extension === 'gif')
+                        <span class="absolute top-1 left-1 z-[1] bg-white rounded-md text-sm px-1 py-0">Gif</span>
+                    @endif
                     <img class="w-full h-36 object-cover transition-all group-hover:brightness-50" src="{{ $image->thumb_url }}">
 
                     <div class="absolute top-2 right-2 space-x-1 hidden group-hover:flex">
@@ -153,7 +156,65 @@
     </script>
 
     <script type="text/html" id="user-tpl">
-
+        <div class="flex w-full items-center justify-center py-4">
+            <img class="rounded-full h-24 w-24" src="__avatar__">
+        </div>
+        <div class="relative rounded-md bg-white mb-8 overflow-hidden">
+            <dl>
+                <div class="bg-white px-2 py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <dt class="text-sm font-medium text-gray-500">用户名</dt>
+                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2 truncate">__name__</dd>
+                </div>
+            </dl>
+            <dl>
+                <div class="bg-gray-50 px-2 py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <dt class="text-sm font-medium text-gray-500">邮箱</dt>
+                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2 truncate">__email__</dd>
+                </div>
+            </dl>
+            <dl>
+                <div class="bg-white px-2 py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <dt class="text-sm font-medium text-gray-500">总容量</dt>
+                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2 truncate">__capacity__</dd>
+                </div>
+            </dl>
+            <dl>
+                <div class="bg-gray-50 px-2 py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <dt class="text-sm font-medium text-gray-500">剩余容量</dt>
+                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2 truncate">__surplus_capacity__</dd>
+                </div>
+            </dl>
+            <dl>
+                <div class="bg-white px-2 py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <dt class="text-sm font-medium text-gray-500">图片数量</dt>
+                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2 truncate">__image_num__</dd>
+                </div>
+            </dl>
+            <dl>
+                <div class="bg-gray-50 px-2 py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <dt class="text-sm font-medium text-gray-500">相册数量</dt>
+                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2 truncate">__album_num__</dd>
+                </div>
+            </dl>
+            <dl>
+                <div class="bg-white px-2 py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <dt class="text-sm font-medium text-gray-500">注册 IP</dt>
+                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2 truncate">__registered_ip__</dd>
+                </div>
+            </dl>
+            <dl>
+                <div class="bg-gray-50 px-2 py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <dt class="text-sm font-medium text-gray-500">邮箱验证时间</dt>
+                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2 truncate">__email_verified_at__</dd>
+                </div>
+            </dl>
+            <dl>
+                <div class="bg-white px-2 py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <dt class="text-sm font-medium text-gray-500">注册时间</dt>
+                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2 truncate">__created_at__</dd>
+                </div>
+            </dl>
+        </div>
     </script>
 
 @push('scripts')
@@ -218,7 +279,19 @@
             $('.item-user').click(function (e) {
                 e.stopPropagation();
                 let user = $(this).closest('.item').data('json').user || {};
-                let html = $('#user-tpl').html();
+                let html = $('#user-tpl').html()
+                    .replace(/__avatar__/g, user.avatar)
+                    .replace(/__name__/g, user.name)
+                    .replace(/__email__/g, user.email)
+                    .replace(/__capacity__/g, utils.formatSize(user.capacity * 1024))
+                    .replace(/__surplus_capacity__/g, utils.formatSize(user.images_sum_size * 1024))
+                    .replace(/__image_num__/g, user.image_num)
+                    .replace(/__album_num__/g, user.album_num)
+                    .replace(/__registered_ip__/g, user.registered_ip || '-')
+                    .replace(/__status__/g, user.status === 1 ? '<span class="text-green-500">正常</span>' : '<span class="text-red-500">冻结</span>')
+                    .replace(/__email_verified_at__/g, user.email_verified_at || '-')
+                    .replace(/__created_at__/g, user.created_at);
+
                 $('#modal-content').html(html);
 
                 modal.open = true;

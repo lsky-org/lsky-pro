@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Image;
 use App\Services\UserService;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\View\View;
@@ -14,9 +15,12 @@ class ImageController extends Controller
     public function index(Request $request): View
     {
         $statuses = [];
-        $images = Image::query()->with('user', 'album', 'group', 'strategy')->latest()->paginate(40);
+        $images = Image::query()->with(['user' => function (BelongsTo $belongsTo) {
+            $belongsTo->withSum('images', 'size');
+        }, 'album', 'group', 'strategy'])->latest()->paginate(40);
         $images->getCollection()->each(function (Image $image) {
             $image->append('url', 'pathname');
+            $image->user->append('avatar');
             $image->album?->setVisible(['name']);
             $image->group?->setVisible(['name']);
             $image->strategy?->setVisible(['name']);
