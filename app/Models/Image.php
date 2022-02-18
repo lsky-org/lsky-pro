@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Enums\GroupConfigKey;
-use App\Enums\Strategy\LocalOption;
 use App\Enums\StrategyKey;
 use App\Services\ImageService;
 use Carbon\Carbon;
@@ -13,7 +12,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use League\Flysystem\Filesystem;
 
@@ -77,8 +75,6 @@ class Image extends Model
         'album_id',
         'group_id',
         'strategy_id',
-        'is_unhealthy',
-        'permission',
     ];
 
     protected $casts = [

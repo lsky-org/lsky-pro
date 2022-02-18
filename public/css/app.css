@@ -730,6 +730,9 @@ select {
 .col-span-3 {
   grid-column: span 3 / span 3;
 }
+.float-right {
+  float: right;
+}
 .m-2 {
   margin: 0.5rem;
 }
@@ -1089,6 +1092,9 @@ select {
 }
 .grid-cols-4 {
   grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+.grid-cols-12 {
+  grid-template-columns: repeat(12, minmax(0, 1fr));
 }
 .flex-row {
   flex-direction: row;
@@ -1800,6 +1806,9 @@ select {
 .opacity-75 {
   opacity: 0.75;
 }
+.opacity-50 {
+  opacity: 0.5;
+}
 .shadow-sm {
   --tw-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color);
@@ -2083,6 +2092,9 @@ select {
 .group:hover .group-hover\:block {
   display: block;
 }
+.group:hover .group-hover\:flex {
+  display: flex;
+}
 .group:hover .group-hover\:hidden {
   display: none;
 }
@@ -2093,6 +2105,20 @@ select {
 .group:hover .group-hover\:text-blue-500 {
   --tw-text-opacity: 1;
   color: rgb(59 130 246 / var(--tw-text-opacity));
+}
+.group:hover .group-hover\:opacity-50 {
+  opacity: 0.5;
+}
+.group:hover .group-hover\:opacity-25 {
+  opacity: 0.25;
+}
+.group:hover .group-hover\:blur-sm {
+  --tw-blur: blur(4px);
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+}
+.group:hover .group-hover\:brightness-50 {
+  --tw-brightness: brightness(.5);
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }
 .dark .dark\:bg-gray-900 {
   --tw-bg-opacity: 1;
@@ -2110,6 +2136,14 @@ select {
 
   .sm\:right-6 {
     right: 1.5rem;
+  }
+
+  .sm\:top-4 {
+    top: 1rem;
+  }
+
+  .sm\:right-4 {
+    right: 1rem;
   }
 
   .sm\:col-span-3 {
@@ -2269,6 +2303,14 @@ select {
     right: 1.5rem;
   }
 
+  .md\:top-3 {
+    top: 0.75rem;
+  }
+
+  .md\:right-3 {
+    right: 0.75rem;
+  }
+
   .md\:col-span-2 {
     grid-column: span 2 / span 2;
   }
@@ -2377,6 +2419,10 @@ select {
     margin-left: calc(1rem * calc(1 - var(--tw-space-x-reverse)));
   }
 
+  .md\:rounded-sm {
+    border-radius: 0.125rem;
+  }
+
   .md\:p-6 {
     padding: 1.5rem;
   }
@@ -2416,6 +2462,14 @@ select {
 
   .lg\:right-8 {
     right: 2rem;
+  }
+
+  .lg\:top-4 {
+    top: 1rem;
+  }
+
+  .lg\:right-4 {
+    right: 1rem;
   }
 
   .lg\:col-span-5 {
