@@ -3,11 +3,10 @@
 <x-app-layout>
     <div class="my-6 md:my-9">
         <p class="text-xl mb-2 text-gray-800 font-semibold">接口说明</p>
-        <div class="space-y-4 bg-white p-3 rounded-md mb-5">
+        <div class="space-y-4 bg-white p-3 rounded-md mb-10">
             <div>
                 <p class="text-lg text-gray-700 font-semibold">接口URL</p>
                 <x-code>{{ request()->getSchemeAndHttpHost() }}/api/v1</x-code>
-                <p class="text-sm text-red-500">请求接口时，必须设置 header 标头 Accept: application/json。</p>
             </div>
 
             <div>
@@ -15,8 +14,39 @@
                 <div class="my-2 text-sm bg-white rounded-md p-4 overflow-x-auto">
                     当前版本接口采用 「HTTP 基本验证」的方式验证授权，通过接口获取 token 后，通过设置请求 header 标头来验证请求，例如：
                     <b class="block my-2 text-gray-600 text-sm">"Authorization": "Bearer 1|1bJbwlqBfnggmOMEZqXT5XusaIwqiZjCDs7r1Ob5"</b>
-                    <p class="text-sm">如果未设置 Authorization 的情况下请求上传接口，将被视为游客上传。</p>
+                    <p class="text-sm">如果未设置 Authorization 的情况下请求上传接口，将会被视为游客上传。</p>
                 </div>
+            </div>
+
+            <div class="my-4 overflow-x-auto">
+                <p class="text-sm mb-2">公共请求 headers 说明</p>
+                <table class="min-w-full">
+                    <thead class="bg-white border">
+                    <tr>
+                        <th scope="col" class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
+                            字段
+                        </th>
+                        <th scope="col" class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
+                            类型
+                        </th>
+                        <th scope="col" class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
+                            说明
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody class="bg-white border divide-y text-sm">
+                    <tr>
+                        <td class="px-3 py-2 whitespace-nowrap">Authorization</td>
+                        <td class="px-3 py-2 whitespace-nowrap">String</td>
+                        <td class="px-3 py-2 whitespace-nowrap">授权 Token，例如：Bearer 1|1bJbwlqBfnggmOMEZqXT5XusaIwqiZjCDs7r1Ob5</td>
+                    </tr>
+                    <tr>
+                        <td class="px-3 py-2 whitespace-nowrap"><span class="text-red-500">*</span>Accept</td>
+                        <td class="px-3 py-2 whitespace-nowrap">String</td>
+                        <td class="px-3 py-2 whitespace-nowrap">必须设置为 application/json</td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
 
             <div class="my-4 overflow-x-auto">
@@ -48,12 +78,12 @@
                     </tr>
                     </tbody>
                 </table>
-                <p class="text-sm my-2 text-red-500">超出请求配额后，程序将会返回 HTTP 429 Too Many Requests 错误。</p>
+                <p class="text-sm my-2 text-red-500">超出请求配额后，程序将会返回 HTTP 429 Too Many Requests 错误。文档中接口的请求参数，使用红色「*」符号标注，则表示为必传项。</p>
             </div>
         </div>
 
         <p class="text-xl mb-2 text-gray-800 font-semibold">授权相关</p>
-        <div class="space-y-4 bg-white p-3 rounded-md mb-5">
+        <div class="space-y-4 bg-white p-3 rounded-md mb-10">
             <div>
                 <p class="text-lg text-gray-700 font-semibold">生成 Token</p>
                 <x-code><span class="text-green-500 select-none">POST </span>/tokens</x-code>
@@ -75,12 +105,12 @@
                         </thead>
                         <tbody class="bg-white border divide-y text-sm">
                         <tr>
-                            <td class="px-3 py-2 whitespace-nowrap">email</td>
+                            <td class="px-3 py-2 whitespace-nowrap"><span class="text-red-500">*</span>email</td>
                             <td class="px-3 py-2 whitespace-nowrap">String</td>
                             <td class="px-3 py-2 whitespace-nowrap">邮箱</td>
                         </tr>
                         <tr>
-                            <td class="px-3 py-2 whitespace-nowrap">password</td>
+                            <td class="px-3 py-2 whitespace-nowrap"><span class="text-red-500">*</span>password</td>
                             <td class="px-3 py-2 whitespace-nowrap">String</td>
                             <td class="px-3 py-2 whitespace-nowrap">密码</td>
                         </tr>
@@ -128,7 +158,6 @@
                     </table>
                 </div>
             </div>
-
             <div>
                 <p class="text-lg text-gray-700 font-semibold">清空 Token</p>
                 <x-code><span class="text-red-300 select-none">DELETE </span>/tokens</x-code>
@@ -168,10 +197,94 @@
                     </table>
                 </div>
             </div>
+            <div>
+                <p class="text-lg text-gray-700 font-semibold">用户资料</p>
+                <x-code><span class="text-sky-500 select-none">GET </span>/profile</x-code>
+                <div class="my-4 overflow-x-auto">
+                    <p class="text-sm mb-2">返回参数</p>
+                    <table class="min-w-full">
+                        <thead class="bg-white border">
+                        <tr>
+                            <th scope="col" class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
+                                字段
+                            </th>
+                            <th scope="col" class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
+                                类型
+                            </th>
+                            <th scope="col" class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
+                                说明
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody class="bg-white border divide-y text-sm">
+                        <tr>
+                            <td class="px-3 py-2 whitespace-nowrap">status</td>
+                            <td class="px-3 py-2 whitespace-nowrap">Boolean</td>
+                            <td class="px-3 py-2 whitespace-nowrap">状态，true 或 false</td>
+                        </tr>
+                        <tr>
+                            <td class="px-3 py-2 whitespace-nowrap">message</td>
+                            <td class="px-3 py-2 whitespace-nowrap">String</td>
+                            <td class="px-3 py-2 whitespace-nowrap">描述信息</td>
+                        </tr>
+                        <tr>
+                            <td class="px-3 py-2 whitespace-nowrap">data</td>
+                            <td class="px-3 py-2 whitespace-nowrap">Object</td>
+                            <td class="px-3 py-2 whitespace-nowrap">数据</td>
+                        </tr>
+                        <tr>
+                            <td class="px-3 py-2 whitespace-nowrap pl-6">name</td>
+                            <td class="px-3 py-2 whitespace-nowrap">String</td>
+                            <td class="px-3 py-2 whitespace-nowrap">用户名</td>
+                        </tr>
+                        <tr>
+                            <td class="px-3 py-2 whitespace-nowrap pl-6">avatar</td>
+                            <td class="px-3 py-2 whitespace-nowrap">String</td>
+                            <td class="px-3 py-2 whitespace-nowrap">头像地址</td>
+                        </tr>
+                        <tr>
+                            <td class="px-3 py-2 whitespace-nowrap pl-6">email</td>
+                            <td class="px-3 py-2 whitespace-nowrap">String</td>
+                            <td class="px-3 py-2 whitespace-nowrap">邮箱地址</td>
+                        </tr>
+                        <tr>
+                            <td class="px-3 py-2 whitespace-nowrap pl-6">capacity</td>
+                            <td class="px-3 py-2 whitespace-nowrap">Float</td>
+                            <td class="px-3 py-2 whitespace-nowrap">总容量</td>
+                        </tr>
+                        <tr>
+                            <td class="px-3 py-2 whitespace-nowrap pl-6">used_capacity</td>
+                            <td class="px-3 py-2 whitespace-nowrap">Float</td>
+                            <td class="px-3 py-2 whitespace-nowrap">已使用容量</td>
+                        </tr>
+                        <tr>
+                            <td class="px-3 py-2 whitespace-nowrap pl-6">url</td>
+                            <td class="px-3 py-2 whitespace-nowrap">String</td>
+                            <td class="px-3 py-2 whitespace-nowrap">个人主页地址</td>
+                        </tr>
+                        <tr>
+                            <td class="px-3 py-2 whitespace-nowrap pl-6">image_num</td>
+                            <td class="px-3 py-2 whitespace-nowrap">Integer</td>
+                            <td class="px-3 py-2 whitespace-nowrap">图片数量</td>
+                        </tr>
+                        <tr>
+                            <td class="px-3 py-2 whitespace-nowrap pl-6">album_num</td>
+                            <td class="px-3 py-2 whitespace-nowrap">Integer</td>
+                            <td class="px-3 py-2 whitespace-nowrap">相册数量</td>
+                        </tr>
+                        <tr>
+                            <td class="px-3 py-2 whitespace-nowrap pl-6">registered_ip</td>
+                            <td class="px-3 py-2 whitespace-nowrap">String</td>
+                            <td class="px-3 py-2 whitespace-nowrap">注册 IP</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
 
         <p class="text-xl mb-2 text-gray-800 font-semibold">图片相关</p>
-        <div class="space-y-4 bg-white p-3 rounded-md mb-5">
+        <div class="space-y-4 bg-white p-3 rounded-md mb-10">
             <div>
                 <p class="text-lg text-gray-700 font-semibold">上传图片</p>
                 <x-code><span class="text-green-500 select-none">POST </span>/upload</x-code>
@@ -194,7 +307,7 @@
                         </thead>
                         <tbody class="bg-white border divide-y text-sm">
                         <tr>
-                            <td class="px-3 py-2 whitespace-nowrap">Content-Type</td>
+                            <td class="px-3 py-2 whitespace-nowrap"><span class="text-red-500">*</span>Content-Type</td>
                             <td class="px-3 py-2 whitespace-nowrap">String</td>
                             <td class="px-3 py-2 whitespace-nowrap">需要设置为 multipart/form-data</td>
                         </tr>
@@ -220,7 +333,7 @@
                         </thead>
                         <tbody class="bg-white border divide-y text-sm">
                         <tr>
-                            <td class="px-3 py-2 whitespace-nowrap">file</td>
+                            <td class="px-3 py-2 whitespace-nowrap"><span class="text-red-500">*</span>file</td>
                             <td class="px-3 py-2 whitespace-nowrap">File</td>
                             <td class="px-3 py-2 whitespace-nowrap">图片文件</td>
                         </tr>
@@ -537,7 +650,7 @@
                         </thead>
                         <tbody class="bg-white border divide-y text-sm">
                         <tr>
-                            <td class="px-3 py-2 whitespace-nowrap">key</td>
+                            <td class="px-3 py-2 whitespace-nowrap"><span class="text-red-500">*</span>key</td>
                             <td class="px-3 py-2 whitespace-nowrap">String</td>
                             <td class="px-3 py-2 whitespace-nowrap">图片密钥</td>
                         </tr>
@@ -584,7 +697,7 @@
         </div>
 
         <p class="text-xl mb-2 text-gray-800 font-semibold">相册相关</p>
-        <div class="space-y-4 bg-white p-3 rounded-md mb-5">
+        <div class="space-y-4 bg-white p-3 rounded-md mb-10">
             <div>
                 <p class="text-lg text-gray-700 font-semibold">相册列表</p>
                 <x-code><span class="text-sky-500 select-none">GET </span>/albums</x-code>
@@ -728,7 +841,7 @@
                         </thead>
                         <tbody class="bg-white border divide-y text-sm">
                         <tr>
-                            <td class="px-3 py-2 whitespace-nowrap">id</td>
+                            <td class="px-3 py-2 whitespace-nowrap"><span class="text-red-500">*</span>id</td>
                             <td class="px-3 py-2 whitespace-nowrap">String</td>
                             <td class="px-3 py-2 whitespace-nowrap">相册自增 ID</td>
                         </tr>
