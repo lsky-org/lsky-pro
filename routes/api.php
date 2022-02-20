@@ -22,6 +22,7 @@ Route::group(['prefix' => 'v1'], function () {
     Route::group([
         'middleware' => 'auth:sanctum',
     ], function () {
+        Route::get('images', [ImageController::class, 'images']);
         Route::delete('tokens', [TokenController::class, 'clear']);
     });
 });

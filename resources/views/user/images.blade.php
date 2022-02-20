@@ -59,18 +59,18 @@
             </x-dropdown>
             <x-dropdown direction="left">
                 <x-slot name="trigger">
-                    <a id="visibility" class="text-sm py-2 px-3 hover:bg-gray-100 rounded text-gray-800" href="javascript:void(0)">
+                    <a id="permission" class="text-sm py-2 px-3 hover:bg-gray-100 rounded text-gray-800" href="javascript:void(0)">
                         <span>全部</span>
                         <i class="fas fa-eye text-blue-500"></i>
                     </a>
                 </x-slot>
 
                 <x-slot name="content">
-                    <x-dropdown-link href="javascript:void(0)" @click="open = false; setVisibility('all')">全部
+                    <x-dropdown-link href="javascript:void(0)" @click="open = false; setPermission('all')">全部
                     </x-dropdown-link>
-                    <x-dropdown-link href="javascript:void(0)" @click="open = false; setVisibility('public')">公开
+                    <x-dropdown-link href="javascript:void(0)" @click="open = false; setPermission('public')">公开
                     </x-dropdown-link>
-                    <x-dropdown-link href="javascript:void(0)" @click="open = false; setVisibility('private')">私有
+                    <x-dropdown-link href="javascript:void(0)" @click="open = false; setPermission('private')">私有
                     </x-dropdown-link>
                 </x-slot>
             </x-dropdown>
@@ -447,9 +447,9 @@
                 $('#order span').text({newest: '最新', earliest: '最早', utmost: '最大', least: '最小'}[sort]);
             };
 
-            const setVisibility = function (visibility) {
-                resetImages({page: 1, visibility: visibility})
-                $('#visibility span').text({public: '公开', private: '私有', all: '全部'}[visibility]);
+            const setPermission = function (permission) {
+                resetImages({page: 1, permission: permission})
+                $('#permission span').text({public: '公开', private: '私有', all: '全部'}[permission]);
             };
 
             $('#search').keydown(function (e) {
@@ -569,7 +569,7 @@
                         }
                     });
                 },
-                visibility() {
+                permission() {
                     Swal.fire({
                         title: '选择一个权限',
                         text: '选择公开将会出现在画廊中(若平台开启了画廊)',
@@ -780,9 +780,9 @@
                     text: '删除',
                     action: _ => methods.delete(),
                 },
-                visibility: {
+                permission: {
                     text: '设置可见性',
-                    action: _ => methods.visibility(),
+                    action: _ => methods.permission(),
                 },
             };
             // right click 'images scroll' container
@@ -800,7 +800,7 @@
                     actions.open,
                     actions.movements,
                     actions.remove,
-                    actions.visibility,
+                    actions.permission,
                     actions.detail,
                     {divider: true},
                     actions.rename,
@@ -842,7 +842,7 @@
                         methods.rename(selected[0]);
                         break;
                     case 'permission': // 设置可见性
-                        methods.visibility();
+                        methods.permission();
                         break;
                     case 'detail':
                         methods.detail(selected[0]);

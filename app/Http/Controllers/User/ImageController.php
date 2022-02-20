@@ -9,7 +9,6 @@ use App\Models\Album;
 use App\Models\Image;
 use App\Models\User;
 use App\Services\UserService;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
@@ -28,38 +27,7 @@ class ImageController extends Controller
         /** @var User $user */
         $user = Auth::user();
 
-        $images = Image::with('group', 'strategy')
-            ->where('user_id', $user->id)
-            ->when($request->query('order') ?: 'newest', function (Builder $builder, $order) {
-                switch ($order) {
-                    case 'earliest':
-                        $builder->orderBy('created_at');
-                        break;
-                    case 'utmost':
-                        $builder->orderByDesc('size');
-                        break;
-                    case 'least':
-                        $builder->orderBy('size');
-                        break;
-                    default:
-                        $builder->latest();
-                }
-            })->when($request->query('visibility') ?: 'all', function (Builder $builder, $visibility) {
-                switch ($visibility) {
-                    case 'public':
-                        $builder->where('permission', ImagePermission::Public);
-                        break;
-                    case 'private':
-                        $builder->where('permission', ImagePermission::Private);
-                        break;
-                }
-            })->when($request->query('keyword'), function (Builder $builder, $keyword) {
-                $builder->whereRaw("concat(origin_name,alias_name) like ?", ["%{$keyword}%"]);
-            })->when((int) $request->query('album_id'), function (Builder $builder, $albumId) {
-                $builder->where('album_id', $albumId);
-            }, function (Builder $builder) {
-                $builder->whereNull('album_id');
-            })->paginate(40);
+        $images = $user->images()->filter($request)->with('group', 'strategy')->paginate(40);
         $images->getCollection()->each(function (Image $image) {
             $image->human_date = $image->created_at->diffForHumans();
             $image->date = $image->created_at->format('Y-m-d H:i:s');

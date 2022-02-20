@@ -3,13 +3,16 @@
 namespace App\Models;
 
 use App\Enums\GroupConfigKey;
+use App\Enums\ImagePermission;
 use App\Enums\StrategyKey;
 use App\Services\ImageService;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
@@ -105,6 +108,40 @@ class Image extends Model
                 // 删除物理文件
                 $image->filesystem()->delete($image->pathname);
             }
+        });
+    }
+
+    public function scopeFilter(Builder $builder, Request $request)
+    {
+        return $builder->when($request->query('order') ?: 'newest', function (Builder $builder, $order) {
+            switch ($order) {
+                case 'earliest':
+                    $builder->orderBy('created_at');
+                    break;
+                case 'utmost':
+                    $builder->orderByDesc('size');
+                    break;
+                case 'least':
+                    $builder->orderBy('size');
+                    break;
+                default:
+                    $builder->latest();
+            }
+        })->when($request->query('permission') ?: 'all', function (Builder $builder, $permission) {
+            switch ($permission) {
+                case 'public':
+                    $builder->where('permission', ImagePermission::Public);
+                    break;
+                case 'private':
+                    $builder->where('permission', ImagePermission::Private);
+                    break;
+            }
+        })->when($request->query('keyword'), function (Builder $builder, $keyword) {
+            $builder->whereRaw("concat(origin_name,alias_name) like ?", ["%{$keyword}%"]);
+        })->when((int) $request->query('album_id'), function (Builder $builder, $albumId) {
+            $builder->where('album_id', $albumId);
+        }, function (Builder $builder) {
+            $builder->whereNull('album_id');
         });
     }
 

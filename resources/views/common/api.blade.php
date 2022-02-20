@@ -3,7 +3,7 @@
 <x-app-layout>
     <div class="my-6 md:my-9">
         <p class="text-xl mb-2 text-gray-800 font-semibold">接口说明</p>
-        <div class="space-y-4 bg-gray-50 p-3 rounded-md mb-5">
+        <div class="space-y-4 bg-white p-3 rounded-md mb-5">
             <div>
                 <p class="text-lg text-gray-700 font-semibold">接口URL</p>
                 <x-code>{{ request()->getSchemeAndHttpHost() }}/api/v1</x-code>
@@ -22,7 +22,7 @@
             <div class="my-4 overflow-x-auto">
                 <p class="text-sm mb-2">公共响应 headers 说明</p>
                 <table class="min-w-full">
-                    <thead class="bg-gray-50 border">
+                    <thead class="bg-white border">
                     <tr>
                         <th scope="col" class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
                             字段
@@ -53,14 +53,14 @@
         </div>
 
         <p class="text-xl mb-2 text-gray-800 font-semibold">授权相关</p>
-        <div class="space-y-4 bg-gray-50 p-3 rounded-md mb-5">
+        <div class="space-y-4 bg-white p-3 rounded-md mb-5">
             <div>
                 <p class="text-lg text-gray-700 font-semibold">生成 Token</p>
                 <x-code><span class="text-green-500 select-none">POST </span>/tokens</x-code>
                 <div class="my-4 overflow-x-auto">
-                    <p class="text-sm mb-2">请求参数</p>
+                    <p class="text-sm mb-2">请求参数(Body)</p>
                     <table class="min-w-full">
-                        <thead class="bg-gray-50 border">
+                        <thead class="bg-white border">
                         <tr>
                             <th scope="col" class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
                                 字段
@@ -90,7 +90,7 @@
                 <div class="my-4 overflow-x-auto">
                     <p class="text-sm mb-2">返回参数</p>
                     <table class="min-w-full">
-                        <thead class="bg-gray-50 border">
+                        <thead class="bg-white border">
                         <tr>
                             <th scope="col" class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
                                 字段
@@ -135,7 +135,7 @@
                 <div class="my-4 overflow-x-auto">
                     <p class="text-sm mb-2">返回参数</p>
                     <table class="min-w-full">
-                        <thead class="bg-gray-50 border">
+                        <thead class="bg-white border">
                         <tr>
                             <th scope="col" class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
                                 字段
@@ -171,7 +171,7 @@
         </div>
 
         <p class="text-xl mb-2 text-gray-800 font-semibold">图片相关</p>
-        <div class="space-y-4 bg-gray-50 p-3 rounded-md mb-5">
+        <div class="space-y-4 bg-white p-3 rounded-md mb-5">
             <div>
                 <p class="text-lg text-gray-700 font-semibold">上传图片</p>
                 <x-code><span class="text-green-500 select-none">POST </span>/upload</x-code>
@@ -179,7 +179,7 @@
                 <div class="my-4 overflow-x-auto">
                     <p class="text-sm mb-2">Headers</p>
                     <table class="min-w-full">
-                        <thead class="bg-gray-50 border">
+                        <thead class="bg-white border">
                         <tr>
                             <th scope="col" class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
                                 字段
@@ -203,9 +203,9 @@
                 </div>
 
                 <div class="my-4 overflow-x-auto">
-                    <p class="text-sm mb-2">请求参数</p>
+                    <p class="text-sm mb-2">请求参数(Body)</p>
                     <table class="min-w-full">
-                        <thead class="bg-gray-50 border">
+                        <thead class="bg-white border">
                         <tr>
                             <th scope="col" class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
                                 字段
@@ -231,7 +231,7 @@
                 <div class="my-4 overflow-x-auto">
                     <p class="text-sm mb-2">返回参数</p>
                     <table class="min-w-full">
-                        <thead class="bg-gray-50 border">
+                        <thead class="bg-white border">
                         <tr>
                             <th scope="col" class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
                                 字段
@@ -271,11 +271,6 @@
                             <td class="px-3 py-2 whitespace-nowrap">图片名称</td>
                         </tr>
                         <tr>
-                            <td class="px-3 py-2 whitespace-nowrap pl-6">extension</td>
-                            <td class="px-3 py-2 whitespace-nowrap">String</td>
-                            <td class="px-3 py-2 whitespace-nowrap">图片拓展名</td>
-                        </tr>
-                        <tr>
                             <td class="px-3 py-2 whitespace-nowrap pl-6">pathname</td>
                             <td class="px-3 py-2 whitespace-nowrap">String</td>
                             <td class="px-3 py-2 whitespace-nowrap">图片路径名</td>
@@ -294,6 +289,11 @@
                             <td class="px-3 py-2 whitespace-nowrap pl-6">mimetype</td>
                             <td class="px-3 py-2 whitespace-nowrap">String</td>
                             <td class="px-3 py-2 whitespace-nowrap">图片类型</td>
+                        </tr>
+                        <tr>
+                            <td class="px-3 py-2 whitespace-nowrap pl-6">extension</td>
+                            <td class="px-3 py-2 whitespace-nowrap">String</td>
+                            <td class="px-3 py-2 whitespace-nowrap">图片拓展名</td>
                         </tr>
                         <tr>
                             <td class="px-3 py-2 whitespace-nowrap pl-6">md5</td>
@@ -339,6 +339,177 @@
                             <td class="px-3 py-2 whitespace-nowrap pl-10">thumbnail_url</td>
                             <td class="px-3 py-2 whitespace-nowrap">String</td>
                             <td class="px-3 py-2 whitespace-nowrap">缩略图 url</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div>
+                <p class="text-lg text-gray-700 font-semibold">图片列表</p>
+                <x-code><span class="text-sky-500 select-none">GET </span>/images</x-code>
+
+                <div class="my-4 overflow-x-auto">
+                    <p class="text-sm mb-2">请求参数(Query)</p>
+                    <table class="min-w-full">
+                        <thead class="bg-white border">
+                        <tr>
+                            <th scope="col" class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
+                                字段
+                            </th>
+                            <th scope="col" class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
+                                类型
+                            </th>
+                            <th scope="col" class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
+                                说明
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody class="bg-white border divide-y text-sm">
+                        <tr>
+                            <td class="px-3 py-2 whitespace-nowrap">page</td>
+                            <td class="px-3 py-2 whitespace-nowrap">Integer</td>
+                            <td class="px-3 py-2 whitespace-nowrap">页码</td>
+                        </tr>
+                        <tr>
+                            <td class="px-3 py-2 whitespace-nowrap">order</td>
+                            <td class="px-3 py-2 whitespace-nowrap">String</td>
+                            <td class="px-3 py-2 whitespace-nowrap">排序方式，newest=最新，earliest=最早，utmost=最大，least=最小</td>
+                        </tr>
+                        <tr>
+                            <td class="px-3 py-2 whitespace-nowrap">permission</td>
+                            <td class="px-3 py-2 whitespace-nowrap">String</td>
+                            <td class="px-3 py-2 whitespace-nowrap">权限，public=公开的，private=私有的</td>
+                        </tr>
+                        <tr>
+                            <td class="px-3 py-2 whitespace-nowrap">album_id</td>
+                            <td class="px-3 py-2 whitespace-nowrap">Integer</td>
+                            <td class="px-3 py-2 whitespace-nowrap">相册 ID</td>
+                        </tr>
+                        <tr>
+                            <td class="px-3 py-2 whitespace-nowrap">keyword</td>
+                            <td class="px-3 py-2 whitespace-nowrap">String</td>
+                            <td class="px-3 py-2 whitespace-nowrap">筛选关键字</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="my-4 overflow-x-auto">
+                    <p class="text-sm mb-2">返回参数</p>
+                    <table class="min-w-full">
+                        <thead class="bg-white border">
+                        <tr>
+                            <th scope="col" class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
+                                字段
+                            </th>
+                            <th scope="col" class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
+                                类型
+                            </th>
+                            <th scope="col" class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
+                                说明
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody class="bg-white border divide-y text-sm">
+                        <tr>
+                            <td class="px-3 py-2 whitespace-nowrap">status</td>
+                            <td class="px-3 py-2 whitespace-nowrap">Boolean</td>
+                            <td class="px-3 py-2 whitespace-nowrap">状态，true 或 false</td>
+                        </tr>
+                        <tr>
+                            <td class="px-3 py-2 whitespace-nowrap">message</td>
+                            <td class="px-3 py-2 whitespace-nowrap">String</td>
+                            <td class="px-3 py-2 whitespace-nowrap">描述信息</td>
+                        </tr>
+                        <tr>
+                            <td class="px-3 py-2 whitespace-nowrap">data</td>
+                            <td class="px-3 py-2 whitespace-nowrap">Object</td>
+                            <td class="px-3 py-2 whitespace-nowrap">数据</td>
+                        </tr>
+                        <tr>
+                            <td class="px-3 py-2 whitespace-nowrap pl-6">current_page</td>
+                            <td class="px-3 py-2 whitespace-nowrap">Integer</td>
+                            <td class="px-3 py-2 whitespace-nowrap">当前所在页页码</td>
+                        </tr>
+                        <tr>
+                            <td class="px-3 py-2 whitespace-nowrap pl-6">last_page</td>
+                            <td class="px-3 py-2 whitespace-nowrap">Integer</td>
+                            <td class="px-3 py-2 whitespace-nowrap">最后一页页码</td>
+                        </tr>
+                        <tr>
+                            <td class="px-3 py-2 whitespace-nowrap pl-6">per_page</td>
+                            <td class="px-3 py-2 whitespace-nowrap">Integer</td>
+                            <td class="px-3 py-2 whitespace-nowrap">每页展示数据数量</td>
+                        </tr>
+                        <tr>
+                            <td class="px-3 py-2 whitespace-nowrap pl-6">total</td>
+                            <td class="px-3 py-2 whitespace-nowrap">Integer</td>
+                            <td class="px-3 py-2 whitespace-nowrap">图片总数量</td>
+                        </tr>
+                        <tr>
+                            <td class="px-3 py-2 whitespace-nowrap pl-6">data</td>
+                            <td class="px-3 py-2 whitespace-nowrap">Object[]</td>
+                            <td class="px-3 py-2 whitespace-nowrap">图片列表</td>
+                        </tr>
+                        <tr>
+                            <td class="px-3 py-2 whitespace-nowrap pl-10">key</td>
+                            <td class="px-3 py-2 whitespace-nowrap">String</td>
+                            <td class="px-3 py-2 whitespace-nowrap">图片唯一密钥</td>
+                        </tr>
+                        <tr>
+                            <td class="px-3 py-2 whitespace-nowrap pl-10">name</td>
+                            <td class="px-3 py-2 whitespace-nowrap">String</td>
+                            <td class="px-3 py-2 whitespace-nowrap">图片名称</td>
+                        </tr>
+                        <tr>
+                            <td class="px-3 py-2 whitespace-nowrap pl-10">origin_name</td>
+                            <td class="px-3 py-2 whitespace-nowrap">String</td>
+                            <td class="px-3 py-2 whitespace-nowrap">图片原始名称</td>
+                        </tr>
+                        <tr>
+                            <td class="px-3 py-2 whitespace-nowrap pl-10">pathname</td>
+                            <td class="px-3 py-2 whitespace-nowrap">String</td>
+                            <td class="px-3 py-2 whitespace-nowrap">图片路径名</td>
+                        </tr>
+                        <tr>
+                            <td class="px-3 py-2 whitespace-nowrap pl-10">size</td>
+                            <td class="px-3 py-2 whitespace-nowrap">Float</td>
+                            <td class="px-3 py-2 whitespace-nowrap">图片大小，单位 KB</td>
+                        </tr>
+                        <tr>
+                            <td class="px-3 py-2 whitespace-nowrap pl-10">width</td>
+                            <td class="px-3 py-2 whitespace-nowrap">Integer</td>
+                            <td class="px-3 py-2 whitespace-nowrap">图片宽度</td>
+                        </tr>
+                        <tr>
+                            <td class="px-3 py-2 whitespace-nowrap pl-10">height</td>
+                            <td class="px-3 py-2 whitespace-nowrap">Integer</td>
+                            <td class="px-3 py-2 whitespace-nowrap">图片高度</td>
+                        </tr>
+                        <tr>
+                            <td class="px-3 py-2 whitespace-nowrap pl-10">md5</td>
+                            <td class="px-3 py-2 whitespace-nowrap">String</td>
+                            <td class="px-3 py-2 whitespace-nowrap">图片 md5 值</td>
+                        </tr>
+                        <tr>
+                            <td class="px-3 py-2 whitespace-nowrap pl-10">sha1</td>
+                            <td class="px-3 py-2 whitespace-nowrap">String</td>
+                            <td class="px-3 py-2 whitespace-nowrap">图片 sha1 值</td>
+                        </tr>
+                        <tr>
+                            <td class="px-3 py-2 whitespace-nowrap pl-10">human_date</td>
+                            <td class="px-3 py-2 whitespace-nowrap">String</td>
+                            <td class="px-3 py-2 whitespace-nowrap">上传时间(友好格式)</td>
+                        </tr>
+                        <tr>
+                            <td class="px-3 py-2 whitespace-nowrap pl-10">date</td>
+                            <td class="px-3 py-2 whitespace-nowrap">String</td>
+                            <td class="px-3 py-2 whitespace-nowrap">上传日期(yyyy-MM-dd HH:mm:ss)</td>
+                        </tr>
+                        <tr>
+                            <td class="px-3 py-2 whitespace-nowrap pl-10">links</td>
+                            <td class="px-3 py-2 whitespace-nowrap">Object</td>
+                            <td class="px-3 py-2 whitespace-nowrap">链接，与上传接口返回参数中的 links 相同</td>
                         </tr>
                         </tbody>
                     </table>
