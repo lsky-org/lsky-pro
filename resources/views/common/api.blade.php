@@ -18,6 +18,38 @@
                     <p class="text-sm">如果未设置 Authorization 的情况下请求上传接口，将被视为游客上传。</p>
                 </div>
             </div>
+
+            <div class="my-4 overflow-x-auto">
+                <p class="text-sm mb-2">公共响应 headers 说明</p>
+                <table class="min-w-full">
+                    <thead class="bg-gray-50 border">
+                    <tr>
+                        <th scope="col" class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
+                            字段
+                        </th>
+                        <th scope="col" class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
+                            类型
+                        </th>
+                        <th scope="col" class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
+                            说明
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody class="bg-white border divide-y text-sm">
+                    <tr>
+                        <td class="px-3 py-2 whitespace-nowrap">X-RateLimit-Limit</td>
+                        <td class="px-3 py-2 whitespace-nowrap">Integer</td>
+                        <td class="px-3 py-2 whitespace-nowrap">当前客户端一分钟内请求配额</td>
+                    </tr>
+                    <tr>
+                        <td class="px-3 py-2 whitespace-nowrap">X-RateLimit-Remaining</td>
+                        <td class="px-3 py-2 whitespace-nowrap">Integer</td>
+                        <td class="px-3 py-2 whitespace-nowrap">当前客户端剩余请求配额</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <p class="text-sm my-2 text-red-500">超出请求配额后，程序将会返回 HTTP 429 Too Many Requests 错误。</p>
+            </div>
         </div>
 
         <p class="text-xl mb-2 text-gray-800 font-semibold">图片相关</p>
