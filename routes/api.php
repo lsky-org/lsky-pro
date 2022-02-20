@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\Api\V1\ImageController;
+use App\Http\Controllers\Api\V1\TokenController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,10 +15,8 @@ use App\Http\Controllers\Controller;
 |
 */
 
-use App\Http\Controllers\Api\V1\TokenController;
-
 Route::group(['prefix' => 'v1'], function () {
-    Route::post('upload', [Controller::class, 'upload']);
+    Route::post('upload', [ImageController::class, 'upload']);
 
     Route::group([
         'middleware' => 'auth:sanctum',

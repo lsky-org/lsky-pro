@@ -14,8 +14,6 @@
                 <p class="text-lg text-gray-700 font-semibold">验证方式</p>
                 <div class="my-2 text-sm bg-white rounded-md p-4 overflow-x-auto">
                     当前版本接口采用 「HTTP 基本验证」的方式验证授权，通过接口获取 token 后，通过设置请求 header 标头来验证请求，例如：
-                    <b class="block my-2 text-gray-600 text-sm">"Authorization": "1|1bJbwlqBfnggmOMEZqXT5XusaIwqiZjCDs7r1Ob5"</b>
-                    或者：
                     <b class="block my-2 text-gray-600 text-sm">"Authorization": "Bearer 1|1bJbwlqBfnggmOMEZqXT5XusaIwqiZjCDs7r1Ob5"</b>
                     <p class="text-sm">如果未设置 Authorization 的情况下请求上传接口，将被视为游客上传。</p>
                 </div>
@@ -26,7 +24,7 @@
         <div class="space-y-4 bg-gray-50 p-3 rounded-md mb-5">
             <div>
                 <p class="text-lg text-gray-700 font-semibold">上传图片</p>
-                <x-code><span class="text-green-500">POST</span> /upload</x-code>
+                <x-code><span class="text-green-500 select-none">POST </span>/upload</x-code>
 
                 <div class="my-4 overflow-x-auto">
                     <p class="text-sm mb-2">Headers</p>
@@ -113,9 +111,19 @@
                             <td class="px-3 py-2 whitespace-nowrap">图片数据</td>
                         </tr>
                         <tr>
-                            <td class="px-3 py-2 whitespace-nowrap pl-6">id</td>
-                            <td class="px-3 py-2 whitespace-nowrap">Integer</td>
-                            <td class="px-3 py-2 whitespace-nowrap">图片唯一ID</td>
+                            <td class="px-3 py-2 whitespace-nowrap pl-6">key</td>
+                            <td class="px-3 py-2 whitespace-nowrap">String</td>
+                            <td class="px-3 py-2 whitespace-nowrap">图片唯一密钥</td>
+                        </tr>
+                        <tr>
+                            <td class="px-3 py-2 whitespace-nowrap pl-6">name</td>
+                            <td class="px-3 py-2 whitespace-nowrap">String</td>
+                            <td class="px-3 py-2 whitespace-nowrap">图片名称</td>
+                        </tr>
+                        <tr>
+                            <td class="px-3 py-2 whitespace-nowrap pl-6">extension</td>
+                            <td class="px-3 py-2 whitespace-nowrap">String</td>
+                            <td class="px-3 py-2 whitespace-nowrap">图片拓展名</td>
                         </tr>
                         <tr>
                             <td class="px-3 py-2 whitespace-nowrap pl-6">pathname</td>
