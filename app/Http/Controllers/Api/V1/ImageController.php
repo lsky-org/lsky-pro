@@ -2,14 +2,12 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Enums\ImagePermission;
 use App\Exceptions\UploadException;
 use App\Http\Controllers\Controller;
 use App\Models\Image;
 use App\Models\User;
 use App\Services\ImageService;
 use Illuminate\Auth\AuthenticationException;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;

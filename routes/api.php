@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\V1\ImageController;
+use App\Http\Controllers\Api\V1\AlbumController;
 use App\Http\Controllers\Api\V1\TokenController;
 
 /*
@@ -24,6 +25,7 @@ Route::group(['prefix' => 'v1'], function () {
     ], function () {
         Route::get('images', [ImageController::class, 'images']);
         Route::delete('images/{key}', [ImageController::class, 'destroy']);
+        Route::get('albums', [AlbumController::class, 'index']);
         Route::delete('tokens', [TokenController::class, 'clear']);
     });
 });

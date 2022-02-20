@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Http\Request;
 
 /**
  * @property int $id
@@ -34,6 +36,27 @@ class Album extends Model
     protected $attributes = [
         'intro' => '',
     ];
+
+    public function scopeFilter(Builder $builder, Request $request)
+    {
+        return $builder->when($request->query('order') ?: 'newest', function (Builder $builder, $order) {
+            switch ($order) {
+                case 'earliest':
+                    $builder->orderBy('created_at');
+                    break;
+                case 'most':
+                    $builder->orderByDesc('image_num');
+                    break;
+                case 'least':
+                    $builder->orderBy('image_num');
+                    break;
+                default:
+                    $builder->latest();
+            }
+        })->when($request->query('keyword'), function (Builder $builder, $keyword) {
+            $builder->whereRaw("concat(name,intro) like ?", ["%{$keyword}%"]);
+        });
+    }
 
     public function user(): BelongsTo
     {
