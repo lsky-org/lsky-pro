@@ -64,15 +64,23 @@ class ImageController extends Controller
         /** @var User $user */
         $user = Auth::user();
 
-        $images = $user->images()->filter($request)->with('group', 'strategy')->paginate(40)->withQueryString();
+        $images = $user->images()->filter($request)->paginate(40)->withQueryString();
         $images->getCollection()->each(function (Image $image) {
             $image->human_date = $image->created_at->diffForHumans();
             $image->date = $image->created_at->format('Y-m-d H:i:s');
             $image->append(['pathname', 'links'])->setVisible([
-                'key', 'name', 'pathname', 'origin_name', 'size', 'mimetype', 'extension', 'md5', 'sha1',
+                'album', 'key', 'name', 'pathname', 'origin_name', 'size', 'mimetype', 'extension', 'md5', 'sha1',
                 'width', 'height', 'links', 'human_date', 'date',
             ]);
         });
         return $this->success('success', $images);
+    }
+
+    public function destroy(Request $request): Response
+    {
+        /** @var User $user */
+        $user = Auth::user();
+        $user->images()->where('key', $request->route('key'))->delete();
+        return $this->success('删除成功');
     }
 }
