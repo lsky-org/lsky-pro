@@ -685,7 +685,7 @@
                         <tr>
                             <td class="px-3 py-2 whitespace-nowrap pl-10">id</td>
                             <td class="px-3 py-2 whitespace-nowrap">Integer</td>
-                            <td class="px-3 py-2 whitespace-nowrap">相册自增ID</td>
+                            <td class="px-3 py-2 whitespace-nowrap">相册自增 ID</td>
                         </tr>
                         <tr>
                             <td class="px-3 py-2 whitespace-nowrap pl-10">name</td>
@@ -707,8 +707,8 @@
                 </div>
             </div>
             <div>
-                <p class="text-lg text-gray-700 font-semibold">删除图片</p>
-                <x-code><span class="text-red-300 select-none">DELETE </span>/images/:key</x-code>
+                <p class="text-lg text-gray-700 font-semibold">删除相册</p>
+                <x-code><span class="text-red-300 select-none">DELETE </span>/albums/:id</x-code>
 
                 <div class="my-4 overflow-x-auto">
                     <p class="text-sm mb-2">请求参数(Params)</p>
@@ -728,9 +728,9 @@
                         </thead>
                         <tbody class="bg-white border divide-y text-sm">
                         <tr>
-                            <td class="px-3 py-2 whitespace-nowrap">key</td>
+                            <td class="px-3 py-2 whitespace-nowrap">id</td>
                             <td class="px-3 py-2 whitespace-nowrap">String</td>
-                            <td class="px-3 py-2 whitespace-nowrap">图片密钥</td>
+                            <td class="px-3 py-2 whitespace-nowrap">相册自增 ID</td>
                         </tr>
                         </tbody>
                     </table>

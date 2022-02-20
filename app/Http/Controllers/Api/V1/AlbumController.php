@@ -21,4 +21,12 @@ class AlbumController extends Controller
         });
         return $this->success('success', $albums);
     }
+
+    public function destroy(Request $request): Response
+    {
+        /** @var User $user */
+        $user = Auth::user();
+        $user->albums()->where('id', $request->route('id'))->delete();
+        return $this->success('删除成功');
+    }
 }

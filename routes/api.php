@@ -26,6 +26,7 @@ Route::group(['prefix' => 'v1'], function () {
         Route::get('images', [ImageController::class, 'images']);
         Route::delete('images/{key}', [ImageController::class, 'destroy']);
         Route::get('albums', [AlbumController::class, 'index']);
+        Route::delete('albums/{id}', [AlbumController::class, 'destroy']);
         Route::delete('tokens', [TokenController::class, 'clear']);
     });
 });
