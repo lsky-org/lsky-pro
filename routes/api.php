@@ -22,6 +22,6 @@ Route::group(['prefix' => 'v1'], function () {
     Route::group([
         'middleware' => 'auth:sanctum',
     ], function () {
-        Route::delete('tokens/clear', [TokenController::class, 'clear']);
+        Route::delete('tokens', [TokenController::class, 'clear']);
     });
 });
