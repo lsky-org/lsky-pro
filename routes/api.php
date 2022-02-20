@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Controller;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,6 +18,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\V1\TokenController;
 
 Route::group(['prefix' => 'v1'], function () {
+    Route::post('upload', [Controller::class, 'upload']);
+
     Route::group([
         'middleware' => 'auth:sanctum',
     ], function () {
