@@ -143,8 +143,6 @@
                     text: "⚠️注意，删除后不可恢复，且该用户的图片将会变成游客身份！",
                     icon: 'warning',
                     showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
                     confirmButtonText: '确认删除',
                 }).then((result) => {
                     if (result.isConfirmed) {

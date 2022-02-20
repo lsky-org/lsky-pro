@@ -95,7 +95,7 @@
                     </div>
                     <div>
                         <label for="mail[mailers][smtp][password]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>密码</label>
-                        <x-input type="text" name="mail[mailers][smtp][password]" id="mail[mailers][smtp][password]" value="{{ $configs['mail']['mailers']['smtp']['password'] }}" placeholder="请输入密码"/>
+                        <x-input type="password" name="mail[mailers][smtp][password]" id="mail[mailers][smtp][password]" value="{{ $configs['mail']['mailers']['smtp']['password'] }}" placeholder="请输入密码"/>
                     </div>
                     <div>
                         <label for="mail[mailers][smtp][encryption]" class="block text-sm font-medium text-gray-700">加密方式</label>

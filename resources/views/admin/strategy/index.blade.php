@@ -45,8 +45,6 @@
                     text: "如果某个组下面没有储存策略，该组下面的用户则会默认使用本地储存。",
                     icon: 'warning',
                     showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
                     confirmButtonText: '确认删除',
                 }).then((result) => {
                     if (result.isConfirmed) {

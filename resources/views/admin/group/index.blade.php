@@ -85,8 +85,6 @@
                     text: "⚠️注意，删除该角色组后，该角色组下属的用户会被重置为系统默认组。",
                     icon: 'warning',
                     showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
                     confirmButtonText: '确认删除',
                 }).then((result) => {
                     if (result.isConfirmed) {

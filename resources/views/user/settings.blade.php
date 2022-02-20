@@ -2,9 +2,10 @@
 
 <x-app-layout>
     <div class="my-6 md:my-9">
+        <p class="mb-3 font-semibold text-lg text-gray-700">基础设置</p>
         <form action="{{ route('settings.update') }}" method="POST">
             <div class="overflow-hidden sm:rounded-md">
-                <div class="px-4 py-5 bg-white sm:p-6">
+                <div class="px-3 py-4 bg-white sm:p-6">
                     <div class="grid grid-cols-6 gap-6">
                         <div class="col-span-6 sm:col-span-3">
                             <label for="email" class="block text-sm font-medium text-gray-700">邮箱</label>
@@ -68,10 +69,9 @@
                             </x-fieldset>
                         </div>
                     </div>
-                </div>
-
-                <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">
-                    <x-button>保存设置</x-button>
+                    <div class="px-4 py-3 text-right sm:px-6">
+                        <x-button>保存设置</x-button>
+                    </div>
                 </div>
             </div>
         </form>
