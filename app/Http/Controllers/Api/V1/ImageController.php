@@ -55,4 +55,9 @@ class ImageController extends Controller
             'key', 'name', 'extension', 'pathname', 'origin_name', 'size', 'mimetype', 'md5', 'sha1', 'links'
         ));
     }
+
+    public function images(Request $request): Response
+    {
+
+    }
 }

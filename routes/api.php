@@ -17,10 +17,11 @@ use App\Http\Controllers\Api\V1\TokenController;
 
 Route::group(['prefix' => 'v1'], function () {
     Route::post('upload', [ImageController::class, 'upload']);
+    Route::post('tokens', [TokenController::class, 'store'])->middleware('throttle:3,1');
 
     Route::group([
         'middleware' => 'auth:sanctum',
     ], function () {
-        Route::resource('tokens', TokenController::class);
+        Route::delete('tokens/clear', [TokenController::class, 'clear']);
     });
 });
