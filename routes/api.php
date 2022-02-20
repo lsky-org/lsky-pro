@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\V1\ImageController;
 use App\Http\Controllers\Api\V1\AlbumController;
 use App\Http\Controllers\Api\V1\TokenController;
 use App\Http\Controllers\Api\V1\UserController;
+use App\Http\Middleware\CheckIsEnableApi;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,7 +18,10 @@ use App\Http\Controllers\Api\V1\UserController;
 |
 */
 
-Route::group(['prefix' => 'v1'], function () {
+Route::group([
+    'prefix' => 'v1',
+    'middleware' => CheckIsEnableApi::class,
+], function () {
     Route::post('upload', [ImageController::class, 'upload']);
     Route::post('tokens', [TokenController::class, 'store'])->middleware('throttle:3,1');
 

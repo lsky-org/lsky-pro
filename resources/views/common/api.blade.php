@@ -78,8 +78,43 @@
                     </tr>
                     </tbody>
                 </table>
-                <p class="text-sm my-2 text-red-500">超出请求配额后，程序将会返回 HTTP 429 Too Many Requests 错误。文档中接口的请求参数，使用红色「*」符号标注，则表示为必传项。</p>
             </div>
+
+            <div class="my-4 overflow-x-auto">
+                <p class="text-sm mb-2">响应状态码 HTTP Status Code 说明</p>
+                <table class="min-w-full">
+                    <thead class="bg-white border">
+                    <tr>
+                        <th scope="col" class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
+                            状态码
+                        </th>
+                        <th scope="col" class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
+                            说明
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody class="bg-white border divide-y text-sm">
+                    <tr>
+                        <td class="px-3 py-2 whitespace-nowrap">401</td>
+                        <td class="px-3 py-2 whitespace-nowrap">未登录或授权失败</td>
+                    </tr>
+                    <tr>
+                        <td class="px-3 py-2 whitespace-nowrap">403</td>
+                        <td class="px-3 py-2 whitespace-nowrap">管理员关闭了接口功能</td>
+                    </tr>
+                    <tr>
+                        <td class="px-3 py-2 whitespace-nowrap">429</td>
+                        <td class="px-3 py-2 whitespace-nowrap">超出请求配额，请求受限</td>
+                    </tr>
+                    <tr>
+                        <td class="px-3 py-2 whitespace-nowrap">500</td>
+                        <td class="px-3 py-2 whitespace-nowrap">服务端出现异常</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p class="text-sm my-2 text-red-500">文档中接口的请求参数，使用红色「*」符号标注，则表示为必传项。</p>
         </div>
 
         <p class="text-xl mb-2 text-gray-800 font-semibold">授权相关</p>
