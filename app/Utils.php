@@ -21,15 +21,9 @@ class Utils
      */
     public static function getAvatar($email, int $s = 96, string $d = 'mp', string $r = 'g'): string
     {
-        preg_match_all('/((\d)*)@qq.com/', $email, $vai);
-        if (empty($vai['1']['0'])) {
-            $url = 'https://gravatar.cat.net/avatar/';
-            $url .= md5(strtolower(trim($email)));
-            $url .= "?s=$s&d=$d&r=$r";
-            return $url;
-        } else {
-            $url = 'https://q2.qlogo.cn/headimg_dl?dst_uin='.$vai['1']['0'].'&spec=100';
-        }
+        $url = 'https://gravatar.cat.net/avatar/';
+        $url .= md5(strtolower(trim($email)));
+        $url .= "?s=$s&d=$d&r=$r";
         return $url;
     }
 

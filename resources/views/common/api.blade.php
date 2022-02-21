@@ -12,7 +12,7 @@
             <div>
                 <p class="text-lg text-gray-700 font-semibold">验证方式</p>
                 <div class="my-2 text-sm bg-white rounded-md p-4 overflow-x-auto">
-                    当前版本接口采用 「HTTP 基本验证」的方式验证授权，通过接口获取 token 后，通过设置请求 header 标头来验证请求，例如：
+                    当前版本接口采用 「HTTP 基本验证」的方式验证授权，获取到 token 后，通过设置请求 header 标头来验证请求，例如：
                     <b class="block my-2 text-gray-600 text-sm">"Authorization": "Bearer 1|1bJbwlqBfnggmOMEZqXT5XusaIwqiZjCDs7r1Ob5"</b>
                     <p class="text-sm">如果未设置 Authorization 的情况下请求上传接口，将会被视为游客上传。</p>
                 </div>
