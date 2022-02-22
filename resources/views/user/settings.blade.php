@@ -23,7 +23,7 @@
                                 @if(Auth::user()->group)
                                     <option value="0">未选择</option>
                                     @foreach(Auth::user()->group->strategies as $strategy)
-                                        <option value="{{ $strategy->id }}" {{ Auth::user()->configs->get(\App\Enums\UserConfigKey::DefaultStrategy) == $strategy->id ? 'selected' : '' }}>{{ $strategy->name }}</option>
+                                        <option value="{{ $strategy->id }}" @selected(Auth::user()->configs->get(\App\Enums\UserConfigKey::DefaultStrategy) == $strategy->id)>{{ $strategy->name }}</option>
                                     @endforeach
                                 @else
                                     <option value="0">系统默认</option>
@@ -37,7 +37,7 @@
                                 @if(Auth::user()->albums->isNotEmpty())
                                     <option value="0">未选择</option>
                                     @foreach(Auth::user()->albums as $album)
-                                        <option value="{{ $album->id }}" {{ Auth::user()->configs->get(\App\Enums\UserConfigKey::DefaultAlbum) == $album->id ? 'selected' : '' }}>{{ $album->name }}</option>
+                                        <option value="{{ $album->id }}" @selected(Auth::user()->configs->get(\App\Enums\UserConfigKey::DefaultAlbum) == $album->id)>{{ $album->name }}</option>
                                     @endforeach
                                 @else
                                     <option value="0">没有可用相册</option>
