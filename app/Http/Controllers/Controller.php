@@ -17,12 +17,22 @@ use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
+use Illuminate\View\View;
 use League\Flysystem\FilesystemException;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests, Api;
+
+    public function install(Request $request): View|Response
+    {
+        if (file_exists(base_path('installed.lock'))) {
+            abort(404);
+        }
+
+        return view('install');
+    }
 
     public function upload(Request $request, ImageService $service): Response
     {

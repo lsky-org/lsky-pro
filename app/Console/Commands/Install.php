@@ -48,8 +48,8 @@ class Install extends Command
     public function handle()
     {
         // 判断是否已经安装
-        if (file_exists(base_path('.env'))) {
-            $this->warn('Already installed. if you want to reinstall, please remove .env file.');
+        if (file_exists(base_path('installed.lock'))) {
+            $this->warn('Already installed. if you want to reinstall, please remove installed.lock file.');
             return;
         }
 
@@ -75,17 +75,13 @@ class Install extends Command
             Artisan::call('migrate:fresh', ['--force' => true]);
             // 填充数据
             Artisan::call('db:seed', ['--force' => true, '--class' => 'InstallSeeder']);
-            // 创建 env 文件
-            $replaces = collect($options)->transform(function ($item, $key) {
-                return ['DB_'.strtoupper($key) => $item];
-            })->collapse();
+            // 更新 env 文件
+            $replaces = collect($options)->transform(fn ($item, $key) => ['DB_'.strtoupper($key) => $item])->collapse();
             file_put_contents($this->laravel->environmentFilePath(), preg_replace(
                 $replaces->map(fn ($item, $key) => $this->replacementPattern($key, env($key, '')))->values()->toArray(),
                 $replaces->map(fn ($item, $key) => "{$key}={$item}")->values()->toArray(),
-                file_get_contents($this->laravel->environmentFilePath().'.example')
+                file_get_contents($this->laravel->environmentFilePath())
             ));
-            // 生成 key
-            Artisan::call('key:generate');
         } catch (\Throwable $e) {
             $this->warn("Installation error!\n");
             $this->error($e->getMessage());
@@ -95,13 +91,6 @@ class Install extends Command
         $this->info('Install success!');
     }
 
-    /**
-     * Get a regex pattern that will match env APP_KEY with any random key.
-     *
-     * @param  string  $name
-     * @param  string  $value
-     * @return string
-     */
     protected function replacementPattern(string $name, string $value): string
     {
         $escaped = preg_quote('='.$value, '/');

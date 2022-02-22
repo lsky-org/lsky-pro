@@ -12,6 +12,7 @@
 */
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Middleware\CheckIsInstalled;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\User\ImageController;
@@ -26,7 +27,8 @@ use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Admin\SettingController as AdminSettingController;
 use App\Http\Controllers\Admin\ImageController as AdminImageController;
 
-Route::get('/', fn () => view('welcome'))->name('/');
+Route::get('/', fn () => view('welcome'))->name('/')->middleware(CheckIsInstalled::class);
+Route::any('install', [Controller::class, 'install'])->name('install');
 Route::post('upload', [Controller::class, 'upload']);
 Route::group(['middleware' => ['auth']], function () {
     Route::get('dashboard', [UserController::class, 'dashboard'])->name('dashboard');
