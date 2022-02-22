@@ -14,7 +14,11 @@ class CheckIsInstalled
     {
         // 检测程序是否安装
         if (! file_exists(base_path('installed.lock'))) {
-            return redirect('install');
+            if (! $request->expectsJson()) {
+                return redirect('install');
+            } else {
+                return $this->error('It has already been installed.');
+            }
         }
 
         return $next($request);
