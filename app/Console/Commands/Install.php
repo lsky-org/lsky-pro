@@ -1,0 +1,111 @@
+<?php
+
+namespace App\Console\Commands;
+
+use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\DB;
+
+class Install extends Command
+{
+    /**
+     * The name and signature of the console command.
+     *
+     * @var string
+     */
+    protected $signature = 'lsky:install';
+
+    /**
+     * The console command description.
+     *
+     * @var string
+     */
+    protected $description = 'Install Lsky Pro';
+
+    /**
+     * Create a new command instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->signature = implode(' ', [
+            'lsky:install',
+            '{--connection=mysql : Database type}',
+            '{--host=127.0.0.1 : Database connection address}',
+            '{--port=3306 : Database connection port}',
+            '{--database= : Database name}',
+            '{--username=root : Database connection user name}',
+            '{--password=root : Database connection password}',
+        ]);
+        parent::__construct();
+    }
+
+    /**
+     * Execute the console command.
+     */
+    public function handle()
+    {
+        // TODO 判断是否已经安装
+        if (file_exists(base_path('.env'))) {
+            $this->warn('The program has been installed.');
+            return;
+        }
+
+        $driver = $this->option('connection');
+        $connection = "database.connections.{$driver}";
+        $options = [
+            'connection' => $this->option('connection'),
+            'host' => $this->option('host'),
+            'port' => $this->option('port'),
+            'database' => $this->option('database'),
+            'username' => $this->option('username'),
+            'password' => $this->option('password'),
+        ];
+        $configs = array_intersect_key($options, config($connection));
+
+        // 覆盖默认配置
+        Config::set($connection, array_merge(config($connection), $configs));
+        // 设置默认数据库驱动
+        Config::set('database.default', $driver);
+
+        try {
+            // 执行数据库迁移
+            Artisan::call('migrate:fresh', ['--seed' => true, '--force' => true], outputBuffer: $this->getOutput());
+            // 创建 env 文件
+            $replaces = collect($options)->transform(function ($item, $key) {
+                return ['DB_'.strtoupper($key) => $item];
+            })->collapse();
+
+            file_put_contents($this->laravel->environmentFilePath(), preg_replace(
+                $replaces->map(fn ($item, $key) => $this->replacementPattern($key, env($key, '')))->values()->toArray(),
+                $replaces->map(fn ($item, $key) => "{$key}={$item}")->values()->toArray(),
+                file_get_contents($this->laravel->environmentFilePath().'.example')
+            ));
+
+            // 生成 key
+            Artisan::call('key:generate');
+        } catch (\Throwable $e) {
+            $this->warn("Installation error!\n");
+            $this->error($e->getMessage());
+            return;
+        }
+
+        $this->info('Install success!');
+    }
+
+    /**
+     * Get a regex pattern that will match env APP_KEY with any random key.
+     *
+     * @param  string  $name
+     * @param  string  $value
+     * @return string
+     */
+    protected function replacementPattern(string $name, string $value): string
+    {
+        $escaped = preg_quote('='.$value, '/');
+
+        return "/^{$name}{$escaped}/m";
+    }
+}
