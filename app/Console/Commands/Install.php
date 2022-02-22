@@ -47,9 +47,9 @@ class Install extends Command
      */
     public function handle()
     {
-        // TODO 判断是否已经安装
+        // 判断是否已经安装
         if (file_exists(base_path('.env'))) {
-            $this->warn('The program has been installed.');
+            $this->warn('Already installed. if you want to reinstall, please remove .env file.');
             return;
         }
 
@@ -72,18 +72,18 @@ class Install extends Command
 
         try {
             // 执行数据库迁移
-            Artisan::call('migrate:fresh', ['--seed' => true, '--force' => true], outputBuffer: $this->getOutput());
+            Artisan::call('migrate:fresh', ['--force' => true]);
+            // 填充数据
+            Artisan::call('db:seed', ['--force' => true, '--class' => 'InstallSeeder']);
             // 创建 env 文件
             $replaces = collect($options)->transform(function ($item, $key) {
                 return ['DB_'.strtoupper($key) => $item];
             })->collapse();
-
             file_put_contents($this->laravel->environmentFilePath(), preg_replace(
                 $replaces->map(fn ($item, $key) => $this->replacementPattern($key, env($key, '')))->values()->toArray(),
                 $replaces->map(fn ($item, $key) => "{$key}={$item}")->values()->toArray(),
                 file_get_contents($this->laravel->environmentFilePath().'.example')
             ));
-
             // 生成 key
             Artisan::call('key:generate');
         } catch (\Throwable $e) {

@@ -15,7 +15,6 @@ class InstallSeeder extends Seeder
      */
     public function run()
     {
-        // TODO 判断是否为安装动作
         $date = Carbon::now()->format('Y-m-d H:i:s');
         $array = collect(config('convention.app'))->transform(function ($value, $key) use ($date) {
             return [
