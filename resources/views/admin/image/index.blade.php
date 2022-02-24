@@ -15,9 +15,14 @@
             <div class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 2xl:grid-cols-8 gap-2">
                 @foreach($images as $image)
                 <div data-json='{{ $image->toJson() }}' class="item relative flex flex-col items-center justify-center overflow-hidden rounded-md cursor-pointer group">
-                    @if($image->extension === 'gif')
-                        <span class="absolute top-1 left-1 z-[1] bg-white rounded-md text-sm px-1 py-0">Gif</span>
-                    @endif
+                    <div class="flex absolute top-1 left-1 z-[1] space-x-1">
+                        @if($image->is_unhealthy)
+                            <span class="bg-red-500 text-white rounded-md text-sm px-1 py-0">Nsfw</span>
+                        @endif
+                        @if($image->extension === 'gif')
+                            <span class="bg-white rounded-md text-sm px-1 py-0">Gif</span>
+                        @endif
+                    </div>
                     <img class="w-full h-36 object-cover transition-all group-hover:brightness-50" src="{{ $image->thumb_url }}">
 
                     <div class="absolute top-2 right-2 space-x-1 hidden group-hover:flex">

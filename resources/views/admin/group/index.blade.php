@@ -69,7 +69,7 @@
             @endforeach
         </x-table>
         @if($groups->isEmpty())
-            <x-no-data message="没有找到任何角色组"/>
+            <x-no-data message="没有找到自定义角色组"/>
         @else
             <div class="mt-4">
                 {{ $groups->links() }}
