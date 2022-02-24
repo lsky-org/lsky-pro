@@ -2,9 +2,13 @@
 
 namespace App\Services;
 
+use AlibabaCloud\Client\AlibabaCloud;
+use AlibabaCloud\Client\Exception\ClientException;
+use AlibabaCloud\Green\Green;
 use App\Enums\ConfigKey;
 use App\Enums\GroupConfigKey;
 use App\Enums\ImagePermission;
+use App\Enums\Scan\AliyunOption;
 use App\Enums\Strategy\KodoOption;
 use App\Enums\Strategy\LocalOption;
 use App\Enums\StrategyKey;
@@ -153,7 +157,7 @@ class ImageService
             'extension' => $file->extension(),
             'width' => $img->width(),
             'height' => $img->height(),
-            'is_unhealthy' => false, // TODO 接入鉴黄？
+            'is_unhealthy' => false,
             'uploaded_ip' => $request->ip(),
         ]);
 
@@ -191,6 +195,21 @@ class ImageService
             }
         }, 3);
 
+        // 图片检测
+        if ($configs->get(GroupConfigKey::IsEnableScan)) {
+            $scanConfigs = $configs->get(GroupConfigKey::ScanConfigs);
+            if ($this->scan($scanConfigs['driver'], collect($scanConfigs['drivers'][$scanConfigs['driver']]), $image)) {
+                // 标记 or 删除
+                if ($configs->get(GroupConfigKey::ScannedAction) === 'delete') {
+                    $image->delete();
+                    throw new UploadException('图片涉嫌违规，禁止上传。');
+                } else {
+                    $image->is_unhealthy = true;
+                    $image->save();
+                }
+            }
+        }
+
         return $image;
     }
 
@@ -208,7 +227,51 @@ class ImageService
     }
 
     /**
-     * 合成验证码
+     * 检测图片是否违规
+     *
+     * @param $driver
+     * @param  Collection  $configs
+     * @param  Image  $image
+     * @return bool true=违规
+     * @throws UploadException
+     */
+    public function scan($driver, Collection $configs, Image $image): bool
+    {
+        $flag = false;
+        try {
+            if ($driver === 'aliyun') {
+                AlibabaCloud::accessKeyClient(
+                    $configs->get(AliyunOption::AccessKeyId),
+                    $configs->get(AliyunOption::AccessKeySecret),
+                )->regionId($configs->get(AliyunOption::RegionId))->asDefaultClient();
+                $task = ['dataId' => $image->id, 'url' => $image->url];
+                $response = Green::v20180509()->imageSyncScan()->body(json_encode([
+                    'tasks' => [$task],
+                    'scenes' => $configs->get(AliyunOption::Scenes),
+                    'bizType' => $configs->get(AliyunOption::BizType)
+                ]))->request();
+                if (200 != $response->get('code')) {
+                    throw new \Exception("detect not success. code:" . $response->get('code'));
+                }
+                if ($result = $response->data[0] ?? null) {
+                    if (200 == $result->code) {
+                        foreach ($result->results as $item) {
+                            if ($item->suggestion === 'block') {
+                                $flag = true;
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (\Throwable $e) {
+            throw new UploadException($e->getMessage());
+        }
+
+        return $flag;
+    }
+
+    /**
+     * 合成水印
      *
      * @param  mixed  $image
      * @param  Collection  $configs
