@@ -17,6 +17,7 @@ use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
@@ -31,6 +32,9 @@ class Controller extends BaseController
     public function install(Request $request): View|Response
     {
         if (file_exists(base_path('installed.lock'))) {
+            if ($request->expectsJson()) {
+                return $this->error('Already installed. if you want to reinstall, please remove installed.lock file.');
+            }
             abort(404);
         }
 
@@ -67,13 +71,23 @@ class Controller extends BaseController
                     'account.email' => '管理员账号邮箱',
                     'account.password' => '管理员账号密码'
                 ]);
-            } catch (ValidationException $e) {
+
+                $data = collect($request->except('account'))->transform(fn($item, $key) => ['--'.$key => $item])->collapse();
+                $stream = fopen('php://output', 'w');
+                $exitCode = Artisan::call('lsky:install', $data->toArray(), new StreamOutput($stream));
+                $response = str_replace(PHP_EOL, '<br/>', ob_get_clean());
+                $user = new User([
+                    'name' => '超级管理员',
+                    'email' => $request->input('account.email'),
+                    'password' => Hash::make($request->input('account.password')),
+                    'is_adminer' => true,
+                ]);
+                $user->email_verified_at = date('Y-m-d H:i:s');
+                $user->save();
+            } catch (ValidationException|\Throwable $e) {
+                @unlink(base_path('installed.lock'));
                 return $this->error($e->getMessage());
             }
-            $data = collect($request->except('account'))->transform(fn($item, $key) => ['--'.$key => $item])->collapse();
-            $stream = fopen('php://output', 'w');
-            $exitCode = Artisan::call('lsky:install', $data->toArray(), new StreamOutput($stream));
-            $response = str_replace(PHP_EOL, '<br/>', ob_get_clean());
             if (! $exitCode) {
                 return $this->error('安装失败', compact('response'));
             }
