@@ -118,7 +118,7 @@
                                 </div>
                                 <div class="col-span-6 sm:col-span-3 mb-4">
                                     <label for="configs[scan_configs][drivers][aliyun][access_key_secret]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>AccessKeySecret</label>
-                                    <x-input type="text" name="configs[scan_configs][drivers][aliyun][access_key_secret]" id="configs[scan_configs][drivers][aliyun][access_key_secret]" autocomplete="access_key_id" placeholder="请输入 AccessKeySecret" />
+                                    <x-input type="password" name="configs[scan_configs][drivers][aliyun][access_key_secret]" id="configs[scan_configs][drivers][aliyun][access_key_secret]" autocomplete="access_key_id" placeholder="请输入 AccessKeySecret" />
                                 </div>
                                 <div class="col-span-6 sm:col-span-3 mb-4">
                                     <label for="configs[scan_configs][drivers][aliyun][biz_type]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>场景名称</label>
