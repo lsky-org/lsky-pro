@@ -91,11 +91,11 @@
                                 <x-input type="password" name="password" id="password" placeholder="请输入数据库密码" value="root"/>
                             </div>
                             <div class="col-span-6 sm:col-span-3">
-                                <label for="email" class="block text-sm font-medium text-gray-700">管理员账号邮箱</label>
+                                <label for="email" class="block text-sm font-medium text-gray-700"><span class="text-red-500">*</span>管理员账号邮箱</label>
                                 <x-input type="email" name="account[email]" id="email" placeholder="请输入管理员账号邮箱"/>
                             </div>
                             <div class="col-span-6 sm:col-span-3">
-                                <label for="admin-password" class="block text-sm font-medium text-gray-700">管理员账号密码</label>
+                                <label for="admin-password" class="block text-sm font-medium text-gray-700"><span class="text-red-500">*</span>管理员账号密码</label>
                                 <x-input type="password" name="account[password]" id="admin-password" placeholder="请输入管理员账号密码"/>
                             </div>
                         </div>
