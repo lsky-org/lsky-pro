@@ -14,11 +14,14 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 use League\Flysystem\FilesystemException;
+use Symfony\Component\Console\Output\StreamOutput;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class Controller extends BaseController
@@ -31,7 +34,53 @@ class Controller extends BaseController
             abort(404);
         }
 
-        return view('install');
+        $extensions = collect([
+            ['name' => 'BCMath', 'intro' => '数学精度处理拓展'],
+            ['name' => 'Ctype', 'intro' => '字符类型检测拓展'],
+            ['name' => 'DOM', 'intro' => 'DOM 对象模型，用于处理文档元素'],
+            ['name' => 'Fileinfo', 'intro' => '获取文件信息拓展'],
+            ['name' => 'JSON', 'intro' => 'JavaScript 对象符号（JSON）'],
+            ['name' => 'Mbstring', 'intro' => '多字节字符串处理拓展'],
+            ['name' => 'OpenSSL', 'intro' => '加密拓展'],
+            ['name' => 'PCRE', 'intro' => '正则表达式拓展'],
+            ['name' => 'PDO', 'intro' => '数据库拓展'],
+            ['name' => 'Tokenizer', 'intro' => '令牌处理拓展'],
+            ['name' => 'XML', 'intro' => 'Xml 解析器'],
+            ['name' => 'Imagick', 'intro' => '高性能图片处理拓展'],
+        ])->transform(function ($item) {
+            $item['result'] = extension_loaded(strtolower($item['name']));
+            return $item;
+        })->push([
+            'name' => 'PHP >= 8.0.2',
+            'intro' => '最低要求 PHP 8.0.2 版本',
+            'result' => phpversion() >= 8,
+        ]);
+
+        $status = ! $extensions->where('result', false)->isNotEmpty();
+
+        if ($request->method() === 'POST') {
+            try {
+                $request->validate([
+                    'account.email' => 'required|email',
+                    'account.password' => 'required|between:6,32'
+                ], [], [
+                    'account.email' => '管理员账号邮箱',
+                    'account.password' => '管理员账号密码'
+                ]);
+            } catch (ValidationException $e) {
+                return $this->error($e->getMessage());
+            }
+            $data = collect($request->except('account'))->transform(fn($item, $key) => ['--'.$key => $item])->collapse();
+            $stream = fopen('php://output', 'w');
+            $exitCode = Artisan::call('lsky:install', $data->toArray(), new StreamOutput($stream));
+            $response = str_replace(PHP_EOL, '<br/>', ob_get_clean());
+            if (! $exitCode) {
+                return $this->error('安装失败', compact('response'));
+            }
+            return $this->success();
+        }
+
+        return view('install', compact('extensions', 'status'));
     }
 
     public function upload(Request $request, ImageService $service): Response

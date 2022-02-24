@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\DB;
 
 class Install extends Command
 {
@@ -43,13 +44,15 @@ class Install extends Command
 
     /**
      * Execute the console command.
+     *
+     * @return int
      */
-    public function handle()
+    public function handle(): int
     {
         // 判断是否已经安装
         if (file_exists(base_path('installed.lock'))) {
             $this->warn('Already installed. if you want to reinstall, please remove installed.lock file.');
-            return;
+            return 0;
         }
 
         $driver = $this->option('connection');
@@ -70,10 +73,14 @@ class Install extends Command
         Config::set('database.default', $driver);
 
         try {
+            if ($options['connection'] === 'sqlite' && ! $options['database']) {
+                file_put_contents(database_path('database.sqlite'), '');
+                Config::set('database.connections.sqlite.database', database_path('database.sqlite'));
+            }
             // 执行数据库迁移
-            Artisan::call('migrate:fresh', ['--force' => true]);
+            Artisan::call('migrate:fresh', ['--force' => true], outputBuffer: $this->output);
             // 填充数据
-            Artisan::call('db:seed', ['--force' => true, '--class' => 'InstallSeeder']);
+            Artisan::call('db:seed', ['--force' => true, '--class' => 'InstallSeeder'], outputBuffer: $this->output);
             // 更新 env 文件
             $replaces = collect($options)->transform(fn ($item, $key) => ['DB_'.strtoupper($key) => $item])->collapse();
             file_put_contents($this->laravel->environmentFilePath(), preg_replace(
@@ -81,13 +88,16 @@ class Install extends Command
                 $replaces->map(fn ($item, $key) => "{$key}={$item}")->values()->toArray(),
                 file_get_contents($this->laravel->environmentFilePath())
             ));
+            // 创建锁文件
+            file_put_contents(base_path('installed.lock'), '');
         } catch (\Throwable $e) {
             $this->warn("Installation error!\n");
             $this->error($e->getMessage());
-            return;
+            return 0;
         }
 
         $this->info('Install success!');
+        return 1;
     }
 
     protected function replacementPattern(string $name, string $value): string

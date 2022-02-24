@@ -898,6 +898,9 @@ select {
 .h-24 {
   height: 6rem;
 }
+.max-h-\[500px\] {
+  max-height: 500px;
+}
 .min-h-\[150px\] {
   min-height: 150px;
 }
@@ -1368,6 +1371,10 @@ select {
   --tw-bg-opacity: 1;
   background-color: rgb(55 65 81 / var(--tw-bg-opacity));
 }
+.bg-gray-400 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(156 163 175 / var(--tw-bg-opacity));
+}
 .bg-opacity-75 {
   --tw-bg-opacity: 0.75;
 }
@@ -1560,6 +1567,10 @@ select {
 .text-4xl {
   font-size: 2.25rem;
   line-height: 2.5rem;
+}
+.text-3xl {
+  font-size: 1.875rem;
+  line-height: 2.25rem;
 }
 .text-base {
   font-size: 1rem;
@@ -2231,6 +2242,10 @@ select {
     width: 70%;
   }
 
+  .md\:w-\[600px\] {
+    width: 600px;
+  }
+
   .md\:max-w-2xl {
     max-width: 42rem;
   }
@@ -2292,6 +2307,11 @@ select {
   .md\:px-10 {
     padding-left: 2.5rem;
     padding-right: 2.5rem;
+  }
+
+  .md\:py-20 {
+    padding-top: 5rem;
+    padding-bottom: 5rem;
   }
 
   .md\:py-5 {
