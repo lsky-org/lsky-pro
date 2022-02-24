@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use AlibabaCloud\Client\AlibabaCloud;
-use AlibabaCloud\Client\Exception\ClientException;
 use AlibabaCloud\Green\Green;
 use App\Enums\ConfigKey;
 use App\Enums\GroupConfigKey;
