@@ -84,7 +84,7 @@ class Controller extends BaseController
                 ]);
                 $user->email_verified_at = date('Y-m-d H:i:s');
                 $user->save();
-            } catch (ValidationException|\Throwable $e) {
+            } catch (\Throwable $e) {
                 @unlink(base_path('installed.lock'));
                 return $this->error($e->getMessage());
             }
