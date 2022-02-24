@@ -21,7 +21,7 @@ class GroupController extends Controller
     public function __construct()
     {
         \Illuminate\Support\Facades\View::share([
-            'default' => Group::getDefaultConfigs(),
+            'default' => Utils::config(ConfigKey::Group),
             'positions' => Group::POSITIONS,
             'scenes' => Group::SCENES,
         ]);
