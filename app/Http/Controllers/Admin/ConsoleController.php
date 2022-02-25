@@ -15,12 +15,13 @@ class ConsoleController extends Controller
     public function index(): View
     {
         $carbon = Carbon::now();
+        $format = 'Y-m-d H:i:s';
 
         $numbers = [
-            'today' => Image::query()->whereBetween('created_at', [$carbon->startOfDay(), $carbon->endOfDay()])->count(),
-            'yesterday' => Image::query()->whereBetween('created_at', [$carbon->yesterday()->startOfDay(), $carbon->yesterday()->endOfDay()])->count(),
-            'week' => Image::query()->whereBetween('created_at', [$carbon->startOfWeek(), $carbon->endOfWeek()])->count(),
-            'month' => Image::query()->whereBetween('created_at', [$carbon->startOfMonth(), $carbon->endOfMonth()])->count(),
+            'today' => Image::query()->whereBetween('created_at', [$carbon->startOfDay()->format($format), $carbon->endOfDay()->format($format)])->count(),
+            'yesterday' => Image::query()->whereBetween('created_at', [$carbon->yesterday()->startOfDay()->format($format), $carbon->yesterday()->endOfDay()->format($format)])->count(),
+            'week' => Image::query()->whereBetween('created_at', [$carbon->startOfWeek()->format($format), $carbon->endOfWeek()->format($format)])->count(),
+            'month' => Image::query()->whereBetween('created_at', [$carbon->startOfMonth()->format($format), $carbon->endOfMonth()->format($format)])->count(),
         ];
 
         $start = Carbon::now()->parse('-30 day')->startOfDay();
@@ -30,7 +31,7 @@ class ConsoleController extends Controller
         $fields = ['游客上传', '用户上传', '新用户'];
 
         $images = Image::query()
-            ->whereBetween('created_at', [$start, $end])
+            ->whereBetween('created_at', [$start->format($format), $end->format($format)])
             ->get()
             ->transform(function (Image $image) {
                 $image['date'] = $image->created_at->format('Y-m-d');
@@ -38,7 +39,7 @@ class ConsoleController extends Controller
             })->groupBy('date');
 
         $users = User::query()
-            ->whereBetween('created_at', [$start, $end])
+            ->whereBetween('created_at', [$start->format($format), $end->format($format)])
             ->get()
             ->transform(function (User $user) {
                 $user['date'] = $user->created_at->format('Y-m-d');
