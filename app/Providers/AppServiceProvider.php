@@ -44,6 +44,9 @@ class AppServiceProvider extends ServiceProvider
             Config::set('app.url', Utils::config(ConfigKey::AppUrl));
             Config::set('mail', array_merge(\config('mail'), Utils::config(ConfigKey::Mail)->toArray()));
 
+            // 覆盖默认组策略配置
+            Config::set('filesystems.disks.uploads.url', Utils::config(ConfigKey::AppUrl).'/i');
+
             // 初始化视图中的默认数据
             View::composer('*', function (\Illuminate\View\View $view) {
                 $configs = Auth::check() && Auth::user()->group ? Auth::user()->group->configs : Group::getGuestConfigs();
