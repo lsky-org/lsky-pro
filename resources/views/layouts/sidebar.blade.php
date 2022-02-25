@@ -4,7 +4,7 @@
     'w-3/4': $store.sidebar.open
 }">
     <div class="px-6 h-14 flex justify-between sm:justify-center items-center bg-gray-600 text-white text-xl">
-        <a href="/" class="truncate">{{ \App\Utils::config(\App\Enums\ConfigKey::SiteName) }}</a>
+        <a href="/" class="truncate">{{ \App\Utils::config(\App\Enums\ConfigKey::AppName) }}</a>
         <a href="javascript:void(0)" class="sm:hidden block" @click="$store.sidebar.open = false"><i class="fas fa-times"></i></a>
     </div>
 

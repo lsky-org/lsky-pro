@@ -6,8 +6,12 @@
         <form action="{{ route('admin.settings.save') }}">
             <div class="relative p-4 rounded-md bg-white mb-8 space-y-4">
                 <div>
-                    <label for="site_name" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>网站名称</label>
-                    <x-input type="text" name="site_name" id="site_name" value="{{ $configs['site_name'] }}" placeholder="请输入网站名称"/>
+                    <label for="app_name" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>应用名称</label>
+                    <x-input type="text" name="app_name" id="app_name" value="{{ $configs['app_name'] }}" placeholder="请输入应用名称"/>
+                </div>
+                <div>
+                    <label for="app_url" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>应用 Url</label>
+                    <x-input type="text" name="app_url" id="app_url" value="{{ $configs['app_url'] }}" placeholder="请输入应用url"/>
                 </div>
                 <div>
                     <label for="site_keywords" class="block text-sm font-medium text-gray-700">网站关键字</label>

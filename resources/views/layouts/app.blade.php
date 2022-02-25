@@ -7,7 +7,7 @@
     <meta name="keywords" content="{{ \App\Utils::config(\App\Enums\ConfigKey::SiteKeywords) }}"/>
     <meta name="description" content="{{ \App\Utils::config(\App\Enums\ConfigKey::SiteDescription) }}"/>
 
-    <title>{{ \App\Utils::config(\App\Enums\ConfigKey::SiteName) }}</title>
+    <title>{{ \App\Utils::config(\App\Enums\ConfigKey::AppName) }}</title>
 
     <!-- Fonts -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">

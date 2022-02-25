@@ -40,8 +40,8 @@ class AppServiceProvider extends ServiceProvider
         // 如果已经安装程序，初始化一些配置
         if (file_exists(base_path('installed.lock'))) {
             // 覆盖默认配置
-            Config::set('app.name', Utils::config(ConfigKey::SiteName));
-            Config::set('app.url', request()->getSchemeAndHttpHost());
+            Config::set('app.name', Utils::config(ConfigKey::AppName));
+            Config::set('app.url', Utils::config(ConfigKey::AppUrl));
             Config::set('mail', array_merge(\config('mail'), Utils::config(ConfigKey::Mail)->toArray()));
 
             // 初始化视图中的默认数据

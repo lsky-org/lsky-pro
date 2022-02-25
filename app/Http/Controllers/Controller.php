@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\ConfigKey;
 use App\Enums\GroupConfigKey;
 use App\Exceptions\UploadException;
 use App\Http\Api;
+use App\Models\Config;
 use App\Models\Image;
 use App\Models\User;
 use App\Services\ImageService;
@@ -19,7 +21,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 use League\Flysystem\FilesystemException;
 use Symfony\Component\Console\Output\StreamOutput;
@@ -80,10 +81,12 @@ class Controller extends BaseController
                     'name' => '超级管理员',
                     'email' => $request->input('account.email'),
                     'password' => Hash::make($request->input('account.password')),
-                    'is_adminer' => true,
                 ]);
+                $user->is_adminer = true;
                 $user->email_verified_at = date('Y-m-d H:i:s');
                 $user->save();
+                // 更新站点域名
+                Config::query()->where('name', ConfigKey::AppUrl)->update(['value' => $request->getSchemeAndHttpHost()]);
             } catch (\Throwable $e) {
                 @unlink(base_path('installed.lock'));
                 return $this->error($e->getMessage());

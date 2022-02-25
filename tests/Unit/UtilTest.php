@@ -18,7 +18,7 @@ class UtilTest extends TestCase
             $this->assertTrue(true);
         }
 
-        if (is_string(Utils::config(ConfigKey::SiteName))) {
+        if (is_string(Utils::config(ConfigKey::AppName))) {
             $this->assertTrue(true);
         }
 

@@ -347,7 +347,7 @@ class ImageService
             }
             return $watermark;
         } else {
-            $text = $options->get(FontOption::Text, Utils::config(ConfigKey::SiteName));
+            $text = $options->get(FontOption::Text, Utils::config(ConfigKey::AppName));
             $font = new Font(urldecode($text));
             $font->valign('top')
                 ->file($options->get(storage_path('app/public/'.FontOption::Font)))

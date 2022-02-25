@@ -74,8 +74,9 @@ class Install extends Command
 
         try {
             if ($options['connection'] === 'sqlite' && ! $options['database']) {
-                file_put_contents(database_path('database.sqlite'), '');
-                Config::set('database.connections.sqlite.database', database_path('database.sqlite'));
+                $options['database'] = database_path('database.sqlite');
+                file_put_contents($options['database'], '');
+                Config::set('database.connections.sqlite.database', $options['database']);
             }
             // 执行数据库迁移
             Artisan::call('migrate:fresh', ['--force' => true], outputBuffer: $this->output);
