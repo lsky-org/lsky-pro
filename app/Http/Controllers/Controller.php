@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Enums\ConfigKey;
 use App\Enums\GroupConfigKey;
+use App\Enums\UserStatus;
 use App\Exceptions\UploadException;
 use App\Http\Api;
 use App\Models\Config;
@@ -83,6 +84,7 @@ class Controller extends BaseController
                     'password' => Hash::make($request->input('account.password')),
                 ]);
                 $user->is_adminer = true;
+                $user->status = UserStatus::Normal;
                 $user->email_verified_at = date('Y-m-d H:i:s');
                 $user->save();
                 // 更新站点域名

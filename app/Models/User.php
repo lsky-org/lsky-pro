@@ -77,6 +77,11 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array<string, string>
      */
     protected $casts = [
+        'id' => 'integer',
+        'group_id' => 'integer',
+        'image_num' => 'integer',
+        'album_num' => 'integer',
+        'status' => 'integer',
         'capacity' => 'float',
         'is_adminer' => 'bool',
         'configs' => 'collection',

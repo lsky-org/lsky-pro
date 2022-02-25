@@ -39,6 +39,8 @@ class Strategy extends Model
     ];
 
     protected $casts = [
+        'id' => 'integer',
+        'key' => 'integer',
         'configs' => 'collection',
     ];
 

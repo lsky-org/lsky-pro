@@ -34,6 +34,7 @@ class Group extends Model
     ];
 
     protected $casts = [
+        'id' => 'integer',
         'is_default' => 'bool',
         'configs' => 'collection'
     ];

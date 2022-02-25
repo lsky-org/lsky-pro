@@ -37,6 +37,12 @@ class Album extends Model
         'intro' => '',
     ];
 
+    protected $casts = [
+        'id' => 'integer',
+        'user_id' => 'integer',
+        'image_num' => 'integer',
+    ];
+
     public function scopeFilter(Builder $builder, Request $request)
     {
         return $builder->when($request->query('order') ?: 'newest', function (Builder $builder, $order) {
@@ -54,7 +60,7 @@ class Album extends Model
                     $builder->latest();
             }
         })->when($request->query('keyword'), function (Builder $builder, $keyword) {
-            $builder->whereRaw("concat(name,intro) like ?", ["%{$keyword}%"]);
+            $builder->where('name', 'like', "%{$keyword}%")->orWhere('intro', 'like', "%{$keyword}%");
         });
     }
 

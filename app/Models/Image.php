@@ -81,10 +81,16 @@ class Image extends Model
     ];
 
     protected $casts = [
+        'id' => 'integer',
+        'user_id' => 'integer',
+        'album_id' => 'integer',
+        'group_id' => 'integer',
+        'strategy_id' => 'integer',
         'width' => 'integer',
         'height' => 'integer',
         'size' => 'float',
         'is_unhealthy' => 'bool',
+        'permission' => 'integer',
     ];
 
     protected static function booted()
@@ -137,7 +143,7 @@ class Image extends Model
                     break;
             }
         })->when($request->query('keyword'), function (Builder $builder, $keyword) {
-            $builder->whereRaw("concat(origin_name,alias_name) like ?", ["%{$keyword}%"]);
+            $builder->where('origin_name', 'like', "%{$keyword}%")->orWhere('alias_name', 'like', "%{$keyword}%");
         })->when((int) $request->query('album_id'), function (Builder $builder, $albumId) {
             $builder->where('album_id', $albumId);
         }, function (Builder $builder) {

@@ -63,7 +63,7 @@ class ImageController extends Controller
             });
 
             foreach ($words as $word) {
-                $builder->whereRaw("concat(origin_name,alias_name) like ?", ["%{$word}%"]);
+                $builder->where('origin_name', 'like', "%{$word}%")->orWhere('alias_name', 'like', "%{$word}%");
             }
         })->latest()->paginate(40);
         $images->getCollection()->each(function (Image $image) {

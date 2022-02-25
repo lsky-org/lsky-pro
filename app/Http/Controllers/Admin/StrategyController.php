@@ -16,7 +16,7 @@ class StrategyController extends Controller
     public function index(Request $request): View
     {
         $strategies = Strategy::query()->when($request->query('keywords'), function (Builder $builder, $keywords) {
-            $builder->whereRaw("concat(ifnull(name,''),ifnull(intro,'')) like ?",["%{$keywords}%"]);
+            $builder->where('name', 'like', "%{$keywords}%")->orWhere('intro', 'like', "%{$keywords}%");
         })->withCount('images')->withSum('images', 'size')->latest()->paginate();
         return view('admin.strategy.index', compact('strategies'));
     }
