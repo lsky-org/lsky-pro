@@ -49,28 +49,28 @@
 
             <div class="flex justify-between rounded-md bg-white p-3 overflow-hidden">
                 <div class="flex flex-col justify-between space-y-2 w-[80%]">
-                    <p class="font-bold text-2xl text-zinc-700 truncate">{{ \App\Utils::shortenNumber($numbers->today) }}</p>
+                    <p class="font-bold text-2xl text-zinc-700 truncate">{{ \App\Utils::shortenNumber($numbers['today']) }}</p>
                     <p class="text-md text-gray-600">今日上传</p>
                 </div>
                 <i class="fas fa-upload text-zinc-600 text-2xl"></i>
             </div>
             <div class="flex justify-between rounded-md bg-white p-3 overflow-hidden">
                 <div class="flex flex-col justify-between space-y-2 w-[80%]">
-                    <p class="font-bold text-2xl text-zinc-700 truncate">{{ \App\Utils::shortenNumber($numbers->yesterday) }}</p>
+                    <p class="font-bold text-2xl text-zinc-700 truncate">{{ \App\Utils::shortenNumber($numbers['yesterday']) }}</p>
                     <p class="text-md text-gray-600">昨日上传</p>
                 </div>
                 <i class="fas fa-upload text-zinc-600 text-2xl"></i>
             </div>
             <div class="flex justify-between rounded-md bg-white p-3 overflow-hidden">
                 <div class="flex flex-col justify-between space-y-2 w-[80%]">
-                    <p class="font-bold text-2xl text-zinc-700 truncate">{{ \App\Utils::shortenNumber($numbers->week) }}</p>
+                    <p class="font-bold text-2xl text-zinc-700 truncate">{{ \App\Utils::shortenNumber($numbers['week']) }}</p>
                     <p class="text-md text-gray-600">本周上传</p>
                 </div>
                 <i class="fas fa-upload text-zinc-600 text-2xl"></i>
             </div>
             <div class="flex justify-between rounded-md bg-white p-3 overflow-hidden">
                 <div class="flex flex-col justify-between space-y-2 w-[80%]">
-                    <p class="font-bold text-2xl text-zinc-700 truncate">{{ \App\Utils::shortenNumber($numbers->month) }}</p>
+                    <p class="font-bold text-2xl text-zinc-700 truncate">{{ \App\Utils::shortenNumber($numbers['month']) }}</p>
                     <p class="text-md text-gray-600">本月上传</p>
                 </div>
                 <i class="fas fa-upload text-zinc-600 text-2xl"></i>
