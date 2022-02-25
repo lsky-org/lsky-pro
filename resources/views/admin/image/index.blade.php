@@ -17,7 +17,7 @@
                 <div data-json='{{ $image->toJson() }}' class="item relative flex flex-col items-center justify-center overflow-hidden rounded-md cursor-pointer group">
                     <div class="flex absolute top-1 left-1 z-[1] space-x-1">
                         @if($image->is_unhealthy)
-                            <span class="bg-red-500 text-white rounded-md text-sm px-1 py-0">Nsfw</span>
+                            <span class="bg-red-500 text-white rounded-md text-sm px-1 py-0">违规</span>
                         @endif
                         @if($image->extension === 'gif')
                             <span class="bg-white rounded-md text-sm px-1 py-0">Gif</span>
