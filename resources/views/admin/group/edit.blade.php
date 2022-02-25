@@ -6,7 +6,7 @@
 
         @if($group->id == 0)
         <p class="bg-blue-500 p-2 mb-2 rounded text-sm text-white">
-            <i class="fas fa-exclamation-circle"></i> 当前编辑的是系统默认组，所有访客、以及未被设置角色组的用户上传的图片将会受这个角色组控制。
+            <i class="fas fa-exclamation-circle"></i> 当前编辑的是系统默认组，所有访客、以及未被设置角色组的用户上传的图片将会受这个角色组控制。默认组的图片访问域名为站点域名，域名可以在系统设置中更改。
         </p>
         @endif
 
