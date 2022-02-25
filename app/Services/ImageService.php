@@ -116,29 +116,8 @@ class ImageService
             throw new UploadException("图片大小超出限制");
         }
 
-        $carbon = Carbon::now();
-        $format = 'Y-m-d H:i:s';
-        $array = [
-            'minute' => ['key' => GroupConfigKey::LimitPerMinute, 'str' => '分钟'],
-            'hours' => ['key' => GroupConfigKey::LimitPerHour, 'str' => '小时'],
-            'days' => ['key' => GroupConfigKey::LimitPerDay, 'str' => '天'],
-            'weeks' => ['key' => GroupConfigKey::LimitPerWeek, 'str' => '周'],
-            'months' => ['key' => GroupConfigKey::LimitPerWeek, 'str' => '月'],
-        ];
-        $sql = collect(array_keys($array))->transform(function ($range) use ($carbon, $format) {
-            return "count(if(`created_at` between '{$carbon->parse("-1 {$range}")->format($format)}' and '{$carbon->format($format)}', 1, null)) as {$range}";
-        })->implode(', ');
-        $statistics = Image::query()->selectRaw($sql)->when(!is_null($user), function (Builder $builder) use ($user) {
-            $builder->where('user_id', $user->id);
-        }, function (Builder $builder) use ($request) {
-            $builder->where('uploaded_ip', $request->ip())->whereNull('user_id');
-        })->first();
-        foreach ($array as $key => $item) {
-            $value = $configs->get($item['key'], 0);
-            if ($value && $statistics->$key >= $value) {
-                throw new UploadException("每{$item['str']}内你最多可以上传 {$value} 张图片");
-            }
-        }
+        // 上传频率限制
+        $this->rateLimiter($configs, $request, $user);
 
         $filename = $this->replacePathname(
             $configs->get(GroupConfigKey::PathNamingRule).'/'.$configs->get(GroupConfigKey::FileNamingRule), $file,
@@ -192,7 +171,7 @@ class ImageService
             if (!is_null($image->album)) {
                 $image->album->increment('image_num');
             }
-        }, 3);
+        }, 2);
 
         // 图片检测
         if ($configs->get(GroupConfigKey::IsEnableScan)) {
@@ -223,6 +202,37 @@ class ImageService
                 domain: $configs->get(KodoOption::Domain),
             ),
         };
+    }
+
+    /**
+     * @throws UploadException
+     */
+    protected function rateLimiter(Collection $configs, Request $request, ?User $user = null)
+    {
+        $carbon = Carbon::now();
+        $format = 'Y-m-d H:i:s';
+        $array = [
+            'minute' => ['key' => GroupConfigKey::LimitPerMinute, 'str' => '分钟'],
+            'hours' => ['key' => GroupConfigKey::LimitPerHour, 'str' => '小时'],
+            'days' => ['key' => GroupConfigKey::LimitPerDay, 'str' => '天'],
+            'weeks' => ['key' => GroupConfigKey::LimitPerWeek, 'str' => '周'],
+            'months' => ['key' => GroupConfigKey::LimitPerWeek, 'str' => '月'],
+        ];
+
+        foreach ($array as $key => $item) {
+            $value = $configs->get($item['key'], 0);
+            $count = Image::query()->whereBetween('created_at', [
+                $carbon->parse("-1 {$key}")->format($format), $carbon->format($format)
+            ])->when(!is_null($user), function (Builder $builder) use ($user) {
+                $builder->where('user_id', $user->id);
+            }, function (Builder $builder) use ($request) {
+                $builder->where('uploaded_ip', $request->ip())->whereNull('user_id');
+            })->count();
+
+            if ($value && $count >= $value) {
+                throw new UploadException("每{$item['str']}内你最多可以上传 {$value} 张图片");
+            }
+        }
     }
 
     /**
