@@ -540,6 +540,7 @@
                             axios.put('{{ route('user.images.movement') }}', {
                                 selected: selected,
                                 id: $(this).data('id'),
+                                album_id: selectedAlbum.id || 0,
                             }).then(response => {
                                 if (response.data.status) {
                                     drawer.close();
