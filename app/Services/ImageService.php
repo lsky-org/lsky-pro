@@ -210,7 +210,6 @@ class ImageService
     protected function rateLimiter(Collection $configs, Request $request, ?User $user = null)
     {
         $carbon = Carbon::now();
-        $format = 'Y-m-d H:i:s';
         $array = [
             'minute' => ['key' => GroupConfigKey::LimitPerMinute, 'str' => '分钟'],
             'hours' => ['key' => GroupConfigKey::LimitPerHour, 'str' => '小时'],
@@ -222,7 +221,7 @@ class ImageService
         foreach ($array as $key => $item) {
             $value = $configs->get($item['key'], 0);
             $count = Image::query()->whereBetween('created_at', [
-                $carbon->parse("-1 {$key}")->format($format), $carbon->format($format)
+                $carbon->parse("-1 {$key}"), $carbon,
             ])->when(!is_null($user), function (Builder $builder) use ($user) {
                 $builder->where('user_id', $user->id);
             }, function (Builder $builder) use ($request) {
