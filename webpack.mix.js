@@ -51,3 +51,6 @@ mix.copy('node_modules/echarts/dist/echarts.min.js', 'public/js/echarts')
 mix.copy('node_modules/masonry-layout/dist/masonry.pkgd.min.js', 'public/js/masonry')
 // imagesloaded
 mix.copy('node_modules/imagesloaded/imagesloaded.pkgd.min.js', 'public/js/imagesloaded')
+
+// markdown css
+mix.copy('node_modules/github-markdown-css/github-markdown.css', 'public/css/markdown-css')

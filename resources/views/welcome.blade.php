@@ -1,3 +1,7 @@
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('css/markdown-css/github-markdown.css') }}">
+@endpush
+
 <x-guest-layout>
     <div class="py-14">
         <header class="w-full h-14 bg-gray-700 text-white flex justify-center fixed top-0 z-[9]">
@@ -26,4 +30,22 @@
             </p>
         </footer>
     </div>
+
+    @if(\App\Utils::config(\App\Enums\ConfigKey::SiteNotice))
+        <x-modal>
+            <div class="markdown-body">
+                {!! (new Parsedown())->parse(\App\Utils::config(\App\Enums\ConfigKey::SiteNotice)) !!}
+            </div>
+        </x-modal>
+
+        @push('scripts')
+            <script>
+                if (! sessionStorage.getItem('noticed')) {
+                    Alpine.store('modal').open = true;
+                    sessionStorage.setItem('noticed', '1');
+                }
+            </script>
+        @endpush
+    @endif
+
 </x-guest-layout>

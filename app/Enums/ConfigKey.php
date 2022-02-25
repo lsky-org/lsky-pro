@@ -25,6 +25,9 @@ final class ConfigKey
     /** @var string 站点描述 */
     const SiteDescription = 'site_description';
 
+    /** @var string 站点公告 */
+    const SiteNotice = 'site_notice';
+
     /** @var string icp备案号 */
     const IcpNo = 'icp_no';
 

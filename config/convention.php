@@ -12,9 +12,10 @@ use App\Enums\Watermark\ImageOption;
 return [
     'app' => [
         ConfigKey::AppName => 'Lsky Pro',
-        ConfigKey::AppUrl => '',
+        ConfigKey::AppUrl => env('APP_URL'),
         ConfigKey::SiteKeywords => 'Lsky Pro,lsky,兰空图床',
         ConfigKey::SiteDescription => 'Lsky Pro, Your photo album on the cloud.',
+        ConfigKey::SiteNotice => '',
         ConfigKey::IcpNo => '',
         ConfigKey::IsEnableRegistration => 1,
         ConfigKey::IsEnableGallery => 1,

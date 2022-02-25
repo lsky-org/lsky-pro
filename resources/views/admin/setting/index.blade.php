@@ -25,13 +25,16 @@
                     <label for="icp_no" class="block text-sm font-medium text-gray-700">备案号</label>
                     <x-input type="text" name="icp_no" id="icp_no" value="{{ $configs['icp_no'] }}" placeholder="请输入备案号"/>
                 </div>
+                <div>
+                    <label for="site_notice" class="block text-sm font-medium text-gray-700">网站公告</label>
+                    <x-textarea type="text" name="site_notice" id="site_notice" placeholder="首页弹出公告，支持 Markdown，不设置请留空。" rows="7">{{ $configs['site_notice'] }}</x-textarea>
+                </div>
 
                 <div class="text-right">
                     <x-button type="submit">保存更改</x-button>
                 </div>
             </div>
         </form>
-
 
         <p class="mb-3 font-semibold text-lg text-gray-700">控制</p>
         <form action="{{ route('admin.settings.save') }}">

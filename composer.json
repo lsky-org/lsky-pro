@@ -8,6 +8,7 @@
         "php": "^8.0",
         "alibabacloud/green": "^1.8",
         "doctrine/dbal": "^3.3",
+        "erusev/parsedown": "^1.7",
         "fruitcake/laravel-cors": "^2.0.5",
         "guzzlehttp/guzzle": "^7.2",
         "intervention/image": "^2.7",

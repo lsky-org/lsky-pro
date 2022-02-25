@@ -23,6 +23,8 @@
         "deepmerge": "^4.2.2",
         "dragselect": "^2.3.0",
         "echarts": "^5.2.2",
+        "github-markdown-css": "^5.1.0",
+        "imagesloaded": "^4.1.4",
         "jquery": "^3.6.0",
         "jquery.photoswipe": "^1.1.1",
         "justifiedGallery": "^3.8.1",
@@ -37,7 +39,9 @@
         "sweetalert2": "^11.3.3",
         "tailwindcss": "^3.0.0",
         "toastr": "^2.1.4",
-        "viewerjs": "^1.10.2",
-        "imagesloaded": "^4.1.4"
+        "viewerjs": "^1.10.2"
+    },
+    "dependencies": {
+        "update": "^0.7.4"
     }
 }
