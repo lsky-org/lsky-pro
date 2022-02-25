@@ -10,8 +10,8 @@
                     <x-input type="text" name="app_name" id="app_name" value="{{ $configs['app_name'] }}" placeholder="请输入应用名称"/>
                 </div>
                 <div>
-                    <label for="app_url" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>应用 Url</label>
-                    <x-input type="text" name="app_url" id="app_url" value="{{ $configs['app_url'] }}" placeholder="请输入应用url"/>
+                    <label for="app_url" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>应用网址</label>
+                    <x-input type="text" name="app_url" id="app_url" value="{{ $configs['app_url'] }}" placeholder="请输入应用网址 http(s)://"/>
                 </div>
                 <div>
                     <label for="site_keywords" class="block text-sm font-medium text-gray-700">网站关键字</label>
