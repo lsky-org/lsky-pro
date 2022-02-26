@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Enums\ConfigKey;
 use App\Http\Controllers\Controller;
 use App\Mail\Test;
 use App\Models\Config;
+use App\Services\UpgradeService;
 use App\Utils;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -37,5 +39,35 @@ class SettingController extends Controller
             return $this->error($e->getMessage());
         }
         return $this->success('发送成功');
+    }
+
+    public function checkUpdate(): Response
+    {
+        $version = Utils::config(ConfigKey::AppVersion);
+        $service = new UpgradeService($version);
+        $data = [
+            'is_update' => $service->check(),
+        ];
+        if ($data['is_update']) {
+            $data['version'] = $service->getVersions()->first();
+        }
+        return $this->success('success', $data);
+    }
+
+    public function upgrade()
+    {
+        ignore_user_abort(true);
+        set_time_limit(0);
+
+        $version = Utils::config(ConfigKey::AppVersion);
+        $service = new UpgradeService($version);
+        $this->success()->send();
+        $service->upgrade();
+        flush();
+    }
+
+    public function upgradeProgress(): Response
+    {
+        return $this->success('success', Cache::get('upgrade_progress'));
     }
 }

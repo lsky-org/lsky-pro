@@ -13,6 +13,7 @@ return [
     'app' => [
         ConfigKey::AppName => 'Lsky Pro',
         ConfigKey::AppUrl => env('APP_URL'),
+        ConfigKey::AppVersion => '2.0',
         ConfigKey::SiteKeywords => 'Lsky Pro,lsky,兰空图床',
         ConfigKey::SiteDescription => 'Lsky Pro, Your photo album on the cloud.',
         ConfigKey::SiteNotice => '',

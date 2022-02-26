@@ -29,7 +29,7 @@
                     @foreach($extensions as $extension)
                         <dl>
                             <div class="rounded-md bg-gray-50 px-3 py-3 flex items-center justify-between">
-                                <dt class="text-md font-medium text-gray-700 {{ ! $extension['result'] ? 'text-red-500' : '' }}">
+                                <dt class="w-[95%] text-md font-medium text-gray-700 {{ ! $extension['result'] ? 'text-red-500' : '' }}">
                                     {{ $extension['name'] }}
                                     <p class="mt-2 text-sm text-gary-400">{{ $extension['intro'] }}</p>
                                 </dt>

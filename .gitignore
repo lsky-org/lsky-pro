@@ -1,4 +1,6 @@
 /installed.lock
+/upgrading.lock
+/*.zip
 /node_modules
 /public/hot
 /public/storage

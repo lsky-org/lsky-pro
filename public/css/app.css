@@ -694,6 +694,12 @@ select {
 .left-1 {
   left: 0.25rem;
 }
+.top-3 {
+  top: 0.75rem;
+}
+.left-3 {
+  left: 0.75rem;
+}
 .z-0 {
   z-index: 0;
 }
@@ -952,6 +958,15 @@ select {
 .w-24 {
   width: 6rem;
 }
+.w-16 {
+  width: 4rem;
+}
+.w-14 {
+  width: 3.5rem;
+}
+.w-\[95\%\] {
+  width: 95%;
+}
 .min-w-full {
   min-width: 100%;
 }
@@ -1083,6 +1098,9 @@ select {
 }
 .flex-nowrap {
   flex-wrap: nowrap;
+}
+.items-end {
+  align-items: flex-end;
 }
 .items-center {
   align-items: center;
@@ -1857,6 +1875,15 @@ select {
 .duration-75 {
   transition-duration: 75ms;
 }
+.duration-1000 {
+  transition-duration: 1000ms;
+}
+.duration-700 {
+  transition-duration: 700ms;
+}
+.duration-\[7000\] {
+  transition-duration: 7000;
+}
 .ease-in-out {
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -2037,6 +2064,27 @@ select {
 .group:hover .group-hover\:brightness-50 {
   --tw-brightness: brightness(.5);
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+}
+@media (prefers-reduced-motion: no-preference) {
+
+  @-webkit-keyframes spin {
+
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes spin {
+
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .motion-safe\:animate-spin {
+    -webkit-animation: spin 1s linear infinite;
+            animation: spin 1s linear infinite;
+  }
 }
 .dark .dark\:bg-gray-900 {
   --tw-bg-opacity: 1;

@@ -94,6 +94,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth.admin']], function () 
         Route::get('', [AdminSettingController::class, 'index'])->name('admin.settings');
         Route::put('save', [AdminSettingController::class, 'save'])->name('admin.settings.save');
         Route::post('mail-test', [AdminSettingController::class, 'mailTest'])->name('admin.settings.mail.test');
+        Route::get('check-update', [AdminSettingController::class, 'checkUpdate'])->name('admin.settings.check.update');
+        Route::post('upgrade', [AdminSettingController::class, 'upgrade'])->name('admin.settings.upgrade');
+        Route::get('upgrade/progress', [AdminSettingController::class, 'upgradeProgress'])->name('admin.settings.upgrade.progress');
     });
 });
 

@@ -5,7 +5,6 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\DB;
 
 class Install extends Command
 {
@@ -21,7 +20,7 @@ class Install extends Command
      *
      * @var string
      */
-    protected $description = 'Install Lsky Pro';
+    protected $description = 'Install Lsky Pro.';
 
     /**
      * Create a new command instance.
