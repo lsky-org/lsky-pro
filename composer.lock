@@ -334,16 +334,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.209.31",
+            "version": "3.209.30",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "595a97c3ca53ba1f33f5bacbb6a8e48ccb45f068"
+                "reference": "54c1e491b8de74360bbe94d727706db384c8d9a8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/595a97c3ca53ba1f33f5bacbb6a8e48ccb45f068",
-                "reference": "595a97c3ca53ba1f33f5bacbb6a8e48ccb45f068",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/54c1e491b8de74360bbe94d727706db384c8d9a8",
+                "reference": "54c1e491b8de74360bbe94d727706db384c8d9a8",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -425,9 +425,9 @@
             "support": {
                 "forum": "https://forums.aws.amazon.com/forum.jspa?forumID=80",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.209.31"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.209.30"
             },
-            "time": "2022-02-24T22:02:07+00:00"
+            "time": "2022-02-23T19:14:31+00:00"
         },
         {
             "name": "brick/math",
@@ -2765,16 +2765,16 @@
         },
         {
             "name": "league/flysystem",
-            "version": "3.0.9",
+            "version": "3.0.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem.git",
-                "reference": "fb0801a60b7f9ea4188f01c25cb48aed26db7fb6"
+                "reference": "bbc5026adb5a423dfcdcecec74c7e15943ff6115"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/fb0801a60b7f9ea4188f01c25cb48aed26db7fb6",
-                "reference": "fb0801a60b7f9ea4188f01c25cb48aed26db7fb6",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/bbc5026adb5a423dfcdcecec74c7e15943ff6115",
+                "reference": "bbc5026adb5a423dfcdcecec74c7e15943ff6115",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -2788,6 +2788,7 @@
                 "php": "^8.0.2"
             },
             "conflict": {
+                "aws/aws-sdk-php": "3.209.31 || 3.210.0",
                 "guzzlehttp/guzzle": "<7.0",
                 "guzzlehttp/ringphp": "<1.1.1",
                 "symfony/http-client": "<5.2"
@@ -2840,7 +2841,7 @@
             ],
             "support": {
                 "issues": "https://github.com/thephpleague/flysystem/issues",
-                "source": "https://github.com/thephpleague/flysystem/tree/3.0.9"
+                "source": "https://github.com/thephpleague/flysystem/tree/3.0.10"
             },
             "funding": [
                 {
@@ -2856,20 +2857,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-02-22T07:37:40+00:00"
+            "time": "2022-02-26T11:09:13+00:00"
         },
         {
             "name": "league/flysystem-aws-s3-v3",
-            "version": "3.0.9",
+            "version": "3.0.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem-aws-s3-v3.git",
-                "reference": "457042c76eec01f150a3e54e96d37ddb48da7833"
+                "reference": "79c63dc761b6a389a38bd409c2bf8ced73c29261"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem-aws-s3-v3/zipball/457042c76eec01f150a3e54e96d37ddb48da7833",
-                "reference": "457042c76eec01f150a3e54e96d37ddb48da7833",
+                "url": "https://api.github.com/repos/thephpleague/flysystem-aws-s3-v3/zipball/79c63dc761b6a389a38bd409c2bf8ced73c29261",
+                "reference": "79c63dc761b6a389a38bd409c2bf8ced73c29261",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -2916,9 +2917,9 @@
             ],
             "support": {
                 "issues": "https://github.com/thephpleague/flysystem-aws-s3-v3/issues",
-                "source": "https://github.com/thephpleague/flysystem-aws-s3-v3/tree/3.0.9"
+                "source": "https://github.com/thephpleague/flysystem-aws-s3-v3/tree/3.0.10"
             },
-            "time": "2022-02-22T07:32:04+00:00"
+            "time": "2022-02-26T10:59:05+00:00"
         },
         {
             "name": "league/flysystem-ftp",
@@ -6322,12 +6323,12 @@
                 }
             },
             "autoload": {
-                "psr-4": {
-                    "Symfony\\Polyfill\\Ctype\\": ""
-                },
                 "files": [
                     "bootstrap.php"
-                ]
+                ],
+                "psr-4": {
+                    "Symfony\\Polyfill\\Ctype\\": ""
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -7272,12 +7273,12 @@
             },
             "type": "library",
             "autoload": {
-                "psr-4": {
-                    "Symfony\\Component\\String\\": ""
-                },
                 "files": [
                     "Resources/functions.php"
                 ],
+                "psr-4": {
+                    "Symfony\\Component\\String\\": ""
+                },
                 "exclude-from-classmap": [
                     "/Tests/"
                 ]
@@ -10711,16 +10712,16 @@
         },
         {
             "name": "spatie/flare-client-php",
-            "version": "1.0.2",
+            "version": "1.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/flare-client-php.git",
-                "reference": "5d48e00716e3bab813cafffe223bc85c5732a410"
+                "reference": "9b54db8774b6bd7ad7cfa4c035820ef63ea1a75c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/flare-client-php/zipball/5d48e00716e3bab813cafffe223bc85c5732a410",
-                "reference": "5d48e00716e3bab813cafffe223bc85c5732a410",
+                "url": "https://api.github.com/repos/spatie/flare-client-php/zipball/9b54db8774b6bd7ad7cfa4c035820ef63ea1a75c",
+                "reference": "9b54db8774b6bd7ad7cfa4c035820ef63ea1a75c",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -10769,7 +10770,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/flare-client-php/issues",
-                "source": "https://github.com/spatie/flare-client-php/tree/1.0.2"
+                "source": "https://github.com/spatie/flare-client-php/tree/1.0.3"
             },
             "funding": [
                 {
@@ -10777,7 +10778,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-02-16T16:14:24+00:00"
+            "time": "2022-02-25T11:05:23+00:00"
         },
         {
             "name": "spatie/ignition",

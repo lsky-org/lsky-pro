@@ -39,6 +39,7 @@ class UpgradeService
                     'icon' => 'https://raw.githubusercontent.com/wisp-x/lsky-pro/master/public/static/app/images/icon.png',
                     'name' => 'V 2.0.1',
                     'size' => '33.5 MB',
+                    'md5' => '12',
                     'changelog' => (new \Parsedown())->parse('### Added
 - 一键复制全部链接 ([#167](https://github.com/wisp-x/lsky-pro/issues/167))
 
@@ -53,7 +54,7 @@ FAQ:
 
 '),
                     'pushed_at' => '2022-02-26 12:21',
-                    'download_url' => 'https://github.com/wisp-x/lsky-pro/archive/v1.6.4.zip',
+                    'download_url' => 'https://software.download.prss.microsoft.com/sg/Win10_21H2_Chinese(Simplified)_x64.iso?t=cc16df27-a503-4843-928b-fa38631f2a70&e=1646095954&h=47dc652437cb5752e720648dd2f74faa0b5d1966c9f6cfb6b8557f32dddec97c',
                 ],
             ];
         }
@@ -69,17 +70,21 @@ FAQ:
                 return false;
             }
 
+            file_put_contents($lock, '');
+
             $package = base_path('upgrade.zip');
+            $version = $this->getVersions()->first();
+
             // 如果有安装包则直接进行安装，否则下载安装包
             if (! file_exists($package)) {
-                $this->setProgress('开始下载安装包...');
+                $this->setProgress('正在下载安装包...');
                 if (! $this->check()) {
                     throw new \Exception('No need to upgrade.');
                 }
-
-                $version = $this->getVersions()->first();
-                $response = Http::timeout(1800)->get($version['download_url'])->onError(function () {
-                    $this->setProgress('安装包下载异常');
+                $response = Http::withOptions([
+                    'timeout' => 600,
+                ])->timeout(600)->get($version['download_url'])->onError(function () {
+                    throw new \Exception('安装包下载异常');
                 });
                 if ($response->successful()) {
                     file_put_contents($package, $response->body());
@@ -88,29 +93,35 @@ FAQ:
             }
 
             $this->setProgress('正在解压安装包...');
-            $name = md5_file($package);
+            $md5 = md5_file($package);
+
+            if ($md5 !== $version['md5']) {
+                throw new \Exception('md5 校验失败');
+            }
 
             $zip = new ZipArchive;
             if (! $zip->open($package)) {
                 throw new \Exception('Installation package decompression failed.');
             }
-            $zip->extractTo(base_path($name));
+            $zip->extractTo(base_path($md5));
             $zip->close();
             $this->setProgress('执行安装中...');
 
             // TODO 读取已存在的软连接，移动到更新目录
             // TODO 移动本地文件到更新目录
 
-            Artisan::call('cache:clear');
+            // 清除配置缓存
+            Cache::forget('configs');
             Artisan::call('package:discover');
         } catch (\Throwable $e) {
             Log::error('升级失败', ['message' => $e->getMessage(), $e->getTraceAsString()]);
-            $this->setProgress('安装失败，请刷新页面重试', 'fail');
+            $this->setProgress($e->getMessage(), 'fail');
             @unlink($lock);
             return false;
         }
         $this->setProgress('安装成功，请刷新页面', 'success');
         @unlink($lock);
+        @unlink($package);
 
         return true;
     }

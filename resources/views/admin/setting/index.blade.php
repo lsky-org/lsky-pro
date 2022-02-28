@@ -145,7 +145,7 @@
                 <span class="text-gray-700">{{ \App\Utils::config(\App\Enums\ConfigKey::AppVersion) }}</span>
                 <span class="text-gray-500">已是最新版本</span>
             </p>
-            <div id="have-update" style="display: none"></div>
+            <div id="have-update" class="break-words" style="display: none"></div>
         </div>
     </div>
 
@@ -238,24 +238,27 @@
                 };
             };
 
-            $('#check-update').show();
-            axios.get('{{ route('admin.settings.check.update') }}').then(response => {
-                if (response.data.status && response.data.data.is_update) {
-                    $('#check-update').hide();
-                    let version = response.data.data.version;
-                    let html = $('#update-tpl').html()
-                        .replace(/__icon__/g, version.icon)
-                        .replace(/__name__/g, version.name)
-                        .replace(/__size__/g, version.size)
-                        .replace(/__pushed_at__/g, version.pushed_at)
-                        .replace(/__changelog__/g, version.changelog);
-                    $('#have-update').html(html).show();
-                    $('.markdown-body a').attr('target', '_blank');
-                } else {
-                    $('#not-update').show();
-                    $('#check-update').hide();
-                }
-            });
+            let getVersion = function (callback) {
+                $('#check-update').show();
+                axios.get('{{ route('admin.settings.check.update') }}').then(response => {
+                    if (response.data.status && response.data.data.is_update) {
+                        $('#check-update').hide();
+                        let version = response.data.data.version;
+                        let html = $('#update-tpl').html()
+                            .replace(/__icon__/g, version.icon)
+                            .replace(/__name__/g, version.name)
+                            .replace(/__size__/g, version.size)
+                            .replace(/__pushed_at__/g, version.pushed_at)
+                            .replace(/__changelog__/g, version.changelog);
+                        $('#have-update').html(html).show();
+                        $('.markdown-body a').attr('target', '_blank');
+                        callback && callback(version);
+                    } else {
+                        $('#not-update').show();
+                        $('#check-update').hide();
+                    }
+                });
+            }
 
             let getProgress = function () {
                 axios.get('{{ route('admin.settings.upgrade.progress') }}').then(response => {
@@ -279,6 +282,18 @@
                 }
                 upgrade().start();
             });
+
+            @if(cache()->has('upgrade_progress'))
+                getVersion(() => {
+                    $('#icon').addClass('animate-spin')
+                    $('#install').attr('disabled', true).removeClass('bg-blue-500').addClass('cursor-not-allowed bg-gray-400').text('正在升级...')
+                    $('#upgrade-message').text('请稍等...').removeClass('text-red-500').addClass('text-gray-500');
+
+                    timer = setInterval(getProgress, 1500);
+                });
+                @else
+                getVersion();
+            @endif
         </script>
     @endpush
 
