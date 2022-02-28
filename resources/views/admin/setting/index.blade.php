@@ -151,7 +151,7 @@
 
     <script type="text/html" id="update-tpl">
         <div class="flex items-center">
-            <img id="icon" src="__icon__" alt="icon" class="w-16" style="animation-duration: 5s">
+            <img id="icon" src="__icon__" alt="icon" class="rounded-full w-16" style="animation-duration: 5s">
             <div class="flex flex-col text-gray-700 ml-4">
                 <p class="font-semibold">Lsky Pro __name__</p>
                 <p class="text-sm">__size__</p>
