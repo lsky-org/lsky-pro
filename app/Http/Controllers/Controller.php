@@ -53,7 +53,6 @@ class Controller extends BaseController
             ['name' => 'Tokenizer', 'intro' => '令牌处理拓展'],
             ['name' => 'XML', 'intro' => 'Xml 解析器'],
             ['name' => 'Imagick', 'intro' => '高性能图片处理拓展'],
-            ['name' => 'Zip', 'intro' => '解压缩文件拓展，用于更新程序'],
         ])->transform(function ($item) {
             $item['result'] = extension_loaded(strtolower($item['name']));
             return $item;
