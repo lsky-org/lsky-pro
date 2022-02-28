@@ -58,6 +58,10 @@ class Controller extends BaseController
             $item['result'] = extension_loaded(strtolower($item['name']));
             return $item;
         })->push([
+            'name' => 'readlink、symlink 函数',
+            'intro' => '读取、创建符号链接函数',
+            'result' => function_exists('readlink') && function_exists('symlink'),
+        ])->push([
             'name' => 'PHP >= 8.0.2',
             'intro' => '最低要求 PHP 8.0.2 版本',
             'result' => phpversion() >= 8,
