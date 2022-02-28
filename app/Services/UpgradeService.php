@@ -116,15 +116,10 @@ FAQ:
             }
             $this->setProgress('执行升级...');
             foreach ($diff['files'] as $file) {
-                switch ($file['action']) {
-                    case 'added':
-                    case 'copied':
-                        $this->filesystem->copy($this->temp.'/'.$file['path'], $file['path']);
-                        break;
-                    case 'deleted':
-                        $this->filesystem->delete($file['path']);
-                        break;
-                }
+                match ($file['action']) {
+                    'added', 'copied' => $this->filesystem->copy($this->temp.'/'.$file['path'], $file['path']),
+                    'deleted' => $this->filesystem->delete($file['path']),
+                };
             }
             $this->setProgress('清除缓存...');
             // 更新版本号
