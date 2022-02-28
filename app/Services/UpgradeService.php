@@ -2,12 +2,16 @@
 
 namespace App\Services;
 
+use App\Enums\ConfigKey;
+use App\Models\Config;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
-use ZipArchive;
+use League\Flysystem\Filesystem;
+use League\Flysystem\FilesystemException;
+use League\Flysystem\Local\LocalFilesystemAdapter;
 
 class UpgradeService
 {
@@ -16,8 +20,17 @@ class UpgradeService
     /** @var array|array[] 所有版本 */
     protected array $versions = [];
 
+    /** @var string 临时目录 */
+    protected string $temp = 'temp';
+
+    /** @var string 升级锁文件 */
+    protected string $lock = 'upgrading.lock';
+
+    protected Filesystem $filesystem;
+
     public function __construct(protected string $version)
     {
+        $this->filesystem = new Filesystem(new LocalFilesystemAdapter(base_path()));
     }
 
     /**
@@ -54,7 +67,6 @@ FAQ:
 
 '),
                     'pushed_at' => '2022-02-26 12:21',
-                    'download_url' => 'https://software.download.prss.microsoft.com/sg/Win10_21H2_Chinese(Simplified)_x64.iso?t=cc16df27-a503-4843-928b-fa38631f2a70&e=1646095954&h=47dc652437cb5752e720648dd2f74faa0b5d1966c9f6cfb6b8557f32dddec97c',
                 ],
             ];
         }
@@ -63,88 +75,106 @@ FAQ:
 
     public function upgrade(): bool
     {
-        $lock = base_path('upgrading.lock');
-
         try {
-            if (file_exists($lock)) {
+            if (file_exists(base_path($this->lock))) {
                 return false;
             }
 
-            file_put_contents($lock, '');
+            if (! $this->check()) {
+                return false;
+            }
 
-            $package = base_path('upgrade.zip');
-            $version = $this->getVersions()->first();
+            file_put_contents(base_path($this->lock), '');
+            $this->setProgress('准备升级...');
 
-            // 如果有安装包则直接进行安装，否则下载安装包
-            if (! file_exists($package)) {
-                $this->setProgress('正在下载安装包...');
-                if (! $this->check()) {
-                    throw new \Exception('No need to upgrade.');
-                }
+            // TODO 获取差异信息
+            $diff = [
+                'server_url' => 'https://raw.githubusercontent.com/wisp-x/lsky-pro/dev',
+                'files' => [
+                    [
+                        'path' => '.env.example',
+                        'md5' => 'c931d81183b69204496923f2fbe3dfd5',
+                        'action' => 'copied', // in added, deleted, copied
+                    ],
+                ],
+            ];
+            $this->setProgress('下载补丁包...');
+            $timeout = 30;
+            foreach ($diff['files'] as $file) {
+                if ($file['action'] === 'deleted') continue;
                 $response = Http::withOptions([
-                    'timeout' => 600,
-                ])->timeout(600)->get($version['download_url'])->onError(function () {
-                    throw new \Exception('安装包下载异常');
-                });
-                if ($response->successful()) {
-                    file_put_contents($package, $response->body());
-                    $this->setProgress('安装包下载完成');
+                    'timeout' => $timeout,
+                ])->timeout($timeout)->get($diff['server_url'].'/'.$file['path']);
+                if (! $response->successful()) {
+                    throw new \Exception("补丁文件 {$file['path']} 下载失败。");
+                }
+                $this->filesystem->write($this->temp.'/'.$file['path'], $response->body());
+                // 校验文件
+                if ($file['md5'] !== md5_file(base_path($this->temp).'/'.$file['path'])) {
+                    throw new \Exception("补丁文件 {$file['path']} 校验失败。");
                 }
             }
-
-            $this->setProgress('正在解压安装包...');
-            $md5 = md5_file($package);
-
-            if ($md5 !== $version['md5']) {
-                throw new \Exception('md5 校验失败');
+            $this->setProgress('执行升级...');
+            foreach ($diff['files'] as $file) {
+                switch ($file['action']) {
+                    case 'added':
+                    case 'copied':
+                        $this->filesystem->copy($this->temp.'/'.$file['path'], $file['path']);
+                        break;
+                    case 'deleted':
+                        $this->filesystem->delete($file['path']);
+                        break;
+                }
             }
-
-            $zip = new ZipArchive;
-            if (! $zip->open($package)) {
-                throw new \Exception('Installation package decompression failed.');
-            }
-            $zip->extractTo(base_path($md5));
-            $zip->close();
-            $this->setProgress('执行安装中...');
-
-            // TODO 读取已存在的软连接，移动到更新目录
-            // TODO 移动本地文件到更新目录
-
+            $this->setProgress('清除缓存...');
+            // 更新版本号
+            $version = $this->getVersions()->first()['name'];
+            //Config::query()->where('name', ConfigKey::AppVersion)->update(['value' => $version]);
+            // 执行数据库迁移
+            Artisan::call('migrate');
             // 清除配置缓存
             Cache::forget('configs');
             Artisan::call('package:discover');
         } catch (\Throwable $e) {
             Log::error('升级失败', ['message' => $e->getMessage(), $e->getTraceAsString()]);
             $this->setProgress($e->getMessage(), 'fail');
-            @unlink($lock);
+            @unlink(base_path($this->lock));
             return false;
         }
-        $this->setProgress('安装成功，请刷新页面', 'success');
-        @unlink($lock);
-        @unlink($package);
-
+        $this->setProgress('升级成功，请刷新页面', 'success', 6);
+        $this->gc();
         return true;
     }
 
     /**
-     * 设置安装进度
+     * 设置升级进度
      *
      * @param  string  $message
      * @param  string  $status in installing、success、fail
+     * @param  int  $ttl
      * @return void
      */
-    private function setProgress(string $message, string $status = 'installing')
+    protected function setProgress(string $message, string $status = 'installing', int $ttl = 1800)
     {
-        Cache::put('upgrade_progress', compact('status', 'message'), 1800);
+        Cache::put('upgrade_progress', compact('status', 'message'), $ttl);
     }
 
     /**
-     * 获取安装进度
+     * 获取升级进度
      *
      * @return void
      */
     public function getProgress()
     {
         Cache::get('upgrade_progress');
+    }
+
+    protected function gc()
+    {
+        try {
+            $this->filesystem->delete($this->lock);
+            $this->filesystem->deleteDirectory($this->temp);
+        } catch (FilesystemException $e) {
+        }
     }
 }
