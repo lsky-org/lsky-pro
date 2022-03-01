@@ -48,6 +48,7 @@
                 @endif
             </div>
             @endif
+            @if(Auth::user()->is_adminer)
             <div class="flex flex-col space-y-2 mb-5">
                 <p class="text-gray-400 text-sm mx-4">系统</p>
                 <x-nav-link :href="route('admin.console')" :active="request()->is('admin/console*')">
@@ -75,6 +76,7 @@
                     <x-slot name="name">系统设置</x-slot>
                 </x-nav-link>
             </div>
+            @endif
         </div>
 
         <div id="capacity-progress" class="flex flex-col space-y-2 mb-5 px-5 w-full mt-10">
