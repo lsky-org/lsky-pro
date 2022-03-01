@@ -68,7 +68,7 @@
                 <dl>
                     <div class="bg-gray-50 px-2 py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                         <dt class="text-sm font-medium text-gray-500">上传用户</dt>
-                        <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2 truncate">__user_name__(__user_email__)</dd>
+                        <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2 truncate">__user_name__</dd>
                     </div>
                 </dl>
                 <dl>
@@ -356,7 +356,7 @@
                 let html = $('#image-tpl').html()
                     .replace(/__id__/g, image.id)
                     .replace(/__url__/g, image.url)
-                    .replace(/__user_name__/g, image.user ? image.user.name : '游客')
+                    .replace(/__user_name__/g, image.user ? image.user.name+'('+image.user.email+')' : '游客')
                     .replace(/__user_email__/g, image.user ? image.user.email : '-')
                     .replace(/__album_name__/g, image.album ? image.album.name : '-')
                     .replace(/__group_name__/g, image.group ? image.group.name : '-')

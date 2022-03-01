@@ -85,15 +85,14 @@ class Controller extends BaseController
                     'name' => '超级管理员',
                     'email' => $request->input('account.email'),
                     'password' => Hash::make($request->input('account.password')),
+                    'registered_ip' => $request->ip(),
                 ]);
                 $user->group_id = Group::query()->first()['id'];
                 $user->is_adminer = true;
                 $user->status = UserStatus::Normal;
                 $user->email_verified_at = date('Y-m-d H:i:s');
                 // 设置默认策略组的 url 为当前请求 url
-                Strategy::query()->where('is_guest', true)->update([
-                    'configs->url' => $request->getSchemeAndHttpHost().'/i',
-                ]);
+                Strategy::query()->update(['configs->url' => $request->getSchemeAndHttpHost().'/i']);
                 $user->save();
             } catch (\Throwable $e) {
                 @unlink(base_path('installed.lock'));
