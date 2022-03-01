@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Enums\ConfigKey;
 use App\Utils;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
