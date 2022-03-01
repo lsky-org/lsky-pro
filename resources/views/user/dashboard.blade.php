@@ -38,8 +38,8 @@
                 <x-box>
                     <x-slot name="title">可使用的策略</x-slot>
                     <x-slot name="content">
-                        @if(! $strategies)
-                            <x-no-data message="没有可用的策略，将使用系统默认配置。" />
+                        @if($strategies->isEmpty())
+                            <x-no-data message="您所在的组还没有可用的储存策略，请联系管理员。" />
                         @else
                             <div class="divide-y divide-solid">
                                 @foreach ($strategies as $strategy)

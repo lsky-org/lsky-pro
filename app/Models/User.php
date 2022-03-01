@@ -93,6 +93,8 @@ class User extends Authenticatable implements MustVerifyEmail
     protected static function booted()
     {
         static::creating(function (self $user) {
+            // 默认组
+            $user->group_id = Group::query()->where('is_default', true)->value('id');
             // 初始容量
             $user->capacity = Utils::config(ConfigKey::UserInitialCapacity);
 
