@@ -194,7 +194,7 @@ class Image extends Model
 
     public function filesystem(): Filesystem
     {
-        return new Filesystem((new ImageService())->getAdapter($this->strategy->key, $this->strategy->configs));
+        return new Filesystem((new ImageService())->getAdapter($this->strategy));
     }
 
     public function user(): BelongsTo
@@ -209,18 +209,12 @@ class Image extends Model
 
     public function group(): BelongsTo
     {
-        return $this->belongsTo(Group::class, 'group_id', 'id')->withDefault(function (Group $group) {
-            $group->name = '系统默认组';
-            $group->configs = $group::getGuestConfigs();
-        });
+        return $this->belongsTo(Group::class, 'group_id', 'id');
     }
 
     public function strategy(): BelongsTo
     {
-        return $this->belongsTo(Strategy::class, 'strategy_id', 'id')->withDefault(function (Strategy $strategy) {
-            $strategy->key = StrategyKey::Local;
-            $strategy->configs = collect(config('filesystems.disks.uploads'));
-        });
+        return $this->belongsTo(Strategy::class, 'strategy_id', 'id');
     }
 
     private function generateKey($length = 6): string

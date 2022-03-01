@@ -9,32 +9,7 @@
             </div>
         </form>
 
-        <x-table :columns="['ID', '名称', '是否默认', '图片审核', '原图保护', '水印' ,'用户数量', '策略数量', '操作']">
-            <tr data-id="0">
-                <td class="px-6 py-4 whitespace-nowrap">-</td>
-                <td class="px-6 py-4 whitespace-nowrap name">系统默认组</td>
-                <td class="px-6 py-4 whitespace-nowrap">-</td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $default['is_enable_scan'] ? 'text-green-500' : 'text-rose-500' }}">
-                        <i class="text-lg fas fa-{{ $default['is_enable_scan'] ? 'check-circle' : 'times-circle' }}"></i>
-                    </span>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $default['is_enable_original_protection'] ? 'text-green-500' : 'text-rose-500' }}">
-                        <i class="text-lg fas fa-{{ $default['is_enable_original_protection'] ? 'check-circle' : 'times-circle' }}"></i>
-                    </span>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $default['is_enable_watermark'] ? 'text-green-500' : 'text-rose-500' }}">
-                        <i class="text-lg fas fa-{{ $default['is_enable_watermark'] ? 'check-circle' : 'times-circle' }}"></i>
-                    </span>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap">-</td>
-                <td class="px-6 py-4 whitespace-nowrap">-</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
-                    <a href="{{ route('admin.group.edit', ['id' => 0]) }}" class="text-indigo-600 hover:text-indigo-900">编辑</a>
-                </td>
-            </tr>
+        <x-table :columns="['ID', '名称', '是否默认', '是否为游客组', '图片审核', '原图保护', '水印' ,'用户数量', '策略数量', '操作']">
             @foreach($groups as $group)
             <tr data-id="{{ $group->id }}">
                 <td class="px-6 py-4 whitespace-nowrap">{{ $group->id }}</td>
@@ -42,6 +17,11 @@
                 <td class="px-6 py-4 whitespace-nowrap">
                     <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $group->is_default ? 'text-green-500' : 'text-rose-500' }}">
                         <i class="text-lg fas fa-{{ $group->is_default ? 'check-circle' : 'times-circle' }}"></i>
+                    </span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $group->is_guest ? 'text-green-500' : 'text-rose-500' }}">
+                        <i class="text-lg fas fa-{{ $group->is_guest ? 'check-circle' : 'times-circle' }}"></i>
                     </span>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap">
@@ -63,13 +43,15 @@
                 <td class="px-6 py-4 whitespace-nowrap">{{ $group->strategies_count }}</td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
                     <a href="{{ route('admin.group.edit', ['id' => $group->id]) }}" class="text-indigo-600 hover:text-indigo-900">编辑</a>
+                    @if(! $group->is_default && ! $group->is_guest)
                     <a href="javascript:void(0)" data-operate="delete" class="text-red-600 hover:text-red-900">删除</a>
+                    @endif
                 </td>
             </tr>
             @endforeach
         </x-table>
         @if($groups->isEmpty())
-            <x-no-data message="没有找到自定义角色组"/>
+            <x-no-data message="没有找到任何角色组"/>
         @else
             <div class="mt-4">
                 {{ $groups->links() }}

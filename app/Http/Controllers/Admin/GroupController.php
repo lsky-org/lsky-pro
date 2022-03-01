@@ -4,16 +4,13 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Admin;
 
-use App\Enums\ConfigKey;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\GroupRequest;
-use App\Models\Config;
 use App\Models\Group;
-use App\Utils;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 class GroupController extends Controller
@@ -21,7 +18,7 @@ class GroupController extends Controller
     public function __construct()
     {
         \Illuminate\Support\Facades\View::share([
-            'default' => Utils::config(ConfigKey::Group),
+            'default' => Group::getDefaultConfigs(),
             'positions' => Group::POSITIONS,
             'scenes' => Group::SCENES,
         ]);
@@ -42,44 +39,43 @@ class GroupController extends Controller
 
     public function edit(Request $request): View
     {
-        if ($request->route('id') == 0) {
-            $group = new Group([
-                'id' => 0,
-                'name' => '系统默认组',
-                'configs' => Utils::config(ConfigKey::Group),
-            ]);
-        } else {
-            $group = Group::query()->findOrFail($request->route('id'));
-        }
+        $group = Group::query()->findOrFail($request->route('id'));
         return view('admin.group.edit', compact('group'));
     }
 
     public function create(GroupRequest $request): Response
     {
-        $group = new Group();
-        $group->fill($request->validated());
-        $group->save();
+        DB::transaction(function () use ($request) {
+            $group = new Group();
+            $group->fill($request->validated());
+            $group->save();
+        });
+
         return $this->success('创建成功');
     }
 
     public function update(GroupRequest $request): Response
     {
-        if ($request->route('id') == 0) {
-            $configs = Utils::parseConfigs(Group::getDefaultConfigs()->toArray(), $request->validated('configs'));
-            if (! Config::query()->where('name', ConfigKey::Group)->update([
-                'value' => collect($configs)->toJson(),
-            ])) {
-                return $this->error('保存失败');
-            }
-            // 删除配置缓存
-            Cache::forget('configs');
-        } else {
+        DB::beginTransaction();
+        try {
             /** @var Group $group */
             $group = Group::query()->findOrFail($request->route('id'));
             $group->fill($request->validated());
-            if (!$group->save()) {
-                return $this->error('保存失败');
+            if ($group->isDirty('is_default') && ! $group->is_default) {
+                if (! Group::query()->where('is_default', true)->where('id', '<>', $group->id)->exists()) {
+                    return $this->error('系统至少需要保留一个默认组');
+                }
             }
+            if ($group->isDirty('is_guest') && ! $group->is_guest) {
+                if (! Group::query()->where('is_guest', true)->where('id', '<>', $group->id)->exists()) {
+                    return $this->error('系统至少需要保留一个游客组');
+                }
+            }
+            $group->save();
+            DB::commit();
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            return $this->error('保存失败');
         }
 
         return $this->success('保存成功');
@@ -87,7 +83,11 @@ class GroupController extends Controller
 
     public function delete(Request $request): Response
     {
+        /** @var Group $group */
         if ($group = Group::query()->find($request->route('id'))) {
+            if ($group->is_default || $group->is_guest) {
+                return $this->error('默认组和游客组无法删除');
+            }
             $group->delete();
         }
         return $this->success('删除成功');

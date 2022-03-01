@@ -90,8 +90,6 @@ class Install extends Command
             ));
             // 创建锁文件
             file_put_contents(base_path('installed.lock'), '');
-            // 生成系统本地储存符号链接
-            Artisan::call('storage:link');
         } catch (\Throwable $e) {
             $this->warn("Installation error!\n");
             $this->error($e->getMessage());

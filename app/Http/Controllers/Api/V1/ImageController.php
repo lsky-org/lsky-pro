@@ -40,9 +40,7 @@ class ImageController extends Controller
         }
 
         try {
-            /** @var User $user */
-            $user = Auth::user();
-            $image = $service->store($request, $user);
+            $image = $service->store($request);
         } catch (UploadException $e) {
             return $this->error($e->getMessage());
         } catch (\Throwable $e) {

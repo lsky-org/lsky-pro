@@ -16,6 +16,7 @@ use App\Enums\UserStatus;
 use App\Enums\Watermark\FontOption;
 use App\Enums\Watermark\ImageOption;
 use App\Exceptions\UploadException;
+use App\Models\Group;
 use App\Models\Image;
 use App\Models\Strategy;
 use App\Models\User;
@@ -25,6 +26,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image as InterventionImage;
@@ -40,72 +42,31 @@ class ImageService
 {
     /**
      * @param  Request  $request
-     * @param  User|null  $user
      * @return Image
      * @throws UploadException
      */
-    public function store(Request $request, ?User $user = null): Image
+    public function store(Request $request): Image
     {
         $file = $request->file('file');
 
-        if (is_null($user) && !Utils::config(ConfigKey::IsAllowGuestUpload, true)) {
+        if (Auth::guest() && !Utils::config(ConfigKey::IsAllowGuestUpload, true)) {
             throw new UploadException('管理员关闭了游客上传');
         }
 
         $img = InterventionImage::make($file);
 
         $image = new Image();
+        /** @var User|null $user */
+        $user = $request->user();
+
+        /** @var Group $group */
+        $group = ! is_null($user) ? $user->group : Group::query()->where('is_guest', true)->first();
         // 组配置
-        $configs = Utils::config(ConfigKey::Group);
-        // 默认使用本地储存策略
-        $disk = collect([
-            'driver' => StrategyKey::Local,
-            'configs' => collect([LocalOption::Root => config('filesystems.disks.uploads.root')]),
-        ]);
-
-        // 图片默认权限
-        $image->permission = ImagePermission::Private;
-
-        if (!is_null($user)) {
-            if (Utils::config(ConfigKey::IsUserNeedVerify) && !$user->email_verified_at) {
-                throw new UploadException('账户未验证');
-            }
-
-            if ($user->status !== UserStatus::Normal) {
-                throw new UploadException('账号状态异常');
-            }
-
-            // 如果该用户有角色组，覆盖默认组、上传策略配置
-            if ($user->group) {
-                $image->group_id = $user->group_id;
-                $configs = $user->group->configs;
-                // 获取策略列表，根据用户所选的策略上传
-                $strategies = $user->group->strategies()->get();
-                if ($strategies->isNotEmpty()) {
-                    // 是否指定了默认的策略
-                    $defaultStrategyId = $user->configs->get(UserConfigKey::DefaultStrategy, 0);
-                    /** @var Strategy $strategy $disk */
-                    $strategy = $strategies->find($defaultStrategyId, $strategies->first());
-                    $disk = collect(['driver' => $strategy->key, 'configs' => $strategy->configs]);
-                    $image->strategy_id = $strategy->id;
-                }
-            }
-
-            if ($file->getSize() / 1024 + $user->images()->sum('size') > $user->capacity) {
-                throw new UploadException('储存空间不足');
-            }
-
-            $image->user_id = $user->id;
-
-            // 图片保存至默认相册(若有)
-            if ($albumId = $user->configs->get(UserConfigKey::DefaultAlbum)) {
-                if ($user->albums()->where('id', $albumId)->exists()) {
-                    $image->album_id = $albumId;
-                }
-            }
-
-            // 用户设置的图片默认权限
-            $image->permission = $user->configs->get(UserConfigKey::DefaultPermission, ImagePermission::Private);
+        $configs = $group->configs;
+        // 储存策略
+        $strategies = $group->strategies()->get();
+        if ($strategies->isEmpty()) {
+            throw new UploadException('没有可用的储存，请联系管理员。');
         }
 
         if (!in_array($file->extension(), $configs->get(GroupConfigKey::AcceptedFileSuffixes))) {
@@ -116,8 +77,47 @@ class ImageService
             throw new UploadException("图片大小超出限制");
         }
 
+        // 图片所属组
+        $image->group_id = $group->id;
+        // 图片默认权限
+        $image->permission = ImagePermission::Private;
+
+        // 默认储存策略
+        if (is_null($user)) {
+            // 游客随机一个储存，TODO 适配前端切换
+            $strategy = $strategies->random(1)->first();
+            $image->strategy_id = $strategy->id;
+        } else {
+            /** @var Strategy $strategy */
+            $strategy = $strategies->find($user->configs->get(UserConfigKey::DefaultStrategy, 0), $strategies->first());
+
+            if (Utils::config(ConfigKey::IsUserNeedVerify) && ! $user->email_verified_at) {
+                throw new UploadException('账户未验证');
+            }
+
+            if ($user->status !== UserStatus::Normal) {
+                throw new UploadException('账号状态异常');
+            }
+
+            if ($file->getSize() / 1024 + $user->images()->sum('size') > $user->capacity) {
+                throw new UploadException('储存空间不足');
+            }
+
+            // 图片保存至默认相册(若有)
+            if ($albumId = $user->configs->get(UserConfigKey::DefaultAlbum)) {
+                if ($user->albums()->where('id', $albumId)->exists()) {
+                    $image->album_id = $albumId;
+                }
+            }
+
+            $image->strategy_id = $strategy->id;
+            $image->user_id = $user->id;
+            // 用户设置的图片默认权限
+            $image->permission = $user->configs->get(UserConfigKey::DefaultPermission, ImagePermission::Private);
+        }
+
         // 上传频率限制
-        $this->rateLimiter($configs, $request, $user);
+        $this->rateLimiter($configs, $request);
 
         $filename = $this->replacePathname(
             $configs->get(GroupConfigKey::PathNamingRule).'/'.$configs->get(GroupConfigKey::FileNamingRule), $file,
@@ -139,7 +139,7 @@ class ImageService
             'uploaded_ip' => $request->ip(),
         ]);
 
-        $filesystem = new Filesystem($this->getAdapter($disk->get('driver'), $disk->get('configs')));
+        $filesystem = new Filesystem($this->getAdapter($strategy));
         // 检测该策略是否存在该图片，有则只创建记录不保存文件
         /** @var Image $existing */
         $existing = Image::query()->when($image->strategy_id, function (Builder $builder, $id) {
@@ -157,7 +157,16 @@ class ImageService
             $image->fill($existing->only('path', 'name'));
         }
 
-        DB::transaction(function () use ($image, $user, $filesystem, $existing) {
+        $updateNum = function ($method) use ($user, $image) {
+            if (! is_null($user)) {
+                $user->{$method}('image_num');
+            }
+            if (! is_null($image->album)) {
+                $image->album->{$method}('image_num');
+            }
+        };
+
+        DB::transaction(function () use ($image, $user, $filesystem, $existing, $updateNum) {
             if (!$image->save()) {
                 // 删除文件
                 if (is_null($existing)) {
@@ -165,12 +174,7 @@ class ImageService
                 }
                 throw new UploadException('图片保存失败');
             }
-            if (!is_null($user)) {
-                $user->increment('image_num');
-            }
-            if (!is_null($image->album)) {
-                $image->album->increment('image_num');
-            }
+            $updateNum('increment');
         }, 2);
 
         // 图片检测
@@ -180,6 +184,7 @@ class ImageService
                 // 标记 or 删除
                 if ($configs->get(GroupConfigKey::ScannedAction) === 'delete') {
                     $image->delete();
+                    DB::transaction(fn () => $updateNum('decrement'));
                     throw new UploadException('图片涉嫌违规，禁止上传。');
                 } else {
                     $image->is_unhealthy = true;
@@ -191,10 +196,11 @@ class ImageService
         return $image;
     }
 
-    public function getAdapter(int $disk, Collection $configs): FilesystemAdapter
+    public function getAdapter(Strategy $strategy): FilesystemAdapter
     {
-        return match ($disk) {
-            StrategyKey::Local => new LocalFilesystemAdapter($configs->get('root') ?: config('filesystems.disks.uploads.root')),
+        $configs = $strategy->configs;
+        return match ($strategy->key) {
+            StrategyKey::Local => new LocalFilesystemAdapter($configs->get('root')),
             StrategyKey::Kodo => new QiniuAdapter(
                 accessKey: $configs->get(KodoOption::AccessKey),
                 secretKey: $configs->get(KodoOption::SecretKey),
@@ -207,8 +213,10 @@ class ImageService
     /**
      * @throws UploadException
      */
-    protected function rateLimiter(Collection $configs, Request $request, ?User $user = null)
+    protected function rateLimiter(Collection $configs, Request $request)
     {
+        /** @var User|null $user */
+        $user = $request->user();
         $carbon = Carbon::now();
         $array = [
             'minute' => ['key' => GroupConfigKey::LimitPerMinute, 'str' => '分钟'],
@@ -222,7 +230,7 @@ class ImageService
             $value = $configs->get($item['key'], 0);
             $count = Image::query()->whereBetween('created_at', [
                 $carbon->parse("-1 {$key}"), $carbon,
-            ])->when(!is_null($user), function (Builder $builder) use ($user) {
+            ])->when(! is_null($user), function (Builder $builder) use ($user) {
                 $builder->where('user_id', $user->id);
             }, function (Builder $builder) use ($request) {
                 $builder->where('uploaded_ip', $request->ip())->whereNull('user_id');

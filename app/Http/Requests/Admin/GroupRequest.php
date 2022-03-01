@@ -25,6 +25,7 @@ class GroupRequest extends FormRequest
         return [
             'name' => 'required|between:2,30',
             'is_default' => 'boolean',
+            'is_guest' => 'boolean',
             'configs' => 'required|array',
             'configs.maximum_file_size' => 'required|numeric',
             'configs.concurrent_upload_num' => 'required|integer',

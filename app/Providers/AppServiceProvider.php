@@ -41,17 +41,13 @@ class AppServiceProvider extends ServiceProvider
         if (file_exists(base_path('installed.lock'))) {
             // 覆盖默认配置
             Config::set('app.name', Utils::config(ConfigKey::AppName));
-            Config::set('app.url', Utils::config(ConfigKey::AppUrl));
             Config::set('mail', array_merge(\config('mail'), Utils::config(ConfigKey::Mail)->toArray()));
 
-            // 覆盖默认组策略配置
-            Config::set('filesystems.disks.uploads.url', Utils::config(ConfigKey::AppUrl).'/i');
-
+            $configs = Auth::check() && Auth::user()->group ?
+                Auth::user()->group->configs :
+                Group::query()->where('is_guest', true)->value('configs');
             // 初始化视图中的默认数据
-            View::composer('*', function (\Illuminate\View\View $view) {
-                $configs = Auth::check() && Auth::user()->group ? Auth::user()->group->configs : Group::getGuestConfigs();
-                $view->with('groupConfigs', $configs);
-            });
+            View::share('groupConfigs', $configs);
         }
     }
 }

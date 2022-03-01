@@ -16,9 +16,6 @@ final class ConfigKey
     /** @var string 程序名称 */
     const AppName = 'app_name';
 
-    /** @var string 程序url */
-    const AppUrl = 'app_url';
-
     /** @var string 程序版本 */
     const AppVersion = 'app_version';
 

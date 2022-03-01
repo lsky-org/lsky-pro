@@ -5,7 +5,7 @@
         @include('admin.group.tips')
 
         <p class="bg-blue-500 p-2 mb-2 rounded text-sm text-white">
-            <i class="fas fa-exclamation-circle"></i> 角色组设置默认以后新用户注册会归属该角色组，系统可以设置多个默认角色组，出现多个默认组，新用户将会以随机的方式归属某一个默认角色组。
+            <i class="fas fa-exclamation-circle"></i> 角色组设置默认以后新用户注册会归属该角色组，系统只能设置一个默认角色组。设置为游客组后，未登录用户将会受游客组控制。
         </p>
 
         <div class="mt-5 md:mt-0 md:col-span-2">
@@ -78,8 +78,14 @@
                             </div>
 
                             <div class="col-span-6">
-                                <x-fieldset title="是否默认" faq="设置默认后，新用户注册以后将会属于该默认角色组。">
+                                <x-fieldset title="是否默认" faq="设置默认后，新用户注册以后将会属于该默认角色组，且默认组只能有一个。">
                                     <x-switch id="is_default" name="is_default" value="1"></x-switch>
+                                </x-fieldset>
+                            </div>
+
+                            <div class="col-span-6">
+                                <x-fieldset title="是否为游客组" faq="设置为游客组后，未登录用户受该组控制，且游客组只能有一个。">
+                                    <x-switch id="is_guest" name="is_guest" value="1"></x-switch>
                                 </x-fieldset>
                             </div>
 

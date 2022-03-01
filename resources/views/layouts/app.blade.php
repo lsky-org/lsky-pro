@@ -46,5 +46,15 @@
     </x-container>
 </div>
 </body>
+<script>
+    // 开关组件默认值
+    $('.switch input[type=checkbox]').click(function () {
+        if (this.checked) {
+            $(this).closest('.switch').find('input[type=hidden]').remove();
+        } else {
+            $(this).before('<input type="hidden" name="'+this.name+'" value="0" />');
+        }
+    });
+</script>
 @stack('scripts')
 </html>

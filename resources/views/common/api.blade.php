@@ -6,7 +6,7 @@
         <div class="space-y-4 bg-white p-3 rounded-md mb-10">
             <div>
                 <p class="text-lg text-gray-700 font-semibold">接口URL</p>
-                <x-code>{{ \App\Utils::config(\App\Enums\ConfigKey::AppUrl) }}/api/v1</x-code>
+                <x-code>{{ request()->getSchemeAndHttpHost() }}/api/v1</x-code>
             </div>
 
             <div>

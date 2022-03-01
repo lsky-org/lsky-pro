@@ -41,7 +41,7 @@ class UserController extends Controller
         /** @var User $user */
         $user = Auth::user();
         $user->name = $request->validated('name');
-        $user->url = $request->validated('url');
+        $user->url = $request->validated('url') ?: '';
         $user->configs = $user->configs->merge(collect($request->validated('configs'))->transform(function ($value) {
             return (int)$value;
         }));

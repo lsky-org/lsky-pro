@@ -4,12 +4,6 @@
     <div class="my-6 md:my-9">
         @include('admin.group.tips')
 
-        @if($group->id == 0)
-        <p class="bg-blue-500 p-2 mb-2 rounded text-sm text-white">
-            <i class="fas fa-exclamation-circle"></i> 当前编辑的是系统默认组，所有访客、以及未被设置角色组的用户上传的图片将会受这个角色组控制。默认组的图片访问域名为站点域名，域名可以在系统设置中更改。
-        </p>
-        @endif
-
         <div class="mt-5 md:mt-0 md:col-span-2">
             <ul id="tabs" class="flex space-x-2 text-sm">
                 <li class="group">
@@ -25,18 +19,13 @@
                     <a data-target="watermark" href="javascript:void(0)" class="block rounded-t-lg px-3 py-2 bg-gray-200 group-hover:bg-white">水印配置</a>
                 </li>
             </ul>
-            <form action="{{ route('admin.group.update', ['id' => $group->id ?: '0']) }}" method="POST">
+            <form action="{{ route('admin.group.update', ['id' => $group->id]) }}" method="POST">
                 <div class="overflow-hidden rounded-md rounded-l-none">
                     <div class="px-4 py-5 bg-white sm:p-6">
                         <div data-tab="basic" class="grid grid-cols-6 gap-6">
                             <div class="col-span-6">
                                 <label for="name" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>组名称</label>
-                                @if($group->id == 0)
-                                    <x-input type="text" value="{{ $group->name }}" disabled readonly />
-                                    <input type="hidden" name="name" id="name" value="{{ $group->name }}">
-                                @else
-                                    <x-input type="text" name="name" id="name" autocomplete="name" placeholder="请输入组名称" value="{{ $group->name }}" />
-                                @endif
+                                <x-input type="text" name="name" id="name" autocomplete="name" placeholder="请输入组名称" value="{{ $group->name }}" />
                             </div>
 
                             <div class="col-span-6">
@@ -84,13 +73,17 @@
                                 <x-input type="text" name="configs[file_naming_rule]" id="file_naming_rule" autocomplete="file_naming_rule" placeholder="请输入文件命名规则" value="{{ $group->configs['file_naming_rule'] }}" />
                             </div>
 
-                            @if($group->id)
                             <div class="col-span-6">
-                                <x-fieldset title="是否默认" faq="设置默认后，新用户注册以后将会属于该默认角色组。">
+                                <x-fieldset title="是否默认" faq="设置默认后，新用户注册以后将会属于该默认角色组，且默认组只能有一个。">
                                     <x-switch id="is_default" name="is_default" value="1" :checked="(bool)$group->is_default"></x-switch>
                                 </x-fieldset>
                             </div>
-                            @endif
+
+                            <div class="col-span-6">
+                                <x-fieldset title="是否为游客组" faq="设置为游客组后，未登录用户受该组控制，且游客组只能有一个。">
+                                    <x-switch id="is_guest" name="is_guest" value="1" :checked="(bool)$group->is_guest"></x-switch>
+                                </x-fieldset>
+                            </div>
 
                             <div class="col-span-6">
                                 <x-fieldset title="允许上传的图片类型">

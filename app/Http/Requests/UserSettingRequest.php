@@ -13,7 +13,7 @@ class UserSettingRequest extends FormRequest
     {
         return [
             'name' => 'required|between:2,20',
-            'url' => 'url',
+            'url' => 'nullable|url',
             'password' => 'nullable|between:6,32',
             'configs' => 'array',
             'configs.default_album' => 'required|numeric',

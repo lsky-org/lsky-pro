@@ -2,6 +2,8 @@
 
 <x-app-layout>
     <div class="my-6 md:my-9">
+        @include('admin.strategy.tips')
+
         <div class="md:mt-0 md:col-span-2">
             <form action="{{ route('admin.strategy.update', ['id' => $strategy->id]) }}" method="POST">
                 <div class="overflow-hidden rounded-md">

@@ -4,9 +4,7 @@ namespace App\Models;
 
 use App\Enums\ConfigKey;
 use App\Utils;
-use Barryvdh\Debugbar\Facades\Debugbar;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -17,6 +15,7 @@ use Illuminate\Support\Collection;
  * @property int $id
  * @property string $name
  * @property boolean $is_default
+ * @property boolean $is_guest
  * @property Collection $configs
  * @property Carbon $updated_at
  * @property Carbon $created_at
@@ -30,12 +29,14 @@ class Group extends Model
     protected $fillable = [
         'name',
         'is_default',
+        'is_guest',
         'configs',
     ];
 
     protected $casts = [
         'id' => 'integer',
         'is_default' => 'bool',
+        'is_guest' => 'bool',
         'configs' => 'collection'
     ];
 
@@ -64,6 +65,12 @@ class Group extends Model
     protected static function booted()
     {
         static::saving(function (self $group) {
+            if ($group->isDirty('is_default') && $group->is_default) {
+                Group::query()->where('is_default', true)->update(['is_default' => false]);
+            }
+            if ($group->isDirty('is_guest') && $group->is_guest) {
+                Group::query()->where('is_guest', true)->update(['is_guest' => false]);
+            }
             $group->configs = Utils::parseConfigs(self::getDefaultConfigs()->toArray(), $group->configs->toArray());
         });
     }
@@ -75,17 +82,7 @@ class Group extends Model
      */
     public static function getDefaultConfigs(): Collection
     {
-        return collect(config('convention.app.'.ConfigKey::Group));
-    }
-
-    /**
-     * 获取访客组默认配置
-     *
-     * @return Collection
-     */
-    public static function getGuestConfigs(): Collection
-    {
-        return Utils::config(ConfigKey::Group);
+        return collect(config('convention.app.group'));
     }
 
     public function users(): HasMany

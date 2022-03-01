@@ -8,7 +8,9 @@ use App\Enums\UserStatus;
 use App\Exceptions\UploadException;
 use App\Http\Api;
 use App\Models\Config;
+use App\Models\Group;
 use App\Models\Image;
+use App\Models\Strategy;
 use App\Models\User;
 use App\Services\ImageService;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
@@ -18,7 +20,6 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
@@ -87,12 +88,15 @@ class Controller extends BaseController
                     'email' => $request->input('account.email'),
                     'password' => Hash::make($request->input('account.password')),
                 ]);
+                $user->group_id = Group::query()->first()['id'];
                 $user->is_adminer = true;
                 $user->status = UserStatus::Normal;
                 $user->email_verified_at = date('Y-m-d H:i:s');
+                // 设置默认策略组的 url 为当前请求 url
+                Strategy::query()->where('is_guest', true)->update([
+                    'configs->url' => $request->getSchemeAndHttpHost().'/i',
+                ]);
                 $user->save();
-                // 更新站点域名
-                Config::query()->where('name', ConfigKey::AppUrl)->update(['value' => $request->getSchemeAndHttpHost()]);
             } catch (\Throwable $e) {
                 @unlink(base_path('installed.lock'));
                 return $this->error($e->getMessage());
@@ -109,9 +113,7 @@ class Controller extends BaseController
     public function upload(Request $request, ImageService $service): Response
     {
         try {
-            /** @var User $user */
-            $user = Auth::user();
-            $image = $service->store($request, $user);
+            $image = $service->store($request);
         } catch (UploadException $e) {
             return $this->error($e->getMessage());
         } catch (\Throwable $e) {

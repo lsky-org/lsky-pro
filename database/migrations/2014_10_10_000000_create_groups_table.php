@@ -21,6 +21,7 @@ return new class extends Migration
             $table->id();
             $table->string('name', 64)->comment('角色组名称');
             $table->boolean('is_default')->default(false)->comment('是否默认');
+            $table->boolean('is_guest')->default(false)->comment('是否为游客组');
             $table->json('configs')->comment('组配置');
             $table->timestamps();
         });
