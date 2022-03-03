@@ -6,7 +6,6 @@
     "license": "MIT",
     "require": {
         "php": "^8.0",
-        "ext-zip": "*",
         "alibabacloud/green": "^1.8",
         "doctrine/dbal": "^3.3",
         "erusev/parsedown": "^1.7",

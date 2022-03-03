@@ -21,7 +21,7 @@ class UpgradeService
     protected array $versions = [];
 
     /** @var string 临时目录 */
-    protected string $temp = 'temp';
+    protected string $temp = 'storage/temp';
 
     /** @var string 升级锁文件 */
     protected string $lock = 'upgrading.lock';
@@ -49,7 +49,7 @@ class UpgradeService
             // TODO 获取所有版本
             $this->versions = [
                 [
-                    'icon' => 'https://raw.githubusercontent.com/wisp-x/lsky-pro/master/public/static/app/images/icon.png',
+                    'icon' => 'https://docs.lsky.pro/logo.png',
                     'name' => 'V 2.0.1',
                     'size' => '33.5 MB',
                     'md5' => '12',
