@@ -45,12 +45,17 @@ class SettingController extends Controller
     {
         $version = Utils::config(ConfigKey::AppVersion);
         $service = new UpgradeService($version);
-        $data = [
-            'is_update' => $service->check(),
-        ];
-        if ($data['is_update']) {
-            $data['version'] = $service->getVersions()->first();
+        try {
+            $data = [
+                'is_update' => $service->check(),
+            ];
+            if ($data['is_update']) {
+                $data['version'] = $service->getVersions()->first();
+            }
+        } catch (\Exception $e) {
+            return $this->error($e->getMessage());
         }
+
         return $this->success('success', $data);
     }
 
