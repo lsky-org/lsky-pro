@@ -46,7 +46,7 @@ class Strategy extends Model
 
     const DRIVERS = [
         StrategyKey::Local => '本地',
-        StrategyKey::S3 => 'Amazon S3',
+        StrategyKey::S3 => 'AWS S3',
         StrategyKey::Oss => '阿里云 OSS',
         StrategyKey::Cos => '腾讯云 COS',
         StrategyKey::Kodo => '七牛云 Kodo',
