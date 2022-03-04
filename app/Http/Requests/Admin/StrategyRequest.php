@@ -48,33 +48,54 @@ class StrategyRequest extends FormRequest
             }
         };
 
-        return [
+        $array = [
             'groups' => 'array',
             'name' => 'required|max:60',
             'intro' => 'max:2000',
             'key' => 'required|integer',
-            'configs.root' => ['max:1000', function ($attribute, $value, $fail) {
-                if ($value) {
-                    if (! is_dir($value)) {
-                        return $fail('储存路径不存在');
-                    }
-                    if (! is_writeable($value)) {
-                        return $fail('储存路径没有写入权限');
-                    }
-                }
-            }],
-            'configs.url' => ['required', 'url', $checkUrl],
+            'configs.url' => ['required', 'url'],
         ];
+
+        return array_merge($array, match((int)$this->input('key')) {
+            StrategyKey::Local => [
+                'configs.url' => ['required', 'url', $checkUrl],
+                'configs.root' => ['max:1000', function ($attribute, $value, $fail) {
+                    if ($value) {
+                        if (! is_dir($value)) {
+                            return $fail('储存路径不存在');
+                        }
+                        if (! is_writeable($value)) {
+                            return $fail('储存路径没有写入权限');
+                        }
+                    }
+                }],
+            ],
+            StrategyKey::Kodo => [
+                'configs.access_key' => 'required',
+                'configs.secret_key' => 'required',
+                'configs.bucket' => 'required',
+            ],
+        });
     }
 
     public function attributes()
     {
-        return [
+        $array = [
             'name' => '名称',
             'intro' => '简介',
             'key' => '策略',
-            'configs.root' => '储存路径',
-            'configs.url' => '访问域名',
+            'configs.url' => '访问网址',
         ];
+
+        return array_merge($array, match((int)$this->input('key')) {
+            StrategyKey::Local => [
+                'configs.root' => '储存路径',
+            ],
+            StrategyKey::Kodo => [
+                'configs.access_key' => 'AccessKey',
+                'configs.secret_key' => 'SecretKey',
+                'configs.bucket' => 'Bucket',
+            ],
+        });
     }
 }

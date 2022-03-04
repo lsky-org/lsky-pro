@@ -204,7 +204,7 @@ class ImageService
                 accessKey: $configs->get(KodoOption::AccessKey),
                 secretKey: $configs->get(KodoOption::SecretKey),
                 bucket: $configs->get(KodoOption::Bucket),
-                domain: $configs->get(KodoOption::Domain),
+                domain: $configs->get(KodoOption::Url),
             ),
         };
     }

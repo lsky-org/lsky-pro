@@ -42,7 +42,7 @@
             $('[data-operate="delete"]').click(function () {
                 Swal.fire({
                     title: `确认删除储存策略【${$(this).closest('tr').find('td.name').text()}】吗?`,
-                    text: "如果某个组下面没有储存策略，该组下面的用户则会默认使用本地储存。",
+                    text: "如果某个组下面没有储存策略，该组下面的用户将无法上传图片，同时已上传至该储存的图片将无法在系统中预览。",
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonText: '确认删除',

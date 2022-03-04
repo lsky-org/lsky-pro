@@ -88,7 +88,10 @@ class GroupController extends Controller
             if ($group->is_default || $group->is_guest) {
                 return $this->error('默认组和游客组无法删除');
             }
-            $group->delete();
+            DB::transaction(function () use ($group) {
+                $group->users()->update(['group_id' => Group::query()->where('is_default', true)->value('id')]);
+                $group->delete();
+            });
         }
         return $this->success('删除成功');
     }

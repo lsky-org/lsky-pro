@@ -8,7 +8,6 @@
             <form action="{{ route('admin.strategy.create') }}" method="POST">
                 <div class="overflow-hidden rounded-md">
                     <div class="px-4 py-5 bg-white sm:p-6 space-y-4">
-
                         <div class="col-span-6">
                             <label class="block">
                                 <span class="text-gray-700">选择角色组</span>
@@ -22,7 +21,7 @@
 
                         <div class="col-span-6">
                             <label for="name" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>名称</label>
-                            <x-input type="text" name="name" id="name" placeholder="请输入策略名称" autocomplete="name" />
+                            <x-input type="text" name="name" id="name" placeholder="请输入策略名称" autocomplete="name" required />
                         </div>
 
                         <div class="col-span-6">
@@ -32,28 +31,46 @@
 
                         <div class="col-span-6 sm:col-span-3">
                             <label for="key" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>储存策略</label>
-                            <x-select id="key" name="key" autocomplete="key">
+                            <x-select id="key" name="key" autocomplete="key" required>
                                 @foreach(\App\Models\Strategy::DRIVERS as $key => $driver)
                                 <option value="{{ $key }}" {{ $loop->first ? 'selected' : '' }}>{{ $driver }}</option>
                                 @endforeach
                             </x-select>
                         </div>
 
-                        <div class="col-span-6">
-                            <div class="col-span-6 sm:col-span-3 mb-4">
-                                <label for="configs[root]" class="block text-sm font-medium text-gray-700">储存路径</label>
-                                <x-input type="text" name="configs[root]" id="configs[root]" autocomplete="text" placeholder="图片保存位置，默认：{{ config('filesystems.disks.uploads.root') }}" />
-                                <small class="text-orange-500"><i class="fas fa-exclamation"></i> 储存路径为绝对路径，设置错误或没有读写权限可能会导致图片保存失败。如果储存路径与其他策略相同，那么请注意使用角色组的路径命名规则、文件命名规则来区分不同文件夹，否则可能会因为名称重复而导致图片物理文件被覆盖。</small>
-                            </div>
-                        </div>
-
                         <div class="col-span-6 mb-4 hidden" data-driver="{{ \App\Enums\StrategyKey::Local }}">
                             <div class="col-span-3 sm:col-span-2 mb-4">
                                 <label for="configs[url]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>访问网址</label>
-                                <x-input type="text" name="configs[url]" id="configs[url]" class="mt-1 block w-full rounded-l-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" placeholder="请输入图片访问域名，需要加 http(s)://" />
+                                <x-input type="text" name="configs[url]" id="configs[url]" placeholder="请输入图片访问域名，需要加 http(s)://" required />
                                 <small class="text-orange-500"><i class="fas fa-exclamation"></i>
                                     本地储存的访问网址必须有根路径，例如：https://www.lsky.pro/uploads 中的 uploads 就是根路径，且根路径不能和其他策略重复。修改根路径直接影响已经上传并已使用的链接的访问。
                                 </small>
+                            </div>
+                            <div class="col-span-6">
+                                <div class="col-span-6 sm:col-span-3 mb-4">
+                                    <label for="configs[root]" class="block text-sm font-medium text-gray-700">储存路径</label>
+                                    <x-input type="text" name="configs[root]" id="configs[root]" autocomplete="text" placeholder="图片保存位置，默认：{{ config('filesystems.disks.uploads.root') }}" />
+                                    <small class="text-orange-500"><i class="fas fa-exclamation"></i> 储存路径为绝对路径，设置错误或没有读写权限可能会导致图片保存失败。如果储存路径与其他策略相同，那么请注意使用角色组的路径命名规则、文件命名规则来区分不同文件夹，否则可能会因为名称重复而导致图片物理文件被覆盖。</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-span-6 mb-4 hidden" data-driver="{{ \App\Enums\StrategyKey::Kodo }}">
+                            <div class="col-span-3 sm:col-span-2 mb-4">
+                                <label for="configs[url]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>访问域名</label>
+                                <x-input type="url" name="configs[url]" id="configs[url]" placeholder="请输入图片访问域名 http(s)://" required />
+                            </div>
+                            <div class="col-span-3 sm:col-span-2 mb-4">
+                                <label for="configs[access_key]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>AccessKey</label>
+                                <x-input type="text" name="configs[access_key]" id="configs[access_key]" placeholder="请输入 AccessKey" required />
+                            </div>
+                            <div class="col-span-3 sm:col-span-2 mb-4">
+                                <label for="configs[secret_key]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>SecretKey</label>
+                                <x-input type="password" name="configs[secret_key]" id="configs[secret_key]" placeholder="请输入 SecretKey" required />
+                            </div>
+                            <div class="col-span-3 sm:col-span-2 mb-4">
+                                <label for="configs[bucket]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>Bucket</label>
+                                <x-input type="text" name="configs[bucket]" id="configs[bucket]" placeholder="请输入 Bucket" required />
                             </div>
                         </div>
                     </div>
