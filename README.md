@@ -22,6 +22,17 @@
 ### 📧 联系我
 - Email: i@wispx.cn
 
+### 📌 TODO
+* [ ] 支持多种第三方云储存，本地、Amazon S3、阿里云 OSS、腾讯云 COS、七牛云、又拍云、SFTP、FTP、WebDav
+* [x] 多图上传、拖拽上传、粘贴上传、复制、一键复制链接、页面响应式布局
+* [x] 强大的图片管理功能，支持鼠标右键、单选多选、重命名等操作
+* [x] 自由度极高的角色组配置，可以为每个组配置多个储存策略，同时储存策略可以配置多个角色组
+* [x] 可针对角色组设置上传文件、文件夹路径命名规则、上传频率限制、图片审核等功能
+* [x] 支持图片水印、文字水印功能
+* [x] 支持通过接口上传、管理图片
+* [x] 支持在线增量更新
+* [x] 图片广场(画廊)
+
 ### 💰 捐赠
 Lsky Pro 的开发和更新等，都是作者在空余时间独立开发，并免费开源使用，如果您认可我的作品，并且觉得对你有所帮助我愿意接受来自各方面的捐赠😃。
 <table width="100%">
@@ -34,6 +45,17 @@ Lsky Pro 的开发和更新等，都是作者在空余时间独立开发，并�
         <td><img src="https://raw.githubusercontent.com/wisp-x/lsky-pro/82988ebe2edd32264d609b26bf9132b3dce7c39e/public/static/app/images/demo/wechat.jpeg"></td>
     </tr>
 </table>
+
+### 😋 鸣谢
+- [Laravel](https://laravel.com)
+- [overtrue](https://github.com/overtrue)
+- [league](https://github.com/thephpleague)
+- [Jquery](https://jquery.com)
+- [Alpinejs](https://alpinejs.dev/)
+- [Viewer.js](https://github.com/fengyuanchen/viewerjs)
+- [DragSelect](https://github.com/ThibaultJanBeyer/DragSelect)
+- [Justified-Gallery](https://github.com/miromannino/Justified-Gallery)
+- [Clipboard.js](https://github.com/zenorocha/clipboard.js)
 
 ### 📃 开源许可
 [GPL 3.0](https://opensource.org/licenses/GPL-3.0)
