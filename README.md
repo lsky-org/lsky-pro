@@ -1,4 +1,4 @@
-<img align="right" width="100" src="https://raw.githubusercontent.com/wisp-x/lsky-pro/82988ebe2edd32264d609b26bf9132b3dce7c39e/public/static/app/images/icon.png" alt="Lsky Pro Logo"/>
+<img align="right" width="100" src="https://avatars.githubusercontent.com/u/100565733?s=200" alt="Lsky Pro Logo"/>
 
 <h1 align="left"><a href="https://www.lsky.pro">Lsky Pro</a></h1>
 
@@ -12,12 +12,12 @@
 [![Last commit](https://img.shields.io/github/last-commit/wisp-x/lsky-pro/dev)](https://github.com/wisp-x/lsky-pro/commits/dev)
 [![License](https://img.shields.io/badge/license-GPL_V3.0-yellowgreen.svg)](https://github.com/wisp-x/lsky-pro/blob/master/LICENSE)
 
-[文档](https://www.kancloud.cn/wispx/lsky-pro) &nbsp;
+[文档](https://docs.lsky.pro) &nbsp;
 [演示](https://pic.iqy.ink) &nbsp;
 [Telegram 群组](https://t.me/lsky_pro)
 
 > ⚠️ 当前分支为 2.0 版本开发分支，[查看 2.0 版本详细说明](https://github.com/wisp-x/lsky-pro/issues/281)  
-> 历史版本请点击[这里](https://github.com/wisp-x/lsky-pro/releases) ，发现 bug 可发送邮件至邮箱：i@wispx.cn，或提交 [issues](https://github.com/wisp-x/lsky-pro/issues)
+> 历史版本请点击[这里](https://github.com/wisp-x/lsky-pro/releases) ，发现 bug 请提交 [issues](https://github.com/wisp-x/lsky-pro/issues) (提问前建议阅读[提问的智慧](https://github.com/ryanhanwu/How-To-Ask-Questions-The-Smart-Way/blob/main/README-zh_CN.md))
 
 ### 📧 联系我
 - Email: i@wispx.cn
