@@ -81,28 +81,25 @@ class UpgradeService
             file_put_contents(base_path($this->lock), '');
             $this->setProgress('准备升级...');
 
+            @ini_set('memory_limit', '1G');
             // 获取差异信息
             $response = $this->http->timeout(30)->get('/diff/'.urlencode(Utils::config(ConfigKey::AppVersion)));
             if (! $response->successful()) {
                 throw new \Exception('无法请求升级服务器');
             }
-            $diff = $response->json();
+            $files = $response->json();
 
             $this->setProgress('下载补丁包...');
-            foreach ($diff['files'] as $file) {
+            foreach ($files as $file) {
                 if ($file['action'] === 'deleted') continue;
-                $response = Http::get($diff['server_url'].'/'.$file['pathname']);
-                if (! $response->successful()) {
-                    throw new \Exception("补丁文件 {$file['pathname']} 下载失败。");
-                }
-                $this->filesystem->write($this->temp.'/'.$file['pathname'], $response->body());
+                $this->filesystem->write($this->temp.'/'.$file['pathname'], base64_decode($file['content']));
                 // 校验文件
                 if ($file['md5'] !== md5_file(base_path($this->temp).'/'.$file['pathname'])) {
                     throw new \Exception("补丁文件 {$file['pathname']} 校验失败。");
                 }
             }
             $this->setProgress('执行升级...');
-            foreach ($diff['files'] as $file) {
+            foreach ($files as $file) {
                 match ($file['action']) {
                     'added', 'copied' => $this->filesystem->copy($this->temp.'/'.$file['pathname'], $file['pathname']),
                     'deleted' => $this->filesystem->delete($file['pathname']),
