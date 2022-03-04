@@ -392,6 +392,7 @@ class ImageService
             '{str-random-16}' => Str::random(),
             '{str-random-10}' => Str::random(10),
             '{filename}' => rtrim($file->getClientOriginalName(), '.'.$file->extension()),
+            '{uid}' => Auth::check() ? Auth::id() : 0,
         ];
         return str_replace(array_keys($array), array_values($array), $pathname);
     }
