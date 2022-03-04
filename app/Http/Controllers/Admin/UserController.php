@@ -38,15 +38,22 @@ class UserController extends Controller
     {
         /** @var User $user */
         $user = User::query()->findOrFail($request->route('id'));
-        $user->fill($request->validated());
-        if ($password = $request->validated('password')) {
+        $validated = $request->validated();
+
+        if (empty($validated['password'])) {
+            unset($validated['password']);
+        } else {
             $user->forceFill([
-                'password' => Hash::make($password),
+                'password' => Hash::make($validated['password']),
                 'remember_token' => Str::random(60),
             ]);
 
             event(new PasswordReset($user));
         }
+
+        $user->fill($validated);
+        $user->group_id = $validated['group_id'];
+
         if (!$user->save()) {
             return $this->error('保存失败');
         }

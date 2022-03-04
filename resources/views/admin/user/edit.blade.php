@@ -9,6 +9,16 @@
                     <div class="px-4 py-5 bg-white sm:p-6">
                         <div class="grid grid-cols-6 gap-6">
                             <div class="col-span-6">
+                                <label class="block">
+                                    <span class="text-gray-700">选择角色组</span>
+                                    <x-select name="group_id" class="block w-full mt-1 form-multiselect">
+                                        @foreach(\App\Models\Group::query()->get() as $group)
+                                            <option value="{{ $group->id }}" {{ $user->group_id == $group->id ? 'selected' : '' }}>{{ $group->name }}</option>
+                                        @endforeach
+                                    </x-select>
+                                </label>
+                            </div>
+                            <div class="col-span-6">
                                 <label for="email" class="block text-sm font-medium text-gray-700">邮箱</label>
                                 <x-input type="email" id="email" value="{{ $user->email }}" disabled />
                             </div>

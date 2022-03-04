@@ -15,6 +15,7 @@ class UserRequest extends FormRequest
     public function rules()
     {
         return [
+            'group_id' => 'required',
             'name' => 'required|between:2,30',
             'capacity' => 'required|numeric',
             'password' => ['nullable', Rules\Password::defaults()],
@@ -25,7 +26,8 @@ class UserRequest extends FormRequest
     public function attributes()
     {
         return [
-            'name' => '组名称',
+            'group_id' => '角色组',
+            'name' => '昵称',
             'capacity' => '总容量',
             'password' => '密码',
             'status' => '状态',
