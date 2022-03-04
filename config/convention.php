@@ -28,8 +28,8 @@ return [
             'mailers' => [
                 'smtp' => [
                     SmtpOption::Transport => 'smtp',
-                    SmtpOption::Host => '',
-                    SmtpOption::Port => 25,
+                    SmtpOption::Host => 'smtp.mailgun.org',
+                    SmtpOption::Port => 587,
                     SmtpOption::Encryption => 'tls',
                     SmtpOption::Username => '',
                     SmtpOption::Password => '',
