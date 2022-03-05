@@ -67,6 +67,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'password',
         'remember_token',
         'configs',
+        'capacity',
         'group_id',
         'is_adminer',
     ];
