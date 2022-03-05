@@ -8,6 +8,7 @@ use App\Enums\ConfigKey;
 use App\Enums\GroupConfigKey;
 use App\Enums\ImagePermission;
 use App\Enums\Scan\AliyunOption;
+use App\Enums\Strategy\CosOption;
 use App\Enums\Strategy\KodoOption;
 use App\Enums\StrategyKey;
 use App\Enums\UserConfigKey;
@@ -202,7 +203,7 @@ class ImageService
         return match ($strategy->key) {
             StrategyKey::Local => new LocalFilesystemAdapter($configs->get('root')),
             StrategyKey::Cos => new CosAdapter($configs->only([
-                'app_id', 'secret_id', 'secret_key', 'region', 'bucket',
+                CosOption::AppId, CosOption::SecretId, CosOption::SecretKey, CosOption::Region, CosOption::Bucket,
             ])->toArray()),
             StrategyKey::Kodo => new QiniuAdapter(
                 accessKey: $configs->get(KodoOption::AccessKey),
