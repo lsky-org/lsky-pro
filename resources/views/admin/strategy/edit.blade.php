@@ -60,6 +60,31 @@
                         </div>
                         @endif
 
+                        @if($strategy->key === \App\Enums\StrategyKey::S3)
+                        <div class="col-span-6 mb-4" data-driver="{{ \App\Enums\StrategyKey::S3 }}">
+                            <div class="col-span-3 sm:col-span-2 mb-4">
+                                <label for="configs[url]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>访问域名</label>
+                                <x-input type="url" name="configs[url]" id="configs[url]" placeholder="请输入图片访问域名 http(s)://" value="{{ $strategy->configs['url'] }}" />
+                            </div>
+                            <div class="col-span-3 sm:col-span-2 mb-4">
+                                <label for="configs[access_key_id]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>AccessKeyId</label>
+                                <x-input type="text" name="configs[access_key_id]" id="configs[access_key_id]" placeholder="请输入 AccessKeyId" value="{{ $strategy->configs['access_key_id'] }}" />
+                            </div>
+                            <div class="col-span-3 sm:col-span-2 mb-4">
+                                <label for="configs[secret_access_key]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>SecretAccessKey</label>
+                                <x-input type="password" name="configs[secret_access_key]" id="configs[secret_access_key]" placeholder="请输入 SecretAccessKey" value="{{ $strategy->configs['secret_access_key'] }}" />
+                            </div>
+                            <div class="col-span-3 sm:col-span-2 mb-4">
+                                <label for="configs[region]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>区域(region)</label>
+                                <x-input type="text" name="configs[region]" id="configs[region]" placeholder="请输入区域，例如：us-east-1" value="{{ $strategy->configs['region'] }}" />
+                            </div>
+                            <div class="col-span-3 sm:col-span-2 mb-4">
+                                <label for="configs[bucket]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>储存桶名称</label>
+                                <x-input type="text" name="configs[bucket]" id="configs[bucket]" placeholder="请输入 Bucket 名称" value="{{ $strategy->configs['bucket'] }}" />
+                            </div>
+                        </div>
+                        @endif
+
                         @if($strategy->key === \App\Enums\StrategyKey::Oss)
                         <div class="col-span-6 mb-4" data-driver="{{ \App\Enums\StrategyKey::Oss }}">
                             <div class="col-span-3 sm:col-span-2 mb-4">

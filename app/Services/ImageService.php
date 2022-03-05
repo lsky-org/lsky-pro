@@ -11,7 +11,9 @@ use App\Enums\Scan\AliyunOption;
 use App\Enums\Strategy\CosOption;
 use App\Enums\Strategy\FtpOption;
 use App\Enums\Strategy\KodoOption;
+use App\Enums\Strategy\LocalOption;
 use App\Enums\Strategy\OssOption;
+use App\Enums\Strategy\S3Option;
 use App\Enums\Strategy\SftpOption;
 use App\Enums\Strategy\WebDavOption;
 use App\Enums\StrategyKey;
@@ -25,6 +27,7 @@ use App\Models\Image;
 use App\Models\Strategy;
 use App\Models\User;
 use App\Utils;
+use Aws\S3\S3Client;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
@@ -37,6 +40,7 @@ use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image as InterventionImage;
 use Intervention\Image\Imagick\Font;
 use Intervention\Image\ImageManager;
+use League\Flysystem\AwsS3V3\AwsS3V3Adapter;
 use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemAdapter;
 use League\Flysystem\FilesystemException;
@@ -46,6 +50,7 @@ use League\Flysystem\Local\LocalFilesystemAdapter;
 use League\Flysystem\PhpseclibV2\SftpAdapter;
 use League\Flysystem\PhpseclibV2\SftpConnectionProvider;
 use League\Flysystem\UnixVisibility\PortableVisibilityConverter;
+use League\Flysystem\Visibility;
 use League\Flysystem\WebDAV\WebDAVAdapter;
 use OSS\OssClient;
 use Overtrue\Flysystem\Cos\CosAdapter;
@@ -216,7 +221,18 @@ class ImageService
     {
         $configs = $strategy->configs;
         return match ($strategy->key) {
-            StrategyKey::Local => new LocalFilesystemAdapter($configs->get('root')),
+            StrategyKey::Local => new LocalFilesystemAdapter($configs->get(LocalOption::Root)),
+            StrategyKey::S3 => new AwsS3V3Adapter(
+                client: new S3Client([
+                    'credentials' => [
+                        'key'    => $configs->get(S3Option::Key),
+                        'secret' => $configs->get(S3Option::Secret)
+                    ],
+                    'region' => $configs->get(S3Option::Region),
+                ]),
+                bucket: $configs->get(S3Option::Bucket),
+                visibility: new \League\Flysystem\AwsS3V3\PortableVisibilityConverter(Visibility::PUBLIC),
+            ),
             StrategyKey::Oss => new OssAdapter(
                 client: new OssClient(
                     accessKeyId: $configs->get(OssOption::AccessKeyId),
