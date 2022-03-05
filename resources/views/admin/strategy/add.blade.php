@@ -166,6 +166,11 @@
                         </div>
 
                         <div class="col-span-6 mb-4 hidden" data-driver="{{ \App\Enums\StrategyKey::Ftp }}">
+                            @if(! extension_loaded('ftp'))
+                                <p class="bg-yellow-500 p-2 mb-4 rounded text-sm text-white">
+                                    <i class="fas fa-exclamation-circle"></i> 系统检测到 ftp 拓展未启用，可能无法正常使用 FTP 储存方式。
+                                </p>
+                            @endif
                             <div class="col-span-3 sm:col-span-2 mb-4">
                                 <label for="configs[url]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>访问域名</label>
                                 <x-input type="url" name="configs[url]" id="configs[url]" placeholder="请输入图片访问域名 http(s)://" />
