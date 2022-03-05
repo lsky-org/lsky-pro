@@ -72,6 +72,8 @@ class Install extends Command
         // 设置默认数据库驱动
         Config::set('database.default', $driver);
 
+        clearstatcache(true);
+
         try {
             if ($options['connection'] === 'sqlite' && ! $options['database']) {
                 $options['database'] = database_path('database.sqlite');
