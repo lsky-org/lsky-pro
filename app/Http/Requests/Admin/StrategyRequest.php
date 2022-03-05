@@ -70,6 +70,12 @@ class StrategyRequest extends FormRequest
                     }
                 }],
             ],
+            StrategyKey::Oss => [
+                'configs.access_key_id' => 'required',
+                'configs.access_key_secret' => 'required',
+                'configs.endpoint' => 'required',
+                'configs.bucket' => 'required',
+            ],
             StrategyKey::Cos => [
                 'configs.app_id' => 'required',
                 'configs.secret_id' => 'required',
@@ -121,6 +127,12 @@ class StrategyRequest extends FormRequest
         return array_merge($array, match((int)$this->input('key')) {
             StrategyKey::Local => [
                 'configs.root' => '根目录路径',
+            ],
+            StrategyKey::Oss => [
+                'configs.access_key_id' => 'AccessKeyId',
+                'configs.access_key_secret' => 'AccessKeySecret',
+                'configs.endpoint' => '地域节点域名',
+                'configs.bucket' => 'Bucket 名称',
             ],
             StrategyKey::Cos => [
                 'configs.app_id' => 'AppId',

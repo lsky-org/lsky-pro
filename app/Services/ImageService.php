@@ -11,6 +11,7 @@ use App\Enums\Scan\AliyunOption;
 use App\Enums\Strategy\CosOption;
 use App\Enums\Strategy\FtpOption;
 use App\Enums\Strategy\KodoOption;
+use App\Enums\Strategy\OssOption;
 use App\Enums\Strategy\SftpOption;
 use App\Enums\Strategy\WebDavOption;
 use App\Enums\StrategyKey;
@@ -46,9 +47,11 @@ use League\Flysystem\PhpseclibV2\SftpAdapter;
 use League\Flysystem\PhpseclibV2\SftpConnectionProvider;
 use League\Flysystem\UnixVisibility\PortableVisibilityConverter;
 use League\Flysystem\WebDAV\WebDAVAdapter;
+use OSS\OssClient;
 use Overtrue\Flysystem\Cos\CosAdapter;
 use Overtrue\Flysystem\Qiniu\QiniuAdapter;
 use Sabre\DAV\Client;
+use Zing\Flysystem\Oss\OssAdapter;
 
 class ImageService
 {
@@ -214,6 +217,14 @@ class ImageService
         $configs = $strategy->configs;
         return match ($strategy->key) {
             StrategyKey::Local => new LocalFilesystemAdapter($configs->get('root')),
+            StrategyKey::Oss => new OssAdapter(
+                client: new OssClient(
+                    accessKeyId: $configs->get(OssOption::AccessKeyId),
+                    accessKeySecret: $configs->get(OssOption::AccessKeySecret),
+                    endpoint: $configs->get(OssOption::Endpoint),
+                ),
+                bucket: $configs->get(OssOption::Bucket),
+            ),
             StrategyKey::Cos => new CosAdapter($configs->only([
                 CosOption::AppId, CosOption::SecretId, CosOption::SecretKey, CosOption::Region, CosOption::Bucket,
             ])->toArray()),

@@ -60,6 +60,31 @@
                         </div>
                         @endif
 
+                        @if($strategy->key === \App\Enums\StrategyKey::Oss)
+                        <div class="col-span-6 mb-4" data-driver="{{ \App\Enums\StrategyKey::Oss }}">
+                            <div class="col-span-3 sm:col-span-2 mb-4">
+                                <label for="configs[url]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>访问域名</label>
+                                <x-input type="url" name="configs[url]" id="configs[url]" placeholder="请输入图片访问域名 http(s)://" value="{{ $strategy->configs['url'] }}" />
+                            </div>
+                            <div class="col-span-3 sm:col-span-2 mb-4">
+                                <label for="configs[access_key_id]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>AccessKeyId</label>
+                                <x-input type="text" name="configs[access_key_id]" id="configs[access_key_id]" placeholder="请输入 AccessKeyId" value="{{ $strategy->configs['access_key_id'] }}" />
+                            </div>
+                            <div class="col-span-3 sm:col-span-2 mb-4">
+                                <label for="configs[access_key_secret]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>AccessKeySecret</label>
+                                <x-input type="password" name="configs[access_key_secret]" id="configs[access_key_secret]" placeholder="请输入 AccessKeySecret" value="{{ $strategy->configs['access_key_secret'] }}" />
+                            </div>
+                            <div class="col-span-3 sm:col-span-2 mb-4">
+                                <label for="configs[endpoint]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>地域节点(Endpoint)</label>
+                                <x-input type="text" name="configs[endpoint]" id="configs[endpoint]" placeholder="请输入所属地域节点，例如：oss-cn-beijing.aliyuncs.com" value="{{ $strategy->configs['endpoint'] }}" />
+                            </div>
+                            <div class="col-span-3 sm:col-span-2 mb-4">
+                                <label for="configs[bucket]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>Bucket 名称</label>
+                                <x-input type="text" name="configs[bucket]" id="configs[bucket]" placeholder="请输入 Bucket 名称" value="{{ $strategy->configs['bucket'] }}" />
+                            </div>
+                        </div>
+                        @endif
+
                         @if($strategy->key === \App\Enums\StrategyKey::Cos)
                         <div class="col-span-6 mb-4" data-driver="{{ \App\Enums\StrategyKey::Cos }}">
                             <div class="col-span-3 sm:col-span-2 mb-4">
