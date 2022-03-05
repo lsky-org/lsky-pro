@@ -80,7 +80,9 @@ class Controller extends BaseController
                 $data = collect($request->except('account'))->transform(fn($item, $key) => ['--'.$key => $item])->collapse();
                 $stream = fopen('php://output', 'w');
                 $exitCode = Artisan::call('lsky:install', $data->toArray(), new StreamOutput($stream));
-                $response = str_replace(PHP_EOL, '<br/>', ob_get_clean());
+                if (! $exitCode) {
+                    throw new \Exception(str_replace(PHP_EOL, '<br/>', ob_get_clean()));
+                }
                 $user = new User([
                     'name' => '超级管理员',
                     'email' => $request->input('account.email'),
@@ -103,9 +105,6 @@ class Controller extends BaseController
                     'trace' => $e->getTraceAsString(),
                 ]);
                 return $this->error($e->getMessage());
-            }
-            if (! $exitCode) {
-                return $this->error('安装失败', compact('response'));
             }
             return $this->success();
         }
