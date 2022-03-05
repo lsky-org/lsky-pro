@@ -23,7 +23,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
 use League\Flysystem\FilesystemException;
-use Symfony\Component\Console\Output\StreamOutput;
+use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class Controller extends BaseController
@@ -78,10 +78,10 @@ class Controller extends BaseController
                 ]);
 
                 $data = collect($request->except('account'))->transform(fn($item, $key) => ['--'.$key => $item])->collapse();
-                $stream = fopen('php://output', 'w');
-                $exitCode = Artisan::call('lsky:install', $data->toArray(), new StreamOutput($stream));
+                $output = new BufferedOutput();
+                $exitCode = Artisan::call('lsky:install', $data->toArray(), $output);
                 if (! $exitCode) {
-                    throw new \Exception(str_replace(PHP_EOL, '<br/>', ob_get_clean()));
+                    throw new \Exception(str_replace(PHP_EOL, '<br/>', $output->fetch()));
                 }
                 $user = new User([
                     'name' => '超级管理员',
