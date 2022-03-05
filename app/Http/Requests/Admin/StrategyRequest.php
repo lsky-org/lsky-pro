@@ -101,6 +101,11 @@ class StrategyRequest extends FormRequest
                 'configs.ssl' => 'required|boolean',
                 'configs.passive' => 'required|boolean',
             ],
+            StrategyKey::Webdav => [
+                'configs.base_uri' => 'required',
+                'configs.username' => '',
+                'configs.password' => '',
+            ],
         });
     }
 
@@ -147,6 +152,11 @@ class StrategyRequest extends FormRequest
                 'configs.password' => '密码',
                 'configs.ssl' => '加密连接',
                 'configs.passive' => '被动模式',
+            ],
+            StrategyKey::Webdav => [
+                'configs.base_uri' => 'required',
+                'configs.username' => 'required',
+                'configs.password' => 'required',
             ],
         });
     }

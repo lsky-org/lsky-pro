@@ -12,6 +12,7 @@ use App\Enums\Strategy\CosOption;
 use App\Enums\Strategy\FtpOption;
 use App\Enums\Strategy\KodoOption;
 use App\Enums\Strategy\SftpOption;
+use App\Enums\Strategy\WebDavOption;
 use App\Enums\StrategyKey;
 use App\Enums\UserConfigKey;
 use App\Enums\UserStatus;
@@ -44,8 +45,10 @@ use League\Flysystem\Local\LocalFilesystemAdapter;
 use League\Flysystem\PhpseclibV2\SftpAdapter;
 use League\Flysystem\PhpseclibV2\SftpConnectionProvider;
 use League\Flysystem\UnixVisibility\PortableVisibilityConverter;
+use League\Flysystem\WebDAV\WebDAVAdapter;
 use Overtrue\Flysystem\Cos\CosAdapter;
 use Overtrue\Flysystem\Qiniu\QiniuAdapter;
+use Sabre\DAV\Client;
 
 class ImageService
 {
@@ -254,6 +257,11 @@ class ImageService
                     'timeout' => 30,
                 ]),
             ),
+            StrategyKey::Webdav => new WebDAVAdapter(new Client([
+                'baseUri' => $configs->get(WebDavOption::BaseUri),
+                'userName' => $configs->get(WebDavOption::Username),
+                'password' => $configs->get(WebDavOption::Password)
+            ]))
         };
     }
 

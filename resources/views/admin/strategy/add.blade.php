@@ -179,6 +179,25 @@
                                 <x-switch id="configs[passive]" name="configs[passive]" value="1"></x-switch>
                             </div>
                         </div>
+
+                        <div class="col-span-6 mb-4 hidden" data-driver="{{ \App\Enums\StrategyKey::Webdav }}">
+                            <div class="col-span-3 sm:col-span-2 mb-4">
+                                <label for="configs[url]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>访问域名</label>
+                                <x-input type="url" name="configs[url]" id="configs[url]" placeholder="请输入图片访问域名 http(s)://" />
+                            </div>
+                            <div class="col-span-3 sm:col-span-2 mb-4">
+                                <label for="configs[base_uri]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>连接地址</label>
+                                <x-input type="url" name="configs[base_uri]" id="configs[base_uri]" placeholder="请输入连接地址" />
+                            </div>
+                            <div class="col-span-3 sm:col-span-2 mb-4">
+                                <label for="configs[username]" class="block text-sm font-medium text-gray-700">用户名</label>
+                                <x-input type="text" name="configs[username]" id="configs[username]" placeholder="请输入用户名" />
+                            </div>
+                            <div class="col-span-3 sm:col-span-2 mb-4">
+                                <label for="configs[password]" class="block text-sm font-medium text-gray-700">密码</label>
+                                <x-input type="password" name="configs[password]" id="configs[password]" placeholder="请输入密码" />
+                            </div>
+                        </div>
                     </div>
                     <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">
                         <x-button type="button" class="bg-gray-500" onclick="history.go(-1)">取消</x-button>
