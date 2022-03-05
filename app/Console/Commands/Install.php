@@ -94,7 +94,7 @@ class Install extends Command
         } catch (\Throwable $e) {
             $this->warn("Installation error!\n");
             $this->error($e->getMessage());
-            Log::error('安装程序时出现异常', [
+            Log::error('执行数据库安装程序时出现异常', [
                 'file' => $e->getFile(),
                 'line' => $e->getLine(),
                 'msg' => $e->getMessage(),

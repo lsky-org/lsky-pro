@@ -96,6 +96,12 @@ class Controller extends BaseController
                 $user->save();
             } catch (\Throwable $e) {
                 @unlink(base_path('installed.lock'));
+                Log::error('执行安装程序时出现异常', [
+                    'file' => $e->getFile(),
+                    'line' => $e->getLine(),
+                    'msg' => $e->getMessage(),
+                    'trace' => $e->getTraceAsString(),
+                ]);
                 return $this->error($e->getMessage());
             }
             if (! $exitCode) {
