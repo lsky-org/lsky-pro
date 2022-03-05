@@ -73,7 +73,7 @@ class StrategyRequest extends FormRequest
             StrategyKey::S3 => [
                 'configs.access_key_id' => 'required',
                 'configs.secret_access_key' => 'required',
-                'configs.region' => 'required',
+                'configs.region' => '',
                 'configs.bucket' => 'required',
             ],
             StrategyKey::Oss => [
@@ -117,6 +117,12 @@ class StrategyRequest extends FormRequest
                 'configs.base_uri' => 'required',
                 'configs.username' => '',
                 'configs.password' => '',
+            ],
+            StrategyKey::Minio => [
+                'configs.access_key' => 'required',
+                'configs.secret_key' => 'required',
+                'configs.endpoint' => 'required',
+                'configs.bucket' => 'required',
             ],
         });
     }
@@ -181,6 +187,12 @@ class StrategyRequest extends FormRequest
                 'configs.base_uri' => 'required',
                 'configs.username' => 'required',
                 'configs.password' => 'required',
+            ],
+            StrategyKey::Minio => [
+                'configs.access_key' => 'AccessKey',
+                'configs.secret_key' => 'SecretKey',
+                'configs.endpoint' => '连接地址',
+                'configs.bucket' => 'Bucket 名称',
             ],
         });
     }

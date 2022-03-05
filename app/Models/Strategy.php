@@ -54,6 +54,7 @@ class Strategy extends Model
         StrategyKey::Sftp => 'SFTP',
         StrategyKey::Ftp => 'FTP',
         StrategyKey::Webdav => 'WebDav',
+        StrategyKey::Minio => 'Minio',
     ];
 
     protected static function booted()

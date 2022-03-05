@@ -7,14 +7,11 @@ final class S3Option
     /** @var string 访问url */
     const Url = 'url';
 
-    /** @var string 根目录 */
-    const Root = 'root';
+    /** @var string AccessKeyId */
+    const AccessKeyId = 'access_key_id';
 
-    /** @var string Key */
-    const Key = 'access_key_id';
-
-    /** @var string Secret */
-    const Secret = 'secret_access_key';
+    /** @var string SecretAccessKey */
+    const SecretAccessKey = 'secret_access_key';
 
     /** @var string 区域 */
     const Region = 'region';

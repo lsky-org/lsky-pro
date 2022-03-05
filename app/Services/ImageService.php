@@ -12,6 +12,7 @@ use App\Enums\Strategy\CosOption;
 use App\Enums\Strategy\FtpOption;
 use App\Enums\Strategy\KodoOption;
 use App\Enums\Strategy\LocalOption;
+use App\Enums\Strategy\MinioOption;
 use App\Enums\Strategy\OssOption;
 use App\Enums\Strategy\S3Option;
 use App\Enums\Strategy\SftpOption;
@@ -225,10 +226,11 @@ class ImageService
             StrategyKey::S3 => new AwsS3V3Adapter(
                 client: new S3Client([
                     'credentials' => [
-                        'key'    => $configs->get(S3Option::Key),
-                        'secret' => $configs->get(S3Option::Secret)
+                        'key'    => $configs->get(S3Option::AccessKeyId),
+                        'secret' => $configs->get(S3Option::SecretAccessKey)
                     ],
                     'region' => $configs->get(S3Option::Region),
+                    'version' => '2006-03-01',
                 ]),
                 bucket: $configs->get(S3Option::Bucket),
                 visibility: new \League\Flysystem\AwsS3V3\PortableVisibilityConverter(Visibility::PUBLIC),
@@ -288,7 +290,20 @@ class ImageService
                 'baseUri' => $configs->get(WebDavOption::BaseUri),
                 'userName' => $configs->get(WebDavOption::Username),
                 'password' => $configs->get(WebDavOption::Password)
-            ]))
+            ])),
+            StrategyKey::Minio => new AwsS3V3Adapter(
+                client: new S3Client([
+                    'credentials' => [
+                        'key'    => $configs->get(MinioOption::AccessKey),
+                        'secret' => $configs->get(MinioOption::SecretKey)
+                    ],
+                    'endpoint' => $configs->get(MinioOption::Endpoint),
+                    'region' => '',
+                    'version' => '2006-03-01',
+                ]),
+                bucket: $configs->get(MinioOption::Bucket),
+                visibility: new \League\Flysystem\AwsS3V3\PortableVisibilityConverter(Visibility::PUBLIC),
+            ),
         };
     }
 

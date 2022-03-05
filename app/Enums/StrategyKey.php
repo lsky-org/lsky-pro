@@ -30,4 +30,7 @@ final class StrategyKey
 
     /** @var int WebDav */
     const Webdav = 9;
+
+    /** @var int Minio */
+    const Minio = 10;
 }
