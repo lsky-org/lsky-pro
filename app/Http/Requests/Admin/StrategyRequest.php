@@ -70,6 +70,13 @@ class StrategyRequest extends FormRequest
                     }
                 }],
             ],
+            StrategyKey::Cos => [
+                'configs.app_id' => 'required',
+                'configs.secret_id' => 'required',
+                'configs.secret_key' => 'required',
+                'configs.region' => 'required',
+                'configs.bucket' => 'required',
+            ],
             StrategyKey::Kodo => [
                 'configs.access_key' => 'required',
                 'configs.secret_key' => 'required',
@@ -90,6 +97,13 @@ class StrategyRequest extends FormRequest
         return array_merge($array, match((int)$this->input('key')) {
             StrategyKey::Local => [
                 'configs.root' => '储存路径',
+            ],
+            StrategyKey::Cos => [
+                'configs.app_id' => 'AppId',
+                'configs.secret_id' => 'SecretId',
+                'configs.secret_key' => 'SecretKey',
+                'configs.region' => '所属地域',
+                'configs.bucket' => '储存桶名称',
             ],
             StrategyKey::Kodo => [
                 'configs.access_key' => 'AccessKey',

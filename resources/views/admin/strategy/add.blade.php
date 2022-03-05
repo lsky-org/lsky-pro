@@ -21,7 +21,7 @@
 
                         <div class="col-span-6">
                             <label for="name" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>名称</label>
-                            <x-input type="text" name="name" id="name" placeholder="请输入策略名称" autocomplete="name" required />
+                            <x-input type="text" name="name" id="name" placeholder="请输入策略名称" autocomplete="name" />
                         </div>
 
                         <div class="col-span-6">
@@ -41,7 +41,7 @@
                         <div class="col-span-6 mb-4 hidden" data-driver="{{ \App\Enums\StrategyKey::Local }}">
                             <div class="col-span-3 sm:col-span-2 mb-4">
                                 <label for="configs[url]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>访问网址</label>
-                                <x-input type="text" name="configs[url]" id="configs[url]" placeholder="请输入图片访问域名，需要加 http(s)://" required />
+                                <x-input type="text" name="configs[url]" id="configs[url]" placeholder="请输入图片访问域名，需要加 http(s)://" />
                                 <small class="text-orange-500"><i class="fas fa-exclamation"></i>
                                     本地储存的访问网址必须有根路径，例如：https://www.lsky.pro/uploads 中的 uploads 就是根路径，且根路径不能和其他策略重复。修改根路径直接影响已经上传并已使用的链接的访问。
                                 </small>
@@ -55,22 +55,49 @@
                             </div>
                         </div>
 
-                        <div class="col-span-6 mb-4 hidden" data-driver="{{ \App\Enums\StrategyKey::Kodo }}">
+                        <div class="col-span-6 mb-4 hidden" data-driver="{{ \App\Enums\StrategyKey::Cos }}">
                             <div class="col-span-3 sm:col-span-2 mb-4">
                                 <label for="configs[url]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>访问域名</label>
-                                <x-input type="url" name="configs[url]" id="configs[url]" placeholder="请输入图片访问域名 http(s)://" required />
+                                <x-input type="url" name="configs[url]" id="configs[url]" placeholder="请输入图片访问域名 http(s)://" />
                             </div>
                             <div class="col-span-3 sm:col-span-2 mb-4">
-                                <label for="configs[access_key]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>AccessKey</label>
-                                <x-input type="text" name="configs[access_key]" id="configs[access_key]" placeholder="请输入 AccessKey" required />
+                                <label for="configs[app_id]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>AppId</label>
+                                <x-input type="text" name="configs[app_id]" id="configs[app_id]" placeholder="请输入 AppId" />
+                            </div>
+                            <div class="col-span-3 sm:col-span-2 mb-4">
+                                <label for="configs[secret_id]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>SecretId</label>
+                                <x-input type="text" name="configs[secret_id]" id="configs[secret_id]" placeholder="请输入 SecretKey" />
                             </div>
                             <div class="col-span-3 sm:col-span-2 mb-4">
                                 <label for="configs[secret_key]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>SecretKey</label>
-                                <x-input type="password" name="configs[secret_key]" id="configs[secret_key]" placeholder="请输入 SecretKey" required />
+                                <x-input type="password" name="configs[secret_key]" id="configs[secret_key]" placeholder="请输入 SecretKey" />
+                            </div>
+                            <div class="col-span-3 sm:col-span-2 mb-4">
+                                <label for="configs[region]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>所属地域</label>
+                                <x-input type="text" name="configs[region]" id="configs[region]" placeholder="请输入所属地域，例如：ap-chengdu" />
+                            </div>
+                            <div class="col-span-3 sm:col-span-2 mb-4">
+                                <label for="configs[bucket]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>储存桶名称</label>
+                                <x-input type="text" name="configs[bucket]" id="configs[bucket]" placeholder="请输入储存桶名称" />
+                            </div>
+                        </div>
+
+                        <div class="col-span-6 mb-4 hidden" data-driver="{{ \App\Enums\StrategyKey::Kodo }}">
+                            <div class="col-span-3 sm:col-span-2 mb-4">
+                                <label for="configs[url]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>访问域名</label>
+                                <x-input type="url" name="configs[url]" id="configs[url]" placeholder="请输入图片访问域名 http(s)://" />
+                            </div>
+                            <div class="col-span-3 sm:col-span-2 mb-4">
+                                <label for="configs[access_key]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>AccessKey</label>
+                                <x-input type="text" name="configs[access_key]" id="configs[access_key]" placeholder="请输入 AccessKey" />
+                            </div>
+                            <div class="col-span-3 sm:col-span-2 mb-4">
+                                <label for="configs[secret_key]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>SecretKey</label>
+                                <x-input type="password" name="configs[secret_key]" id="configs[secret_key]" placeholder="请输入 SecretKey" />
                             </div>
                             <div class="col-span-3 sm:col-span-2 mb-4">
                                 <label for="configs[bucket]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>Bucket</label>
-                                <x-input type="text" name="configs[bucket]" id="configs[bucket]" placeholder="请输入 Bucket" required />
+                                <x-input type="text" name="configs[bucket]" id="configs[bucket]" placeholder="请输入 Bucket" />
                             </div>
                         </div>
                     </div>
@@ -88,7 +115,11 @@
             // 设置选中驱动
             let setSelected = function () {
                 $('[data-driver]').each(function () {
-                    $(this)[$('#key').val() == $(this).data('driver') ? 'show' : 'hide']();
+                    if ($('#key').val() == $(this).data('driver')) {
+                        $(this).show().find('input').attr('disabled', false);
+                    } else {
+                        $(this).hide().find('input').attr('disabled', true);
+                    }
                 });
             };
 

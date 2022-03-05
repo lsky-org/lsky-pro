@@ -35,6 +35,7 @@ use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemAdapter;
 use League\Flysystem\FilesystemException;
 use League\Flysystem\Local\LocalFilesystemAdapter;
+use Overtrue\Flysystem\Cos\CosAdapter;
 use Overtrue\Flysystem\Qiniu\QiniuAdapter;
 
 class ImageService
@@ -200,6 +201,9 @@ class ImageService
         $configs = $strategy->configs;
         return match ($strategy->key) {
             StrategyKey::Local => new LocalFilesystemAdapter($configs->get('root')),
+            StrategyKey::Cos => new CosAdapter($configs->only([
+                'app_id', 'secret_id', 'secret_key', 'region', 'bucket',
+            ])->toArray()),
             StrategyKey::Kodo => new QiniuAdapter(
                 accessKey: $configs->get(KodoOption::AccessKey),
                 secretKey: $configs->get(KodoOption::SecretKey),
