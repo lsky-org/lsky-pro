@@ -9,6 +9,7 @@ use App\Enums\GroupConfigKey;
 use App\Enums\ImagePermission;
 use App\Enums\Scan\AliyunOption;
 use App\Enums\Strategy\CosOption;
+use App\Enums\Strategy\FtpOption;
 use App\Enums\Strategy\KodoOption;
 use App\Enums\Strategy\SftpOption;
 use App\Enums\StrategyKey;
@@ -37,6 +38,8 @@ use Intervention\Image\ImageManager;
 use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemAdapter;
 use League\Flysystem\FilesystemException;
+use League\Flysystem\Ftp\FtpAdapter;
+use League\Flysystem\Ftp\FtpConnectionOptions;
 use League\Flysystem\Local\LocalFilesystemAdapter;
 use League\Flysystem\PhpseclibV2\SftpAdapter;
 use League\Flysystem\PhpseclibV2\SftpConnectionProvider;
@@ -217,15 +220,16 @@ class ImageService
                 bucket: $configs->get(KodoOption::Bucket),
                 domain: $configs->get(KodoOption::Url),
             ),
-            StrategyKey::Sftp => new SftpAdapter(new SftpConnectionProvider(
-                host: $configs->get(SftpOption::Host),
-                username: $configs->get(SftpOption::Username),
-                password: $configs->get(SftpOption::Password),
-                privateKey: $configs->get(SftpOption::PrivateKey),
-                passphrase: (string)$configs->get(SftpOption::Passphrase),
-                port: $configs->get(SftpOption::Port),
-                useAgent: (bool)$configs->get(SftpOption::UseAgent)
-            ),
+            StrategyKey::Sftp => new SftpAdapter(
+                connectionProvider: new SftpConnectionProvider(
+                    host: $configs->get(SftpOption::Host),
+                    username: $configs->get(SftpOption::Username),
+                    password: $configs->get(SftpOption::Password),
+                    privateKey: $configs->get(SftpOption::PrivateKey),
+                    passphrase: (string)$configs->get(SftpOption::Passphrase),
+                    port: (int)$configs->get(SftpOption::Port),
+                    useAgent: (bool)$configs->get(SftpOption::UseAgent)
+                ),
                 root: $configs->get(SftpOption::Root),
                 visibilityConverter: PortableVisibilityConverter::fromArray([
                     'file' => [
@@ -237,7 +241,19 @@ class ImageService
                         'private' => 7604,
                     ],
                 ])
-            )
+            ),
+            StrategyKey::Ftp => new FtpAdapter(
+                connectionOptions: FtpConnectionOptions::fromArray([
+                    'host' => $configs->get(FtpOption::Host),
+                    'root' => $configs->get(FtpOption::Root),
+                    'port' => (int)$configs->get(FtpOption::Port),
+                    'ssl' => (bool)$configs->get(FtpOption::Ssl),
+                    'username' => $configs->get(FtpOption::Username),
+                    'password' => $configs->get(FtpOption::Password),
+                    'passive' => (bool)$configs->get(FtpOption::Passive),
+                    'timeout' => 30,
+                ]),
+            ),
         };
     }
 

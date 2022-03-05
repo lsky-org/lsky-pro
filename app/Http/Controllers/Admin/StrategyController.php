@@ -39,7 +39,7 @@ class StrategyController extends Controller
         $strategy = new Strategy($validated);
         DB::transaction(function () use ($strategy, $validated) {
             $strategy->save();
-            $strategy->groups()->attach($validated['groups']);
+            $strategy->groups()->attach($validated['groups'] ?? []);
         });
         return $this->success('创建成功');
     }
@@ -52,7 +52,7 @@ class StrategyController extends Controller
         $strategy->fill($request->validated());
         DB::transaction(function () use ($strategy, $validated) {
             $strategy->save();
-            $strategy->groups()->sync($validated['groups']);
+            $strategy->groups()->sync($validated['groups'] ?? []);
         });
         return $this->success('保存成功');
     }

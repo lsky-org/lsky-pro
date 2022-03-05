@@ -152,6 +152,46 @@
                             </div>
                         </div>
                         @endif
+
+                        @if($strategy->key === \App\Enums\StrategyKey::Ftp)
+                        <div class="col-span-6 mb-4" data-driver="{{ \App\Enums\StrategyKey::Ftp }}">
+                            <div class="col-span-3 sm:col-span-2 mb-4">
+                                <label for="configs[url]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>访问域名</label>
+                                <x-input type="url" name="configs[url]" id="configs[url]" placeholder="请输入图片访问域名 http(s)://" value="{{ $strategy->configs['url'] }}" />
+                            </div>
+                            <div class="col-span-6">
+                                <div class="col-span-6 sm:col-span-3 mb-4">
+                                    <label for="configs[root]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>根目录</label>
+                                    <x-input type="text" name="configs[root]" id="configs[root]" autocomplete="text" placeholder="请输入根目录路径" value="{{ $strategy->configs['root'] }}" />
+                                </div>
+                            </div>
+                            <div class="col-span-3 sm:col-span-2 mb-4">
+                                <label for="configs[host]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>主机地址</label>
+                                <x-input type="text" name="configs[host]" id="configs[host]" placeholder="请输入主机地址，例如：127.0.0.1" value="{{ $strategy->configs['host'] }}" />
+                            </div>
+                            <div class="col-span-3 sm:col-span-2 mb-4">
+                                <label for="configs[port]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>连接端口</label>
+                                <x-input type="number" name="configs[port]" id="configs[port]" placeholder="请输入连接端口 21/20" value="20" value="{{ $strategy->configs['port'] }}" />
+                                <small class="text-gray-500"><i class="fas fa-exclamation-circle"></i> 通常情况下，FTP 的被动模式连接端口为 21，主动模式为 20</small>
+                            </div>
+                            <div class="col-span-3 sm:col-span-2 mb-4">
+                                <label for="configs[username]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>用户名</label>
+                                <x-input type="text" name="configs[username]" id="configs[username]" placeholder="请输入用户名" value="{{ $strategy->configs['username'] }}" />
+                            </div>
+                            <div class="col-span-3 sm:col-span-2 mb-4">
+                                <label for="configs[password]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>密码</label>
+                                <x-input type="password" name="configs[password]" id="configs[password]" placeholder="请输入密码" value="{{ $strategy->configs['password'] }}" />
+                            </div>
+                            <div class="col-span-6">
+                                <label for="configs[ssl]" class="block text-sm font-medium mb-2 text-gray-700">加密连接</label>
+                                <x-switch id="configs[ssl]" name="configs[ssl]" value="1" :checked="(bool)$strategy->configs['ssl']"></x-switch>
+                            </div>
+                            <div class="col-span-6">
+                                <label for="configs[passive]" class="block text-sm font-medium my-2 text-gray-700">被动模式</label>
+                                <x-switch id="configs[passive]" name="configs[passive]" value="1" :checked="(bool)$strategy->configs['passive']"></x-switch>
+                            </div>
+                        </div>
+                        @endif
                     </div>
                     <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">
                         <x-button type="button" class="bg-gray-500" onclick="history.go(-1)">取消</x-button>

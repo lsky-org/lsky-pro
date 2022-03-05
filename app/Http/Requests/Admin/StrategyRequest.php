@@ -90,7 +90,16 @@ class StrategyRequest extends FormRequest
                 'configs.password' => 'required_if:configs.private_key,null',
                 'configs.private_key' => 'required_if:configs.password,null',
                 'configs.passphrase' => '',
-                'configs.use_agent' => 'boolean',
+                'configs.use_agent' => 'required|boolean',
+            ],
+            StrategyKey::Ftp => [
+                'configs.root' => 'required',
+                'configs.host' => 'required',
+                'configs.port' => 'integer',
+                'configs.username' => 'required',
+                'configs.password' => 'required',
+                'configs.ssl' => 'required|boolean',
+                'configs.passive' => 'required|boolean',
             ],
         });
     }
@@ -106,7 +115,7 @@ class StrategyRequest extends FormRequest
 
         return array_merge($array, match((int)$this->input('key')) {
             StrategyKey::Local => [
-                'configs.root' => '储存路径',
+                'configs.root' => '根目录路径',
             ],
             StrategyKey::Cos => [
                 'configs.app_id' => 'AppId',
@@ -121,7 +130,7 @@ class StrategyRequest extends FormRequest
                 'configs.bucket' => 'Bucket',
             ],
             StrategyKey::Sftp => [
-                'configs.root' => '储存路径',
+                'configs.root' => '根目录路径',
                 'configs.host' => '主机地址',
                 'configs.port' => '连接端口',
                 'configs.username' => '用户名',
@@ -129,6 +138,15 @@ class StrategyRequest extends FormRequest
                 'configs.private_key' => '密钥',
                 'configs.passphrase' => '密钥口令',
                 'configs.use_agent' => '使用代理',
+            ],
+            StrategyKey::Ftp => [
+                'configs.root' => '根目录路径',
+                'configs.host' => '主机地址',
+                'configs.port' => '连接端口',
+                'configs.username' => '用户名',
+                'configs.password' => '密码',
+                'configs.ssl' => '加密连接',
+                'configs.passive' => '被动模式',
             ],
         });
     }
