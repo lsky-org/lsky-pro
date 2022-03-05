@@ -10,6 +10,7 @@ use App\Enums\ImagePermission;
 use App\Enums\Scan\AliyunOption;
 use App\Enums\Strategy\CosOption;
 use App\Enums\Strategy\KodoOption;
+use App\Enums\Strategy\SftpOption;
 use App\Enums\StrategyKey;
 use App\Enums\UserConfigKey;
 use App\Enums\UserStatus;
@@ -28,6 +29,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image as InterventionImage;
 use Intervention\Image\Imagick\Font;
@@ -36,6 +38,9 @@ use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemAdapter;
 use League\Flysystem\FilesystemException;
 use League\Flysystem\Local\LocalFilesystemAdapter;
+use League\Flysystem\PhpseclibV2\SftpAdapter;
+use League\Flysystem\PhpseclibV2\SftpConnectionProvider;
+use League\Flysystem\UnixVisibility\PortableVisibilityConverter;
 use Overtrue\Flysystem\Cos\CosAdapter;
 use Overtrue\Flysystem\Qiniu\QiniuAdapter;
 
@@ -151,7 +156,8 @@ class ImageService
             try {
                 $filesystem->writeStream($pathname, $handle);
             } catch (FilesystemException $e) {
-                throw new UploadException('图片上传失败');
+                Log::error('保存图片时出现异常', ['message' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
+                throw new UploadException(config('app.debug', false) ? $e->getMessage() : '图片上传失败');
             }
             @fclose($handle);
         } else {
@@ -211,6 +217,27 @@ class ImageService
                 bucket: $configs->get(KodoOption::Bucket),
                 domain: $configs->get(KodoOption::Url),
             ),
+            StrategyKey::Sftp => new SftpAdapter(new SftpConnectionProvider(
+                host: $configs->get(SftpOption::Host),
+                username: $configs->get(SftpOption::Username),
+                password: $configs->get(SftpOption::Password),
+                privateKey: $configs->get(SftpOption::PrivateKey),
+                passphrase: (string)$configs->get(SftpOption::Passphrase),
+                port: $configs->get(SftpOption::Port),
+                useAgent: (bool)$configs->get(SftpOption::UseAgent)
+            ),
+                root: $configs->get(SftpOption::Root),
+                visibilityConverter: PortableVisibilityConverter::fromArray([
+                    'file' => [
+                        'public' => 0640,
+                        'private' => 0604,
+                    ],
+                    'dir' => [
+                        'public' => 0740,
+                        'private' => 7604,
+                    ],
+                ])
+            )
         };
     }
 

@@ -49,7 +49,7 @@
         </div>
         <div class="relative flex w-full">
             <div class="w-10 h-10 bg-gray-200 rounded-lg cursor-pointer overflow-hidden">
-                <img class="w-full h-full" src="__src__">
+                <img class="w-full h-full object-cover" src="__src__">
             </div>
             <div class="flex justify-end flex-col ml-2 w-[80%] opacity-70">
                 <p class="text-sm truncate">__name__</p>

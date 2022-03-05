@@ -82,6 +82,16 @@ class StrategyRequest extends FormRequest
                 'configs.secret_key' => 'required',
                 'configs.bucket' => 'required',
             ],
+            StrategyKey::Sftp => [
+                'configs.root' => 'required',
+                'configs.host' => 'required',
+                'configs.port' => 'integer',
+                'configs.username' => 'required',
+                'configs.password' => 'required_if:configs.private_key,null',
+                'configs.private_key' => 'required_if:configs.password,null',
+                'configs.passphrase' => '',
+                'configs.use_agent' => 'boolean',
+            ],
         });
     }
 
@@ -109,6 +119,16 @@ class StrategyRequest extends FormRequest
                 'configs.access_key' => 'AccessKey',
                 'configs.secret_key' => 'SecretKey',
                 'configs.bucket' => 'Bucket',
+            ],
+            StrategyKey::Sftp => [
+                'configs.root' => '储存路径',
+                'configs.host' => '主机地址',
+                'configs.port' => '连接端口',
+                'configs.username' => '用户名',
+                'configs.password' => '密码',
+                'configs.private_key' => '密钥',
+                'configs.passphrase' => '密钥口令',
+                'configs.use_agent' => '使用代理',
             ],
         });
     }

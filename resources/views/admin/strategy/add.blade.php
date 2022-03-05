@@ -100,6 +100,47 @@
                                 <x-input type="text" name="configs[bucket]" id="configs[bucket]" placeholder="请输入 Bucket" />
                             </div>
                         </div>
+
+                        <div class="col-span-6 mb-4 hidden" data-driver="{{ \App\Enums\StrategyKey::Sftp }}">
+                            <div class="col-span-3 sm:col-span-2 mb-4">
+                                <label for="configs[url]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>访问域名</label>
+                                <x-input type="url" name="configs[url]" id="configs[url]" placeholder="请输入图片访问域名 http(s)://" />
+                            </div>
+                            <div class="col-span-6">
+                                <div class="col-span-6 sm:col-span-3 mb-4">
+                                    <label for="configs[root]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>根目录</label>
+                                    <x-input type="text" name="configs[root]" id="configs[root]" autocomplete="text" placeholder="请输入根目录路径" value="/" />
+                                </div>
+                            </div>
+                            <div class="col-span-3 sm:col-span-2 mb-4">
+                                <label for="configs[host]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>主机地址</label>
+                                <x-input type="text" name="configs[host]" id="configs[host]" placeholder="请输入主机地址，例如：127.0.0.1" />
+                            </div>
+                            <div class="col-span-3 sm:col-span-2 mb-4">
+                                <label for="configs[port]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>连接端口</label>
+                                <x-input type="number" name="configs[port]" id="configs[port]" placeholder="请输入连接端口" value="22" />
+                            </div>
+                            <div class="col-span-3 sm:col-span-2 mb-4">
+                                <label for="configs[username]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>用户名</label>
+                                <x-input type="text" name="configs[username]" id="configs[username]" placeholder="请输入用户名" />
+                            </div>
+                            <div class="col-span-3 sm:col-span-2 mb-4">
+                                <label for="configs[password]" class="block text-sm font-medium text-gray-700"><span class="text-yellow-500">*</span>密码</label>
+                                <x-input type="password" name="configs[password]" id="configs[password]" placeholder="如果使用私钥连接，可为空" />
+                            </div>
+                            <div class="col-span-3 sm:col-span-2 mb-4">
+                                <label for="configs[private_key]" class="block text-sm font-medium text-gray-700"><span class="text-yellow-500">*</span>私钥</label>
+                                <x-textarea name="configs[private_key]" id="configs[private_key]" placeholder="输入私钥文本内容，如果使用密码连接，可为空"></x-textarea>
+                            </div>
+                            <div class="col-span-3 sm:col-span-2 mb-4">
+                                <label for="configs[passphrase]" class="block text-sm font-medium text-gray-700">私钥口令</label>
+                                <x-input type="password" name="configs[passphrase]" id="configs[passphrase]" placeholder="如果未设置私钥或私钥未设置口令，可为空" />
+                            </div>
+                            <div class="col-span-6">
+                                <label for="configs[use_agent]" class="block text-sm font-medium mb-2 text-gray-700">是否使用代理</label>
+                                <x-switch id="configs[use_agent]" name="configs[use_agent]" value="1"></x-switch>
+                            </div>
+                        </div>
                     </div>
                     <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">
                         <x-button type="button" class="bg-gray-500" onclick="history.go(-1)">取消</x-button>

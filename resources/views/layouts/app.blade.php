@@ -48,12 +48,17 @@
 </body>
 <script>
     // 开关组件默认值
-    $('.switch input[type=checkbox]').click(function () {
-        if (this.checked) {
-            $(this).closest('.switch').find('input[type=hidden]').remove();
+    let setSwitch = function (e) {
+        if (e.checked) {
+            $(e).closest('.switch').find('input[type=hidden]').remove();
         } else {
-            $(this).before('<input type="hidden" name="'+this.name+'" value="0" />');
+            $(e).before('<input type="hidden" name="'+e.name+'" value="0" />');
         }
+    }
+    $('.switch input[type=checkbox]').each(function () {
+        setSwitch(this);
+    }).click(function () {
+        setSwitch(this);
     });
 </script>
 @stack('scripts')

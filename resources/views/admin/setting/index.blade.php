@@ -40,26 +40,20 @@
         <form action="{{ route('admin.settings.save') }}">
             <div class="relative p-4 rounded-md bg-white mb-8 space-y-4">
                 <x-fieldset title="是否启用注册" faq="启用或关闭系统注册功能">
-                    <input type="hidden" name="is_enable_registration" value="0">
                     <x-switch name="is_enable_registration" value="1" :checked="(bool) $configs['is_enable_registration']" />
                 </x-fieldset>
                 <x-fieldset title="是否启用画廊" faq="启用或关闭画廊功能，画廊只有已登录的用户可见，画廊中的图片均为所有用户公开的图片。">
-                    <input type="hidden" name="is_enable_gallery" value="0">
                     <x-switch name="is_enable_gallery" value="1" :checked="(bool) $configs['is_enable_gallery']" />
                 </x-fieldset>
                 <x-fieldset title="是否启用接口" faq="启用或关闭接口功能，关闭后将无法通过接口上传图片、管理图片等操作。">
-                    <input type="hidden" name="is_enable_api" value="0">
                     <x-switch name="is_enable_api" value="1" :checked="(bool) $configs['is_enable_api']" />
                 </x-fieldset>
                 <x-fieldset title="是否允许游客上传" faq="启用或关闭游客上传功能，游客上传受「系统默认组」控制。">
-                    <input type="hidden" name="is_allow_guest_upload" value="0">
                     <x-switch name="is_allow_guest_upload" value="1" :checked="(bool) $configs['is_allow_guest_upload']" />
                 </x-fieldset>
                 <x-fieldset title="账号验证" faq="是否强制用户验证邮箱，开启后用户必须经过验证邮箱后才能上传图片，请确保邮件配置正常。">
-                    <input type="hidden" name="is_user_need_verify" value="0">
                     <x-switch name="is_user_need_verify" value="1" :checked="(bool) $configs['is_user_need_verify']" />
                 </x-fieldset>
-
                 <div class="text-right">
                     <x-button type="submit">保存更改</x-button>
                 </div>
