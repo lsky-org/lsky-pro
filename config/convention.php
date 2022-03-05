@@ -22,7 +22,7 @@ return [
         ConfigKey::IsEnableApi => 1,
         ConfigKey::IsAllowGuestUpload => 1,
         ConfigKey::UserInitialCapacity => 512000,
-        ConfigKey::IsUserNeedVerify => 1,
+        ConfigKey::IsUserNeedVerify => 0,
         ConfigKey::Mail => [
             'default' => 'smtp',
             'mailers' => [

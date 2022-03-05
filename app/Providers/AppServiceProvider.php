@@ -3,10 +3,8 @@
 namespace App\Providers;
 
 use App\Enums\ConfigKey;
-use App\Enums\Mail\SmtpOption;
 use App\Models\Group;
 use App\Utils;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
@@ -43,12 +41,7 @@ class AppServiceProvider extends ServiceProvider
         if (file_exists(base_path('installed.lock'))) {
             // 覆盖默认配置
             Config::set('app.name', Utils::config(ConfigKey::AppName));
-
-            /** @var Collection $mailConfigs */
-            $mailConfigs = Utils::config(ConfigKey::Mail);
-            if ($mailConfigs->get(SmtpOption::Host)) {
-                Config::set('mail', array_merge(\config('mail'), $mailConfigs->toArray()));
-            }
+            Config::set('mail', array_merge(\config('mail'), Utils::config(ConfigKey::Mail)->toArray()));
 
             $configs = Auth::check() && Auth::user()->group ?
                 Auth::user()->group->configs :
