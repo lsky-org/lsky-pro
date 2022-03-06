@@ -40,6 +40,6 @@ class Upgrade extends Command
      */
     public function handle(): int
     {
-        return (int) (new UpgradeService(Utils::config(ConfigKey::AppVersion)))->upgrade();
+        return (new UpgradeService(Utils::config(ConfigKey::AppVersion)))->upgrade() ? 0 : 1;
     }
 }

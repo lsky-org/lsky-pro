@@ -80,7 +80,7 @@ class Controller extends BaseController
                 $data = collect($request->except('account'))->transform(fn($item, $key) => ['--'.$key => $item])->collapse();
                 $output = new BufferedOutput();
                 $exitCode = Artisan::call('lsky:install', $data->toArray(), $output);
-                if (! $exitCode) {
+                if ($exitCode) {
                     throw new \Exception(str_replace(PHP_EOL, '<br/>', $output->fetch()));
                 }
                 $user = new User([

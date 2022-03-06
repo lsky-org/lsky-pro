@@ -102,11 +102,11 @@ class Install extends Command
                 'msg' => $e->getMessage(),
                 'trace' => $e->getTraceAsString(),
             ]);
-            return 0;
+            return 1;
         }
 
         $this->info('Install success!');
-        return 1;
+        return 0;
     }
 
     protected function replacementPattern(string $name, string $value): string
