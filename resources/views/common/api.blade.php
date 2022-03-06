@@ -318,6 +318,91 @@
             </div>
         </div>
 
+        <p class="text-xl mb-2 text-gray-800 font-semibold">策略相关</p>
+        <div class="space-y-4 bg-white p-3 rounded-md mb-10">
+            <div>
+                <p class="text-lg text-gray-700 font-semibold">策略列表</p>
+                <x-code><span class="text-sky-500 select-none">GET </span>/strategies</x-code>
+
+                <div class="my-4 overflow-x-auto">
+                    <p class="text-sm mb-2">请求参数(Query)</p>
+                    <table class="min-w-full">
+                        <thead class="bg-white border">
+                        <tr>
+                            <th scope="col" class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
+                                字段
+                            </th>
+                            <th scope="col" class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
+                                类型
+                            </th>
+                            <th scope="col" class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
+                                说明
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody class="bg-white border divide-y text-sm">
+                        <tr>
+                            <td class="px-3 py-2 whitespace-nowrap">keyword</td>
+                            <td class="px-3 py-2 whitespace-nowrap">String</td>
+                            <td class="px-3 py-2 whitespace-nowrap">筛选关键字</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="my-4 overflow-x-auto">
+                    <p class="text-sm mb-2">返回参数</p>
+                    <table class="min-w-full">
+                        <thead class="bg-white border">
+                        <tr>
+                            <th scope="col" class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
+                                字段
+                            </th>
+                            <th scope="col" class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
+                                类型
+                            </th>
+                            <th scope="col" class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
+                                说明
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody class="bg-white border divide-y text-sm">
+                        <tr>
+                            <td class="px-3 py-2 whitespace-nowrap">status</td>
+                            <td class="px-3 py-2 whitespace-nowrap">Boolean</td>
+                            <td class="px-3 py-2 whitespace-nowrap">状态，true 或 false</td>
+                        </tr>
+                        <tr>
+                            <td class="px-3 py-2 whitespace-nowrap">message</td>
+                            <td class="px-3 py-2 whitespace-nowrap">String</td>
+                            <td class="px-3 py-2 whitespace-nowrap">描述信息</td>
+                        </tr>
+                        <tr>
+                            <td class="px-3 py-2 whitespace-nowrap">data</td>
+                            <td class="px-3 py-2 whitespace-nowrap">Object</td>
+                            <td class="px-3 py-2 whitespace-nowrap">数据</td>
+                        </tr>
+                        <tr>
+                            <td class="px-3 py-2 whitespace-nowrap pl-6">strategies</td>
+                            <td class="px-3 py-2 whitespace-nowrap">Object[]</td>
+                            <td class="px-3 py-2 whitespace-nowrap">策略数据</td>
+                        </tr>
+                        <tr>
+                            <td class="px-3 py-2 whitespace-nowrap pl-10">id</td>
+                            <td class="px-3 py-2 whitespace-nowrap">Integer</td>
+                            <td class="px-3 py-2 whitespace-nowrap">策略 ID</td>
+                        </tr>
+                        <tr>
+                            <td class="px-3 py-2 whitespace-nowrap pl-10">name</td>
+                            <td class="px-3 py-2 whitespace-nowrap">String</td>
+                            <td class="px-3 py-2 whitespace-nowrap">策略名称</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
         <p class="text-xl mb-2 text-gray-800 font-semibold">图片相关</p>
         <div class="space-y-4 bg-white p-3 rounded-md mb-10">
             <div>
@@ -371,6 +456,11 @@
                             <td class="px-3 py-2 whitespace-nowrap"><span class="text-red-500">*</span>file</td>
                             <td class="px-3 py-2 whitespace-nowrap">File</td>
                             <td class="px-3 py-2 whitespace-nowrap">图片文件</td>
+                        </tr>
+                        <tr>
+                            <td class="px-3 py-2 whitespace-nowrap">strategy_id</td>
+                            <td class="px-3 py-2 whitespace-nowrap">Integer</td>
+                            <td class="px-3 py-2 whitespace-nowrap">储存策略ID</td>
                         </tr>
                         </tbody>
                     </table>
@@ -922,8 +1012,4 @@
             </div>
         </div>
     </div>
-
-    @push('scripts')
-
-    @endpush
 </x-app-layout>
