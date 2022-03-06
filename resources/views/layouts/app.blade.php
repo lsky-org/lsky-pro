@@ -61,5 +61,8 @@
         setSwitch(this);
     });
 </script>
+@if(file_exists(public_path('js/custom.js')))
+<script src="{{ asset('js/custom.js') }}"></script>
+@endif
 @stack('scripts')
 </html>

@@ -4,6 +4,7 @@
 /node_modules
 /public/hot
 /public/storage
+/public/js/custom.js
 /storage/*.key
 /vendor
 .env
