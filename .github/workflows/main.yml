@@ -28,8 +28,6 @@ jobs:
         run: |
           mkdir -p database
           touch database/database.sqlite
-      - name: Install Lsky Pro
-        run: php artisan lsky:install --connection=sqlite --database=database/database.sqlite
       - name: Execute tests (Unit and Feature tests) via PHPUnit
         env:
           DB_CONNECTION: sqlite
