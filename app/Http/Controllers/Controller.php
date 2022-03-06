@@ -77,7 +77,9 @@ class Controller extends BaseController
                     'account.password' => '管理员账号密码'
                 ]);
 
-                $data = collect($request->except('account'))->transform(fn($item, $key) => ['--'.$key => $item])->collapse();
+                $data = collect($request->only([
+                    'connection', 'host', 'port', 'database', 'username', 'password',
+                ]))->transform(fn($item, $key) => ['--'.$key => $item])->collapse();
                 $output = new BufferedOutput();
                 $exitCode = Artisan::call('lsky:install', $data->toArray(), $output);
                 if ($exitCode) {
