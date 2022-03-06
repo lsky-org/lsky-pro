@@ -152,16 +152,12 @@ class Utils
     public static function parseConfigs(array $defaults, array $configs): array
     {
         $configs = Utils::filter($configs);
-        $array = self::array_merge_recursive_distinct($defaults, $configs);
-        array_walk_recursive($array, function (&$item) {
+        array_walk_recursive($configs, function (&$item) {
             if (ctype_digit($item)) {
                 $item += 0;
             }
-            if (is_null($item)) {
-                unset($item);
-            }
         });
-        return $array;
+        return self::array_merge_recursive_distinct($defaults, $configs);
     }
 
     /**
