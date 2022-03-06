@@ -1,15 +1,18 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Feature;
 
 use App\Enums\ConfigKey;
 use App\Utils;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Tests\TestCase;
 
 class UtilTest extends TestCase
 {
+    use RefreshDatabase;
+
     public function test_config()
     {
         Cache::forget('configs');
