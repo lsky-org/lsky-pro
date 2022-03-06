@@ -225,7 +225,9 @@ class ImageService
     {
         $configs = $strategy->configs;
         return match ($strategy->key) {
-            StrategyKey::Local => new LocalFilesystemAdapter($configs->get(LocalOption::Root)),
+            StrategyKey::Local => new LocalFilesystemAdapter(
+                location: $configs->get(LocalOption::Root) ?: config('filesystems.disks.uploads.root')
+            ),
             StrategyKey::S3 => new AwsS3V3Adapter(
                 client: new S3Client([
                     'credentials' => [
