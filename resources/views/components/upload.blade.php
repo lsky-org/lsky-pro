@@ -142,7 +142,7 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             limitMultiFileUploads: 1,
-            limitConcurrentUploads: 3,
+            limitConcurrentUploads: {{ $_group->configs->get(\App\Enums\GroupConfigKey::ConcurrentUploadNum, 3) }},
             pasteZone: $(document),
             dropZone: $('#picker-dnd'),
             formData: (form) => {
