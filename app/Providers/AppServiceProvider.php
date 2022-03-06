@@ -43,11 +43,11 @@ class AppServiceProvider extends ServiceProvider
             Config::set('app.name', Utils::config(ConfigKey::AppName));
             Config::set('mail', array_merge(\config('mail'), Utils::config(ConfigKey::Mail)->toArray()));
 
-            $configs = Auth::check() && Auth::user()->group ?
-                Auth::user()->group->configs :
-                Group::query()->where('is_guest', true)->value('configs');
-            // 初始化视图中的默认数据
-            View::share('groupConfigs', $configs);
+            View::composer('*', function (\Illuminate\View\View $view) {
+                /** @var Group $group */
+                $group = Auth::check() ? Auth::user()->group : Group::query()->where('is_guest', true)->first();
+                $view->with('_group', $group);
+            });
         }
     }
 }
