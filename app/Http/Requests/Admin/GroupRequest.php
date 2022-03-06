@@ -43,7 +43,7 @@ class GroupRequest extends FormRequest
                 'exclude_if:configs.is_enable_scan,false',
                 'in:mark,delete',
             ],
-            'configs.scan_configs.driver' => ['exclude_if:configs.is_enable_scan,false', 'in:aliyun',],
+            'configs.scan_configs.driver' => ['exclude_if:configs.is_enable_scan,false', 'in:aliyun'],
             'configs.scan_configs.drivers.aliyun.access_key_id' => [$requiredIfReview('aliyun')],
             'configs.scan_configs.drivers.aliyun.access_key_secret' => [$requiredIfReview('aliyun')],
             'configs.scan_configs.drivers.aliyun.biz_type' => [$requiredIfReview('aliyun')],

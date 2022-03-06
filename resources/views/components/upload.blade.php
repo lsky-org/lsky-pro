@@ -1,5 +1,5 @@
 <div class="pb-6 h-full">
-    <input type="file" id="picker" name="file" class="hidden" accept="image/*" multiple>
+    <input type="file" id="picker" name="file" class="hidden" accept="{{ implode(',', array_map(fn ($ext) => '.'.$ext, $_group->configs->get(\App\Enums\GroupConfigKey::AcceptedFileSuffixes))) }}" multiple>
 
     <div class="mb-4 p-4 bg-white rounded-md">
         <h1 class="tracking-wider text-2xl text-gray-700 mb-2" style="text-shadow: -4px 4px 0 rgb(0 0 0 / 10%);">Image Upload</h1>
