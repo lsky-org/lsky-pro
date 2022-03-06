@@ -103,15 +103,19 @@ class ImageService
         // 图片默认权限
         $image->permission = ImagePermission::Private;
 
-        // 默认储存策略
-        if (is_null($user)) {
-            // 游客随机一个储存，TODO 适配前端切换
-            $strategy = $strategies->random(1)->first();
-            $image->strategy_id = $strategy->id;
+        if ($request->has('strategy_id')) {
+            if (! $strategy = $strategies->find($request->input('strategy_id'))) {
+                throw new UploadException('选定的策略不存在');
+            }
         } else {
-            /** @var Strategy $strategy */
-            $strategy = $strategies->find($user->configs->get(UserConfigKey::DefaultStrategy, 0), $strategies->first());
+            // 没有指定则选择第一个策略
+            $strategy = $strategies->first();
+        }
 
+        $image->strategy_id = $strategy->id;
+
+        // 默认储存策略
+        if (! is_null($user)) {
             if (Utils::config(ConfigKey::IsUserNeedVerify) && ! $user->email_verified_at) {
                 throw new UploadException('账户未验证');
             }
@@ -131,7 +135,6 @@ class ImageService
                 }
             }
 
-            $image->strategy_id = $strategy->id;
             $image->user_id = $user->id;
             // 用户设置的图片默认权限
             $image->permission = $user->configs->get(UserConfigKey::DefaultPermission, ImagePermission::Private);

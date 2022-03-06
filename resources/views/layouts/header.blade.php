@@ -6,7 +6,10 @@
             </a>
             <a href="" class="text-xl truncate" id="header-title">@yield('title', \App\Utils::config(\App\Enums\ConfigKey::AppName))</a>
         </div>
-        <div class="flex justify-end items-center">
+        <div class="flex justify-end items-center space-x-4">
+            @if($_group->strategies->isNotEmpty())
+                @include('layouts.strategies')
+            @endif
             @include('layouts.user-nav')
         </div>
     </x-container>

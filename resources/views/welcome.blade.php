@@ -9,7 +9,11 @@
                 <div class="flex justify-start items-center max-w-[70%]">
                     <a href="{{ route('/') }}" class="text-white text-xl truncate">{{ \App\Utils::config(\App\Enums\ConfigKey::AppName) }}</a>
                 </div>
-                <div class="flex justify-end items-center space-x-3">
+                <div class="flex justify-end items-center space-x-4">
+                    @if($_group->strategies->isNotEmpty())
+                    @include('layouts.strategies')
+                    @endif
+
                     @if(Auth::check())
                         @include('layouts.user-nav')
                     @else

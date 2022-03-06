@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\User;
 
-use App\Enums\ConfigKey;
+use App\Enums\UserConfigKey;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserSettingRequest;
 use App\Models\User;
-use App\Utils;
 use Illuminate\Auth\Events\PasswordReset;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -20,14 +20,8 @@ class UserController extends Controller
     {
         /** @var User $user */
         $user = Auth::user();
-
-        // 组配置
-        $configs = Utils::config(ConfigKey::Group);
-        if ($user->group) {
-            $configs = $user->group->configs;
-        }
-
-        $strategies = $user->group ? $user->group->strategies()->get() : [];
+        $configs = $user->group->configs;
+        $strategies = $user->group->strategies()->get();
         return view('user.dashboard', compact('strategies', 'configs', 'user'));
     }
 
@@ -55,5 +49,16 @@ class UserController extends Controller
         }
         $user->save();
         return $this->success('保存成功');
+    }
+
+    public function setStrategy(Request $request): Response
+    {
+        /** @var User $user */
+        $user = Auth::user();
+        if (! $strategy = $user->group->strategies()->find($request->id)) {
+            return $this->error('没有找到该策略');
+        }
+        $user->update(['configs->'.UserConfigKey::DefaultStrategy => $strategy->id]);
+        return $this->success('设置成功');
     }
 }

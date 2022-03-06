@@ -33,8 +33,12 @@ Route::post('upload', [Controller::class, 'upload']);
 Route::group(['middleware' => ['auth']], function () {
     Route::get('dashboard', [UserController::class, 'dashboard'])->name('dashboard');
     Route::get('gallery', [GalleryController::class, 'index'])->name('gallery');
-    Route::get('settings', [UserController::class, 'settings'])->name('settings');
-    Route::put('settings', [UserController::class, 'update'])->name('settings.update');
+
+    Route::prefix('settings')->group(function () {
+        Route::get('', [UserController::class, 'settings'])->name('settings');
+        Route::put('', [UserController::class, 'update'])->name('settings.update');
+        Route::put('set-strategy', [UserController::class, 'setStrategy'])->name('settings.strategy.set');
+    });
 
     Route::group(['prefix' => 'api'], function () {
         Route::get('', [ApiController::class, 'index'])->name('api');
