@@ -31,11 +31,13 @@
                     isSelected = true;
 
                     @if(Auth::check())
-                    axios.put('{{ route('settings.strategy.set') }}', {id: id}).then(response => {
-                        if (! response.data.status) {
-                            toastr.error(response.data.message);
+                        if (defaultStrategy != id) {
+                            axios.put('{{ route('settings.strategy.set') }}', {id: id}).then(response => {
+                                if (! response.data.status) {
+                                    toastr.error(response.data.message);
+                                }
+                            });
                         }
-                    });
                     @endif
                 }
             });

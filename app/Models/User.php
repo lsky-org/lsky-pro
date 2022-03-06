@@ -56,6 +56,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'url',
         'capacity',
         'configs',
+        'configs->default_strategy',
         'registered_ip',
     ];
 
