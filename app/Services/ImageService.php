@@ -473,7 +473,6 @@ class ImageService
                 ->angle((int) $options->get(FontOption::Angle, 0))
                 ->color($options->get(FontOption::Color, '000000')); // 十六进制 or rgba
             $box = $font->getBoxSize();
-            $font->text($text);
             $canvas = $manager->canvas($box['width'], $box['height']);
             $font->applyToImage($canvas);
             return $manager->make($canvas);
