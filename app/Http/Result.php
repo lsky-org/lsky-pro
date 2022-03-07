@@ -4,14 +4,14 @@ namespace App\Http;
 
 use Illuminate\Http\Response;
 
-trait Api
+trait Result
 {
     public function success(string $message = 'success', $data = []): Response
     {
         return $this->response(true, $message, $data);
     }
 
-    public function error(string $message = 'error', $data = []): Response
+    public function fail(string $message = 'fail', $data = []): Response
     {
         return $this->response(false, $message, $data);
     }

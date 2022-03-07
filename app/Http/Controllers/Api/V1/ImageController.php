@@ -42,13 +42,13 @@ class ImageController extends Controller
         try {
             $image = $service->store($request);
         } catch (UploadException $e) {
-            return $this->error($e->getMessage());
+            return $this->fail($e->getMessage());
         } catch (\Throwable $e) {
             Log::error("Api 上传文件时发生异常，", ['message' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
             if (config('app.debug')) {
-                return $this->error($e->getMessage());
+                return $this->fail($e->getMessage());
             }
-            return $this->error('服务异常，请稍后再试');
+            return $this->fail('服务异常，请稍后再试');
         }
         return $this->success('上传成功', $image->setAppends(['pathname', 'links'])->only(
             'key', 'name', 'pathname', 'origin_name', 'size', 'mimetype', 'extension', 'md5', 'sha1', 'links'

@@ -20,14 +20,14 @@ class TokenController extends Controller
                 'password' => 'required',
             ]);
         } catch (ValidationException $e) {
-            return $this->error($e->validator->errors()->first());
+            return $this->fail($e->validator->errors()->first());
         }
 
         /** @var User|null $user */
         $user = User::query()->where('email', $request->email)->first();
 
         if (! $user || ! Hash::check($request->password, $user->password)) {
-            return $this->error('The email address or password is incorrect.');
+            return $this->fail('The email address or password is incorrect.');
         }
 
         $token = $user->createToken($user->email)->plainTextToken;

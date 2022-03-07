@@ -36,7 +36,7 @@ class SettingController extends Controller
         try {
             Mail::to($request->post('email'))->send(new Test());
         } catch (\Throwable $e) {
-            return $this->error($e->getMessage());
+            return $this->fail($e->getMessage());
         }
         return $this->success('发送成功');
     }
@@ -53,7 +53,7 @@ class SettingController extends Controller
                 $data['version'] = $service->getVersions()->first();
             }
         } catch (\Exception $e) {
-            return $this->error($e->getMessage());
+            return $this->fail($e->getMessage());
         }
 
         return $this->success('success', $data);

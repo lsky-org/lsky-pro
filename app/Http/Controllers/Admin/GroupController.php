@@ -63,19 +63,19 @@ class GroupController extends Controller
             $group->fill($request->validated());
             if ($group->isDirty('is_default') && ! $group->is_default) {
                 if (! Group::query()->where('is_default', true)->where('id', '<>', $group->id)->exists()) {
-                    return $this->error('系统至少需要保留一个默认组');
+                    return $this->fail('系统至少需要保留一个默认组');
                 }
             }
             if ($group->isDirty('is_guest') && ! $group->is_guest) {
                 if (! Group::query()->where('is_guest', true)->where('id', '<>', $group->id)->exists()) {
-                    return $this->error('系统至少需要保留一个游客组');
+                    return $this->fail('系统至少需要保留一个游客组');
                 }
             }
             $group->save();
             DB::commit();
         } catch (\Throwable $e) {
             DB::rollBack();
-            return $this->error('保存失败');
+            return $this->fail('保存失败');
         }
 
         return $this->success('保存成功');
@@ -86,7 +86,7 @@ class GroupController extends Controller
         /** @var Group $group */
         if ($group = Group::query()->find($request->route('id'))) {
             if ($group->is_default || $group->is_guest) {
-                return $this->error('默认组和游客组无法删除');
+                return $this->fail('默认组和游客组无法删除');
             }
             DB::transaction(function () use ($group) {
                 $group->users()->update(['group_id' => Group::query()->where('is_default', true)->value('id')]);

@@ -55,7 +55,7 @@ class UserController extends Controller
         $user->group_id = $validated['group_id'];
 
         if (!$user->save()) {
-            return $this->error('保存失败');
+            return $this->fail('保存失败');
         }
         return $this->success('保存成功');
     }

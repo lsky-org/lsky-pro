@@ -31,7 +31,7 @@ class AlbumController extends Controller
         if ($user->albums()->create(array_filter($request->validated()))) {
             return $this->success('创建成功');
         }
-        return $this->error('创建失败');
+        return $this->fail('创建失败');
     }
 
     public function update(AlbumRequest $request): Response
@@ -40,7 +40,7 @@ class AlbumController extends Controller
         $user = Auth::user();
         $album = $user->albums()->find($request->route('id'));
         if (is_null($album)) {
-            return $this->error('不存在的相册');
+            return $this->fail('不存在的相册');
         }
         $album->update(array_filter($request->validated()));
         return $this->success('修改成功');
@@ -53,7 +53,7 @@ class AlbumController extends Controller
         /** @var Album|null $album */
         $album = $user->albums()->find($request->route('id'));
         if (is_null($album)) {
-            return $this->error('不存在的相册');
+            return $this->fail('不存在的相册');
         }
         DB::transaction(function () use ($album) {
             $album->images()->update(['album_id' => null]);

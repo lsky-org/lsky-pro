@@ -44,7 +44,7 @@ class ImageController extends Controller
         $user = Auth::user();
         /** @var Image $image */
         if (!$image = $user->images()->find($request->route('id'))) {
-            return $this->error('未找到该图片');
+            return $this->fail('未找到该图片');
         }
         $image->strategy->setVisible(['name']);
         $image->album?->setVisible(['name']);
@@ -62,7 +62,7 @@ class ImageController extends Controller
         $permission = $request->input('permission');
         $permissions = ['public' => ImagePermission::Public, 'private' => ImagePermission::Private];
         if (!in_array($permission, array_keys($permissions))) {
-            return $this->error('设置失败');
+            return $this->fail('设置失败');
         }
         $user->images()->whereIn('id', (array) $request->input('ids'))->update([
             'permission' => $permissions[$permission],

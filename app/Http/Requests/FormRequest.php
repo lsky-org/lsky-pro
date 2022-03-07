@@ -2,13 +2,13 @@
 
 namespace App\Http\Requests;
 
-use App\Http\Api;
+use App\Http\Result;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
 class FormRequest extends \Illuminate\Foundation\Http\FormRequest
 {
-    use Api;
+    use Result;
 
     public function authorize()
     {
@@ -17,6 +17,6 @@ class FormRequest extends \Illuminate\Foundation\Http\FormRequest
 
     protected function failedValidation(Validator $validator)
     {
-        throw (new HttpResponseException($this->error($validator->errors()->first())));
+        throw (new HttpResponseException($this->fail($validator->errors()->first())));
     }
 }

@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\GroupConfigKey;
 use App\Enums\UserStatus;
 use App\Exceptions\UploadException;
-use App\Http\Api;
+use App\Http\Result;
 use App\Models\Group;
 use App\Models\Image;
 use App\Models\Strategy;
@@ -28,13 +28,13 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class Controller extends BaseController
 {
-    use AuthorizesRequests, DispatchesJobs, ValidatesRequests, Api;
+    use AuthorizesRequests, DispatchesJobs, ValidatesRequests, Result;
 
     public function install(Request $request): View|Response
     {
         if (file_exists(base_path('installed.lock'))) {
             if ($request->expectsJson()) {
-                return $this->error('Already installed. if you want to reinstall, please remove installed.lock file.');
+                return $this->fail('Already installed. if you want to reinstall, please remove installed.lock file.');
             }
             abort(404);
         }
@@ -106,7 +106,7 @@ class Controller extends BaseController
                     'msg' => $e->getMessage(),
                     'trace' => $e->getTraceAsString(),
                 ]);
-                return $this->error($e->getMessage());
+                return $this->fail($e->getMessage());
             }
             return $this->success();
         }
@@ -119,13 +119,13 @@ class Controller extends BaseController
         try {
             $image = $service->store($request);
         } catch (UploadException $e) {
-            return $this->error($e->getMessage());
+            return $this->fail($e->getMessage());
         } catch (\Throwable $e) {
             Log::error("Web 上传文件时发生异常，", ['message' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
             if (config('app.debug')) {
-                return $this->error($e->getMessage());
+                return $this->fail($e->getMessage());
             }
-            return $this->error('服务异常，请稍后再试');
+            return $this->fail('服务异常，请稍后再试');
         }
         return $this->success('上传成功', $image->setAppends(['pathname', 'links'])->only(
             'id', 'pathname', 'origin_name', 'size', 'mimetype', 'md5', 'sha1', 'links'

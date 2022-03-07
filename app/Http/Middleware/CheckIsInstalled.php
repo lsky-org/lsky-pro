@@ -2,13 +2,13 @@
 
 namespace App\Http\Middleware;
 
-use App\Http\Api;
+use App\Http\Result;
 use Closure;
 use Illuminate\Http\Request;
 
 class CheckIsInstalled
 {
-    use Api;
+    use Result;
 
     public function handle(Request $request, Closure $next)
     {
@@ -17,7 +17,7 @@ class CheckIsInstalled
             if (! $request->expectsJson()) {
                 return redirect('install');
             } else {
-                return $this->error('It has already been installed.');
+                return $this->fail('It has already been installed.');
             }
         }
 

@@ -56,7 +56,7 @@ class UserController extends Controller
         /** @var User $user */
         $user = Auth::user();
         if (! $strategy = $user->group->strategies()->find($request->id)) {
-            return $this->error('没有找到该策略');
+            return $this->fail('没有找到该策略');
         }
         $user->update(['configs->'.UserConfigKey::DefaultStrategy => $strategy->id]);
         return $this->success('设置成功');

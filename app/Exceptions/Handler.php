@@ -2,7 +2,7 @@
 
 namespace App\Exceptions;
 
-use App\Http\Api;
+use App\Http\Result;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\Exceptions\ThrottleRequestsException;
@@ -10,7 +10,7 @@ use Throwable;
 
 class Handler extends ExceptionHandler
 {
-    use Api;
+    use Result;
 
     /**
      * A list of the exception types that are not reported.
@@ -44,14 +44,14 @@ class Handler extends ExceptionHandler
         });
 
         $this->renderable(function (ThrottleRequestsException $e) {
-            return $this->error($e->getMessage())->setStatusCode(429);
+            return $this->fail($e->getMessage())->setStatusCode(429);
         });
     }
 
     protected function unauthenticated($request, AuthenticationException $exception)
     {
         return $this->shouldReturnJson($request, $exception)
-            ? $this->error($exception->getMessage())->setStatusCode(401)
+            ? $this->fail($exception->getMessage())->setStatusCode(401)
             : redirect()->guest($exception->redirectTo() ?? route('login'));
     }
 }
