@@ -58,7 +58,7 @@ class GroupRequest extends FormRequest
             'configs.watermark_configs.drivers.font.font' => [
                 $requiredIfWatermark('font'),
                 function ($attribute, $value, $fail) {
-                    if (! file_exists(storage_path($value))) {
+                    if (! file_exists(storage_path('app/public/'.$value))) {
                         $fail('字体文件不存在');
                     }
                 },
@@ -72,7 +72,7 @@ class GroupRequest extends FormRequest
             'configs.watermark_configs.drivers.image.image' => [
                 $requiredIfWatermark('image'),
                 function ($attribute, $value, $fail) {
-                    if (! file_exists(storage_path($value))) {
+                    if (! file_exists(storage_path('app/public/'.$value))) {
                         $fail('图片文件不存在');
                     }
                 },

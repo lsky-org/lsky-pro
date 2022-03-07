@@ -382,7 +382,7 @@ class ImageService
                 }
             }
         } catch (\Throwable $e) {
-            throw new UploadException($e->getMessage());
+            throw new UploadException('Scan: '.$e->getMessage());
         }
 
         return $flag;
@@ -397,7 +397,6 @@ class ImageService
      */
     public function stickWatermark(mixed $image, Collection $configs): \Intervention\Image\Image
     {
-        // TODO 支持百分比大小
         $driver = $configs->get('driver');
         $options = collect($configs->get("drivers")[$driver]);
         $image = InterventionImage::make($image);
@@ -444,7 +443,7 @@ class ImageService
         $manager = new ImageManager(config('image'));
 
         if ($driver === 'image') {
-            $watermark = $manager->make($options->get(storage_path('app/public/'.ImageOption::Image)));
+            $watermark = $manager->make(storage_path('app/public/'.trim($options->get(ImageOption::Image), '/')));
             $opacity = (int) $options->get(ImageOption::Opacity, 0);
             $rotate = (int) $options->get(ImageOption::Rotate, 0);
             $width = $options->get(ImageOption::Width, 0);
@@ -469,7 +468,7 @@ class ImageService
             $text = $options->get(FontOption::Text, Utils::config(ConfigKey::AppName));
             $font = new Font(urldecode($text));
             $font->valign('top')
-                ->file($options->get(storage_path('app/public/'.FontOption::Font)))
+                ->file(storage_path('app/public/'.trim($options->get(FontOption::Font), '/')))
                 ->size((int) $options->get(FontOption::Size, 50))
                 ->angle((int) $options->get(FontOption::Angle, 0))
                 ->color($options->get(FontOption::Color, '000000')); // 十六进制 or rgba
