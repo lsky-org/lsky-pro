@@ -12,18 +12,18 @@
 [![Last commit](https://img.shields.io/github/last-commit/wisp-x/lsky-pro/dev)](https://github.com/wisp-x/lsky-pro/commits/dev)
 [![License](https://img.shields.io/badge/license-GPL_V3.0-yellowgreen.svg)](https://github.com/wisp-x/lsky-pro/blob/master/LICENSE)
 
+[官网](https://www.lsky.pro) &nbsp;
 [文档](https://docs.lsky.pro) &nbsp;
 [演示](https://pic.iqy.ink) &nbsp;
 [Telegram 群组](https://t.me/lsky_pro)
 
-> ⚠️ 当前分支为 2.0 版本开发分支，[查看 2.0 版本详细说明](https://github.com/wisp-x/lsky-pro/issues/281)  
-> 历史版本请点击[这里](https://github.com/wisp-x/lsky-pro/releases) ，发现 bug 请提交 [issues](https://github.com/wisp-x/lsky-pro/issues) (提问前建议阅读[提问的智慧](https://github.com/ryanhanwu/How-To-Ask-Questions-The-Smart-Way/blob/main/README-zh_CN.md))
+> 正式版本版本请点击 [这里](https://github.com/wisp-x/lsky-pro/releases) 下载，发现 bug 请提交 [issues](https://github.com/wisp-x/lsky-pro/issues) (提问前建议阅读[提问的智慧](https://github.com/ryanhanwu/How-To-Ask-Questions-The-Smart-Way/blob/main/README-zh_CN.md))
 
-![看不见图片请使用科学上网](https://user-images.githubusercontent.com/22728201/157169300-fca8369a-607e-4ee7-abe4-253d49652ed8.png)
-![看不见图片请使用科学上网](https://user-images.githubusercontent.com/22728201/157169308-22027592-6daf-48a5-9ac1-7cff379f0323.png)
+![看不见图片请使用科学上网](https://user-images.githubusercontent.com/22728201/157237624-2a14c1b6-4bc2-4d6f-a4b4-afd7e77ae92f.png)
+![看不见图片请使用科学上网](https://user-images.githubusercontent.com/22728201/157237644-763caa65-7317-467b-8dd0-ae327289227a.png)
 
 ### 📌 TODO
-* [x] 支持多种第三方云储存，`本地`、`AWS S3`、`阿里云 OSS`、`腾讯云 COS`、`七牛云`、`又拍云`、`SFTP`、`FTP`、`WebDav`、`Minio`
+* [x] 支持`本地`等多种第三方云储存 `AWS S3`、`阿里云 OSS`、`腾讯云 COS`、`七牛云`、`又拍云`、`SFTP`、`FTP`、`WebDav`、`Minio`
 * [x] 多种数据库驱动支持，`MySQL 5.7+`、`PostgreSQL 9.6+`、`SQLite 3.8.8+`、`SQL Server 2017+`
 * [x] 支持配置使用多种缓存驱动，`Memcached`、`Redis`、`DynamoDB`、等其他关系型数据库，默认以文件的方式缓存
 * [x] 多图上传、拖拽上传、粘贴上传、动态设置策略上传、复制、一键复制链接
@@ -37,7 +37,10 @@
 
 ### 😋 鸣谢
 - [Laravel](https://laravel.com)
-- [intervention/image](https://github.com/Intervention/image)
+- [Tailwindcss](https://tailwindcss.com)
+- [Fontawesome](https://fontawesome.com)
+- [Echarts](https://echarts.apache.org)
+- [Intervention/image](https://github.com/Intervention/image)
 - [overtrue](https://github.com/overtrue)
 - [league](https://github.com/thephpleague)
 - [Jquery](https://jquery.com)
