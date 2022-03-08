@@ -19,8 +19,8 @@
 > ⚠️ 当前分支为 2.0 版本开发分支，[查看 2.0 版本详细说明](https://github.com/wisp-x/lsky-pro/issues/281)  
 > 历史版本请点击[这里](https://github.com/wisp-x/lsky-pro/releases) ，发现 bug 请提交 [issues](https://github.com/wisp-x/lsky-pro/issues) (提问前建议阅读[提问的智慧](https://github.com/ryanhanwu/How-To-Ask-Questions-The-Smart-Way/blob/main/README-zh_CN.md))
 
-### 📧 联系我
-- Email: i@wispx.cn
+![看不见图片请使用科学上网](https://user-images.githubusercontent.com/22728201/157169300-fca8369a-607e-4ee7-abe4-253d49652ed8.png)
+![看不见图片请使用科学上网](https://user-images.githubusercontent.com/22728201/157169308-22027592-6daf-48a5-9ac1-7cff379f0323.png)
 
 ### 📌 TODO
 * [x] 支持多种第三方云储存，`本地`、`AWS S3`、`阿里云 OSS`、`腾讯云 COS`、`七牛云`、`又拍云`、`SFTP`、`FTP`、`WebDav`、`Minio`
@@ -34,10 +34,6 @@
 * [x] 支持通过接口上传、管理图片、管理相册
 * [x] 支持在线增量更新、跨版本更新
 * [x] 图片广场
-
-### 演示图片
-![看不见图片请使用科学上网](https://user-images.githubusercontent.com/22728201/157169997-19fdf35b-3d29-4f84-9a7d-e3dc42ba1a2f.png)
-![看不见图片请使用科学上网](https://user-images.githubusercontent.com/22728201/157170004-62bfdfb9-f474-48cc-b132-d82077dca351.png)
 
 ### 😋 鸣谢
 - [Laravel](https://laravel.com)
@@ -68,6 +64,9 @@ Lsky Pro 的开发和更新等，都是作者在业余时间独立开发，并�
         <td><img alt="看不见图片请使用科学上网" src="https://raw.githubusercontent.com/wisp-x/lsky-pro/82988ebe2edd32264d609b26bf9132b3dce7c39e/public/static/app/images/demo/wechat.jpeg"></td>
     </tr>
 </table>
+
+### 📧 联系我
+- Email: i@wispx.cn
 
 ### 📃 开源许可
 [GPL 3.0](https://opensource.org/licenses/GPL-3.0)
