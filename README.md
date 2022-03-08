@@ -19,8 +19,8 @@
 
 > 正式版本版本请点击 [这里](https://github.com/wisp-x/lsky-pro/releases) 下载，发现 bug 请提交 [issues](https://github.com/wisp-x/lsky-pro/issues) (提问前建议阅读[提问的智慧](https://github.com/ryanhanwu/How-To-Ask-Questions-The-Smart-Way/blob/main/README-zh_CN.md))
 
-![看不见图片请使用科学上网](https://user-images.githubusercontent.com/22728201/157237624-2a14c1b6-4bc2-4d6f-a4b4-afd7e77ae92f.png)
-![看不见图片请使用科学上网](https://user-images.githubusercontent.com/22728201/157237644-763caa65-7317-467b-8dd0-ae327289227a.png)
+![看不见图片请使用科学上网](https://user-images.githubusercontent.com/22728201/157242302-bfbd04a0-fb30-4241-800e-cc2b1dad9b19.png)
+![看不见图片请使用科学上网](https://user-images.githubusercontent.com/22728201/157242314-5716d578-fee5-4083-8d91-0d98cb2545d9.png)
 
 ### 📌 TODO
 * [x] 支持`本地`等多种第三方云储存 `AWS S3`、`阿里云 OSS`、`腾讯云 COS`、`七牛云`、`又拍云`、`SFTP`、`FTP`、`WebDav`、`Minio`
