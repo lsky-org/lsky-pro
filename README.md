@@ -36,21 +36,8 @@
 * [x] 图片广场
 
 ### 演示图片
-![看不见图片请使用科学上网](https://user-images.githubusercontent.com/22728201/157160827-ba1ac999-6e64-4533-a850-cb3766a125f6.png)
-![看不见图片请使用科学上网](https://user-images.githubusercontent.com/22728201/157160790-70800ae1-9676-43a0-8785-e0ab482aa74f.png)
-
-### 💰 捐赠
-Lsky Pro 的开发和更新等，都是作者在业余时间独立开发，并免费开源使用，如果您认可我的作品，并且觉得对你有所帮助我愿意接受来自各方面的捐赠😃。
-<table width="100%">
-    <tr>
-        <th>支付宝</th>
-        <th>微信</th>
-    </tr>
-    <tr>
-        <td><img alt="看不见图片请使用科学上网" src="https://raw.githubusercontent.com/wisp-x/lsky-pro/82988ebe2edd32264d609b26bf9132b3dce7c39e/public/static/app/images/demo/alipay.png"></td>
-        <td><img alt="看不见图片请使用科学上网" src="https://raw.githubusercontent.com/wisp-x/lsky-pro/82988ebe2edd32264d609b26bf9132b3dce7c39e/public/static/app/images/demo/wechat.jpeg"></td>
-    </tr>
-</table>
+![看不见图片请使用科学上网](https://user-images.githubusercontent.com/22728201/157166890-ab82f340-ddfd-4413-96e6-91aeb3fa9c3d.png)
+![看不见图片请使用科学上网](https://user-images.githubusercontent.com/22728201/157166898-1c4255ad-e11f-48a7-97b1-0ed04c88c020.png)
 
 ### 😋 鸣谢
 - [Laravel](https://laravel.com)
@@ -65,10 +52,22 @@ Lsky Pro 的开发和更新等，都是作者在业余时间独立开发，并�
 - [Justified-Gallery](https://github.com/miromannino/Justified-Gallery)
 - [Clipboard.js](https://github.com/zenorocha/clipboard.js)
 
-
 ### 🤩 Stargazers over time
 
 [![Stargazers over time](https://starchart.cc/lsky-org/lsky-pro.svg)](https://starchart.cc/lsky-org/lsky-pro)
+
+### 💰 捐赠
+Lsky Pro 的开发和更新等，都是作者在业余时间独立开发，并免费开源使用，如果您认可我的作品，并且觉得对你有所帮助我愿意接受来自各方面的捐赠😃。
+<table width="100%">
+    <tr>
+        <th>支付宝</th>
+        <th>微信</th>
+    </tr>
+    <tr>
+        <td><img alt="看不见图片请使用科学上网" src="https://raw.githubusercontent.com/wisp-x/lsky-pro/82988ebe2edd32264d609b26bf9132b3dce7c39e/public/static/app/images/demo/alipay.png"></td>
+        <td><img alt="看不见图片请使用科学上网" src="https://raw.githubusercontent.com/wisp-x/lsky-pro/82988ebe2edd32264d609b26bf9132b3dce7c39e/public/static/app/images/demo/wechat.jpeg"></td>
+    </tr>
+</table>
 
 ### 📃 开源许可
 [GPL 3.0](https://opensource.org/licenses/GPL-3.0)
