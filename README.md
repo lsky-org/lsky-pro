@@ -5,19 +5,19 @@
 ☁ Your photo album on the cloud.
 
 [![PHP](https://img.shields.io/badge/PHP->=8.0-orange.svg)](http://php.net)
-[![Release](https://img.shields.io/github/v/release/wisp-x/lsky-pro)](https://github.com/wisp-x/lsky-pro/releases)
-[![Issues](https://img.shields.io/github/issues/wisp-x/lsky-pro)](https://github.com/wisp-x/lsky-pro/issues)
-[![Code size](https://img.shields.io/github/languages/code-size/wisp-x/lsky-pro?color=blueviolet)](https://github.com/wisp-x/lsky-pro)
-[![Repo size](https://img.shields.io/github/repo-size/wisp-x/lsky-pro?color=eb56fd)](https://github.com/wisp-x/lsky-pro)
-[![Last commit](https://img.shields.io/github/last-commit/wisp-x/lsky-pro/dev)](https://github.com/wisp-x/lsky-pro/commits/dev)
-[![License](https://img.shields.io/badge/license-GPL_V3.0-yellowgreen.svg)](https://github.com/wisp-x/lsky-pro/blob/master/LICENSE)
+[![Release](https://img.shields.io/github/v/release/lsky-org/lsky-pro)](https://github.com/lsky-org/lsky-pro/releases)
+[![Issues](https://img.shields.io/github/issues/lsky-org/lsky-pro)](https://github.com/lsky-org/lsky-pro/issues)
+[![Code size](https://img.shields.io/github/languages/code-size/lsky-org/lsky-pro?color=blueviolet)](https://github.com/lsky-org/lsky-pro)
+[![Repo size](https://img.shields.io/github/repo-size/lsky-org/lsky-pro?color=eb56fd)](https://github.com/lsky-org/lsky-pro)
+[![Last commit](https://img.shields.io/github/last-commit/lsky-org/lsky-pro/dev)](https://github.com/lsky-org/lsky-pro/commits/dev)
+[![License](https://img.shields.io/badge/license-GPL_V3.0-yellowgreen.svg)](https://github.com/lsky-org/lsky-pro/blob/master/LICENSE)
 
 [官网](https://www.lsky.pro) &nbsp;
 [文档](https://docs.lsky.pro) &nbsp;
 [演示](https://pic.iqy.ink) &nbsp;
 [Telegram 群组](https://t.me/lsky_pro)
 
-> 正式版本请点击 [这里](https://github.com/wisp-x/lsky-pro/releases) 下载，发现 bug 请提交 [issues](https://github.com/wisp-x/lsky-pro/issues) (提问前建议阅读[提问的智慧](https://github.com/ryanhanwu/How-To-Ask-Questions-The-Smart-Way/blob/main/README-zh_CN.md))
+> 正式版本请点击 [这里](https://github.com/lsky-org/lsky-pro/releases) 下载，发现 bug 请提交 [issues](https://github.com/lsky-org/lsky-pro/issues) (提问前建议阅读[提问的智慧](https://github.com/ryanhanwu/How-To-Ask-Questions-The-Smart-Way/blob/main/README-zh_CN.md))
 
 ![看不见图片请使用科学上网](https://user-images.githubusercontent.com/22728201/157242302-bfbd04a0-fb30-4241-800e-cc2b1dad9b19.png)
 ![看不见图片请使用科学上网](https://user-images.githubusercontent.com/22728201/157242314-5716d578-fee5-4083-8d91-0d98cb2545d9.png)
@@ -51,10 +51,6 @@
 - [Justified-Gallery](https://github.com/miromannino/Justified-Gallery)
 - [Clipboard.js](https://github.com/zenorocha/clipboard.js)
 
-### 🤩 Stargazers over time
-
-[![Stargazers over time](https://starchart.cc/lsky-org/lsky-pro.svg)](https://starchart.cc/lsky-org/lsky-pro)
-
 ### 💰 捐赠
 Lsky Pro 的开发和更新等，都是作者在业余时间独立开发，并免费开源使用，如果您认可我的作品，并且觉得对你有所帮助我愿意接受来自各方面的捐赠😃。
 <table width="100%">
@@ -63,10 +59,13 @@ Lsky Pro 的开发和更新等，都是作者在业余时间独立开发，并�
         <th>微信</th>
     </tr>
     <tr>
-        <td><img alt="看不见图片请使用科学上网" src="https://raw.githubusercontent.com/wisp-x/lsky-pro/82988ebe2edd32264d609b26bf9132b3dce7c39e/public/static/app/images/demo/alipay.png"></td>
-        <td><img alt="看不见图片请使用科学上网" src="https://raw.githubusercontent.com/wisp-x/lsky-pro/82988ebe2edd32264d609b26bf9132b3dce7c39e/public/static/app/images/demo/wechat.jpeg"></td>
+        <td><img alt="看不见图片请使用科学上网" src="https://raw.githubusercontent.com/lsky-org/lsky-pro/82988ebe2edd32264d609b26bf9132b3dce7c39e/public/static/app/images/demo/alipay.png"></td>
+        <td><img alt="看不见图片请使用科学上网" src="https://raw.githubusercontent.com/lsky-org/lsky-pro/82988ebe2edd32264d609b26bf9132b3dce7c39e/public/static/app/images/demo/wechat.jpeg"></td>
     </tr>
 </table>
+
+### 🤩 Stargazers over time
+[![Stargazers over time](https://starchart.cc/lsky-org/lsky-pro.svg)](https://starchart.cc/lsky-org/lsky-pro)
 
 ### 📧 联系我
 - Email: i@wispx.cn

@@ -18,7 +18,7 @@ class StrategyRequest extends FormRequest
     {
         $checkUrl = function ($attribute, $value, $fail) {
             if ($this->input('key') == StrategyKey::Local) {
-                $folders = ['i', 'fonts', 'css', 'js'];
+                $folders = ['fonts', 'css', 'js'];
                 $symlink = Strategy::getRootPath($value);
                 if (! $symlink) {
                     return $fail('访问域名缺少根路径');
