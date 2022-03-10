@@ -8133,12 +8133,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/wisp-x/flysystem-upyun.git",
-                "reference": "53bb0e9b01e573aa812f9948cb23901b570d6882"
+                "reference": "8072c3ae1435b4d8db4ba016794f594990e7c5a4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wisp-x/flysystem-upyun/zipball/53bb0e9b01e573aa812f9948cb23901b570d6882",
-                "reference": "53bb0e9b01e573aa812f9948cb23901b570d6882",
+                "url": "https://api.github.com/repos/wisp-x/flysystem-upyun/zipball/8072c3ae1435b4d8db4ba016794f594990e7c5a4",
+                "reference": "8072c3ae1435b4d8db4ba016794f594990e7c5a4",
                 "shasum": ""
             },
             "require": {
@@ -8176,7 +8176,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-03-10T01:30:31+00:00"
+            "time": "2022-03-10T03:14:09+00:00"
         },
         {
             "name": "zing/flysystem-oss",
