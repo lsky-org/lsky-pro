@@ -16,6 +16,7 @@ use App\Enums\Strategy\MinioOption;
 use App\Enums\Strategy\OssOption;
 use App\Enums\Strategy\S3Option;
 use App\Enums\Strategy\SftpOption;
+use App\Enums\Strategy\UssOption;
 use App\Enums\Strategy\WebDavOption;
 use App\Enums\StrategyKey;
 use App\Enums\UserConfigKey;
@@ -57,6 +58,7 @@ use OSS\OssClient;
 use Overtrue\Flysystem\Cos\CosAdapter;
 use Overtrue\Flysystem\Qiniu\QiniuAdapter;
 use Sabre\DAV\Client;
+use WispX\Flysystem\Upyun\UpyunAdapter;
 use Zing\Flysystem\Oss\OssAdapter;
 
 class ImageService
@@ -256,6 +258,12 @@ class ImageService
                 secretKey: $configs->get(KodoOption::SecretKey),
                 bucket: $configs->get(KodoOption::Bucket),
                 domain: $configs->get(KodoOption::Url),
+            ),
+            StrategyKey::Uss => new UpyunAdapter(
+                service: $configs->get(UssOption::Service),
+                operator: $configs->get(UssOption::Operator),
+                password: $configs->get(UssOption::Password),
+                domain: $configs->get(UssOption::Url),
             ),
             StrategyKey::Sftp => new SftpAdapter(
                 connectionProvider: new SftpConnectionProvider(

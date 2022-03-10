@@ -94,6 +94,11 @@ class StrategyRequest extends FormRequest
                 'configs.secret_key' => 'required',
                 'configs.bucket' => 'required',
             ],
+            StrategyKey::Uss => [
+                'configs.service' => 'required',
+                'configs.operator' => 'required',
+                'configs.password' => 'required',
+            ],
             StrategyKey::Sftp => [
                 'configs.root' => 'required',
                 'configs.host' => 'required',
@@ -163,6 +168,11 @@ class StrategyRequest extends FormRequest
                 'configs.access_key' => 'AccessKey',
                 'configs.secret_key' => 'SecretKey',
                 'configs.bucket' => 'Bucket',
+            ],
+            StrategyKey::Uss => [
+                'configs.service' => '服务名称',
+                'configs.operator' => '操作员名称',
+                'configs.password' => '操作员密码',
             ],
             StrategyKey::Sftp => [
                 'configs.root' => '根目录路径',

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "85d95bfd61e4f2886420a151ac2e8877",
+    "content-hash": "87004ae9acac8c83e5f70ed79d85415c",
     "packages": [
         {
             "name": "adbario/php-dot-notation",
@@ -64,6 +64,74 @@
                 "source": "https://github.com/adbario/php-dot-notation/tree/2.x"
             },
             "time": "2019-01-01T23:59:15+00:00"
+        },
+        {
+            "name": "alapi/upyun-sdk",
+            "version": "4.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/anhao/upyun-phpsdk.git",
+                "reference": "02bbbd5555f1f38d264ce4f17ee2e97ea63d12f9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/anhao/upyun-phpsdk/zipball/02bbbd5555f1f38d264ce4f17ee2e97ea63d12f9",
+                "reference": "02bbbd5555f1f38d264ce4f17ee2e97ea63d12f9",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-json": "*",
+                "guzzlehttp/guzzle": "~7.0",
+                "php": "^7.2.5 || ^8.0"
+            },
+            "require-dev": {
+                "consolidation/robo": "^1.0",
+                "phpdocumentor/phpdocumentor": "^2.9",
+                "phpunit/phpunit": "~4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Upyun\\": "src/Upyun/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "lfeng",
+                    "email": "bonevv@gmail.com"
+                },
+                {
+                    "name": "lvtongda",
+                    "email": "riyao.lyu@gmail.com"
+                },
+                {
+                    "name": "totoleo",
+                    "email": "totoleo@163.com"
+                },
+                {
+                    "name": "sabakugaara",
+                    "email": "senellise@gmail.com"
+                },
+                {
+                    "name": "alapi",
+                    "email": "im@alone88.cn"
+                }
+            ],
+            "description": "UPYUN sdk for php",
+            "homepage": "https://github.com/upyun/php-sdk/",
+            "keywords": [
+                "sdk",
+                "upyun"
+            ],
+            "support": {
+                "source": "https://github.com/anhao/upyun-phpsdk/tree/4.0.0"
+            },
+            "time": "2021-12-16T12:24:33+00:00"
         },
         {
             "name": "alibabacloud/client",
@@ -8058,6 +8126,57 @@
                 "source": "https://github.com/webmozarts/assert/tree/1.10.0"
             },
             "time": "2021-03-09T10:59:23+00:00"
+        },
+        {
+            "name": "wispx/flysystem-upyun",
+            "version": "1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/wisp-x/flysystem-upyun.git",
+                "reference": "53bb0e9b01e573aa812f9948cb23901b570d6882"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/wisp-x/flysystem-upyun/zipball/53bb0e9b01e573aa812f9948cb23901b570d6882",
+                "reference": "53bb0e9b01e573aa812f9948cb23901b570d6882",
+                "shasum": ""
+            },
+            "require": {
+                "alapi/upyun-sdk": "^4.0",
+                "league/flysystem": "^3.0"
+            },
+            "require-dev": {
+                "jetbrains/phpstorm-attributes": "^1.0",
+                "mockery/mockery": "^1.4",
+                "phpunit/phpunit": "^9.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "WispX\\Flysystem\\Upyun\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "wispx",
+                    "email": "i@wispx.cn"
+                }
+            ],
+            "description": "Flysystem adapter for the Upyun storage.",
+            "support": {
+                "source": "https://github.com/wisp-x/flysystem-upyun/tree/1.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/wisp-x",
+                    "type": "github"
+                }
+            ],
+            "time": "2022-03-10T01:30:31+00:00"
         },
         {
             "name": "zing/flysystem-oss",

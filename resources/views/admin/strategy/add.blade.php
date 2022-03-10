@@ -147,6 +147,25 @@
                             </div>
                         </div>
 
+                        <div class="col-span-6 mb-4 hidden" data-driver="{{ \App\Enums\StrategyKey::Uss }}">
+                            <div class="col-span-3 sm:col-span-2 mb-4">
+                                <label for="configs[url]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>访问域名</label>
+                                <x-input type="url" name="configs[url]" id="configs[url]" placeholder="请输入图片访问域名 http(s)://" />
+                            </div>
+                            <div class="col-span-3 sm:col-span-2 mb-4">
+                                <label for="configs[service]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>服务名称</label>
+                                <x-input type="text" name="configs[service]" id="configs[service]" placeholder="请输入服务名称" />
+                            </div>
+                            <div class="col-span-3 sm:col-span-2 mb-4">
+                                <label for="configs[operator]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>操作员名称</label>
+                                <x-input type="text" name="configs[operator]" id="configs[operator]" placeholder="请输入操作员名称" />
+                            </div>
+                            <div class="col-span-3 sm:col-span-2 mb-4">
+                                <label for="configs[password]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>操作员密码</label>
+                                <x-input type="password" name="configs[password]" id="configs[password]" placeholder="请输入操作员密码" />
+                            </div>
+                        </div>
+
                         <div class="col-span-6 mb-4 hidden" data-driver="{{ \App\Enums\StrategyKey::Sftp }}">
                             <div class="col-span-3 sm:col-span-2 mb-4">
                                 <label for="configs[url]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>访问域名</label>

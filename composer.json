@@ -22,6 +22,7 @@
         "league/flysystem-webdav": "^3.0",
         "overtrue/flysystem-cos": "^5.0",
         "overtrue/flysystem-qiniu": "^3.0",
+        "wispx/flysystem-upyun": "^1.0",
         "zing/flysystem-oss": "^2.1"
     },
     "require-dev": {
