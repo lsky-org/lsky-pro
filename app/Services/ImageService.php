@@ -176,7 +176,7 @@ class ImageService
             try {
                 $filesystem->writeStream($pathname, $handle);
             } catch (FilesystemException $e) {
-                Log::error('保存图片时出现异常', ['message' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
+                Utils::e($e, '保存图片时出现异常');
                 throw new UploadException(config('app.debug', false) ? $e->getMessage() : '图片上传失败');
             }
             @fclose($handle);

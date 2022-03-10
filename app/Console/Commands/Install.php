@@ -2,10 +2,10 @@
 
 namespace App\Console\Commands;
 
+use App\Utils;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Log;
 
 class Install extends Command
 {
@@ -96,12 +96,7 @@ class Install extends Command
         } catch (\Throwable $e) {
             $this->warn("Installation error!\n");
             $this->error($e->getMessage());
-            Log::error('执行数据库安装程序时出现异常', [
-                'file' => $e->getFile(),
-                'line' => $e->getLine(),
-                'msg' => $e->getMessage(),
-                'trace' => $e->getTraceAsString(),
-            ]);
+            Utils::e($e, '执行数据库安装程序时出现异常');
             return 1;
         }
 

@@ -7,9 +7,20 @@ use App\Models\Config;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 
 class Utils
 {
+    public static function e(\Throwable $e, $message = '', $level = 'error')
+    {
+        Log::{$level}($message, [
+            'file' => $e->getFile(),
+            'line' => $e->getLine(),
+            'message' => $e->getMessage(),
+            'trace' => $e->getTraceAsString(),
+        ]);
+    }
+
     /**
      * 获取头像地址
      *

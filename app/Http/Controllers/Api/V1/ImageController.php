@@ -7,11 +7,11 @@ use App\Http\Controllers\Controller;
 use App\Models\Image;
 use App\Models\User;
 use App\Services\ImageService;
+use App\Utils;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 
 class ImageController extends Controller
 {
@@ -44,7 +44,7 @@ class ImageController extends Controller
         } catch (UploadException $e) {
             return $this->fail($e->getMessage());
         } catch (\Throwable $e) {
-            Log::error("Api 上传文件时发生异常，", ['message' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
+            Utils::e($e, 'Api 上传文件时发生异常');
             if (config('app.debug')) {
                 return $this->fail($e->getMessage());
             }

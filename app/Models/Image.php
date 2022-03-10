@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\GroupConfigKey;
 use App\Enums\ImagePermission;
 use App\Services\ImageService;
+use App\Utils;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -110,8 +111,12 @@ class Image extends Model
             ) {
                 // 删除本地缓存文件
                 Cache::forget("image_thumb_{$image->key}");
-                // 删除物理文件
-                $image->filesystem()->delete($image->pathname);
+                try {
+                    // 删除物理文件
+                    $image->filesystem()->delete($image->pathname);
+                } catch (\Throwable $e) {
+                    Utils::e($e, '删除物理文件时发生异常');
+                }
             }
         });
     }

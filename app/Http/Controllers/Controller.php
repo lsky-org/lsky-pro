@@ -11,6 +11,7 @@ use App\Models\Image;
 use App\Models\Strategy;
 use App\Models\User;
 use App\Services\ImageService;
+use App\Utils;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -20,7 +21,6 @@ use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
 use League\Flysystem\FilesystemException;
 use Symfony\Component\Console\Output\BufferedOutput;
@@ -100,12 +100,7 @@ class Controller extends BaseController
                 $user->save();
             } catch (\Throwable $e) {
                 @unlink(base_path('installed.lock'));
-                Log::error('执行安装程序时出现异常', [
-                    'file' => $e->getFile(),
-                    'line' => $e->getLine(),
-                    'msg' => $e->getMessage(),
-                    'trace' => $e->getTraceAsString(),
-                ]);
+                Utils::e($e, '执行安装程序时出现异常');
                 return $this->fail($e->getMessage());
             }
             return $this->success();
@@ -121,7 +116,7 @@ class Controller extends BaseController
         } catch (UploadException $e) {
             return $this->fail($e->getMessage());
         } catch (\Throwable $e) {
-            Log::error("Web 上传文件时发生异常，", ['message' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
+            Utils::e($e, 'Web 上传文件时发生异常');
             if (config('app.debug')) {
                 return $this->fail($e->getMessage());
             }

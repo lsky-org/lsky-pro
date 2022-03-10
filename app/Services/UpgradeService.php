@@ -115,7 +115,7 @@ class UpgradeService
             Cache::forget('configs');
             Artisan::call('package:discover');
         } catch (\Throwable $e) {
-            Log::error('升级失败', ['message' => $e->getMessage(), $e->getTraceAsString()]);
+            Utils::e($e, '升级失败');
             $this->setProgress($e->getMessage(), 'fail');
             @unlink(base_path($this->lock));
             return false;
