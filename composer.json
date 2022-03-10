@@ -3,7 +3,7 @@
     "type": "project",
     "description": "The Laravel Framework.",
     "keywords": ["framework", "laravel"],
-    "license": "MIT",
+    "license": "GPL-3.0",
     "require": {
         "php": "^8.0",
         "alibabacloud/green": "^1.8",
