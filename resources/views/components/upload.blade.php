@@ -148,16 +148,16 @@
             formData: (form) => {
                 return [{name: 'strategy_id', value: $('#strategy-selected').data('id')}];
             },
-            add: (e, data) => {
+            add: (e, data) => { // Return true to continue adding, otherwise terminate
                 let file = data.files[0];
                 let ext = file.name.substr(file.name.lastIndexOf('.') + 1);
                 if (allowSuffixes.indexOf(ext.toLowerCase()) === -1) {
                     toastr.warning(`不支持的文件格式 ${file.name}`);
-                    return false;
+                    return true;
                 }
                 if (file.size > maxSize) {
                     toastr.warning(`文件 ${file.name} 超出大小限制`);
-                    return false;
+                    return true;
                 }
                 let guid = utils.guid();
                 data.guid = guid;

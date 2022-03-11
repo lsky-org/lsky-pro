@@ -24,6 +24,9 @@ class UserController extends Controller
         })->when($request->query('keywords'), function (Builder $builder, $keywords) {
             $builder->where('name', 'like', "%{$keywords}%")->orWhere('email', 'like', "%{$keywords}%");
         })->with('group')->withSum('images', 'size')->latest()->paginate();
+        $users->getCollection()->each(function (User $user) {
+            $user->group->setVisible(['name']);
+        });
         $statuses = [-1 => '全部', 1 => '正常', 0 => '冻结'];
         return view('admin.user.index', compact('users', 'statuses'));
     }
