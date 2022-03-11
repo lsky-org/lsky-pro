@@ -122,7 +122,7 @@
                             </div>
                             <div class="col-span-3 sm:col-span-2 mb-4">
                                 <label for="configs[secret_id]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>SecretId</label>
-                                <x-input type="text" name="configs[secret_id]" id="configs[secret_id]" placeholder="请输入 SecretKey" value="{{ $strategy->configs['secret_id'] }}" />
+                                <x-input type="text" name="configs[secret_id]" id="configs[secret_id]" placeholder="请输入 SecretId" value="{{ $strategy->configs['secret_id'] }}" />
                             </div>
                             <div class="col-span-3 sm:col-span-2 mb-4">
                                 <label for="configs[secret_key]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>SecretKey</label>

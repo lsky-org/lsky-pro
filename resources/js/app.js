@@ -12,13 +12,15 @@ window.Alpine = Alpine;
 Alpine.start();
 
 window.utils = {
-    formatSize(bytes) {
+    formatSize(bytes, decimal) {
         if (bytes === 0) return '0 B';
-        let k = 1024,
-            sizes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'],
-            i = Math.floor(Math.log(bytes) / Math.log(k));
 
-        return (bytes / Math.pow(k, i)).toPrecision(3) + ' ' + sizes[i];
+        let c = 1024,
+            d = decimal || 2,
+            e = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"],
+            f = Math.floor(Math.log(bytes) / Math.log(c));
+
+        return parseFloat((bytes / Math.pow(c, f)).toFixed(d)) + " " + e[f];
     },
     /**
      * 更新进度条
