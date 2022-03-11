@@ -223,7 +223,8 @@ button.toast-close-button {
   /* Firefox */
 }
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 8px;
+  min-height: 8px;
   height: 100%;
 }
 ::-webkit-scrollbar-thumb {
