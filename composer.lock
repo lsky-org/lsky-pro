@@ -417,16 +417,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.212.5",
+            "version": "3.212.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "ed69594b385233bb895342e18008cd811e8225e7"
+                "reference": "fcb57b1f840938813e83f521e169914a076b3be9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/ed69594b385233bb895342e18008cd811e8225e7",
-                "reference": "ed69594b385233bb895342e18008cd811e8225e7",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/fcb57b1f840938813e83f521e169914a076b3be9",
+                "reference": "fcb57b1f840938813e83f521e169914a076b3be9",
                 "shasum": ""
             },
             "require": {
@@ -502,9 +502,9 @@
             "support": {
                 "forum": "https://forums.aws.amazon.com/forum.jspa?forumID=80",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.212.5"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.212.6"
             },
-            "time": "2022-03-09T19:19:58+00:00"
+            "time": "2022-03-10T19:14:38+00:00"
         },
         {
             "name": "brick/math",
@@ -10166,16 +10166,16 @@
         },
         {
             "name": "spatie/flare-client-php",
-            "version": "1.0.5",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/flare-client-php.git",
-                "reference": "8ada1e5f4d7a2869f491c5e75d1f689b69db423e"
+                "reference": "ceab058852a1278d9f57a7b95f1c348e4956d866"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/flare-client-php/zipball/8ada1e5f4d7a2869f491c5e75d1f689b69db423e",
-                "reference": "8ada1e5f4d7a2869f491c5e75d1f689b69db423e",
+                "url": "https://api.github.com/repos/spatie/flare-client-php/zipball/ceab058852a1278d9f57a7b95f1c348e4956d866",
+                "reference": "ceab058852a1278d9f57a7b95f1c348e4956d866",
                 "shasum": ""
             },
             "require": {
@@ -10218,7 +10218,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/flare-client-php/issues",
-                "source": "https://github.com/spatie/flare-client-php/tree/1.0.5"
+                "source": "https://github.com/spatie/flare-client-php/tree/1.1.0"
             },
             "funding": [
                 {
@@ -10226,20 +10226,20 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-03-01T10:52:59+00:00"
+            "time": "2022-03-11T13:21:28+00:00"
         },
         {
             "name": "spatie/ignition",
-            "version": "1.2.3",
+            "version": "1.2.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/ignition.git",
-                "reference": "ab8d1f938d3ffd20af25ad788a9d019e1123068c"
+                "reference": "ec58c125c15eecaa20180f01ef9667d41a568ba8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/ignition/zipball/ab8d1f938d3ffd20af25ad788a9d019e1123068c",
-                "reference": "ab8d1f938d3ffd20af25ad788a9d019e1123068c",
+                "url": "https://api.github.com/repos/spatie/ignition/zipball/ec58c125c15eecaa20180f01ef9667d41a568ba8",
+                "reference": "ec58c125c15eecaa20180f01ef9667d41a568ba8",
                 "shasum": ""
             },
             "require": {
@@ -10247,7 +10247,7 @@
                 "ext-mbstring": "*",
                 "monolog/monolog": "^2.0",
                 "php": "^8.0",
-                "spatie/flare-client-php": "^1.0",
+                "spatie/flare-client-php": "^1.1",
                 "symfony/console": "^5.4|^6.0",
                 "symfony/var-dumper": "^5.4|^6.0"
             },
@@ -10257,7 +10257,6 @@
                 "phpstan/extension-installer": "^1.1",
                 "phpstan/phpstan-deprecation-rules": "^1.0",
                 "phpstan/phpstan-phpunit": "^1.0",
-                "spatie/ray": "^1.32",
                 "symfony/process": "^5.4|^6.0"
             },
             "type": "library",
@@ -10297,20 +10296,20 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-03-08T15:12:58+00:00"
+            "time": "2022-03-11T13:28:02+00:00"
         },
         {
             "name": "spatie/laravel-ignition",
-            "version": "1.0.6",
+            "version": "1.0.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-ignition.git",
-                "reference": "d349854331789aba9205fd755e0c1d1934ef1463"
+                "reference": "d7b223300d511145eea87fdabae1663c7c0088aa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-ignition/zipball/d349854331789aba9205fd755e0c1d1934ef1463",
-                "reference": "d349854331789aba9205fd755e0c1d1934ef1463",
+                "url": "https://api.github.com/repos/spatie/laravel-ignition/zipball/d7b223300d511145eea87fdabae1663c7c0088aa",
+                "reference": "d7b223300d511145eea87fdabae1663c7c0088aa",
                 "shasum": ""
             },
             "require": {
@@ -10321,7 +10320,7 @@
                 "monolog/monolog": "^2.3",
                 "php": "^8.0",
                 "spatie/flare-client-php": "^1.0.1",
-                "spatie/ignition": "^1.0",
+                "spatie/ignition": "^1.2.4",
                 "symfony/console": "^5.0|^6.0",
                 "symfony/var-dumper": "^5.0|^6.0"
             },
@@ -10384,7 +10383,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-02-15T11:02:15+00:00"
+            "time": "2022-03-11T14:19:27+00:00"
         },
         {
             "name": "symfony/debug",
