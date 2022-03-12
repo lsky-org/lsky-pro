@@ -11,6 +11,7 @@
 |
 */
 
+use App\Http\Middleware\CheckIsEnableGuestUpload;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\CheckIsInstalled;
 use App\Http\Controllers\Controller;
@@ -27,7 +28,11 @@ use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Admin\SettingController as AdminSettingController;
 use App\Http\Controllers\Admin\ImageController as AdminImageController;
 
-Route::get('/', fn () => view('welcome'))->name('/')->middleware(CheckIsInstalled::class);
+Route::get('/', fn () => view('welcome'))
+    ->name('/')
+    ->middleware(CheckIsInstalled::class)
+    ->middleware(CheckIsEnableGuestUpload::class);
+
 Route::any('install', [Controller::class, 'install'])->name('install');
 Route::post('upload', [Controller::class, 'upload']);
 Route::group(['middleware' => ['auth']], function () {

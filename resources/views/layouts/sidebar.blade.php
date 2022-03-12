@@ -105,7 +105,6 @@
         } else if (value > 40) {
             str = 'yellowgreen';
         }
-        console.log(str)
         $progress.addClass(str)
     </script>
 @endpush
