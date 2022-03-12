@@ -50,6 +50,7 @@
 - Imagick 拓展
 - exec、shell_exec 函数
 - readlink、symlink 函数
+- putenv、getenv 函数
 
 ### 😋 鸣谢
 - [Laravel](https://laravel.com)
@@ -75,8 +76,8 @@ Lsky Pro 的开发和更新等，都是作者在业余时间独立开发，并�
         <th>微信</th>
     </tr>
     <tr>
-        <td><img alt="看不见图片请使用科学上网" src="https://raw.githubusercontent.com/lsky-org/lsky-pro/82988ebe2edd32264d609b26bf9132b3dce7c39e/public/static/app/images/demo/alipay.png"></td>
-        <td><img alt="看不见图片请使用科学上网" src="https://raw.githubusercontent.com/lsky-org/lsky-pro/82988ebe2edd32264d609b26bf9132b3dce7c39e/public/static/app/images/demo/wechat.jpeg"></td>
+        <td><img alt="支付宝" src="https://box.kancloud.cn/4f193c14546c32c00bcb415ebfedc421_256x256.png"></td>
+        <td><img alt="微信" src="https://img.kancloud.cn/5f/ef/5fef4de362089d614f85566b3a6746b4_228x229.png"></td>
     </tr>
 </table>
 
