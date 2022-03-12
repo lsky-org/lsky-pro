@@ -35,6 +35,22 @@
 * [x] 支持在线增量更新、跨版本更新
 * [x] 图片广场
 
+### 🛠 安装要求
+- PHP >= 8.0.2
+- BCMath PHP 扩展
+- Ctype PHP 扩展
+- DOM PHP 拓展
+- Fileinfo PHP 扩展
+- JSON PHP 扩展
+- Mbstring PHP 扩展
+- OpenSSL PHP 扩展
+- PDO PHP 扩展
+- Tokenizer PHP 扩展
+- XML PHP 扩展
+- Imagick 拓展
+- exec、shell_exec 函数
+- readlink、symlink 函数
+
 ### 😋 鸣谢
 - [Laravel](https://laravel.com)
 - [Tailwindcss](https://tailwindcss.com)
