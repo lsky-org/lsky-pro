@@ -158,7 +158,7 @@ class ImageService
             'origin_name' => $file->getClientOriginalName(),
             'size' => $file->getSize() / 1024,
             'mimetype' => $file->getMimeType(),
-            'extension' => $file->extension(),
+            'extension' => strtolower($file->extension()),
             'width' => $img->width(),
             'height' => $img->height(),
             'is_unhealthy' => false,

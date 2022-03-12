@@ -137,7 +137,7 @@ class Controller extends BaseController
         $image = Image::query()
             ->with('group')
             ->where('key', $request->route('key'))
-            ->where('extension', $request->route('extension'))
+            ->where('extension', strtolower($request->route('extension')))
             ->firstOr(fn() => abort(404));
         if (! $image->group->configs->get(GroupConfigKey::IsEnableOriginalProtection)) {
             abort(404);
@@ -176,7 +176,7 @@ class Controller extends BaseController
         /** @var Image $image */
         $image = Image::query()
             ->where('key', $request->route('key'))
-            ->where('extension', $request->route('extension'))
+            ->where('extension', strtolower($request->route('extension')))
             ->firstOr(fn() => abort(404));
 
         try {
