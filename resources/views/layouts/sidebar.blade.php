@@ -81,7 +81,7 @@
 
         <div id="capacity-progress" class="flex flex-col space-y-2 mb-5 px-5 w-full mt-10">
             <p class="text-gray-700 text-sm">容量使用</p>
-            <progress class="w-full h-1.5 bg-gary-300" value="{{ Auth::user()->images->sum('size') }}" max="{{ Auth::user()->capacity }}"></progress>
+            <progress class="w-full h-1.5" value="{{ Auth::user()->images->sum('size') }}" max="{{ Auth::user()->capacity }}"></progress>
             <p class="text-gray-700 text-sm truncate">
                 <span class="used">{{ \App\Utils::formatSize(Auth::user()->images->sum('size') * 1024) }}</span>
                 /
@@ -90,3 +90,22 @@
         </div>
     </div>
 </nav>
+
+@push('scripts')
+    <script>
+        let $progress = $('#capacity-progress progress');
+        let value = $progress.attr('value') / $progress.attr('max') * 100;
+        let str = 'green';
+        if (value > 90) {
+            str = 'red';
+        } else if (value > 70) {
+            str = 'orange';
+        } else if (value > 60) {
+            str = 'yellow';
+        } else if (value > 40) {
+            str = 'yellowgreen';
+        }
+        console.log(str)
+        $progress.addClass(str)
+    </script>
+@endpush

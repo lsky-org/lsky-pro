@@ -241,6 +241,21 @@ progress::-webkit-progress-bar {
 progress::-webkit-progress-value {
   background-color: #5dcafa;
 }
+#capacity-progress progress.green::-webkit-progress-value {
+  background: #00ab00;
+}
+#capacity-progress progress.yellowgreen::-webkit-progress-value {
+  background: yellowgreen;
+}
+#capacity-progress progress.yellow::-webkit-progress-value {
+  background: #b9b900;
+}
+#capacity-progress progress.orange::-webkit-progress-value {
+  background: #ff9900;
+}
+#capacity-progress progress.red::-webkit-progress-value {
+  background: #ff4141;
+}
 #toast-container > div {
   font-size: 13px;
   padding: 10px 10px 10px 50px;
