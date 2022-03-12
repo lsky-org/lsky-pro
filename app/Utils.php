@@ -118,7 +118,7 @@ class Utils
      *
      * @param int|string $n 数字
      * @param int $precision 精度
-     * @return int
+     * @return int|string
      */
     public static function shortenNumber(int|string $n, int $precision = 1): int|string
     {
