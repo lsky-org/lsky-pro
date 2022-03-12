@@ -120,7 +120,7 @@ class Utils
      * @param int $precision 精度
      * @return int
      */
-    public static function shortenNumber(int|string $n, int $precision = 1): int
+    public static function shortenNumber(int|string $n, int $precision = 1): int|string
     {
         if ($n < 1e+3) {
             return number_format($n);
