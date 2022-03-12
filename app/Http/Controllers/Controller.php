@@ -60,6 +60,10 @@ class Controller extends BaseController
             'intro' => '读取、创建符号链接函数',
             'result' => function_exists('readlink') && function_exists('symlink'),
         ])->push([
+            'name' => 'putenv、getenv 函数',
+            'intro' => '设置和获取环境变量函数',
+            'result' => function_exists('putenv') && function_exists('getenv'),
+        ])->push([
             'name' => 'exec、shell_exec 函数',
             'intro' => '执行外部命令',
             'result' => function_exists('exec') && function_exists('shell_exec'),
