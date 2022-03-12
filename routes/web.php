@@ -83,6 +83,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth.admin']], function () 
         Route::get('{id}', [AdminGroupController::class, 'edit'])->name('admin.group.edit');
         Route::put('{id}', [AdminGroupController::class, 'update'])->name('admin.group.update');
         Route::delete('{id}', [AdminGroupController::class, 'delete'])->name('admin.group.delete');
+        Route::delete('{id}/clear-cache', [AdminGroupController::class, 'clearCache'])->name('admin.group.cache.clear');
     });
 
     Route::group(['prefix' => 'strategies'], function () {

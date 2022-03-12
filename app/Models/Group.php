@@ -6,6 +6,7 @@ use App\Utils;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Collection;
@@ -19,6 +20,7 @@ use Illuminate\Support\Collection;
  * @property Carbon $updated_at
  * @property Carbon $created_at
  * @property-read \Illuminate\Database\Eloquent\Collection $users
+ * @property-read \Illuminate\Database\Eloquent\Collection $images
  * @property-read \Illuminate\Database\Eloquent\Collection $strategies
  */
 class Group extends Model
@@ -87,6 +89,11 @@ class Group extends Model
     public function users(): HasMany
     {
         return $this->hasMany(User::class, 'group_id', 'id');
+    }
+
+    public function images(): HasMany
+    {
+        return $this->hasMany(Image::class, 'group_id', 'id');
     }
 
     public function strategies(): BelongsToMany

@@ -7,9 +7,11 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\GroupRequest;
 use App\Models\Group;
+use App\Models\Image;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
@@ -94,5 +96,17 @@ class GroupController extends Controller
             });
         }
         return $this->success('删除成功');
+    }
+
+    public function clearCache(Request $request): Response
+    {
+        /** @var Group $group */
+        if ($group = Group::query()->find($request->route('id'))) {
+            /** @var Image $image */
+            foreach ($group->images()->select('key')->cursor() as $image) {
+                Cache::forget('image_'.$image->key);
+            }
+        }
+        return $this->success('清除成功');
     }
 }

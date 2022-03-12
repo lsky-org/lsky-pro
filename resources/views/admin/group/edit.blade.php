@@ -153,6 +153,10 @@
                                 <label for="configs[image_cache_ttl]" class="block text-sm font-medium text-gray-700">图片缓存时间(秒)</label>
                                 <x-input type="number" name="configs[image_cache_ttl]" id="configs[image_cache_ttl]" autocomplete="image_cache_ttl" placeholder="请输入受保护图片的缓存时间，不填或填0表示不缓存" value="{{ $group->configs['image_cache_ttl'] }}" />
                             </div>
+
+                            <a href="javascript:void(0)" id="clear-cache" class="text-sm text-red-500">
+                                <i class="fas fa-trash text-xs"></i> <span>清除缓存</span>
+                            </a>
                         </div>
 
                         <div data-tab="watermark" class="hidden grid grid-cols-6 gap-6">
@@ -283,6 +287,20 @@
             $('form').submit(function (e) {
                 e.preventDefault();
                 axios.put(this.action, $(this).serialize()).then(response => {
+                    if (response.data.status) {
+                        toastr.success(response.data.message);
+                    } else {
+                        toastr.error(response.data.message);
+                    }
+                });
+            });
+
+            $('#clear-cache').click(function () {
+                if ($(this).hasClass('text-red-100')) return;
+
+                $(this).removeClass('text-red-400').addClass('text-red-300').find('span').text('清除中...');
+                axios.delete('{{ route('admin.group.cache.clear', ['id' => $group->id]) }}').then(response => {
+                    $(this).removeClass('text-red-300').addClass('text-red-400').find('span').text('清除缓存');
                     if (response.data.status) {
                         toastr.success(response.data.message);
                     } else {
