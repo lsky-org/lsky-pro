@@ -672,6 +672,9 @@
                                 } else {
                                     toastr.warning(response.data.message);
                                 }
+                            }).finally(_ => {
+                                $photos.addClass('reset').html('').justifiedGallery('destroy');
+                                ds.clearSelection();
                             });
                         }
                     });
