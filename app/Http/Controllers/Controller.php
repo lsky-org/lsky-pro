@@ -60,6 +60,10 @@ class Controller extends BaseController
             'intro' => '读取、创建符号链接函数',
             'result' => function_exists('readlink') && function_exists('symlink'),
         ])->push([
+            'name' => 'exec、shell_exec 函数',
+            'intro' => '执行外部命令',
+            'result' => function_exists('exec') && function_exists('shell_exec'),
+        ])->push([
             'name' => 'PHP >= 8.0.2',
             'intro' => '最低要求 PHP 8.0.2 版本',
             'result' => phpversion() >= 8,
