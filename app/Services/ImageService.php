@@ -184,25 +184,29 @@ class ImageService
             $image->fill($existing->only('path', 'name'));
         }
 
+        // 增加当前用户的图片数量和相册图片数量
         $updateNum = function ($method) use ($user, $image) {
-            if (! is_null($user)) {
-                $user->{$method}('image_num');
-            }
-            if (! is_null($image->album)) {
-                $image->album->{$method}('image_num');
-            }
+            DB::transaction(function () use ($method, $user, $image) {
+                if (! is_null($user)) {
+                    $user->{$method}('image_num');
+                }
+                if (! is_null($image->album)) {
+                    $image->album->{$method}('image_num');
+                }
+            });
         };
 
-        DB::transaction(function () use ($image, $user, $filesystem, $existing, $updateNum) {
-            if (!$image->save()) {
-                // 删除文件
-                if (is_null($existing)) {
-                    $filesystem->delete($image->pathname);
-                }
-                throw new UploadException('图片保存失败');
+        try {
+            // 图片记录保存失败，删除物理文件
+            if (! $image->save()) {
+                if (is_null($existing)) $filesystem->delete($image->pathname);
+                throw new \Exception('图片记录保存失败');
             }
             $updateNum('increment');
-        }, 2);
+        } catch (\Throwable $e) {
+            Utils::e($e, '保存图片记录时出现异常');
+            throw new UploadException('图片记录保存失败');
+        }
 
         // 图片检测
         if ($configs->get(GroupConfigKey::IsEnableScan)) {
@@ -211,7 +215,7 @@ class ImageService
                 // 标记 or 删除
                 if ($configs->get(GroupConfigKey::ScannedAction) === 'delete') {
                     $image->delete();
-                    DB::transaction(fn () => $updateNum('decrement'));
+                    $updateNum('decrement');
                     throw new UploadException('图片涉嫌违规，禁止上传。');
                 } else {
                     $image->is_unhealthy = true;
