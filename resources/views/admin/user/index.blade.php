@@ -13,7 +13,7 @@
             </div>
         </form>
 
-        <x-table :columns="['ID', '邮箱', '名称', '角色组', '总容量', '剩余容量', '图片数量', '相册数量', '状态', '操作']">
+        <x-table :columns="['ID', '用户名', '邮箱', '角色组', '总容量', '剩余容量', '图片数量', '相册数量', '状态', '操作']">
             @foreach($users as $user)
             <tr data-id="{{ $user->id }}" data-json='{{ $user->toJson() }}'>
                 <td class="px-6 py-4 whitespace-nowrap">{{ $user->id }}</td>

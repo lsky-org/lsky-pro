@@ -92,7 +92,7 @@ class ImageService
             throw new UploadException('没有可用的储存，请联系管理员。');
         }
 
-        if (!in_array($file->extension(), $configs->get(GroupConfigKey::AcceptedFileSuffixes))) {
+        if (!in_array($file->getClientOriginalExtension(), $configs->get(GroupConfigKey::AcceptedFileSuffixes))) {
             throw new UploadException('不支持的文件类型');
         }
 
@@ -148,7 +148,7 @@ class ImageService
         $filename = $this->replacePathname(
             $configs->get(GroupConfigKey::PathNamingRule).'/'.$configs->get(GroupConfigKey::FileNamingRule), $file,
         );
-        $pathname = $filename.".{$file->extension()}";
+        $pathname = $filename.".{$file->getClientOriginalExtension()}";
 
         $image->fill([
             'md5' => md5_file($file->getRealPath()),
@@ -158,7 +158,7 @@ class ImageService
             'origin_name' => $file->getClientOriginalName(),
             'size' => $file->getSize() / 1024,
             'mimetype' => $file->getMimeType(),
-            'extension' => strtolower($file->extension()),
+            'extension' => strtolower($file->getClientOriginalExtension()),
             'width' => $img->width(),
             'height' => $img->height(),
             'is_unhealthy' => false,
@@ -500,7 +500,7 @@ class ImageService
             '{md5-16}' => substr(md5(microtime().Str::random()), 0, 16),
             '{str-random-16}' => Str::random(),
             '{str-random-10}' => Str::random(10),
-            '{filename}' => rtrim($file->getClientOriginalName(), '.'.$file->extension()),
+            '{filename}' => rtrim($file->getClientOriginalName(), '.'.$file->getClientOriginalExtension()),
             '{uid}' => Auth::check() ? Auth::id() : 0,
         ];
         return str_replace(array_keys($array), array_values($array), $pathname);
