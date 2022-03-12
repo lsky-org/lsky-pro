@@ -125,7 +125,7 @@
                     .replace(/__name__/g, user.name)
                     .replace(/__email__/g, user.email)
                     .replace(/__capacity__/g, utils.formatSize(user.capacity * 1024))
-                    .replace(/__surplus_capacity__/g, utils.formatSize(user.images_sum_size * 1024))
+                    .replace(/__surplus_capacity__/g, utils.formatSize((user.capacity - user.images_sum_size) * 1024))
                     .replace(/__image_num__/g, user.image_num)
                     .replace(/__album_num__/g, user.album_num)
                     .replace(/__registered_ip__/g, user.registered_ip || '-')
