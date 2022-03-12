@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\DB;
 
 class AlbumController extends Controller
 {
-    public function albums(Request $request): Response
+    public function albums(): Response
     {
         /** @var User $user */
         $user = Auth::user();
@@ -28,10 +28,13 @@ class AlbumController extends Controller
     {
         /** @var User $user */
         $user = Auth::user();
-        if ($user->albums()->create(array_filter($request->validated()))) {
-            return $this->success('创建成功');
-        }
-        return $this->fail('创建失败');
+        DB::transaction(function () use ($user, $request) {
+            $user->albums()->create(array_filter($request->validated()));
+            $user->album_num = $user->albums()->count();
+            $user->save();
+        });
+
+        return $this->success('创建成功');
     }
 
     public function update(AlbumRequest $request): Response
@@ -55,9 +58,11 @@ class AlbumController extends Controller
         if (is_null($album)) {
             return $this->fail('不存在的相册');
         }
-        DB::transaction(function () use ($album) {
+        DB::transaction(function () use ($user, $album) {
             $album->images()->update(['album_id' => null]);
             $album->delete();
+            $user->album_num = $user->albums()->count();
+            $user->save();
         });
         return $this->success('删除成功');
     }
