@@ -29,6 +29,10 @@ class ImageController extends Controller
 
         $images = $user->images()->filter($request)->with('group', 'strategy')->paginate(40);
         $images->getCollection()->each(function (Image $image) {
+            // 图片宽高过小会导致前端排版异常
+            $image->width = max($image->width, 200);
+            $image->height = max($image->height, 200);
+
             $image->human_date = $image->created_at->diffForHumans();
             $image->date = $image->created_at->format('Y-m-d H:i:s');
             $image->append(['url', 'thumb_url', 'filename', 'links'])->setVisible([
