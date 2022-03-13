@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "87004ae9acac8c83e5f70ed79d85415c",
+    "content-hash": "f55a4d1756ba393dba532f9d31cd9649",
     "packages": [
         {
             "name": "adbario/php-dot-notation",
@@ -2066,6 +2066,73 @@
             "time": "2021-12-16T16:49:26+00:00"
         },
         {
+            "name": "intervention/imagecache",
+            "version": "2.5.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Intervention/imagecache.git",
+                "reference": "270d1e72ddff2fc0a6d3c7e6cbc9d23c9ec1e3e4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Intervention/imagecache/zipball/270d1e72ddff2fc0a6d3c7e6cbc9d23c9ec1e3e4",
+                "reference": "270d1e72ddff2fc0a6d3c7e6cbc9d23c9ec1e3e4",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/cache": "^5.5|~6|~7|~8|~9",
+                "illuminate/filesystem": "^5.5|~6|~7|~8|~9",
+                "intervention/image": "~2.2",
+                "nesbot/carbon": "^2.39",
+                "opis/closure": "^3.5",
+                "php": "~7.2|~8"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^8.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Intervention\\Image\\": "src/Intervention/Image"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Oliver Vogel",
+                    "email": "oliver@intervention.io",
+                    "homepage": "http://intervention.io/"
+                }
+            ],
+            "description": "Caching extension for the Intervention Image Class",
+            "homepage": "https://image.intervention.io",
+            "keywords": [
+                "cache",
+                "gd",
+                "image",
+                "imagick",
+                "laravel"
+            ],
+            "support": {
+                "issues": "https://github.com/Intervention/imagecache/issues",
+                "source": "https://github.com/Intervention/imagecache/tree/2.5.2"
+            },
+            "funding": [
+                {
+                    "url": "https://paypal.me/interventionio",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/Intervention",
+                    "type": "github"
+                }
+            ],
+            "time": "2022-01-22T11:14:47+00:00"
+        },
+        {
             "name": "laravel/breeze",
             "version": "v1.8.2",
             "source": {
@@ -3564,6 +3631,71 @@
                 "source": "https://github.com/nikic/PHP-Parser/tree/v4.13.2"
             },
             "time": "2021-11-30T19:35:32+00:00"
+        },
+        {
+            "name": "opis/closure",
+            "version": "3.6.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/opis/closure.git",
+                "reference": "3d81e4309d2a927abbe66df935f4bb60082805ad"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/opis/closure/zipball/3d81e4309d2a927abbe66df935f4bb60082805ad",
+                "reference": "3d81e4309d2a927abbe66df935f4bb60082805ad",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^5.4 || ^7.0 || ^8.0"
+            },
+            "require-dev": {
+                "jeremeamia/superclosure": "^2.0",
+                "phpunit/phpunit": "^4.0 || ^5.0 || ^6.0 || ^7.0 || ^8.0 || ^9.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.6.x-dev"
+                }
+            },
+            "autoload": {
+                "files": [
+                    "functions.php"
+                ],
+                "psr-4": {
+                    "Opis\\Closure\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Marius Sarca",
+                    "email": "marius.sarca@gmail.com"
+                },
+                {
+                    "name": "Sorin Sarca",
+                    "email": "sarca_sorin@hotmail.com"
+                }
+            ],
+            "description": "A library that can be used to serialize closures (anonymous functions) and arbitrary objects.",
+            "homepage": "https://opis.io/closure",
+            "keywords": [
+                "anonymous functions",
+                "closure",
+                "function",
+                "serializable",
+                "serialization",
+                "serialize"
+            ],
+            "support": {
+                "issues": "https://github.com/opis/closure/issues",
+                "source": "https://github.com/opis/closure/tree/3.6.3"
+            },
+            "time": "2022-01-27T09:35:39+00:00"
         },
         {
             "name": "overtrue/flysystem-cos",

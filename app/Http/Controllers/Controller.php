@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\View\View;
+use Intervention\Image\Facades\Image as InterventionImage;
 use League\Flysystem\FilesystemException;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -156,7 +157,7 @@ class Controller extends BaseController
                 // 是否启用了水印功能，跳过gif图片
                 if ($image->group->configs->get(GroupConfigKey::IsEnableWatermark) && $image->mimetype !== 'image/gif') {
                     $configs = $image->group->configs->get(GroupConfigKey::WatermarkConfigs);
-                    $contents = (string)$service->stickWatermark($contents, collect($configs))->encode();
+                    $contents = $service->stickWatermark($contents, collect($configs))->encode()->getEncoded();
                 }
                 $cacheTtl = (int)$image->group->configs->get(GroupConfigKey::ImageCacheTtl, 0);
                 // 是否启用了缓存
@@ -167,12 +168,21 @@ class Controller extends BaseController
                 }
             }
         } catch (FilesystemException $e) {
+            Utils::e($e, '图片输出时出现异常');
             abort(404);
+        }
+
+        $mimetype = $image->mimetype;
+
+        // 浏览器无法预览的图片，改为 png 格式输出
+        if (in_array($image->extension, ['psd', 'tif', 'bmp'])) {
+            $mimetype = 'image/png';
+            $contents = InterventionImage::make($contents)->encode('png')->getEncoded();
         }
 
         return \response()->stream(function () use ($contents) {
             echo $contents;
-        }, headers: ['Content-type' => $image->mimetype]);
+        }, headers: ['Content-type' => $mimetype]);
     }
 
     public function thumbnail(Request $request): StreamedResponse
@@ -190,7 +200,7 @@ class Controller extends BaseController
                 $contents = Cache::get($cacheKey);
             } else {
                 $stream = $image->filesystem()->readStream($image->pathname);
-                $img = \Intervention\Image\Facades\Image::make($stream);
+                $img = InterventionImage::make($stream);
 
                 $width = $w = $image->width;
                 $height = $h = $image->height;
@@ -203,15 +213,16 @@ class Controller extends BaseController
                     $height = (int)($h * $scale);
                 }
 
-                $contents = $img->fit($width, $height, fn($constraint) => $constraint->upsize())->encode();
+                $contents = $img->fit($width, $height, fn($constraint) => $constraint->upsize())->encode('png');
                 Cache::rememberForever($cacheKey, fn () => (string)$contents);
             }
         } catch (FilesystemException $e) {
+            Utils::e($e, '图片缩略图输出时出现异常');
             abort(404);
         }
 
         return \response()->stream(function () use ($contents) {
             echo $contents;
-        }, headers: ['Content-type' => $image->mimetype]);
+        }, headers: ['Content-type' => 'image/png']);
     }
 }
