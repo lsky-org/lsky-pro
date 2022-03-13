@@ -169,10 +169,10 @@ class Image extends Model
     {
         return new Attribute(function () {
             // 是否启用原图保护功能
-            if ($this->group->configs->get(GroupConfigKey::IsEnableOriginalProtection)) {
+            if ($this->group?->configs->get(GroupConfigKey::IsEnableOriginalProtection)) {
                 return asset("{$this->key}.{$this->extension}");
             } else {
-                return rtrim($this->strategy->configs->get('url'), '/').'/'.$this->pathname;
+                return rtrim($this->strategy?->configs->get('url'), '/').'/'.$this->pathname;
             }
         });
     }

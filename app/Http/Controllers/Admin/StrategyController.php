@@ -59,8 +59,12 @@ class StrategyController extends Controller
 
     public function delete(Request $request): Response
     {
-        if ($group = Strategy::query()->find($request->route('id'))) {
-            $group->delete();
+        /** @var Strategy $strategy */
+        if ($strategy = Strategy::query()->find($request->route('id'))) {
+            DB::transaction(function () use ($strategy) {
+                $strategy->images()->update(['strategy_id' => null]);
+                $strategy->delete();
+            });
         }
         return $this->success('删除成功');
     }
