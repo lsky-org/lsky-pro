@@ -58,6 +58,7 @@ use Overtrue\Flysystem\Qiniu\QiniuAdapter;
 use Sabre\DAV\Client;
 use WispX\Flysystem\Upyun\UpyunAdapter;
 use Zing\Flysystem\Oss\OssAdapter;
+use OSS\OssClient;
 
 class ImageService
 {
