@@ -6,7 +6,7 @@
             <div class="h-8 w-8 rounded-full flex items-center justify-center bg-white">
                 <i class="fas fa-server text-gray-900"></i>
             </div>
-            <span class="px-2 sm:block hidden" id="strategy-selected">获取中...</span>
+            <span class="px-2 sm:block hidden" id="strategy-selected" data-id="0">获取中...</span>
         </button>
     </x-slot>
 
@@ -44,7 +44,7 @@
             if (! isSelected) {
                 let $first = $('#strategies a:first-child');
                 localStorage.setItem('strategy', $first.data('id'))
-                $('#strategy-selected').text($first.text());
+                $('#strategy-selected').text($first.text()).data('id', $first.data('id'));
             }
         };
 
