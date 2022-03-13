@@ -43,9 +43,7 @@ class UserController extends Controller
         $user = User::query()->findOrFail($request->route('id'));
         $validated = $request->validated();
 
-        if (empty($validated['password'])) {
-            unset($validated['password']);
-        } else {
+        if (! empty($validated['password'])) {
             $user->forceFill([
                 'password' => Hash::make($validated['password']),
                 'remember_token' => Str::random(60),
@@ -54,6 +52,7 @@ class UserController extends Controller
             event(new PasswordReset($user));
         }
 
+        unset($validated['password']);
         $user->fill($validated);
         $user->group_id = $validated['group_id'];
 
