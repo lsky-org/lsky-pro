@@ -84,6 +84,7 @@ window.utils = {
                 },
                 beforeSend() {
                     props.loading = true;
+                    props.finished = false;
                     $btn.text(loadingText).addClass('disabled')
                 },
                 success(response) {
