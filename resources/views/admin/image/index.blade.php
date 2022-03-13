@@ -364,7 +364,7 @@
                     .replace(/__name__/g, image.name)
                     .replace(/__origin_name__/g, image.origin_name)
                     .replace(/__pathname__/g, image.pathname)
-                    .replace(/__size__/g, utils.formatSize(image.size))
+                    .replace(/__size__/g, utils.formatSize(image.size * 1024))
                     .replace(/__mimetype__/g, image.mimetype)
                     .replace(/__md5__/g, image.md5)
                     .replace(/__sha1__/g, image.sha1)
