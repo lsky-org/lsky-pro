@@ -144,7 +144,7 @@ class Controller extends BaseController
             ->where('key', $request->route('key'))
             ->where('extension', strtolower($request->route('extension')))
             ->firstOr(fn() => abort(404));
-        if (! $image->group->configs->get(GroupConfigKey::IsEnableOriginalProtection)) {
+        if (! $image->group?->configs->get(GroupConfigKey::IsEnableOriginalProtection)) {
             abort(404);
         }
         try {
@@ -155,11 +155,11 @@ class Controller extends BaseController
             } else {
                 $contents = $image->filesystem()->read($image->pathname);
                 // 是否启用了水印功能，跳过gif图片
-                if ($image->group->configs->get(GroupConfigKey::IsEnableWatermark) && $image->mimetype !== 'image/gif') {
-                    $configs = $image->group->configs->get(GroupConfigKey::WatermarkConfigs);
+                if ($image->group?->configs->get(GroupConfigKey::IsEnableWatermark) && $image->mimetype !== 'image/gif') {
+                    $configs = $image->group?->configs->get(GroupConfigKey::WatermarkConfigs);
                     $contents = $service->stickWatermark($contents, collect($configs))->encode()->getEncoded();
                 }
-                $cacheTtl = (int)$image->group->configs->get(GroupConfigKey::ImageCacheTtl, 0);
+                $cacheTtl = (int)$image->group?->configs->get(GroupConfigKey::ImageCacheTtl, 0);
                 // 是否启用了缓存
                 if ($cacheTtl) {
                     Cache::remember($cacheKey, $cacheTtl, fn () => $contents);
