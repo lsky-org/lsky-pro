@@ -37,7 +37,6 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image as InterventionImage;
 use Intervention\Image\Imagick\Font;
@@ -54,7 +53,6 @@ use League\Flysystem\PhpseclibV2\SftpConnectionProvider;
 use League\Flysystem\UnixVisibility\PortableVisibilityConverter;
 use League\Flysystem\Visibility;
 use League\Flysystem\WebDAV\WebDAVAdapter;
-use OSS\OssClient;
 use Overtrue\Flysystem\Cos\CosAdapter;
 use Overtrue\Flysystem\Qiniu\QiniuAdapter;
 use Sabre\DAV\Client;
@@ -92,7 +90,9 @@ class ImageService
             throw new UploadException('没有可用的储存，请联系管理员。');
         }
 
-        if (!in_array($file->getClientOriginalExtension(), $configs->get(GroupConfigKey::AcceptedFileSuffixes))) {
+        $extension = strtolower($file->getClientOriginalExtension());
+
+        if (! in_array($extension, $configs->get(GroupConfigKey::AcceptedFileSuffixes))) {
             throw new UploadException('不支持的文件类型');
         }
 
@@ -148,7 +148,7 @@ class ImageService
         $filename = $this->replacePathname(
             $configs->get(GroupConfigKey::PathNamingRule).'/'.$configs->get(GroupConfigKey::FileNamingRule), $file,
         );
-        $pathname = $filename.".{$file->getClientOriginalExtension()}";
+        $pathname = $filename.".{$extension}";
 
         $image->fill([
             'md5' => md5_file($file->getRealPath()),
@@ -158,7 +158,7 @@ class ImageService
             'origin_name' => $file->getClientOriginalName(),
             'size' => $file->getSize() / 1024,
             'mimetype' => $file->getMimeType(),
-            'extension' => strtolower($file->getClientOriginalExtension()),
+            'extension' => strtolower($extension),
             'width' => $img->width(),
             'height' => $img->height(),
             'is_unhealthy' => false,
