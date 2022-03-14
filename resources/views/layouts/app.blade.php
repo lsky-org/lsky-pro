@@ -46,6 +46,7 @@
     </x-container>
 </div>
 </body>
+@include('common.notice')
 <script>
     // 开关组件默认值
     let setSwitch = function (e) {
