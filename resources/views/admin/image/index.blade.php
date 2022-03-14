@@ -360,7 +360,7 @@
                     .replace(/__user_email__/g, image.user ? image.user.email : '-')
                     .replace(/__album_name__/g, image.album ? image.album.name : '-')
                     .replace(/__group_name__/g, image.group ? image.group.name : '-')
-                    .replace(/__strategy_name__/g, image.strategy.name || '-')
+                    .replace(/__strategy_name__/g, image.strategy ? image.strategy.name : '-')
                     .replace(/__name__/g, image.name)
                     .replace(/__origin_name__/g, image.origin_name)
                     .replace(/__pathname__/g, image.pathname)

@@ -50,7 +50,7 @@ class ImageController extends Controller
         if (!$image = $user->images()->find($request->route('id'))) {
             return $this->fail('未找到该图片');
         }
-        $image->strategy->setVisible(['name']);
+        $image->strategy?->setVisible(['name']);
         $image->album?->setVisible(['name']);
         $image->append(['url', 'thumb_url', 'filename', 'links'])->setVisible([
             'id', 'filename', 'origin_name', 'url', 'thumb_url', 'width', 'height', 'size', 'mimetype', 'md5', 'sha1',
