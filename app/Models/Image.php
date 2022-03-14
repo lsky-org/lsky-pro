@@ -93,6 +93,8 @@ class Image extends Model
         'permission' => 'integer',
     ];
 
+    protected ?Filesystem $filesystem = null;
+
     protected static function booted()
     {
         static::creating(function (self $image) {
@@ -206,7 +208,10 @@ class Image extends Model
 
     public function filesystem(): Filesystem
     {
-        return new Filesystem((new ImageService())->getAdapter($this->strategy));
+        if (is_null($this->filesystem)) {
+            $this->filesystem = new Filesystem((new ImageService())->getAdapter($this->strategy));
+        }
+        return $this->filesystem;
     }
 
     public function user(): BelongsTo
