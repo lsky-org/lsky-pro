@@ -2,10 +2,10 @@ require('./bootstrap');
 
 import Alpine from 'alpinejs';
 import Sidebar from './stores/sidebar';
-import Modal from './stores/modal'
+import Modal from './stores/modal';
 
 Alpine.store('sidebar', Sidebar);
-Alpine.store('modal', Modal)
+Alpine.store('modal', Modal);
 
 window.Alpine = Alpine;
 

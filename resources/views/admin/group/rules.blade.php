@@ -1,4 +1,4 @@
-<x-modal>
+<x-modal id="rules-modal">
     <div id="modal-content">
         <table class="min-w-full divide-y divide-gray-200">
             <thead class="bg-gray-50">
@@ -68,7 +68,7 @@
 @push('scripts')
     <script>
         $('#rename-rules').click(function () {
-            Alpine.store('modal').open = true;
+            Alpine.store('modal').open('rules-modal')
         })
     </script>
 @endpush

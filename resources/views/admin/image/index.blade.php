@@ -53,7 +53,7 @@
         @endif
     </div>
 
-    <x-modal>
+    <x-modal id="content-modal">
         <div id="modal-content"></div>
     </x-modal>
 
@@ -333,7 +333,7 @@
                     if (result.isConfirmed) {
                         axios.delete(`/admin/images/${id}`).then(response => {
                             if (response.data.status) {
-                                modal = false;
+                                modal.close('content-modal')
                                 toastr.success(response.data.message);
                                 setTimeout(function () {
                                     history.go(0);
@@ -348,7 +348,7 @@
 
             $('#grammar').click(function () {
                 $('#modal-content').html($('#search-grammar-tpl').html());
-                modal.open = true;
+                modal.open('content-modal')
             });
 
             $('.item').click(function () {
@@ -377,7 +377,7 @@
 
                 $('#modal-content').html(html);
 
-                modal.open = true;
+                modal.open('content-modal')
             });
 
             $('.item-user').click(function (e) {
@@ -398,7 +398,7 @@
 
                 $('#modal-content').html(html);
 
-                modal.open = true;
+                modal.open('content-modal')
             });
 
             $('.item .delete').click(function (e) {

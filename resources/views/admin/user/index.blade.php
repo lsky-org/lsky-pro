@@ -48,7 +48,7 @@
         @endif
     </div>
 
-    <x-modal>
+    <x-modal id="user-modal">
         <div id="modal-content"></div>
     </x-modal>
 
@@ -135,7 +135,7 @@
 
                 $('#modal-content').html(html);
 
-                modal.open = true;
+                modal.open('user-modal')
             });
             $('[data-operate="delete"]').click(function () {
                 Swal.fire({
