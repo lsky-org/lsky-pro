@@ -18,13 +18,13 @@ class StrategyRequest extends FormRequest
     {
         $checkUrl = function ($attribute, $value, $fail) {
             if ($this->input('key') == StrategyKey::Local) {
-                $folders = ['fonts', 'css', 'js'];
+                $folders = [env('THUMBNAIL_PATH', 'thumbnails'), 'fonts', 'css', 'js'];
                 $symlink = Strategy::getRootPath($value);
                 if (! $symlink) {
                     return $fail('访问域名缺少根路径');
                 }
                 if (in_array($symlink, $folders)) {
-                    return $fail('系统保留路径');
+                    return $fail('系统保留路径：'. $symlink);
                 }
                 if (false !== strpbrk($symlink, "\\/?%*:|\"<>")) {
                     return $fail('根路径名称不符合规则');
