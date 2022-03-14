@@ -225,6 +225,9 @@ class ImageService
             }
         }
 
+        // 生成缩略图
+        $this->makeThumbnail($image, $img);
+
         return $image;
     }
 
@@ -442,6 +445,47 @@ class ImageService
         }
 
         return $image;
+    }
+
+    /**
+     * 生成缩略图，缩略图目录必须在 public 目录下，且该目录必须存在
+     *
+     * @param mixed $image 图片数据
+     * @param mixed $data 物理图片数据
+     * @param int $max 最大宽高
+     * @param bool $force 是否强制覆盖
+     * @return void
+     */
+    public function makeThumbnail(Image $image, mixed $data, int $max = 400, bool $force = false): void
+    {
+        $pathname = public_path(env('THUMBNAIL_PATH', 'thumbnails').'/'.$image->md5.'.png');
+
+        if (! file_exists($pathname) || $force) {
+            try {
+                // 创建文件夹
+                if (! is_dir(dirname($pathname))) {
+                    @mkdir(dirname($pathname));
+                }
+
+                @ini_set('memory_limit', '512M');
+
+                $img = InterventionImage::make($data);
+
+                $width = $w = $image->width;
+                $height = $h = $image->height;
+
+                if ($w > $max && $h > $max) {
+                    $scale = min($max / $w, $max / $h);
+                    $width  = (int)($w * $scale);
+                    $height = (int)($h * $scale);
+                }
+
+                $img->fit($width, $height, fn($constraint) => $constraint->upsize())->encode('png')->save($pathname);
+
+            } catch (\Throwable $e) {
+                Utils::e($e, '生成缩略图时出现异常');
+            }
+        }
     }
 
     /**

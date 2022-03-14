@@ -180,7 +180,15 @@ class Image extends Model
     public function thumbUrl(): Attribute
     {
         return new Attribute(function () {
-            return asset("{$this->key}.{$this->extension}!thumbnail");
+
+            $path = trim(env('THUMBNAIL_PATH', 'thumbnails'), '/');
+
+            // 没有缩略图则返回原图
+            if (! file_exists($path)) {
+                return $this->url;
+            }
+
+            return asset($path."/{$this->md5}.png");
         });
     }
 

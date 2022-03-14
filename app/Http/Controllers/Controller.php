@@ -184,45 +184,4 @@ class Controller extends BaseController
             echo $contents;
         }, headers: ['Content-type' => $mimetype]);
     }
-
-    public function thumbnail(Request $request): StreamedResponse
-    {
-        /** @var Image $image */
-        $image = Image::query()
-            ->where('key', $request->route('key'))
-            ->where('extension', strtolower($request->route('extension')))
-            ->firstOr(fn() => abort(404));
-
-        try {
-            $cacheKey = "image_thumb_{$image->key}";
-
-            if (Cache::has($cacheKey)) {
-                $contents = Cache::get($cacheKey);
-            } else {
-                $stream = $image->filesystem()->readStream($image->pathname);
-                $img = InterventionImage::make($stream);
-
-                $width = $w = $image->width;
-                $height = $h = $image->height;
-
-                $max = 400; // 最大宽高
-
-                if ($w > $max && $h > $max) {
-                    $scale = min($max / $w, $max / $h);
-                    $width  = (int)($w * $scale);
-                    $height = (int)($h * $scale);
-                }
-
-                $contents = $img->fit($width, $height, fn($constraint) => $constraint->upsize())->encode('png');
-                Cache::rememberForever($cacheKey, fn () => (string)$contents);
-            }
-        } catch (FilesystemException $e) {
-            Utils::e($e, '图片缩略图输出时出现异常');
-            abort(404);
-        }
-
-        return \response()->stream(function () use ($contents) {
-            echo $contents;
-        }, headers: ['Content-type' => 'image/png']);
-    }
 }
