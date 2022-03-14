@@ -184,13 +184,14 @@ class Image extends Model
         return new Attribute(function () {
 
             $path = trim(env('THUMBNAIL_PATH', 'thumbnails'), '/');
+            $pathname = $path."/{$this->md5}.png";
 
             // 没有缩略图则返回原图
-            if (! file_exists($path)) {
+            if (! file_exists(public_path($pathname))) {
                 return $this->url;
             }
 
-            return asset($path."/{$this->md5}.png");
+            return asset($pathname);
         });
     }
 
