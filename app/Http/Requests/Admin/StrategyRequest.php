@@ -203,6 +203,7 @@ class StrategyRequest extends FormRequest
                 'configs.access_key' => 'AccessKey',
                 'configs.secret_key' => 'SecretKey',
                 'configs.endpoint' => '连接地址',
+                'configs.region' => '区域',
                 'configs.bucket' => 'Bucket 名称',
             ],
         });
