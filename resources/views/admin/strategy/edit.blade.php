@@ -298,7 +298,7 @@
                                 </div>
                                 <div class="col-span-3 sm:col-span-2 mb-4">
                                     <label for="configs[endpoint]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>连接地址</label>
-                                    <x-input type="url" name="configs[endpoint]" id="configs[endpoint]" placeholder="请输入连接地址" value="{{ $strategy->configs>get('endpoint') }}" />
+                                    <x-input type="url" name="configs[endpoint]" id="configs[endpoint]" placeholder="请输入连接地址" value="{{ $strategy->configs->get('endpoint') }}" />
                                 </div>
                                 <div class="col-span-3 sm:col-span-2 mb-4">
                                     <label for="configs[access_key]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>AccessKey</label>
@@ -310,7 +310,7 @@
                                 </div>
                                 <div class="col-span-3 sm:col-span-2 mb-4">
                                     <label for="configs[region]" class="block text-sm font-medium text-gray-700">区域(region)</label>
-                                    <x-input type="text" name="configs[region]" id="configs[region]" placeholder="请输入区域，例如：us-east-1" value="{{ $strategy->configs->get->get('region') }}" />
+                                    <x-input type="text" name="configs[region]" id="configs[region]" placeholder="请输入区域，例如：us-east-1" value="{{ $strategy->configs->get('region') }}" />
                                 </div>
                                 <div class="col-span-3 sm:col-span-2 mb-4">
                                     <label for="configs[bucket]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>储存桶名称</label>
