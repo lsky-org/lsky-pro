@@ -41,7 +41,7 @@
                 </x-nav-link>
                 @endif
                 @if(\App\Utils::config(\App\Enums\ConfigKey::IsEnableApi))
-                <x-nav-link :href="route('api')" :active="request()->routeIs('apis')">
+                <x-nav-link :href="route('api')" :active="request()->routeIs('api')">
                     <x-slot name="icon"><i class="fas fa-link text-blue-500"></i></x-slot>
                     <x-slot name="name">接口</x-slot>
                 </x-nav-link>
