@@ -319,7 +319,7 @@ class ImageService
                         'secret' => $configs->get(MinioOption::SecretKey)
                     ],
                     'endpoint' => $configs->get(MinioOption::Endpoint),
-                    'region' => '',
+                    'region' => $configs->get(MinioOption::Region),
                     'version' => '2006-03-01',
                 ]),
                 bucket: $configs->get(MinioOption::Bucket),

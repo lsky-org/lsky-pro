@@ -127,6 +127,7 @@ class StrategyRequest extends FormRequest
                 'configs.access_key' => 'required',
                 'configs.secret_key' => 'required',
                 'configs.endpoint' => 'required',
+                'configs.region' => '',
                 'configs.bucket' => 'required',
             ],
         });

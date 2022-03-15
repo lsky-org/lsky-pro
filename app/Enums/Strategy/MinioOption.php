@@ -16,6 +16,9 @@ final class MinioOption
     /** @var string Endpoint */
     const Endpoint = 'endpoint';
 
+    /** @var string 区域 */
+    const Region = 'region';
+
     /** @var string Bucket */
     const Bucket = 'bucket';
 }
