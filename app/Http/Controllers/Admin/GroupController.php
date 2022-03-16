@@ -17,7 +17,7 @@ use Illuminate\View\View;
 
 class GroupController extends Controller
 {
-    public function __construct()
+    private function share()
     {
         \Illuminate\Support\Facades\View::share([
             'default' => Group::getDefaultConfigs(),
@@ -31,17 +31,25 @@ class GroupController extends Controller
         $groups = Group::query()->when($request->query('keywords'), function (Builder $builder, $keywords) {
             $builder->where('name', 'like', "%{$keywords}%");
         })->withCount('users')->withCount('strategies')->latest()->paginate();
+
+        $this->share();
+
         return view('admin.group.index', compact('groups'));
     }
 
     public function add(): View
     {
+        $this->share();
+
         return view('admin.group.add');
     }
 
     public function edit(Request $request): View
     {
         $group = Group::query()->findOrFail($request->route('id'));
+
+        $this->share();
+
         return view('admin.group.edit', compact('group'));
     }
 
@@ -52,6 +60,8 @@ class GroupController extends Controller
             $group->fill($request->validated());
             $group->save();
         });
+
+        $this->share();
 
         return $this->success('创建成功');
     }

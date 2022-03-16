@@ -11,6 +11,8 @@
 |
 */
 
+use App\Http\Middleware\CheckIsEnableApi;
+use App\Http\Middleware\CheckIsEnableGallery;
 use App\Http\Middleware\CheckIsEnableGuestUpload;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\CheckIsInstalled;
@@ -37,7 +39,7 @@ Route::any('install', [Controller::class, 'install'])->name('install');
 Route::post('upload', [Controller::class, 'upload']);
 Route::group(['middleware' => ['auth']], function () {
     Route::get('dashboard', [UserController::class, 'dashboard'])->name('dashboard');
-    Route::get('gallery', [GalleryController::class, 'index'])->name('gallery');
+    Route::get('gallery', [GalleryController::class, 'index'])->middleware(CheckIsEnableGallery::class)->name('gallery');
 
     Route::prefix('settings')->group(function () {
         Route::get('', [UserController::class, 'settings'])->name('settings');
@@ -45,7 +47,10 @@ Route::group(['middleware' => ['auth']], function () {
         Route::put('set-strategy', [UserController::class, 'setStrategy'])->name('settings.strategy.set');
     });
 
-    Route::group(['prefix' => 'api'], function () {
+    Route::group([
+        'prefix' => 'api',
+        'middleware' => CheckIsEnableApi::class
+    ], function () {
         Route::get('', [ApiController::class, 'index'])->name('api');
     });
 

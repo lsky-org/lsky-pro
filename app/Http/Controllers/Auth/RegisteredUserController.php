@@ -15,13 +15,6 @@ use Illuminate\Validation\Rules;
 
 class RegisteredUserController extends Controller
 {
-    public function __construct()
-    {
-        if (! Utils::config(ConfigKey::IsEnableRegistration)) {
-            abort(404);
-        }
-    }
-
     /**
      * Display the registration view.
      *

@@ -8,15 +8,15 @@ use App\Utils;
 use Closure;
 use Illuminate\Http\Request;
 
-class CheckIsEnableApi
+class CheckIsEnableRegistration
 {
     use Result;
 
     public function handle(Request $request, Closure $next)
     {
-        if (! Utils::config(ConfigKey::IsEnableApi)) {
+        if (! Utils::config(ConfigKey::IsEnableRegistration)) {
             if ($request->expectsJson()) {
-                return $this->fail('管理员未启用 API')->setStatusCode(403);
+                return $this->fail('站点管理员关闭了注册功能')->setStatusCode(403);
             }
             abort(404);
         }
