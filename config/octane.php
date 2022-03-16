@@ -20,6 +20,7 @@ use Laravel\Octane\Listeners\FlushUploadedFiles;
 use Laravel\Octane\Listeners\ReportException;
 use Laravel\Octane\Listeners\StopWorkerIfNecessary;
 use Laravel\Octane\Octane;
+use Swoole\Constant;
 
 return [
 
@@ -216,6 +217,23 @@ return [
     |
     */
 
-    'max_execution_time' => 30,
+    'max_execution_time' => 0,
+
+    /*
+    |--------------------------------------------------------------------------
+    | Swoole
+    |--------------------------------------------------------------------------
+    |
+    | The Swoole options
+    |
+    */
+    'swoole' => [
+        'options' => [
+            Constant::OPTION_MAX_REQUEST => 100000,
+            Constant::OPTION_PACKAGE_MAX_LENGTH => 50 * 1024 * 1024,
+            Constant::OPTION_SOCKET_BUFFER_SIZE => 50 * 1024 * 1024,
+            Constant::OPTION_BUFFER_OUTPUT_SIZE => 50 * 1024 * 1024,
+        ]
+    ]
 
 ];
