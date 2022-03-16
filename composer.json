@@ -24,7 +24,6 @@
         "league/flysystem-webdav": "^3.0",
         "overtrue/flysystem-cos": "^5.0",
         "overtrue/flysystem-qiniu": "^3.0",
-        "swoole/ide-helper": "^4.8",
         "wispx/flysystem-upyun": "^1.0",
         "zing/flysystem-oss": "^2.1"
     },
@@ -35,7 +34,8 @@
         "nunomaduro/collision": "^6.1",
         "phpunit/phpunit": "^9.5.10",
         "spatie/laravel-ignition": "^1.0",
-        "barryvdh/laravel-debugbar": "^3.6"
+        "barryvdh/laravel-debugbar": "^3.6",
+        "swoole/ide-helper": "^4.8"
     },
     "autoload": {
         "psr-4": {
