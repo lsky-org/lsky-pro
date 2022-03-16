@@ -34,8 +34,7 @@
         "nunomaduro/collision": "^6.1",
         "phpunit/phpunit": "^9.5.10",
         "spatie/laravel-ignition": "^1.0",
-        "barryvdh/laravel-debugbar": "^3.6",
-        "swoole/ide-helper": "^4.8"
+        "barryvdh/laravel-debugbar": "^3.6"
     },
     "autoload": {
         "psr-4": {

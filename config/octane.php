@@ -229,9 +229,9 @@ return [
     */
     'swoole' => [
         'options' => [
-            Constant::OPTION_MAX_REQUEST => env('SWOOLE_MAX_REQUEST', 100000),
-            Constant::OPTION_PACKAGE_MAX_LENGTH => env('SWOOLE_PACKAGE_MAX_LENGTH', 50) * 1024 * 1024,
-            Constant::OPTION_BUFFER_OUTPUT_SIZE => env('SWOOLE_BUFFER_OUTPUT_SIZE', 50) * 1024 * 1024,
+            'max_request' => env('SWOOLE_MAX_REQUEST', 100000),
+            'package_max_length' => env('SWOOLE_PACKAGE_MAX_LENGTH', 50) * 1024 * 1024,
+            'buffer_output_size' => env('SWOOLE_BUFFER_OUTPUT_SIZE', 50) * 1024 * 1024,
         ]
     ]
 
