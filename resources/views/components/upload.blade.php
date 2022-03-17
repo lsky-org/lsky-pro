@@ -148,6 +148,17 @@
             formData: (form) => {
                 return [{name: 'strategy_id', value: $('#strategy-selected').data('id')}];
             },
+            paste: (e, data) => {
+                let files = [];
+                $.each(data.files, function (index, file) {
+                    let name = new Date().getTime().toString();
+                    files[index] = new File([file], name + "." + file.name.substr(file.name.lastIndexOf('.') + 1), {
+                        type: file.type,
+                        lastModified: file.lastModified,
+                    });
+                });
+                data.files = files;
+            },
             add: (e, data) => { // Return true to continue adding, otherwise terminate
                 let file = data.files[0];
                 let ext = file.name.substr(file.name.lastIndexOf('.') + 1);
