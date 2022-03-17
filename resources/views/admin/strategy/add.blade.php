@@ -279,6 +279,10 @@
                                 <x-input type="url" name="configs[endpoint]" id="configs[endpoint]" placeholder="请输入连接地址" />
                             </div>
                             <div class="col-span-3 sm:col-span-2 mb-4">
+                                <label for="configs[prefix]" class="block text-sm font-medium text-gray-700">子目录(prefix)</label>
+                                <x-input type="text" name="configs[prefix]" id="configs[prefix]" placeholder="请输入子目录，例如：lsky" />
+                            </div>
+                            <div class="col-span-3 sm:col-span-2 mb-4">
                                 <label for="configs[access_key]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>AccessKey</label>
                                 <x-input type="text" name="configs[access_key]" id="configs[access_key]" placeholder="请输入 AccessKey" />
                             </div>

@@ -323,6 +323,7 @@ class ImageService
                     'version' => '2006-03-01',
                 ]),
                 bucket: $configs->get(MinioOption::Bucket),
+                prefix: $configs->get(MinioOption::Prefix)?$configs->get(MinioOption::Prefix):'',
                 visibility: new \League\Flysystem\AwsS3V3\PortableVisibilityConverter(Visibility::PUBLIC),
             ),
         };

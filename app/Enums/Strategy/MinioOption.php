@@ -16,6 +16,9 @@ final class MinioOption
     /** @var string Endpoint */
     const Endpoint = 'endpoint';
 
+    /** @var string 子目录 */
+    const Prefix = 'prefix';
+    
     /** @var string 区域 */
     const Region = 'region';
 
