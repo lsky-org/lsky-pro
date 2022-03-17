@@ -112,10 +112,10 @@ class Image extends Model
                 ->exists()
             ) {
                 // 删除本地缓存文件
-                Cache::forget("image_thumb_{$image->key}");
                 try {
                     // 删除物理文件
                     $image->filesystem()->delete($image->pathname);
+                    @unlink(public_path($image->getThumbnailPathname()));
                 } catch (\Throwable $e) {
                     Utils::e($e, '删除物理文件时发生异常');
                 }
@@ -182,9 +182,7 @@ class Image extends Model
     public function thumbUrl(): Attribute
     {
         return new Attribute(function () {
-
-            $path = trim(env('THUMBNAIL_PATH', 'thumbnails'), '/');
-            $pathname = $path."/{$this->md5}.png";
+            $pathname = $this->getThumbnailPathname();
 
             // 没有缩略图则返回原图
             if (! file_exists(public_path($pathname))) {
@@ -242,5 +240,10 @@ class Image extends Model
             return $this->generateKey(++$length);
         }
         return $key;
+    }
+
+    private function getThumbnailPathname(): string
+    {
+        return trim(env('THUMBNAIL_PATH', 'thumbnails'), '/')."/{$this->md5}.png";
     }
 }
