@@ -154,8 +154,8 @@ class Controller extends BaseController
                 $contents = Cache::get($cacheKey);
             } else {
                 $contents = $image->filesystem()->read($image->pathname);
-                // 是否启用了水印功能，跳过gif图片
-                if ($image->group?->configs->get(GroupConfigKey::IsEnableWatermark) && $image->mimetype !== 'image/gif') {
+                // 是否启用了水印功能，跳过gif和ico图片
+                if ($image->group?->configs->get(GroupConfigKey::IsEnableWatermark) && ! in_array($image->extension, ['ico', 'gif'])) {
                     $configs = $image->group?->configs->get(GroupConfigKey::WatermarkConfigs);
                     $contents = $service->stickWatermark($contents, collect($configs))->encode()->getEncoded();
                 }
