@@ -154,8 +154,8 @@ class Controller extends BaseController
                 $contents = Cache::get($cacheKey);
             } else {
                 $contents = $image->filesystem()->read($image->pathname);
-                // 是否启用了水印功能，跳过gif图片
-                if ($image->group?->configs->get(GroupConfigKey::IsEnableWatermark) && $image->mimetype !== 'image/gif') {
+                // 是否启用了水印功能，跳过gif和ico图片
+                if ($image->group?->configs->get(GroupConfigKey::IsEnableWatermark) && ! in_array($image->extension, ['ico', 'gif'])) {
                     $configs = $image->group?->configs->get(GroupConfigKey::WatermarkConfigs);
                     $contents = $service->stickWatermark($contents, collect($configs))->encode()->getEncoded();
                 }
@@ -174,11 +174,18 @@ class Controller extends BaseController
 
         $mimetype = $image->mimetype;
 
+        // ico 图片直接输出，不经过 InterventionImage 处理
+        if ($image->extension === 'ico') {
+            goto out;
+        }
+
         // 浏览器无法预览的图片，改为 png 格式输出
         if (in_array($image->extension, ['psd', 'tif', 'bmp'])) {
             $mimetype = 'image/png';
             $contents = InterventionImage::make($contents)->encode('png')->getEncoded();
         }
+
+        out:
 
         return \response()->stream(function () use ($contents) {
             echo $contents;

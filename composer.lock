@@ -417,16 +417,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.213.1",
+            "version": "3.214.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "7d361a532ccb7c6a640fdfd4be23980c0fa60fd1"
+                "reference": "a2eacf8c1b55de4733f4cfc315da38f1d4c66501"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/7d361a532ccb7c6a640fdfd4be23980c0fa60fd1",
-                "reference": "7d361a532ccb7c6a640fdfd4be23980c0fa60fd1",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/a2eacf8c1b55de4733f4cfc315da38f1d4c66501",
+                "reference": "a2eacf8c1b55de4733f4cfc315da38f1d4c66501",
                 "shasum": ""
             },
             "require": {
@@ -502,9 +502,9 @@
             "support": {
                 "forum": "https://forums.aws.amazon.com/forum.jspa?forumID=80",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.213.1"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.214.0"
             },
-            "time": "2022-03-15T20:28:59+00:00"
+            "time": "2022-03-16T19:00:00+00:00"
         },
         {
             "name": "brick/math",
@@ -10694,16 +10694,16 @@
         },
         {
             "name": "spatie/laravel-ignition",
-            "version": "1.0.9",
+            "version": "1.0.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-ignition.git",
-                "reference": "d7b223300d511145eea87fdabae1663c7c0088aa"
+                "reference": "71df77cad94aae4db904aaef1cc2f06950daed76"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-ignition/zipball/d7b223300d511145eea87fdabae1663c7c0088aa",
-                "reference": "d7b223300d511145eea87fdabae1663c7c0088aa",
+                "url": "https://api.github.com/repos/spatie/laravel-ignition/zipball/71df77cad94aae4db904aaef1cc2f06950daed76",
+                "reference": "71df77cad94aae4db904aaef1cc2f06950daed76",
                 "shasum": ""
             },
             "require": {
@@ -10777,7 +10777,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-03-11T14:19:27+00:00"
+            "time": "2022-03-17T11:01:36+00:00"
         },
         {
             "name": "symfony/debug",

@@ -75,8 +75,6 @@ class ImageService
             throw new UploadException('管理员关闭了游客上传');
         }
 
-        $img = InterventionImage::make($file);
-
         $image = new Image();
         /** @var User|null $user */
         $user = $request->user();
@@ -151,6 +149,8 @@ class ImageService
         );
         $pathname = $filename.".{$extension}";
 
+        [$width, $height] = @getimagesize($file->getRealPath()) ?: [400, 400];
+
         $image->fill([
             'md5' => md5_file($file->getRealPath()),
             'sha1' => sha1_file($file->getRealPath()),
@@ -160,8 +160,8 @@ class ImageService
             'size' => $file->getSize() / 1024,
             'mimetype' => $file->getMimeType(),
             'extension' => strtolower($extension),
-            'width' => $img->width(),
-            'height' => $img->height(),
+            'width' => $width,
+            'height' => $height,
             'is_unhealthy' => false,
             'uploaded_ip' => $request->ip(),
         ]);
@@ -226,7 +226,7 @@ class ImageService
         }
 
         // 生成缩略图
-        $this->makeThumbnail($image, $img);
+        $this->makeThumbnail($image, $file);
 
         return $image;
     }
@@ -459,7 +459,7 @@ class ImageService
      */
     public function makeThumbnail(Image $image, mixed $data, int $max = 400, bool $force = false): void
     {
-        $pathname = public_path(env('THUMBNAIL_PATH', 'thumbnails').'/'.$image->md5.'.png');
+        $pathname = public_path($image->getThumbnailPathname());
 
         if (! file_exists($pathname) || $force) {
             try {
@@ -485,6 +485,7 @@ class ImageService
 
             } catch (\Throwable $e) {
                 Utils::e($e, '生成缩略图时出现异常');
+                // TODO 直接将原图存下来？
             }
         }
     }
