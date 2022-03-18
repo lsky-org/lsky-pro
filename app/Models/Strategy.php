@@ -78,6 +78,14 @@ class Strategy extends Model
                 }
             }
         });
+
+        static::deleted(function (self $strategy) {
+            // 如果是本地策略，删除的时候同时删除符号连接
+            if ($strategy->key === StrategyKey::Local) {
+                $symlink = self::getRootPath($strategy->configs['url']);
+                @unlink(public_path($symlink));
+            }
+        });
     }
 
     public static function getRootPath($url): string
