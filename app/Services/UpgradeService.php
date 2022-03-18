@@ -113,6 +113,11 @@ class UpgradeService
             Artisan::call('migrate');
             // 清除配置缓存
             Cache::forget('configs');
+            // 清除缓存
+            Artisan::call('clear');
+            Artisan::call('route:clear');
+            Artisan::call('cache:clear');
+            Artisan::call('view:clear');
             Artisan::call('package:discover');
         } catch (\Throwable $e) {
             Utils::e($e, '升级失败');
