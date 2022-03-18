@@ -233,6 +233,11 @@ class Image extends Model
         return $this->belongsTo(Strategy::class, 'strategy_id', 'id');
     }
 
+    public function getThumbnailPathname(): string
+    {
+        return trim(env('THUMBNAIL_PATH', 'thumbnails'), '/')."/{$this->md5}.png";
+    }
+
     private function generateKey($length = 6): string
     {
         $key = Str::random($length);
@@ -240,10 +245,5 @@ class Image extends Model
             return $this->generateKey(++$length);
         }
         return $key;
-    }
-
-    private function getThumbnailPathname(): string
-    {
-        return trim(env('THUMBNAIL_PATH', 'thumbnails'), '/')."/{$this->md5}.png";
     }
 }
