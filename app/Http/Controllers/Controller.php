@@ -184,7 +184,7 @@ class Controller extends BaseController
         }
 
         // 浏览器无法预览的图片，改为 png 格式输出
-        if (in_array($image->extension, ['psd', 'tif', 'bmp'])) {
+        if (in_array($image->extension, ['psd', 'tif', 'tiff', 'bmp'])) {
             $mimetype = 'image/png';
             $contents = InterventionImage::make($contents)->encode('png')->getEncoded();
         }
