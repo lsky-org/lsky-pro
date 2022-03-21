@@ -377,6 +377,7 @@
                 let checkstr=image.url;
                 let check0="psd";
                 let check1="tif";
+                let check2="tiff";
                 if(checkstr.match(check0)){
                     let html=htm.replace(/__url__/g, "/thumbnails/"+image.md5+".png");
 
@@ -385,6 +386,13 @@
                 modal.open('content-modal')
                 }
                 else if(checkstr.match(check1)){
+                    let html=htm.replace(/__url__/g, "/thumbnails/"+image.md5+".png");
+
+                $('#modal-content').html(html);
+
+                modal.open('content-modal')
+                }
+                else if(checkstr.match(check2)){
                     let html=htm.replace(/__url__/g, "/thumbnails/"+image.md5+".png");
 
                 $('#modal-content').html(html);
