@@ -30,7 +30,7 @@
         </div>
         <footer class="absolute bottom-0 left-0 right-0 w-full bg-gray-200">
             <p class="container mx-auto py-2 px-5 sm:px-10 md:px-10 lg:px-10 xl:px-10 2xl:px-60 flex items-center text-gray-500 text-sm">
-                Copyright © 2018 - present Lsky Pro. All rights reserved. &nbsp;<a href="https://beian.miit.gov.cn/">{{ \App\Utils::config(\App\Enums\ConfigKey::IcpNo) }}</a>&nbsp;请勿上传违反中国大陆和香港法律的图片，违者后果自负。
+                Copyright © 2018 - present Lsky Pro. All rights reserved. &nbsp;<a href="https://beian.miit.gov.cn/" target="_blank" rel="noreferrer">{{ \App\Utils::config(\App\Enums\ConfigKey::IcpNo) }}</a>&nbsp;请勿上传违反中国大陆和香港法律的图片，违者后果自负。
             </p>
         </footer>
     </div>
