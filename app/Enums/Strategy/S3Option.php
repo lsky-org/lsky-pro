@@ -13,6 +13,9 @@ final class S3Option
     /** @var string SecretAccessKey */
     const SecretAccessKey = 'secret_access_key';
 
+    /** @var string Endpoint */
+    const Endpoint = 'endpoint';
+
     /** @var string 区域 */
     const Region = 'region';
 

@@ -251,6 +251,7 @@ class ImageService
                         'key'    => $configs->get(S3Option::AccessKeyId),
                         'secret' => $configs->get(S3Option::SecretAccessKey)
                     ],
+                    'endpoint' => $configs->get(S3Option::Endpoint),
                     'region' => $configs->get(S3Option::Region),
                     'version' => '2006-03-01',
                 ]),
