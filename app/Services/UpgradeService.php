@@ -82,8 +82,9 @@ class UpgradeService
             $this->setProgress('准备升级...');
 
             @ini_set('memory_limit', '1G');
+            @ini_set('max_execution_time', '86400');
             // 获取差异信息
-            $response = $this->http->timeout(30)->get('/diff/'.urlencode(Utils::config(ConfigKey::AppVersion)));
+            $response = $this->http->timeout(1800)->get('/diff/'.urlencode(Utils::config(ConfigKey::AppVersion)));
             if (! $response->successful()) {
                 throw new \Exception('无法请求升级服务器');
             }
