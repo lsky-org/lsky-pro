@@ -30,10 +30,10 @@
                         @endif
                     </div>
                     @if($image->extension === 'mp4')
-                    <video class="w-full h-36 object-cover transition-all group-hover:brightness-50" src="{{ $image->thumb_url }} " controls/>
+                    <video class="w-full h-36 object-cover transition-all group-hover:brightness-50" src="{{ $image->url }} " controls/>
                     @endif
                     @if($image->extension === 'webm')
-                    <video class="w-full h-36 object-cover transition-all group-hover:brightness-50" src="{{ $image->thumb_url }} " controls/>
+                    <video class="w-full h-36 object-cover transition-all group-hover:brightness-50" src="{{ $image->url }} " controls/>
                     @endif
                     <img class="w-full h-36 object-cover transition-all group-hover:brightness-50" src="{{ $image->thumb_url }}">
 
