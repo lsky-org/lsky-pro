@@ -42,6 +42,7 @@ use Intervention\Image\Facades\Image as InterventionImage;
 use Intervention\Image\Imagick\Font;
 use Intervention\Image\ImageManager;
 use League\Flysystem\AwsS3V3\AwsS3V3Adapter;
+use League\Flysystem\Config;
 use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemAdapter;
 use League\Flysystem\FilesystemException;
@@ -166,7 +167,14 @@ class ImageService
             'uploaded_ip' => $request->ip(),
         ]);
 
-        $filesystem = new Filesystem($this->getAdapter($strategy));
+        $filesystem = new Filesystem(
+            adapter: $this->getAdapter($strategy),
+            config: [
+                Config::OPTION_VISIBILITY => Visibility::PUBLIC,
+                Config::OPTION_DIRECTORY_VISIBILITY => Visibility::PUBLIC,
+            ]
+        );
+
         // 检测该策略是否存在该图片，有则只创建记录不保存文件
         /** @var Image $existing */
         $existing = Image::query()->when($image->strategy_id, function (Builder $builder, $id) {
