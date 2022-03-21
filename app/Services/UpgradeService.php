@@ -114,7 +114,6 @@ class UpgradeService
             // 清除配置缓存
             Cache::forget('configs');
             // 清除缓存
-            Artisan::call('clear');
             Artisan::call('route:clear');
             Artisan::call('cache:clear');
             Artisan::call('view:clear');
