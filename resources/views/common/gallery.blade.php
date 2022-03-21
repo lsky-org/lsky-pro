@@ -15,8 +15,20 @@
                         @if($image->extension === 'gif')
                             <span class="absolute top-1 right-1 z-[1] bg-white rounded-md text-sm px-1 py-0">Gif</span>
                         @endif
+                        @if($image->extension === 'mp4')
+                            <span class="absolute top-1 right-1 z-[1] bg-white rounded-md text-sm px-1 py-0">mp4</span>
+                        @endif    
+                        @if($image->extension === 'webm')
+                            <span class="absolute top-1 right-1 z-[1] bg-white rounded-md text-sm px-1 py-0">mp4</span>
+                        @endif
                         <a target="_blank" href="{{ $image->url }}">
                             <div class="relative overflow-hidden w-full h-32">
+                                @if($image->extension === 'mp4')
+                                <video class="grow object-cover object-center w-full h-full" src="{{ $image->thumb_url }} " controls/>
+                                @if($image->extension === 'webm')
+                                @endif
+                                <video class="grow object-cover object-center w-full h-full" src="{{ $image->thumb_url }} " controls/>
+                                @endif
                                 <img class="grow object-cover object-center w-full h-full" src="{{ $image->thumb_url }}"/>
                             </div>
                         </a>
