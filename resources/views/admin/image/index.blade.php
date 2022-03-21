@@ -353,9 +353,8 @@
 
             $('.item').click(function () {
                 let image = $(this).data('json');
-                let html = $('#image-tpl').html()
+                let htm = $('#image-tpl').html()
                     .replace(/__id__/g, image.id)
-                    .replace(/__url__/g, image.url)
                     .replace(/__user_name__/g, image.user ? image.user.name+'('+image.user.email+')' : '游客')
                     .replace(/__user_email__/g, image.user ? image.user.email : '-')
                     .replace(/__album_name__/g, image.album ? image.album.name : '-')
@@ -374,10 +373,39 @@
                     .replace(/__is_unhealthy__/g, image.is_unhealthy ? '<span class="text-red-500"><i class="fas fa-exclamation-triangle"></i> 是</span>' : '否')
                     .replace(/__uploaded_ip__/g, image.uploaded_ip)
                     .replace(/__created_at__/g, image.created_at);
+                // 检查是否为无法预览的psd,tif,bmp
+                let checkstr=image.url;
+                let check0="psd";
+                let check1="tif";
+                let check2="bmp";
+                if(checkstr.match(check0)){
+                    let html=htm.replace(/__url__/g, "/thumbnails/"+image.md5+".png");
 
                 $('#modal-content').html(html);
 
                 modal.open('content-modal')
+                }
+                else if(checkstr.match(check1)){
+                    let html=htm.replace(/__url__/g, "/thumbnails/"+image.md5+".png");
+
+                $('#modal-content').html(html);
+
+                modal.open('content-modal')
+                }
+                else if(checkstr.match(check2)){
+                    let html=htm.replace(/__url__/g, "/thumbnails/"+image.md5+".png");
+
+                $('#modal-content').html(html);
+
+                modal.open('content-modal')
+                }
+                else{
+                    let html = htm.replace(/__url__/g, image.url);
+
+                $('#modal-content').html(html);
+
+                modal.open('content-modal')
+                }
             });
 
             $('.item-user').click(function (e) {
