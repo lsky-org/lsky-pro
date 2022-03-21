@@ -42,7 +42,6 @@ use Intervention\Image\Facades\Image as InterventionImage;
 use Intervention\Image\Imagick\Font;
 use Intervention\Image\ImageManager;
 use League\Flysystem\AwsS3V3\AwsS3V3Adapter;
-use League\Flysystem\Config;
 use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemAdapter;
 use League\Flysystem\FilesystemException;
@@ -51,7 +50,6 @@ use League\Flysystem\Ftp\FtpConnectionOptions;
 use League\Flysystem\Local\LocalFilesystemAdapter;
 use League\Flysystem\PhpseclibV2\SftpAdapter;
 use League\Flysystem\PhpseclibV2\SftpConnectionProvider;
-use League\Flysystem\Visibility;
 use League\Flysystem\WebDAV\WebDAVAdapter;
 use Overtrue\Flysystem\Cos\CosAdapter;
 use Overtrue\Flysystem\Qiniu\QiniuAdapter;
@@ -166,13 +164,7 @@ class ImageService
             'uploaded_ip' => $request->ip(),
         ]);
 
-        $filesystem = new Filesystem(
-            adapter: $this->getAdapter($strategy),
-            config: [
-                Config::OPTION_VISIBILITY => Visibility::PUBLIC,
-                Config::OPTION_DIRECTORY_VISIBILITY => Visibility::PUBLIC,
-            ]
-        );
+        $filesystem = new Filesystem($this->getAdapter($strategy));
 
         // 检测该策略是否存在该图片，有则只创建记录不保存文件
         /** @var Image $existing */
