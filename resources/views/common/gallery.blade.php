@@ -24,10 +24,10 @@
                         <a target="_blank" href="{{ $image->url }}">
                             <div class="relative overflow-hidden w-full h-32">
                                 @if($image->extension === 'mp4')
-                                <video class="grow object-cover object-center w-full h-full" src="{{ $image->thumb_url }} " controls/>
+                                <video class="grow object-cover object-center w-full h-full" src="{{ $image->url }} " controls/>
                                 @if($image->extension === 'webm')
                                 @endif
-                                <video class="grow object-cover object-center w-full h-full" src="{{ $image->thumb_url }} " controls/>
+                                <video class="grow object-cover object-center w-full h-full" src="{{ $image->url }} " controls/>
                                 @endif
                                 <img class="grow object-cover object-center w-full h-full" src="{{ $image->thumb_url }}"/>
                             </div>
