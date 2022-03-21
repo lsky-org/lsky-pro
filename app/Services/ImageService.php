@@ -51,7 +51,6 @@ use League\Flysystem\Ftp\FtpConnectionOptions;
 use League\Flysystem\Local\LocalFilesystemAdapter;
 use League\Flysystem\PhpseclibV2\SftpAdapter;
 use League\Flysystem\PhpseclibV2\SftpConnectionProvider;
-use League\Flysystem\UnixVisibility\PortableVisibilityConverter;
 use League\Flysystem\Visibility;
 use League\Flysystem\WebDAV\WebDAVAdapter;
 use Overtrue\Flysystem\Cos\CosAdapter;
@@ -256,7 +255,6 @@ class ImageService
                     'version' => '2006-03-01',
                 ]),
                 bucket: $configs->get(S3Option::Bucket),
-                visibility: new \League\Flysystem\AwsS3V3\PortableVisibilityConverter(Visibility::PUBLIC),
             ),
             StrategyKey::Oss => new OssAdapter(
                 client: new OssClient(
@@ -292,16 +290,6 @@ class ImageService
                     useAgent: (bool)$configs->get(SftpOption::UseAgent)
                 ),
                 root: $configs->get(SftpOption::Root),
-                visibilityConverter: PortableVisibilityConverter::fromArray([
-                    'file' => [
-                        'public' => 0640,
-                        'private' => 0604,
-                    ],
-                    'dir' => [
-                        'public' => 0740,
-                        'private' => 7604,
-                    ],
-                ])
             ),
             StrategyKey::Ftp => new FtpAdapter(
                 connectionOptions: FtpConnectionOptions::fromArray([
@@ -331,7 +319,6 @@ class ImageService
                     'version' => '2006-03-01',
                 ]),
                 bucket: $configs->get(MinioOption::Bucket),
-                visibility: new \League\Flysystem\AwsS3V3\PortableVisibilityConverter(Visibility::PUBLIC),
             ),
         };
     }
