@@ -86,7 +86,7 @@ return [
             GroupConfigKey::LimitPerDay => 300,
             GroupConfigKey::LimitPerWeek => 600,
             GroupConfigKey::LimitPerMonth => 999,
-            GroupConfigKey::AcceptedFileSuffixes => ['jpeg', 'jpg', 'png', 'gif', 'tif', 'bmp', 'ico', 'psd', 'webp'],
+            GroupConfigKey::AcceptedFileSuffixes => ['jpeg', 'jpg', 'png', 'gif', 'tif', 'bmp', 'ico', 'psd', 'webp', 'mp4', 'webm'],
             GroupConfigKey::PathNamingRule => '{Y}/{m}/{d}',
             GroupConfigKey::FileNamingRule => '{uniqid}',
             GroupConfigKey::ImageCacheTtl => 2626560,
