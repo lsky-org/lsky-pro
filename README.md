@@ -51,6 +51,7 @@
 - exec、shell_exec 函数
 - readlink、symlink 函数
 - putenv、getenv 函数
+- chmod、chown、fileperms 函数
 
 ### 😋 鸣谢
 - [Laravel](https://laravel.com)
