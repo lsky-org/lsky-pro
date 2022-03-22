@@ -73,6 +73,7 @@ class ImageController extends Controller
             $image->group?->setVisible(['name']);
             $image->strategy?->setVisible(['name']);
         });
+
         $images->appends(compact('keywords'));
 
         return view('admin.image.index', compact('images'));
