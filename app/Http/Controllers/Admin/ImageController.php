@@ -66,7 +66,7 @@ class ImageController extends Controller
             foreach ($words as $word) {
                 $builder->where('origin_name', 'like', "%{$word}%")->orWhere('alias_name', 'like', "%{$word}%");
             }
-        })->latest()->paginate(1);
+        })->latest()->paginate(40);
         $images->getCollection()->each(function (Image $image) {
             $image->append('url', 'pathname', 'thumb_url');
             $image->album?->setVisible(['name']);
