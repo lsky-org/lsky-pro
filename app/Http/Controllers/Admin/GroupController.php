@@ -28,9 +28,12 @@ class GroupController extends Controller
 
     public function index(Request $request): View
     {
-        $groups = Group::query()->when($request->query('keywords'), function (Builder $builder, $keywords) {
+        $keywords = $request->query('keywords');
+        $groups = Group::query()->when($keywords, function (Builder $builder, $keywords) {
             $builder->where('name', 'like', "%{$keywords}%");
         })->withCount('users')->withCount('strategies')->latest()->paginate();
+
+        $groups->appends(compact('keywords'));
 
         $this->share();
 
