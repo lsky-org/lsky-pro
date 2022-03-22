@@ -69,6 +69,10 @@ class Controller extends BaseController
             'intro' => '执行外部命令',
             'result' => function_exists('exec') && function_exists('shell_exec'),
         ])->push([
+            'name' => 'chmod、chown、fileperms 函数',
+            'intro' => '设置和获取文件、文件夹权限函数',
+            'result' => function_exists('chmod') && function_exists('chown') && function_exists('fileperms'),
+        ])->push([
             'name' => 'PHP >= 8.0.2',
             'intro' => '最低要求 PHP 8.0.2 版本',
             'result' => phpversion() >= 8,

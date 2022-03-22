@@ -73,6 +73,7 @@ class StrategyRequest extends FormRequest
             StrategyKey::S3 => [
                 'configs.access_key_id' => 'required',
                 'configs.secret_access_key' => 'required',
+                'configs.endpoint' => '',
                 'configs.region' => '',
                 'configs.bucket' => 'required',
             ],
@@ -126,7 +127,7 @@ class StrategyRequest extends FormRequest
             StrategyKey::Minio => [
                 'configs.access_key' => 'required',
                 'configs.secret_key' => 'required',
-                'configs.endpoint' => 'required',
+                'configs.endpoint' => '',
                 'configs.prefix' => '',
                 'configs.region' => '',
                 'configs.bucket' => 'required',
@@ -150,6 +151,7 @@ class StrategyRequest extends FormRequest
             StrategyKey::S3 => [
                 'configs.access_key_id' => 'AccessKeyId',
                 'configs.secret_access_key' => 'SecretAccessKey',
+                'configs.endpoint' => '连接地址',
                 'configs.region' => '区域',
                 'configs.bucket' => '储存桶名称',
             ],

@@ -50,8 +50,6 @@ use League\Flysystem\Ftp\FtpConnectionOptions;
 use League\Flysystem\Local\LocalFilesystemAdapter;
 use League\Flysystem\PhpseclibV2\SftpAdapter;
 use League\Flysystem\PhpseclibV2\SftpConnectionProvider;
-use League\Flysystem\UnixVisibility\PortableVisibilityConverter;
-use League\Flysystem\Visibility;
 use League\Flysystem\WebDAV\WebDAVAdapter;
 use Overtrue\Flysystem\Cos\CosAdapter;
 use Overtrue\Flysystem\Qiniu\QiniuAdapter;
@@ -167,6 +165,7 @@ class ImageService
         ]);
 
         $filesystem = new Filesystem($this->getAdapter($strategy));
+
         // 检测该策略是否存在该图片，有则只创建记录不保存文件
         /** @var Image $existing */
         $existing = Image::query()->when($image->strategy_id, function (Builder $builder, $id) {
@@ -244,11 +243,11 @@ class ImageService
                         'key'    => $configs->get(S3Option::AccessKeyId),
                         'secret' => $configs->get(S3Option::SecretAccessKey)
                     ],
+                    'endpoint' => $configs->get(S3Option::Endpoint),
                     'region' => $configs->get(S3Option::Region),
                     'version' => '2006-03-01',
                 ]),
                 bucket: $configs->get(S3Option::Bucket),
-                visibility: new \League\Flysystem\AwsS3V3\PortableVisibilityConverter(Visibility::PUBLIC),
             ),
             StrategyKey::Oss => new OssAdapter(
                 client: new OssClient(
@@ -284,16 +283,6 @@ class ImageService
                     useAgent: (bool)$configs->get(SftpOption::UseAgent)
                 ),
                 root: $configs->get(SftpOption::Root),
-                visibilityConverter: PortableVisibilityConverter::fromArray([
-                    'file' => [
-                        'public' => 0640,
-                        'private' => 0604,
-                    ],
-                    'dir' => [
-                        'public' => 0740,
-                        'private' => 7604,
-                    ],
-                ])
             ),
             StrategyKey::Ftp => new FtpAdapter(
                 connectionOptions: FtpConnectionOptions::fromArray([
@@ -323,8 +312,7 @@ class ImageService
                     'version' => '2006-03-01',
                 ]),
                 bucket: $configs->get(MinioOption::Bucket),
-                prefix: $configs->get(MinioOption::Prefix)?$configs->get(MinioOption::Prefix):'',
-                visibility: new \League\Flysystem\AwsS3V3\PortableVisibilityConverter(Visibility::PUBLIC),
+                prefix: $configs->get(MinioOption::Prefix)?$configs->get(MinioOption::Prefix):''
             ),
         };
     }
