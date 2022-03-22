@@ -235,7 +235,7 @@ class Image extends Model
 
     public function getThumbnailPathname(): string
     {
-        return trim(env('THUMBNAIL_PATH', 'thumbnails'), '/')."/{$this->md5}.png";
+        return trim(config('app.thumbnail_path'), '/')."/{$this->md5}.png";
     }
 
     private function generateKey($length = 6): string
