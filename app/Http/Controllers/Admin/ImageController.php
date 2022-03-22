@@ -17,9 +17,10 @@ class ImageController extends Controller
 {
     public function index(Request $request): View
     {
+        $keywords = $request->query('keywords');
         $images = Image::query()->with(['user' => function (BelongsTo $belongsTo) {
             $belongsTo->withSum('images', 'size');
-        }, 'album', 'group', 'strategy'])->when($request->input('keywords'), function (Builder $builder, $keywords) {
+        }, 'album', 'group', 'strategy'])->when($keywords, function (Builder $builder, $keywords) {
             $words = [];
             $qualifiers = [
                 'name:', 'album:', 'group:', 'strategy:', 'email:', 'extension:', 'md5:', 'sha1:', 'ip:', 'is:', 'order:',
@@ -65,13 +66,14 @@ class ImageController extends Controller
             foreach ($words as $word) {
                 $builder->where('origin_name', 'like', "%{$word}%")->orWhere('alias_name', 'like', "%{$word}%");
             }
-        })->latest()->paginate(40);
+        })->latest()->paginate(1);
         $images->getCollection()->each(function (Image $image) {
             $image->append('url', 'pathname', 'thumb_url');
             $image->album?->setVisible(['name']);
             $image->group?->setVisible(['name']);
             $image->strategy?->setVisible(['name']);
         });
+        $images->appends(compact('keywords'));
 
         return view('admin.image.index', compact('images'));
     }
