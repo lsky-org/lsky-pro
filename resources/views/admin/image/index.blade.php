@@ -353,9 +353,10 @@
 
             $('.item').click(function () {
                 let image = $(this).data('json');
+                let previewUrl = ['psd', 'tif'].indexOf(image.extension) === -1 ? image.url : image.thumb_url;
                 let html = $('#image-tpl').html()
                     .replace(/__id__/g, image.id)
-                    .replace(/__url__/g, image.url)
+                    .replace(/__url__/g, previewUrl)
                     .replace(/__user_name__/g, image.user ? image.user.name+'('+image.user.email+')' : '游客')
                     .replace(/__user_email__/g, image.user ? image.user.email : '-')
                     .replace(/__album_name__/g, image.album ? image.album.name : '-')
