@@ -83,7 +83,7 @@ class Group extends Model
      */
     public static function getDefaultConfigs(): Collection
     {
-        return collect(config('convention.app.group'));
+        return collect(config('convention.group'));
     }
 
     public function users(): HasMany

@@ -35,7 +35,7 @@ class InstallSeeder extends Seeder
                 'name' => '系统默认组&游客组',
                 'is_default' => true,
                 'is_guest' => true,
-                'configs' => config('convention.app.group'),
+                'configs' => config('convention.group'),
             ]);
             // 创建默认策略
             $group->strategies()->create([
