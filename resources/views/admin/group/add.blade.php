@@ -116,9 +116,34 @@
                             </div>
                             <div class="col-span-6 mb-4">
                                 <x-fieldset title="审核驱动">
-                                    <x-fieldset-radio id="configs[scan_configs][driver]" name="configs[scan_configs][driver]" data-select="scan" value="aliyun" checked>阿里云</x-fieldset-radio>
+                                    <x-fieldset-radio id="configs[scan_configs][driver]_tencent" name="configs[scan_configs][driver]" data-select="scan" value="tencent" checked>腾讯云</x-fieldset-radio>
+                                    <x-fieldset-radio id="configs[scan_configs][driver]_aliyun" name="configs[scan_configs][driver]" data-select="scan" value="aliyun">阿里云</x-fieldset-radio>
                                 </x-fieldset>
                             </div>
+
+                            <div class="hidden mb-4" data-scan-driver="tencent">
+                                <div class="col-span-6 sm:col-span-3 mb-4">
+                                    <label for="configs[scan_configs][drivers][tencent][endpoint]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>Endpoint</label>
+                                    <x-input type="text" name="configs[scan_configs][drivers][tencent][endpoint]" id="configs[scan_configs][drivers][tencent][endpoint]" autocomplete="endpoint" placeholder="请输入 Endpoint" value="ims.tencentcloudapi.com" />
+                                </div>
+                                <div class="col-span-6 sm:col-span-3 mb-4">
+                                    <label for="configs[scan_configs][drivers][tencent][secret_id]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>SecretId</label>
+                                    <x-input type="text" name="configs[scan_configs][drivers][tencent][secret_id]" id="configs[scan_configs][drivers][tencent][secret_id]" autocomplete="secret_id" placeholder="请输入 SecretId" />
+                                </div>
+                                <div class="col-span-6 sm:col-span-3 mb-4">
+                                    <label for="configs[scan_configs][drivers][tencent][secret_key]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>SecretKey</label>
+                                    <x-input type="password" name="configs[scan_configs][drivers][tencent][secret_key]" id="configs[scan_configs][drivers][tencent][secret_key]" autocomplete="secret_key" placeholder="请输入 SecretKey" />
+                                </div>
+                                <div class="col-span-6 sm:col-span-3 mb-4">
+                                    <label for="configs[scan_configs][drivers][tencent][region]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>地域</label>
+                                    <x-input type="text" name="configs[scan_configs][drivers][tencent][region]" id="configs[scan_configs][drivers][tencent][region]" autocomplete="region" placeholder="请输入地域节点，例如：ap-beijing" />
+                                </div>
+                                <div class="col-span-6 sm:col-span-3 mb-4">
+                                    <label for="configs[scan_configs][drivers][tencent][biz_type]" class="block text-sm font-medium text-gray-700">场景名称</label>
+                                    <x-input type="text" name="configs[scan_configs][drivers][tencent][biz_type]" id="configs[scan_configs][drivers][tencent][biz_type]" autocomplete="biz_type" placeholder="业务场景名称，可为空" />
+                                </div>
+                            </div>
+
                             <div class="hidden mb-4" data-scan-driver="aliyun">
                                 <div class="col-span-6 sm:col-span-3 mb-4">
                                     <label for="configs[scan_configs][drivers][aliyun][access_key_id]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>AccessKeyId</label>
@@ -129,12 +154,12 @@
                                     <x-input type="password" name="configs[scan_configs][drivers][aliyun][access_key_secret]" id="configs[scan_configs][drivers][aliyun][access_key_secret]" autocomplete="access_key_id" placeholder="请输入 AccessKeySecret" />
                                 </div>
                                 <div class="col-span-6 sm:col-span-3 mb-4">
-                                    <label for="configs[scan_configs][drivers][aliyun][biz_type]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>场景名称</label>
-                                    <x-input type="text" name="configs[scan_configs][drivers][aliyun][biz_type]" id="configs[scan_configs][drivers][aliyun][biz_type]" autocomplete="biz_type" placeholder="请输入业务场景名称" />
-                                </div>
-                                <div class="col-span-6 sm:col-span-3 mb-4">
                                     <label for="configs[scan_configs][drivers][aliyun][region_id]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>地域节点</label>
                                     <x-input type="text" name="configs[scan_configs][drivers][aliyun][region_id]" id="configs[scan_configs][drivers][aliyun][region_id]" autocomplete="region_id" placeholder="请输入地域节点，例如：cn-shanghai" />
+                                </div>
+                                <div class="col-span-6 sm:col-span-3 mb-4">
+                                    <label for="configs[scan_configs][drivers][aliyun][biz_type]" class="block text-sm font-medium text-gray-700">场景名称</label>
+                                    <x-input type="text" name="configs[scan_configs][drivers][aliyun][biz_type]" id="configs[scan_configs][drivers][aliyun][biz_type]" autocomplete="biz_type" placeholder="请输入业务场景名称" />
                                 </div>
                                 <div class="col-span-6 sm:col-span-3 mb-4">
                                     <x-fieldset title="审核场景">

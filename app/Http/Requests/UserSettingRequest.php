@@ -19,6 +19,7 @@ class UserSettingRequest extends FormRequest
             'configs.default_album' => 'required|numeric',
             'configs.default_strategy' => 'required|numeric',
             'configs.default_permission' => 'required|in:1,0',
+            'configs.pasted_action' => 'required|in:1,2',
             'configs.is_auto_clear_preview' => 'nullable|boolean'
         ];
     }
@@ -37,6 +38,8 @@ class UserSettingRequest extends FormRequest
             'configs.default_strategy.numeric' => '默认策略选择错误',
             'configs.default_permission.required' => '权限值选择错误',
             'configs.default_permission.in' => '权限值不正确',
+            'configs.pasted_action.required' => '粘贴动作值选择错误',
+            'configs.pasted_action.in' => '粘贴动作值不正确',
             'configs.is_auto_clear_preview.boolean' => '是否自动清除预览选择错误'
         ];
     }

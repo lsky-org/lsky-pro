@@ -8,6 +8,7 @@ use App\Enums\ConfigKey;
 use App\Enums\GroupConfigKey;
 use App\Enums\ImagePermission;
 use App\Enums\Scan\AliyunOption;
+use App\Enums\Scan\TencentOption;
 use App\Enums\Strategy\CosOption;
 use App\Enums\Strategy\FtpOption;
 use App\Enums\Strategy\KodoOption;
@@ -54,6 +55,11 @@ use League\Flysystem\WebDAV\WebDAVAdapter;
 use Overtrue\Flysystem\Cos\CosAdapter;
 use Overtrue\Flysystem\Qiniu\QiniuAdapter;
 use Sabre\DAV\Client;
+use TencentCloud\Common\Credential;
+use TencentCloud\Common\Profile\ClientProfile;
+use TencentCloud\Common\Profile\HttpProfile;
+use TencentCloud\Ims\V20201229\ImsClient;
+use TencentCloud\Ims\V20201229\Models\ImageModerationRequest;
 use WispX\Flysystem\Upyun\UpyunAdapter;
 use Zing\Flysystem\Oss\OssAdapter;
 use OSS\OssClient;
@@ -208,10 +214,15 @@ class ImageService
             throw new UploadException('图片记录保存失败');
         }
 
-        // 图片检测
-        if ($configs->get(GroupConfigKey::IsEnableScan)) {
+        // 图片检测，跳过 tif 以及 psd 格式
+        if ($configs->get(GroupConfigKey::IsEnableScan) && ! in_array($extension, ['psd', 'tif'])) {
             $scanConfigs = $configs->get(GroupConfigKey::ScanConfigs);
-            if ($this->scan($scanConfigs['driver'], collect($scanConfigs['drivers'][$scanConfigs['driver']]), $image)) {
+            if ($this->scan(
+                driver: $scanConfigs['driver'],
+                configs: collect($scanConfigs['drivers'][$scanConfigs['driver']]),
+                image: $image,
+                file: $file,
+            )) {
                 // 标记 or 删除
                 if ($configs->get(GroupConfigKey::ScannedAction) === 'delete') {
                     $image->delete();
@@ -354,14 +365,47 @@ class ImageService
      * @param $driver
      * @param  Collection  $configs
      * @param  Image  $image
+     * @param  UploadedFile $file
      * @return bool true=违规
      * @throws UploadException
      */
-    public function scan($driver, Collection $configs, Image $image): bool
+    public function scan($driver, Collection $configs, Image $image, UploadedFile $file): bool
     {
         $flag = false;
         try {
+            if ($driver === 'tencent') {
+                // 图片大小不得超过 5mb
+                if ($file->getSize() >= 5242880) {
+                    return false;
+                }
+
+                $cred = new Credential($configs->get(TencentOption::SecretId), $configs->get(TencentOption::SecretKey));
+                $httpProfile = new HttpProfile();
+                $httpProfile->setEndpoint($configs->get(TencentOption::Endpoint));
+                $clientProfile = new ClientProfile();
+                $clientProfile->setHttpProfile($httpProfile);
+                $client = new ImsClient($cred, $configs->get(TencentOption::Region), $clientProfile);
+                $req = new ImageModerationRequest();
+                $params = [
+                    "FileContent" => base64_encode($file->getContent()),
+                ];
+                if ($configs->get(TencentOption::BizType)) {
+                    $params['BizType'] = $configs->get(TencentOption::BizType);
+                }
+                $req->fromJsonString(json_encode($params));
+                $resp = $client->ImageModeration($req);
+
+                if ($resp->getSuggestion() === 'Block') {
+                    $flag = true;
+                }
+            }
+
             if ($driver === 'aliyun') {
+                // 20 mb以内、宽高不超过 30000px
+                if ($file->getSize() >= 20971520 || $image->width >= 30000 || $image->height >= 30000) {
+                    return false;
+                }
+
                 AlibabaCloud::accessKeyClient(
                     $configs->get(AliyunOption::AccessKeyId),
                     $configs->get(AliyunOption::AccessKeySecret),

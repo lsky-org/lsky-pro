@@ -10,14 +10,13 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Log;
 use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemException;
 use League\Flysystem\Local\LocalFilesystemAdapter;
 
 class UpgradeService
 {
-    const ApiUrl = 'https://api.lsky.pro/v1';
+    const ApiUrl = 'https://api.lsky.pro/v2';
 
     /** @var array|array[] 所有版本 */
     protected array $versions = [];
@@ -34,7 +33,7 @@ class UpgradeService
 
     public function __construct(protected string $version)
     {
-        $this->http = Http::baseUrl(self::ApiUrl)->withOptions(['timeout' => 30])->timeout(30);
+        $this->http = Http::baseUrl(self::ApiUrl)->withOptions(['timeout' => 1800])->timeout(1800);
         $this->filesystem = new Filesystem(new LocalFilesystemAdapter(base_path()));
     }
 
@@ -55,7 +54,7 @@ class UpgradeService
     public function getVersions(): Collection
     {
         if (! $this->versions) {
-            $response = $this->http->timeout(30)->get('/versions');
+            $response = $this->http->get('/versions');
             if (! $response->successful()) {
                 throw new \Exception('无法请求升级服务器');
             }
@@ -84,19 +83,21 @@ class UpgradeService
             @ini_set('memory_limit', '1G');
             @ini_set('max_execution_time', '86400');
             // 获取差异信息
-            $response = $this->http
-                ->withOptions(['timeout' => 1800])
-                ->timeout(1800)
-                ->get('/diff/'.urlencode(Utils::config(ConfigKey::AppVersion)));
-            if (! $response->successful()) {
+            $response = $this->http->get('/diff/'.urlencode(Utils::config(ConfigKey::AppVersion)));
+            if ($response->failed()) {
                 throw new \Exception('无法请求升级服务器');
             }
-            $files = $response->json();
+            $result = $response->json();
+            $files = $result['files'];
 
             $this->setProgress('下载补丁包...');
             foreach ($files as $file) {
                 if ($file['action'] === 'deleted') continue;
-                $this->filesystem->write($this->temp.'/'.$file['pathname'], base64_decode($file['content']));
+                $res = $this->http->baseUrl($result['download_url'])->get($file['pathname']);
+                if ($res->failed()) {
+                    throw new \Exception("补丁文件 {$file['pathname']} 下载失败。");
+                }
+                $this->filesystem->write($this->temp.'/'.$file['pathname'], $res->body());
                 // 校验文件
                 if ($file['md5'] !== md5_file(base_path($this->temp).'/'.$file['pathname'])) {
                     throw new \Exception("补丁文件 {$file['pathname']} 校验失败。");

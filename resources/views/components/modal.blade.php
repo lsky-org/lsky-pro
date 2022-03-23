@@ -1,6 +1,6 @@
 @props(['id' => 'modal'])
 
-<div {{ $attributes->merge(['class' => "fixed z-10 inset-0 overflow-y-auto"]) }} role="dialog" aria-modal="true" x-data x-cloak x-show="$store.modal.isOpen('{{ $id }}')">
+<div {{ $attributes->merge(['id' => $id, 'class' => "fixed z-10 inset-0 overflow-y-auto"]) }} role="dialog" aria-modal="true" x-data x-cloak x-show="$store.modal.isOpen('{{ $id }}')">
     <div class="flex min-h-screen text-center md:block md:px-2 lg:px-4" style="font-size: 0">
         <div x-transition:enter="transition ease-out duration-300"
              x-transition:enter-start="transform opacity-0"
