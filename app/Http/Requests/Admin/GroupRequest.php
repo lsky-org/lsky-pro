@@ -43,7 +43,7 @@ class GroupRequest extends FormRequest
                 'exclude_if:configs.is_enable_scan,false',
                 'in:mark,delete',
             ],
-            'configs.scan_configs.driver' => ['exclude_if:configs.is_enable_scan,false', 'in:tencent,aliyun,baidu'],
+            'configs.scan_configs.driver' => ['exclude_if:configs.is_enable_scan,false', 'in:tencent,aliyun'],
             'configs.scan_configs.drivers.tencent.endpoint' => [$requiredIfReview('tencent')],
             'configs.scan_configs.drivers.tencent.secret_id' => [$requiredIfReview('tencent')],
             'configs.scan_configs.drivers.tencent.secret_key' => [$requiredIfReview('tencent')],

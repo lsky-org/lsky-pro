@@ -429,10 +429,6 @@ class ImageService
                     }
                 }
             }
-
-            if ($driver === 'baidu') {
-
-            }
         } catch (\Throwable $e) {
             throw new UploadException('Scan: '.$e->getMessage());
         }
