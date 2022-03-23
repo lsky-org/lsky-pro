@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "611dd24a26159f4429cb23742e3ba089",
+    "content-hash": "0a46ddcea87c0f61efcd32e23425e568",
     "packages": [
         {
             "name": "adbario/php-dot-notation",
@@ -417,16 +417,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.215.0",
+            "version": "3.215.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "79c4ffdf93cdcc7be9196ae2e22f0d0323cb2557"
+                "reference": "8ddbc5242ec59a22b2c4704867e028343c6d8ade"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/79c4ffdf93cdcc7be9196ae2e22f0d0323cb2557",
-                "reference": "79c4ffdf93cdcc7be9196ae2e22f0d0323cb2557",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/8ddbc5242ec59a22b2c4704867e028343c6d8ade",
+                "reference": "8ddbc5242ec59a22b2c4704867e028343c6d8ade",
                 "shasum": ""
             },
             "require": {
@@ -502,9 +502,9 @@
             "support": {
                 "forum": "https://forums.aws.amazon.com/forum.jspa?forumID=80",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.215.0"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.215.2"
             },
-            "time": "2022-03-18T18:16:01+00:00"
+            "time": "2022-03-22T19:02:23+00:00"
         },
         {
             "name": "brick/math",
@@ -7650,6 +7650,93 @@
             "time": "2022-03-02T12:58:14+00:00"
         },
         {
+            "name": "tencentcloud/common",
+            "version": "3.0.599",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/tencentcloud-sdk-php/common.git",
+                "reference": "135a83776d1e3d49394399e8e2eae08984593290"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/tencentcloud-sdk-php/common/zipball/135a83776d1e3d49394399e8e2eae08984593290",
+                "reference": "135a83776d1e3d49394399e8e2eae08984593290",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "^6.3||^7.0",
+                "php": ">=5.6.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "TencentCloud\\": "./src/TencentCloud"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "tencentcloudapi",
+                    "email": "tencentcloudapi@tencent.com",
+                    "homepage": "https://cloud.tencent.com/document/sdk/PHP",
+                    "role": "Developer"
+                }
+            ],
+            "description": "TencentCloudApi php sdk",
+            "homepage": "https://github.com/tencentcloud-sdk-php/common",
+            "support": {
+                "issues": "https://github.com/tencentcloud-sdk-php/common/issues",
+                "source": "https://github.com/tencentcloud-sdk-php/common/tree/3.0.599"
+            },
+            "time": "2022-03-23T00:34:04+00:00"
+        },
+        {
+            "name": "tencentcloud/ims",
+            "version": "3.0.599",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/tencentcloud-sdk-php/ims.git",
+                "reference": "09e759818ed0cb8d4d2c82db1c6731294ae875f1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/tencentcloud-sdk-php/ims/zipball/09e759818ed0cb8d4d2c82db1c6731294ae875f1",
+                "reference": "09e759818ed0cb8d4d2c82db1c6731294ae875f1",
+                "shasum": ""
+            },
+            "require": {
+                "tencentcloud/common": "3.0.599"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "TencentCloud\\": "./src/TencentCloud"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "tencentcloudapi",
+                    "email": "tencentcloudapi@tencent.com",
+                    "homepage": "https://github.com/tencentcloud-sdk-php/ims",
+                    "role": "Developer"
+                }
+            ],
+            "description": "TencentCloudApi php sdk ims",
+            "homepage": "https://github.com/tencentcloud-sdk-php/ims",
+            "support": {
+                "issues": "https://github.com/tencentcloud-sdk-php/ims/issues",
+                "source": "https://github.com/tencentcloud-sdk-php/ims/tree/3.0.599"
+            },
+            "time": "2022-03-23T00:41:49+00:00"
+        },
+        {
             "name": "tijsverkoyen/css-to-inline-styles",
             "version": "2.2.4",
             "source": {
@@ -7967,16 +8054,16 @@
         },
         {
             "name": "zing/flysystem-oss",
-            "version": "2.2.0",
+            "version": "2.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zingimmick/flysystem-oss.git",
-                "reference": "168b3b24c6f9466b637dcc0ddb374e2f4f90d011"
+                "reference": "706cf7309b34dfed73f3051d48ae6adeda6ad205"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zingimmick/flysystem-oss/zipball/168b3b24c6f9466b637dcc0ddb374e2f4f90d011",
-                "reference": "168b3b24c6f9466b637dcc0ddb374e2f4f90d011",
+                "url": "https://api.github.com/repos/zingimmick/flysystem-oss/zipball/706cf7309b34dfed73f3051d48ae6adeda6ad205",
+                "reference": "706cf7309b34dfed73f3051d48ae6adeda6ad205",
                 "shasum": ""
             },
             "require": {
@@ -8020,7 +8107,7 @@
             ],
             "support": {
                 "issues": "https://github.com/zingimmick/flysystem-oss/issues",
-                "source": "https://github.com/zingimmick/flysystem-oss/tree/2.2.0"
+                "source": "https://github.com/zingimmick/flysystem-oss/tree/2.2.1"
             },
             "funding": [
                 {
@@ -8028,7 +8115,7 @@
                     "type": "custom"
                 }
             ],
-            "time": "2022-03-14T15:48:04+00:00"
+            "time": "2022-03-21T09:15:45+00:00"
         }
     ],
     "packages-dev": [
@@ -10694,16 +10781,16 @@
         },
         {
             "name": "spatie/laravel-ignition",
-            "version": "1.1.0",
+            "version": "1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-ignition.git",
-                "reference": "5b8c360d1f6bcba339a6d593efa02816c06d17c3"
+                "reference": "f3243fd99351e0a79df6886a5354d8dd88d6d0d2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-ignition/zipball/5b8c360d1f6bcba339a6d593efa02816c06d17c3",
-                "reference": "5b8c360d1f6bcba339a6d593efa02816c06d17c3",
+                "url": "https://api.github.com/repos/spatie/laravel-ignition/zipball/f3243fd99351e0a79df6886a5354d8dd88d6d0d2",
+                "reference": "f3243fd99351e0a79df6886a5354d8dd88d6d0d2",
                 "shasum": ""
             },
             "require": {
@@ -10777,7 +10864,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-03-19T17:03:56+00:00"
+            "time": "2022-03-21T07:13:26+00:00"
         },
         {
             "name": "symfony/debug",
