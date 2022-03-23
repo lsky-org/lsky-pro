@@ -21,7 +21,7 @@
 
 @push('scripts')
     <script>
-        let defaultStrategy = {{ Auth::check() ? Auth::user()->configs[\App\Enums\UserConfigKey::DefaultStrategy] : 0 }} || (localStorage.getItem('strategy') || 0);
+        let defaultStrategy = {{ Auth::check() ? Auth::user()->configs->get('default_strategy') : 0 }} || (localStorage.getItem('strategy') || 0);
         let setStrategy = function (id) {
             let isSelected = false;
             $('#strategies a').each(function () {

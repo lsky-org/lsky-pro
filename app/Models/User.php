@@ -101,7 +101,7 @@ class User extends Authenticatable implements MustVerifyEmail
             $user->group_id = Group::query()->where('is_default', true)->value('id');
             // 初始容量
             $user->capacity = Utils::config(ConfigKey::UserInitialCapacity);
-            $user->configs = collect(config('convention.app.user'))->merge($user->configs ?: []);
+            $user->configs = collect(config('convention.user'))->merge($user->configs ?: []);
         });
     }
 
