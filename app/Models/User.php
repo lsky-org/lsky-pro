@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\ConfigKey;
 use App\Enums\ImagePermission;
+use App\Enums\PastedAction;
 use App\Enums\UserConfigKey;
 use App\Utils;
 use Carbon\Carbon;
@@ -100,13 +101,7 @@ class User extends Authenticatable implements MustVerifyEmail
             $user->group_id = Group::query()->where('is_default', true)->value('id');
             // 初始容量
             $user->capacity = Utils::config(ConfigKey::UserInitialCapacity);
-
-            $user->configs = collect([
-                UserConfigKey::DefaultAlbum => 0,
-                UserConfigKey::DefaultStrategy => 0,
-                UserConfigKey::DefaultPermission => ImagePermission::Private,
-                UserConfigKey::IsAutoClearPreview => false,
-            ])->merge($user->configs ?: []);
+            $user->configs = collect(config('convention.app.user'))->merge($user->configs ?: []);
         });
     }
 
