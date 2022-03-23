@@ -93,7 +93,7 @@ class UpgradeService
             $this->setProgress('下载补丁包...');
             foreach ($files as $file) {
                 if ($file['action'] === 'deleted') continue;
-                $res = $this->http->baseUrl($result['url'])->get(trim($file['pathname'], '/') . '/' . $file['pathname']);
+                $res = $this->http->baseUrl($result['download_url'])->get($file['pathname']);
                 if ($res->failed()) {
                     throw new \Exception("补丁文件 {$file['pathname']} 下载失败。");
                 }
