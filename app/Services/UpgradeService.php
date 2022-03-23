@@ -16,7 +16,7 @@ use League\Flysystem\Local\LocalFilesystemAdapter;
 
 class UpgradeService
 {
-    const ApiUrl = 'http://127.0.0.1:9502/v2';
+    const ApiUrl = 'https://api.lsky.pro/v2';
 
     /** @var array|array[] 所有版本 */
     protected array $versions = [];
