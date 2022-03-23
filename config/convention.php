@@ -6,13 +6,14 @@ use App\Enums\ConfigKey;
 use App\Enums\GroupConfigKey;
 use App\Enums\Mail\SmtpOption;
 use App\Enums\Scan\AliyunOption;
+use App\Enums\Scan\TencentOption;
 use App\Enums\Watermark\FontOption;
 use App\Enums\Watermark\ImageOption;
 
 return [
     'app' => [
         ConfigKey::AppName => 'Lsky Pro',
-        ConfigKey::AppVersion => 'V 2.0.1',
+        ConfigKey::AppVersion => 'V 2.0.2',
         ConfigKey::SiteKeywords => 'Lsky Pro,lsky,兰空图床',
         ConfigKey::SiteDescription => 'Lsky Pro, Your photo album on the cloud.',
         ConfigKey::SiteNotice => '',
@@ -45,8 +46,15 @@ return [
             GroupConfigKey::IsEnableOriginalProtection => 0,
             GroupConfigKey::ScannedAction => 'mark', // in mark or delete
             GroupConfigKey::ScanConfigs => [
-                'driver' => 'aliyun',
+                'driver' => 'tencent',
                 'drivers' => [
+                    'tencent' => [
+                        TencentOption::Endpoint => 'ims.tencentcloudapi.com',
+                        TencentOption::SecretId => '',
+                        TencentOption::SecretKey => '',
+                        TencentOption::Region => '',
+                        TencentOption::BizType => ''
+                    ],
                     'aliyun' => [
                         AliyunOption::AccessKeyId => '',
                         AliyunOption::AccessKeySecret => '',
