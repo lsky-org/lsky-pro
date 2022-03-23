@@ -208,8 +208,8 @@ class ImageService
             throw new UploadException('图片记录保存失败');
         }
 
-        // 图片检测
-        if ($configs->get(GroupConfigKey::IsEnableScan)) {
+        // 图片检测，跳过 tif 以及 psd 格式
+        if ($configs->get(GroupConfigKey::IsEnableScan) && ! in_array($extension, ['psd', 'tif'])) {
             $scanConfigs = $configs->get(GroupConfigKey::ScanConfigs);
             if ($this->scan($scanConfigs['driver'], collect($scanConfigs['drivers'][$scanConfigs['driver']]), $image)) {
                 // 标记 or 删除
@@ -384,6 +384,10 @@ class ImageService
                         }
                     }
                 }
+            }
+
+            if ($driver === 'tencent') {
+
             }
         } catch (\Throwable $e) {
             throw new UploadException('Scan: '.$e->getMessage());
