@@ -12,13 +12,14 @@
 [![Last commit](https://img.shields.io/github/last-commit/lsky-org/lsky-pro/dev)](https://github.com/lsky-org/lsky-pro/commits/dev)
 [![License](https://img.shields.io/badge/license-GPL_V3.0-yellowgreen.svg)](https://github.com/lsky-org/lsky-pro/blob/master/LICENSE)
 
-[官网](https://www.lsky.pro) &nbsp;
-[文档](https://docs.lsky.pro) &nbsp;
-[社区](https://github.com/lsky-org/lsky-pro/discussions) &nbsp;
-[演示](https://pic.iqy.ink) &nbsp;
+[官网](https://www.lsky.pro) &middot;
+[文档](https://docs.lsky.pro) &middot;
+[社区](https://github.com/lsky-org/lsky-pro/discussions) &middot;
+[演示](https://pic.iqy.ink) &middot;
 [Telegram 群组](https://t.me/lsky_pro)
 
-> 正式版本请点击 [这里](https://github.com/lsky-org/lsky-pro/releases) 下载，发现 bug 请提交 [issues](https://github.com/lsky-org/lsky-pro/issues) (提问前建议阅读[提问的智慧](https://github.com/ryanhanwu/How-To-Ask-Questions-The-Smart-Way/blob/main/README-zh_CN.md))
+> 正式版本请点击 [这里](https://github.com/lsky-org/lsky-pro/releases) 下载，发现 bug 请提交 [issues](https://github.com/lsky-org/lsky-pro/issues) (提问前建议阅读[提问的智慧](https://github.com/ryanhanwu/How-To-Ask-Questions-The-Smart-Way/blob/main/README-zh_CN.md))  
+> 有任何想法、建议、或分享，请移步 [社区](https://github.com/lsky-org/lsky-pro/discussions)
 
 ![看不见图片请使用科学上网](https://user-images.githubusercontent.com/22728201/157242302-bfbd04a0-fb30-4241-800e-cc2b1dad9b19.png)
 ![看不见图片请使用科学上网](https://user-images.githubusercontent.com/22728201/157242314-5716d578-fee5-4083-8d91-0d98cb2545d9.png)
