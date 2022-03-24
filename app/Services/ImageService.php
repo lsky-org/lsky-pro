@@ -216,8 +216,8 @@ class ImageService
             throw new UploadException('图片记录保存失败');
         }
 
-        // 图片检测，跳过 tif 以及 psd 格式
-        if ($configs->get(GroupConfigKey::IsEnableScan) && ! in_array($extension, ['psd', 'tif'])) {
+        // 图片检测，跳过 tif、ico 以及 psd 格式
+        if ($configs->get(GroupConfigKey::IsEnableScan) && ! in_array($extension, ['psd', 'ico', 'tif'])) {
             $scanConfigs = $configs->get(GroupConfigKey::ScanConfigs);
             if ($this->scan(
                 driver: $scanConfigs['driver'],
