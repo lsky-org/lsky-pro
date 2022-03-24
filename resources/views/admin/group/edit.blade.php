@@ -113,7 +113,8 @@
                             <div class="col-span-6 mb-4">
                                 <x-fieldset title="审核驱动">
                                     <x-fieldset-radio id="configs[scan_configs][driver]_tencent" name="configs[scan_configs][driver]" data-select="scan" value="tencent" :checked="($group->configs['scan_configs']['driver'] ?? '') === 'tencent'">腾讯云</x-fieldset-radio>
-                                    <x-fieldset-radio id="configs[scan_configs][driver]" name="configs[scan_configs][driver]" data-select="scan" value="aliyun" :checked="($group->configs['scan_configs']['driver'] ?? '') === 'aliyun'">阿里云</x-fieldset-radio>
+                                    <x-fieldset-radio id="configs[scan_configs][driver]_aliyun" name="configs[scan_configs][driver]" data-select="scan" value="aliyun" :checked="($group->configs['scan_configs']['driver'] ?? '') === 'aliyun'">阿里云</x-fieldset-radio>
+                                    <x-fieldset-radio id="configs[scan_configs][driver]_nsfwjs" name="configs[scan_configs][driver]" data-select="scan" value="nsfwjs" :checked="($group->configs['scan_configs']['driver'] ?? '') === 'nsfwjs'">NsfwJs</x-fieldset-radio>
                                 </x-fieldset>
                             </div>
 
@@ -163,6 +164,22 @@
                                             <x-fieldset-checkbox id="configs[scan_configs][drivers][aliyun][scenes][]_{{ $key }}" name="configs[scan_configs][drivers][aliyun][scenes][]" value="{{ $key }}" :checked="in_array($key, ($group->configs['scan_configs']['drivers']['aliyun']['scenes'] ?? []))">{{ $scene }}</x-fieldset-checkbox>
                                         @endforeach
                                     </x-fieldset>
+                                </div>
+                            </div>
+
+                            <div class="hidden mb-4" data-scan-driver="nsfwjs">
+                                <div class="col-span-6 sm:col-span-3 mb-4">
+                                    <label for="configs[scan_configs][drivers][nsfwjs][api_url]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>接口地址</label>
+                                    <x-input type="url" name="configs[scan_configs][drivers][nsfwjs][api_url]" id="configs[scan_configs][drivers][nsfwjs][api_url]" autocomplete="api_url" placeholder="请输入接口地址，http(s)://domain.com/classify" value="{{ $group->configs['scan_configs']['drivers']['nsfwjs']['api_url'] ?? '' }}" />
+                                </div>
+                                <div class="col-span-6 sm:col-span-3 mb-4">
+                                    <label for="configs[scan_configs][drivers][nsfwjs][attr_name]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>属性名称</label>
+                                    <x-input type="text" name="configs[scan_configs][drivers][nsfwjs][attr_name]" id="configs[scan_configs][drivers][nsfwjs][attr_name]" autocomplete="attr_name" placeholder="接口的表单文件属性名" value="{{ $group->configs['scan_configs']['drivers']['nsfwjs']['attr_name'] ?? '' }}" />
+                                </div>
+                                <div class="col-span-6 sm:col-span-3 mb-4">
+                                    <label for="configs[scan_configs][drivers][nsfwjs][threshold]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>阈值</label>
+                                    <x-input type="number" name="configs[scan_configs][drivers][nsfwjs][threshold]" id="configs[scan_configs][drivers][nsfwjs][threshold]" autocomplete="threshold" placeholder="取值 1-100" value="{{ $group->configs['scan_configs']['drivers']['nsfwjs']['threshold'] ?? '' }}" />
+                                    <small class="text-gray-500"><i class="fas fa-exclamation-circle"></i> 阈值是指图片违规程度上限，取值 1-100 之间，数值越低审核越严格</small>
                                 </div>
                             </div>
                         </div>

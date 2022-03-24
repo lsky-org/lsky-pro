@@ -8,6 +8,7 @@ use App\Enums\ImagePermission;
 use App\Enums\Mail\SmtpOption;
 use App\Enums\PastedAction;
 use App\Enums\Scan\AliyunOption;
+use App\Enums\Scan\NsfwJsOption;
 use App\Enums\Scan\TencentOption;
 use App\Enums\UserConfigKey;
 use App\Enums\Watermark\FontOption;
@@ -66,6 +67,11 @@ return [
                     AliyunOption::Scenes => ['porn'],
                     AliyunOption::BizType => '',
                 ],
+                'nsfwjs' => [
+                    NsfwJsOption::ApiUrl => '',
+                    NsfwJsOption::AttrName => 'image',
+                    NsfwJsOption::Threshold => 60,
+                ]
             ],
         ],
         GroupConfigKey::WatermarkConfigs => [

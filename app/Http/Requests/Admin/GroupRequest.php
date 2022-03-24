@@ -43,7 +43,7 @@ class GroupRequest extends FormRequest
                 'exclude_if:configs.is_enable_scan,false',
                 'in:mark,delete',
             ],
-            'configs.scan_configs.driver' => ['exclude_if:configs.is_enable_scan,false', 'in:tencent,aliyun'],
+            'configs.scan_configs.driver' => ['exclude_if:configs.is_enable_scan,false', 'in:tencent,aliyun,nsfwjs'],
             'configs.scan_configs.drivers.tencent.endpoint' => [$requiredIfReview('tencent')],
             'configs.scan_configs.drivers.tencent.secret_id' => [$requiredIfReview('tencent')],
             'configs.scan_configs.drivers.tencent.secret_key' => [$requiredIfReview('tencent')],
@@ -55,6 +55,10 @@ class GroupRequest extends FormRequest
             'configs.scan_configs.drivers.aliyun.region_id' => [$requiredIfReview('aliyun')],
             'configs.scan_configs.drivers.aliyun.biz_type' => '',
             'configs.scan_configs.drivers.aliyun.scenes' => [$requiredIfReview('aliyun'), 'array'],
+
+            'configs.scan_configs.drivers.nsfwjs.api_url' => [$requiredIfReview('nsfwjs')],
+            'configs.scan_configs.drivers.nsfwjs.attr_name' => [$requiredIfReview('nsfwjs')],
+            'configs.scan_configs.drivers.nsfwjs.threshold' => [$requiredIfReview('nsfwjs'), 'min:1', 'max:100'],
 
             'configs.is_enable_original_protection' => 'boolean',
             'configs.image_cache_ttl' => 'nullable|numeric',
@@ -126,6 +130,9 @@ class GroupRequest extends FormRequest
             'configs.scan_configs.drivers.aliyun.region_id' => '地域节点',
             'configs.scan_configs.drivers.aliyun.biz_type' => '场景名称',
             'configs.scan_configs.drivers.aliyun.scenes' => '审核场景',
+            'configs.scan_configs.drivers.nsfwjs.api_url' => '接口地址',
+            'configs.scan_configs.drivers.nsfwjs.attr_name' => '表单名称',
+            'configs.scan_configs.drivers.nsfwjs.threshold' => '阈值',
 
             'configs.is_enable_original_protection' => '是否启用原图保护功能',
             'configs.image_cache_ttl' => '图片缓存时间',

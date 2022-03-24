@@ -8,6 +8,7 @@ use App\Enums\ConfigKey;
 use App\Enums\GroupConfigKey;
 use App\Enums\ImagePermission;
 use App\Enums\Scan\AliyunOption;
+use App\Enums\Scan\NsfwJsOption;
 use App\Enums\Scan\TencentOption;
 use App\Enums\Strategy\CosOption;
 use App\Enums\Strategy\FtpOption;
@@ -38,6 +39,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image as InterventionImage;
 use Intervention\Image\Imagick\Font;
@@ -427,6 +429,29 @@ class ImageService
                             }
                         }
                     }
+                }
+            }
+
+            if ($driver === 'nsfwjs') {
+                // 不支持 bmp 格式
+                if ($image->extension === 'bmp') {
+                    return false;
+                }
+                $response = Http::timeout(180)->withOptions(['timeout' => 180])->attach(
+                    $configs->get(NsfwJsOption::AttrName), $file->getContent(), $file->getClientOriginalName(),
+                )->post($configs->get(NsfwJsOption::ApiUrl));
+                $ratio = $configs->get(NsfwJsOption::Threshold, 60) / 100;
+
+                if ($response->json('hentai', 0.00) >= $ratio) {
+                    $flag = true;
+                }
+
+                if ($response->json('porn', 0.00) >= $ratio) {
+                    $flag = true;
+                }
+
+                if ($response->json('sexy', 0.00) >= $ratio) {
+                    $flag = true;
                 }
             }
         } catch (\Throwable $e) {
