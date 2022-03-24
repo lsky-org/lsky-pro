@@ -14,6 +14,7 @@
 
 [官网](https://www.lsky.pro) &nbsp;
 [文档](https://docs.lsky.pro) &nbsp;
+[社区](https://github.com/lsky-org/lsky-pro/discussions) &nbsp;
 [演示](https://pic.iqy.ink) &nbsp;
 [Telegram 群组](https://t.me/lsky_pro)
 
