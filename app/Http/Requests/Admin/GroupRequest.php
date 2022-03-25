@@ -57,8 +57,8 @@ class GroupRequest extends FormRequest
             'configs.scan_configs.drivers.aliyun.scenes' => [$requiredIfReview('aliyun'), 'array'],
 
             'configs.scan_configs.drivers.nsfwjs.api_url' => [$requiredIfReview('nsfwjs')],
-            'configs.scan_configs.drivers.nsfwjs.attr_name' => [$requiredIfReview('nsfwjs')],
-            'configs.scan_configs.drivers.nsfwjs.threshold' => [$requiredIfReview('nsfwjs'), 'min:1', 'max:100'],
+            'configs.scan_configs.drivers.nsfwjs.attr_name' => [$requiredIfReview('nsfwjs'), 'nullable'],
+            'configs.scan_configs.drivers.nsfwjs.threshold' => [$requiredIfReview('nsfwjs'), 'nullable', 'between:1,100'],
 
             'configs.is_enable_original_protection' => 'boolean',
             'configs.image_cache_ttl' => 'nullable|numeric',

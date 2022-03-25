@@ -438,7 +438,7 @@ class ImageService
                     return false;
                 }
                 $response = Http::timeout(180)->withOptions(['timeout' => 180])->attach(
-                    $configs->get(NsfwJsOption::AttrName), $file->getContent(), $file->getClientOriginalName(),
+                    $configs->get(NsfwJsOption::AttrName, 'image'), $file->getContent(), $file->getClientOriginalName(),
                 )->post($configs->get(NsfwJsOption::ApiUrl));
                 $ratio = $configs->get(NsfwJsOption::Threshold, 60) / 100;
 
