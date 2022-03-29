@@ -174,7 +174,7 @@ class Image extends Model
             if ($this->group?->configs->get(GroupConfigKey::IsEnableOriginalProtection)) {
                 return asset("{$this->key}.{$this->extension}");
             } else {
-                return rtrim($this->strategy?->configs->get('url'), '/').'/'.$this->pathname;
+                return rtrim($this->strategy?->configs->get('url'), '/').'/'.ltrim($this->pathname, '/');
             }
         });
     }
