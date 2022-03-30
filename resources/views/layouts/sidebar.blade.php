@@ -1,7 +1,6 @@
-<nav class="transition-all duration-300 -left-64 sm:left-0 h-screen sm:w-64 bg-white fixed z-10 shadow-lg sm:shadow-none" :class="{
-    '-left-64': ! $store.sidebar.open,
-    'left-0': $store.sidebar.open,
-    'w-3/4': $store.sidebar.open
+<nav class="transition-all duration-300 -left-[600px] sm:left-0 w-3/4 sm:w-64 h-screen bg-white fixed z-10 shadow-lg sm:shadow-none" :class="{
+    '-left-[600px]': ! $store.sidebar.open,
+    'left-0': $store.sidebar.open
 }">
     <div class="px-6 h-14 flex justify-between sm:justify-center items-center bg-gray-600 text-white text-xl">
         <a href="/" class="truncate">{{ \App\Utils::config(\App\Enums\ConfigKey::AppName) }}</a>
