@@ -116,8 +116,8 @@
                 <form class="w-full space-y-2" action="/user/albums">
                     <input type="text" class="w-full rounded px-2.5 py-1.5 text-sm border-0 bg-gray-200" name="name" placeholder="请输入名称">
                     <textarea class="w-full resize-y rounded-md text-sm border-0 bg-gray-200" name="intro" placeholder="请输入简介"></textarea>
+                    <button class="w-full py-1 px-2 bg-indigo-500 text-white text-sm text-center tracking-wider font-semibold rounded-md">创建相册</button>
                 </form>
-                <a href="javascript:void(0)" class="w-full py-1 px-2 bg-indigo-500 text-white text-sm text-center tracking-wider font-semibold rounded-md">创建相册</a>
             </div>
         </div>
     </script>
@@ -139,8 +139,8 @@
             <form class="w-full space-y-2" action="/user/albums/__id__">
                 <input type="text" class="w-full rounded px-2.5 py-1.5 text-sm border-0 bg-gray-200" placeholder="请输入名称" name="name" value="__name__">
                 <textarea class="w-full resize-y rounded-md text-sm border-0 bg-gray-200" name="intro" placeholder="请输入简介">__intro__</textarea>
+                <button class="w-full py-1 px-2 bg-indigo-500 text-white text-sm text-center tracking-wider font-semibold rounded-md">确认修改</button>
             </form>
-            <a href="javascript:void(0)" class="w-full py-1 px-2 bg-indigo-500 text-white text-sm text-center tracking-wider font-semibold rounded-md">确认修改</a>
         </div>
     </script>
 
@@ -410,8 +410,9 @@
                     });
 
                     // confirm create
-                    $albums.off('click', CREATE_ID + ' a').on('click', CREATE_ID + ' a', function (e) {
-                        let $form = $(this).siblings('form');
+                    $albums.off('submit', CREATE_ID + ' form').on('submit', CREATE_ID + ' form', function (e) {
+                        e.preventDefault();
+                        let $form = $(this);
                         axios.post($form.attr('action'), $form.serialize()).then(response => {
                             let $errorMessage = $albums.find(CREATE_ID + ' .error-message').html('').hide();
                             if (response.data.status) {
@@ -424,8 +425,9 @@
                     });
 
                     // confirm update
-                    $albums.off('click', UPDATE_ID + ' a').on('click', UPDATE_ID + ' a', function (e) {
-                        let $form = $(this).siblings('form');
+                    $albums.off('submit', UPDATE_ID + ' form').on('submit', UPDATE_ID + ' form', function (e) {
+                        e.preventDefault();
+                        let $form = $(this);
                         axios.put($form.attr('action'), $form.serialize()).then(response => {
                             let $errorMessage = $albums.find(UPDATE_ID + ' .error-message').html('').hide();
                             if (response.data.status) {
