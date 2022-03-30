@@ -64,7 +64,7 @@
                             </div>
 
                             <div class="col-span-6 sm:col-span-3">
-                                <label for="path_naming_rule" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>路径命名规则</label>
+                                <label for="path_naming_rule" class="block text-sm font-medium text-gray-700">路径命名规则</label>
                                 <x-input type="text" name="configs[path_naming_rule]" id="path_naming_rule" autocomplete="path_naming_rule" placeholder="请输入路径命名规则" value="{{ $group->configs->get('path_naming_rule') }}" />
                                 <a href="javascript:void(0)" class="mt-1 text-sm text-indigo-600" id="rename-rules"><i class="fas fa-pencil-alt text-xs"></i> 命名规则对照表</a>
                                 @include('admin.group.rules')
