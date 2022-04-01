@@ -16,14 +16,15 @@ class UserService
      *
      * @param array $keys
      * @param User|null $user 传入用户数据则会根据用户id过滤
+     * @param string $field
      * @return int
      */
-    public function deleteImages(array $keys, ?User $user = null): int
+    public function deleteImages(array $keys, ?User $user = null, string $field = 'id'): int
     {
         $count = 0;
         $model = Image::with('user', 'strategy', 'album')->when(! is_null($user), function (Builder $builder) use ($user) {
             $builder->where('user_id', $user->id);
-        })->whereIn('id', $keys);
+        })->whereIn($field, $keys);
 
         DB::transaction(function () use ($model, $keys, &$count) {
             /** @var Image $image */

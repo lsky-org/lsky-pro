@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Image;
 use App\Models\User;
 use App\Services\ImageService;
+use App\Services\UserService;
 use App\Utils;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Http\Request;
@@ -76,7 +77,7 @@ class ImageController extends Controller
     {
         /** @var User $user */
         $user = Auth::user();
-        $user->images()->where('key', $request->route('key'))->delete();
+        (new UserService())->deleteImages([$request->route('key')], $user, 'key');
         return $this->success('删除成功');
     }
 }

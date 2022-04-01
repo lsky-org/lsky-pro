@@ -417,16 +417,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.216.4",
+            "version": "3.218.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "fd16bb2ecc4e1a47b145163d0bd7744c4578656d"
+                "reference": "714ed40bc2e60d4af907eb2d41fbfb75f980d2e2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/fd16bb2ecc4e1a47b145163d0bd7744c4578656d",
-                "reference": "fd16bb2ecc4e1a47b145163d0bd7744c4578656d",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/714ed40bc2e60d4af907eb2d41fbfb75f980d2e2",
+                "reference": "714ed40bc2e60d4af907eb2d41fbfb75f980d2e2",
                 "shasum": ""
             },
             "require": {
@@ -502,9 +502,9 @@
             "support": {
                 "forum": "https://forums.aws.amazon.com/forum.jspa?forumID=80",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.216.4"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.218.0"
             },
-            "time": "2022-03-29T18:29:23+00:00"
+            "time": "2022-03-31T18:20:58+00:00"
         },
         {
             "name": "brick/math",
@@ -7648,16 +7648,16 @@
         },
         {
             "name": "tencentcloud/common",
-            "version": "3.0.604",
+            "version": "3.0.605",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tencentcloud-sdk-php/common.git",
-                "reference": "71c7dadeced0ccebc024151b694766233657b1f8"
+                "reference": "da6f537f97ba5816cf27440accb0883c93c41d12"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tencentcloud-sdk-php/common/zipball/71c7dadeced0ccebc024151b694766233657b1f8",
-                "reference": "71c7dadeced0ccebc024151b694766233657b1f8",
+                "url": "https://api.github.com/repos/tencentcloud-sdk-php/common/zipball/da6f537f97ba5816cf27440accb0883c93c41d12",
+                "reference": "da6f537f97ba5816cf27440accb0883c93c41d12",
                 "shasum": ""
             },
             "require": {
@@ -7686,26 +7686,26 @@
             "homepage": "https://github.com/tencentcloud-sdk-php/common",
             "support": {
                 "issues": "https://github.com/tencentcloud-sdk-php/common/issues",
-                "source": "https://github.com/tencentcloud-sdk-php/common/tree/3.0.604"
+                "source": "https://github.com/tencentcloud-sdk-php/common/tree/3.0.605"
             },
-            "time": "2022-03-29T23:15:42+00:00"
+            "time": "2022-03-30T23:20:27+00:00"
         },
         {
             "name": "tencentcloud/ims",
-            "version": "3.0.604",
+            "version": "3.0.605",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tencentcloud-sdk-php/ims.git",
-                "reference": "bced13bd85ed0f9ab186ff03f6f4ded0d1b70fb1"
+                "reference": "bc17eee03c8254645b440dc670f48bae79783c42"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tencentcloud-sdk-php/ims/zipball/bced13bd85ed0f9ab186ff03f6f4ded0d1b70fb1",
-                "reference": "bced13bd85ed0f9ab186ff03f6f4ded0d1b70fb1",
+                "url": "https://api.github.com/repos/tencentcloud-sdk-php/ims/zipball/bc17eee03c8254645b440dc670f48bae79783c42",
+                "reference": "bc17eee03c8254645b440dc670f48bae79783c42",
                 "shasum": ""
             },
             "require": {
-                "tencentcloud/common": "3.0.604"
+                "tencentcloud/common": "3.0.605"
             },
             "type": "library",
             "autoload": {
@@ -7729,9 +7729,9 @@
             "homepage": "https://github.com/tencentcloud-sdk-php/ims",
             "support": {
                 "issues": "https://github.com/tencentcloud-sdk-php/ims/issues",
-                "source": "https://github.com/tencentcloud-sdk-php/ims/tree/3.0.604"
+                "source": "https://github.com/tencentcloud-sdk-php/ims/tree/3.0.605"
             },
-            "time": "2022-03-29T23:23:36+00:00"
+            "time": "2022-03-30T23:28:20+00:00"
         },
         {
             "name": "tijsverkoyen/css-to-inline-styles",
