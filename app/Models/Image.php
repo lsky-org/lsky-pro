@@ -164,7 +164,8 @@ class Image extends Model
 
     public function pathname(): Attribute
     {
-        return new Attribute(fn() => "{$this->path}/{$this->name}");
+        $path = $this->path ? "{$this->path}/" : '';
+        return new Attribute(fn() => "{$path}{$this->name}");
     }
 
     public function url(): Attribute

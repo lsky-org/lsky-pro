@@ -160,7 +160,7 @@ class ImageService
         $image->fill([
             'md5' => md5_file($file->getRealPath()),
             'sha1' => sha1_file($file->getRealPath()),
-            'path' => dirname($pathname),
+            'path' => $configs->get(GroupConfigKey::PathNamingRule) ? dirname($pathname) : '',
             'name' => basename($pathname),
             'origin_name' => $file->getClientOriginalName(),
             'size' => $file->getSize() / 1024,
@@ -541,7 +541,6 @@ class ImageService
 
             } catch (\Throwable $e) {
                 Utils::e($e, '生成缩略图时出现异常');
-                // TODO 直接将原图存下来？
             }
         }
     }
