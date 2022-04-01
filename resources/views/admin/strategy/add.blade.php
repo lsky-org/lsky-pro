@@ -129,6 +129,7 @@
                             <div class="col-span-3 sm:col-span-2 mb-4">
                                 <label for="configs[bucket]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>储存桶名称</label>
                                 <x-input type="text" name="configs[bucket]" id="configs[bucket]" placeholder="请输入储存桶名称" />
+                                <small class="text-gray-500"><i class="fas fa-exclamation-circle"></i> 腾讯云储存桶名称由 名称+appid 组合，例如：test-125146xxxx，此处应该填写 test</>
                             </div>
                         </div>
 

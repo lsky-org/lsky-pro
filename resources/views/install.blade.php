@@ -45,6 +45,12 @@
                     @endforeach
                 </div>
 
+                <div class="mt-6 text-sm text-gray-500">
+                    <p><i class="fas fa-exclamation-circle"></i> 请确保<b>数据库版本</b>达到要求。</p>
+                    <p><i class="fas fa-exclamation-circle"></i> 请确保程序<b>目录、文件的权限</b>设置正确。</p>
+                    <p><i class="fas fa-exclamation-circle"></i> 出现安装拓展、启用函数后未生效，请尝试<b>重启 PHP</b>。</p>
+                </div>
+
                 <div class="mt-6 text-right">
                     @if($status)
                         <a href="javascript:void(0)" id="next" class="rounded-md px-4 py-2 bg-blue-500 text-white">下一步</a>
