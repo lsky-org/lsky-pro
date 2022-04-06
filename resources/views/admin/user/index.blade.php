@@ -139,7 +139,7 @@
             });
             $('[data-operate="delete"]').click(function () {
                 Swal.fire({
-                    title: `确认删除用户【${$(this).closest('tr').find('td.name').text()}】吗?`,
+                    title: `确认删除用户【${$(this).closest('tr').data('json').name}】吗?`,
                     text: "⚠️注意，删除后不可恢复，且该用户的图片将会变成游客身份！",
                     icon: 'warning',
                     showCancelButton: true,
