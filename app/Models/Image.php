@@ -116,6 +116,8 @@ class Image extends Model
                     // 删除物理文件
                     $image->filesystem()->delete($image->pathname);
                     @unlink(public_path($image->getThumbnailPathname()));
+                    // 删除缓存
+                    Cache::forget("image_{$image->key}");
                 } catch (\Throwable $e) {
                     Utils::e($e, '删除物理文件时发生异常');
                 }
