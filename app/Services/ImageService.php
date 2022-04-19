@@ -32,7 +32,7 @@ use App\Models\Strategy;
 use App\Models\User;
 use App\Utils;
 use Aws\S3\S3Client;
-use Carbon\Carbon;
+use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
