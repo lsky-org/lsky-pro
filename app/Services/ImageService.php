@@ -187,7 +187,7 @@ class ImageService
                 Utils::e($e, '保存图片时出现异常');
                 throw new UploadException(config('app.debug', false) ? $e->getMessage() : '图片上传失败');
             }
-            @fclose($handle);
+            if (is_resource($handle)) @fclose($handle);
         } else {
             $image->fill($existing->only('path', 'name'));
         }
