@@ -32,7 +32,7 @@ class Utils
      */
     public static function getAvatar($email, int $s = 96, string $d = 'mp', string $r = 'g'): string
     {
-        $url = 'https://gravatar.cat.net/avatar/';
+        $url = 'https://cravatar.cn/avatar/';
         $url .= md5(strtolower(trim($email)));
         $url .= "?s=$s&d=$d&r=$r";
         return $url;
