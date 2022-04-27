@@ -417,16 +417,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.219.5",
+            "version": "3.221.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "7e8da5b45d545ca3129a14e972001698212b1a00"
+                "reference": "6ef06165ef815358d3e60872b4c9f6c10deb3816"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/7e8da5b45d545ca3129a14e972001698212b1a00",
-                "reference": "7e8da5b45d545ca3129a14e972001698212b1a00",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/6ef06165ef815358d3e60872b4c9f6c10deb3816",
+                "reference": "6ef06165ef815358d3e60872b4c9f6c10deb3816",
                 "shasum": ""
             },
             "require": {
@@ -502,9 +502,9 @@
             "support": {
                 "forum": "https://forums.aws.amazon.com/forum.jspa?forumID=80",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.219.5"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.221.0"
             },
-            "time": "2022-04-15T18:16:29+00:00"
+            "time": "2022-04-26T18:19:33+00:00"
         },
         {
             "name": "brick/math",
@@ -2290,16 +2290,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v9.8.1",
+            "version": "v9.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "9f468689964ac80b674a2fe71a56baa7e9e20493"
+                "reference": "4d5a07640891b772188d7737348886a0222737d8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/9f468689964ac80b674a2fe71a56baa7e9e20493",
-                "reference": "9f468689964ac80b674a2fe71a56baa7e9e20493",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/4d5a07640891b772188d7737348886a0222737d8",
+                "reference": "4d5a07640891b772188d7737348886a0222737d8",
                 "shasum": ""
             },
             "require": {
@@ -2465,7 +2465,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2022-04-12T15:43:03+00:00"
+            "time": "2022-04-19T15:01:23+00:00"
         },
         {
             "name": "laravel/octane",
@@ -2924,16 +2924,16 @@
         },
         {
             "name": "league/flysystem",
-            "version": "3.0.17",
+            "version": "3.0.18",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem.git",
-                "reference": "29eb78cac0be0c22237c5e0f6f98234d97037d79"
+                "reference": "c8e137e594948240b03372e012344b07c61b9193"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/29eb78cac0be0c22237c5e0f6f98234d97037d79",
-                "reference": "29eb78cac0be0c22237c5e0f6f98234d97037d79",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/c8e137e594948240b03372e012344b07c61b9193",
+                "reference": "c8e137e594948240b03372e012344b07c61b9193",
                 "shasum": ""
             },
             "require": {
@@ -2994,7 +2994,7 @@
             ],
             "support": {
                 "issues": "https://github.com/thephpleague/flysystem/issues",
-                "source": "https://github.com/thephpleague/flysystem/tree/3.0.17"
+                "source": "https://github.com/thephpleague/flysystem/tree/3.0.18"
             },
             "funding": [
                 {
@@ -3010,7 +3010,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-04-14T14:57:13+00:00"
+            "time": "2022-04-25T18:55:04+00:00"
         },
         {
             "name": "league/flysystem-aws-s3-v3",
@@ -3198,16 +3198,16 @@
         },
         {
             "name": "league/flysystem-webdav",
-            "version": "3.0.9",
+            "version": "3.0.18",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem-webdav.git",
-                "reference": "31fc6f1226570bcd415ca40ddc593dc6bebb1e0c"
+                "reference": "56e19adaaed4b1c9bc0b9a7ed82f53a5ee903c5a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem-webdav/zipball/31fc6f1226570bcd415ca40ddc593dc6bebb1e0c",
-                "reference": "31fc6f1226570bcd415ca40ddc593dc6bebb1e0c",
+                "url": "https://api.github.com/repos/thephpleague/flysystem-webdav/zipball/56e19adaaed4b1c9bc0b9a7ed82f53a5ee903c5a",
+                "reference": "56e19adaaed4b1c9bc0b9a7ed82f53a5ee903c5a",
                 "shasum": ""
             },
             "require": {
@@ -3241,9 +3241,9 @@
             ],
             "support": {
                 "issues": "https://github.com/thephpleague/flysystem-webdav/issues",
-                "source": "https://github.com/thephpleague/flysystem-webdav/tree/3.0.9"
+                "source": "https://github.com/thephpleague/flysystem-webdav/tree/3.0.18"
             },
-            "time": "2022-02-22T07:15:18+00:00"
+            "time": "2022-04-22T23:11:18+00:00"
         },
         {
             "name": "league/mime-type-detection",
@@ -3876,21 +3876,21 @@
         },
         {
             "name": "overtrue/flysystem-cos",
-            "version": "5.0.2",
+            "version": "5.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/overtrue/flysystem-cos.git",
-                "reference": "09bd9c912752d462311d0f575612f0616a789585"
+                "reference": "3a4e98dd142e83234a87cf2c68b8a3f618606331"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/overtrue/flysystem-cos/zipball/09bd9c912752d462311d0f575612f0616a789585",
-                "reference": "09bd9c912752d462311d0f575612f0616a789585",
+                "url": "https://api.github.com/repos/overtrue/flysystem-cos/zipball/3a4e98dd142e83234a87cf2c68b8a3f618606331",
+                "reference": "3a4e98dd142e83234a87cf2c68b8a3f618606331",
                 "shasum": ""
             },
             "require": {
                 "league/flysystem": "^3.0",
-                "overtrue/qcloud-cos-client": "^1.0.0",
+                "overtrue/qcloud-cos-client": "^2.0",
                 "php": ">=8.0.2"
             },
             "require-dev": {
@@ -3930,7 +3930,7 @@
             "description": "Flysystem adapter for the QCloud COS storage.",
             "support": {
                 "issues": "https://github.com/overtrue/flysystem-cos/issues",
-                "source": "https://github.com/overtrue/flysystem-cos/tree/5.0.2"
+                "source": "https://github.com/overtrue/flysystem-cos/tree/5.1.0"
             },
             "funding": [
                 {
@@ -3938,7 +3938,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-04-13T01:47:23+00:00"
+            "time": "2022-04-24T06:14:37+00:00"
         },
         {
             "name": "overtrue/flysystem-qiniu",
@@ -4005,16 +4005,16 @@
         },
         {
             "name": "overtrue/qcloud-cos-client",
-            "version": "1.0.2",
+            "version": "2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/overtrue/qcloud-cos-client.git",
-                "reference": "3e96ebad0b79152c32733ccf00da0d60b3c23c10"
+                "reference": "ef97222d009816d6b7b89a0eee1f6f492c923b7c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/overtrue/qcloud-cos-client/zipball/3e96ebad0b79152c32733ccf00da0d60b3c23c10",
-                "reference": "3e96ebad0b79152c32733ccf00da0d60b3c23c10",
+                "url": "https://api.github.com/repos/overtrue/qcloud-cos-client/zipball/ef97222d009816d6b7b89a0eee1f6f492c923b7c",
+                "reference": "ef97222d009816d6b7b89a0eee1f6f492c923b7c",
                 "shasum": ""
             },
             "require": {
@@ -4022,16 +4022,16 @@
                 "ext-json": "*",
                 "ext-libxml": "*",
                 "ext-simplexml": "*",
-                "guzzlehttp/guzzle": "^7.2",
-                "php": ">=7.4",
-                "psr/http-message": "^1.0"
+                "guzzlehttp/guzzle": "^7.4",
+                "php": ">=8.0.2",
+                "psr/http-message": "^1.0|^2.0"
             },
             "require-dev": {
-                "brainmaestro/composer-git-hooks": "^2.7",
-                "friendsofphp/php-cs-fixer": "^2.15",
+                "brainmaestro/composer-git-hooks": "^2.8",
+                "friendsofphp/php-cs-fixer": "^3.5",
                 "mockery/mockery": "^1.0",
-                "monolog/monolog": "^2.1",
-                "phpunit/phpunit": "^9.0"
+                "monolog/monolog": "^2.5",
+                "phpunit/phpunit": "^9.5"
             },
             "type": "library",
             "extra": {
@@ -4064,23 +4064,15 @@
             "description": "Client of QCloud.com COS",
             "support": {
                 "issues": "https://github.com/overtrue/qcloud-cos-client/issues",
-                "source": "https://github.com/overtrue/qcloud-cos-client/tree/1.0.2"
+                "source": "https://github.com/overtrue/qcloud-cos-client/tree/2.0.0"
             },
             "funding": [
                 {
-                    "url": "https://www.easywechat.com/img/pay/wechat.jpg",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/",
+                    "url": "https://github.com/overtrue",
                     "type": "github"
-                },
-                {
-                    "url": "https://www.patreon.com/overtrue",
-                    "type": "patreon"
                 }
             ],
-            "time": "2021-05-31T02:18:32+00:00"
+            "time": "2022-04-24T04:15:41+00:00"
         },
         {
             "name": "phpoption/phpoption",
@@ -7651,16 +7643,16 @@
         },
         {
             "name": "tencentcloud/common",
-            "version": "3.0.615",
+            "version": "3.0.619",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tencentcloud-sdk-php/common.git",
-                "reference": "06f8a0b82f47047d38b19c8ab7088fe2d4695fd3"
+                "reference": "69d9f3f3207265eb86c42eba78eb3f15839afdbd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tencentcloud-sdk-php/common/zipball/06f8a0b82f47047d38b19c8ab7088fe2d4695fd3",
-                "reference": "06f8a0b82f47047d38b19c8ab7088fe2d4695fd3",
+                "url": "https://api.github.com/repos/tencentcloud-sdk-php/common/zipball/69d9f3f3207265eb86c42eba78eb3f15839afdbd",
+                "reference": "69d9f3f3207265eb86c42eba78eb3f15839afdbd",
                 "shasum": ""
             },
             "require": {
@@ -7689,26 +7681,26 @@
             "homepage": "https://github.com/tencentcloud-sdk-php/common",
             "support": {
                 "issues": "https://github.com/tencentcloud-sdk-php/common/issues",
-                "source": "https://github.com/tencentcloud-sdk-php/common/tree/3.0.615"
+                "source": "https://github.com/tencentcloud-sdk-php/common/tree/3.0.619"
             },
-            "time": "2022-04-18T22:59:16+00:00"
+            "time": "2022-04-26T06:57:20+00:00"
         },
         {
             "name": "tencentcloud/ims",
-            "version": "3.0.615",
+            "version": "3.0.619",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tencentcloud-sdk-php/ims.git",
-                "reference": "63d15dce111e0e71f79aceb933d82ec24ab8e3eb"
+                "reference": "04bc877e3f8e3c2159523fd925a7c9f2a5612713"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tencentcloud-sdk-php/ims/zipball/63d15dce111e0e71f79aceb933d82ec24ab8e3eb",
-                "reference": "63d15dce111e0e71f79aceb933d82ec24ab8e3eb",
+                "url": "https://api.github.com/repos/tencentcloud-sdk-php/ims/zipball/04bc877e3f8e3c2159523fd925a7c9f2a5612713",
+                "reference": "04bc877e3f8e3c2159523fd925a7c9f2a5612713",
                 "shasum": ""
             },
             "require": {
-                "tencentcloud/common": "3.0.615"
+                "tencentcloud/common": "3.0.619"
             },
             "type": "library",
             "autoload": {
@@ -7732,9 +7724,9 @@
             "homepage": "https://github.com/tencentcloud-sdk-php/ims",
             "support": {
                 "issues": "https://github.com/tencentcloud-sdk-php/ims/issues",
-                "source": "https://github.com/tencentcloud-sdk-php/ims/tree/3.0.615"
+                "source": "https://github.com/tencentcloud-sdk-php/ims/tree/3.0.619"
             },
-            "time": "2022-04-18T23:07:13+00:00"
+            "time": "2022-04-26T07:05:10+00:00"
         },
         {
             "name": "tijsverkoyen/css-to-inline-styles",
@@ -8518,16 +8510,16 @@
         },
         {
             "name": "laravel/sail",
-            "version": "v1.13.9",
+            "version": "v1.13.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/sail.git",
-                "reference": "7bb294fe99fc42c3b1bee83fb667cd7698b3c385"
+                "reference": "cbf55e1a392724313f7726c38578b5e008df6a0f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/sail/zipball/7bb294fe99fc42c3b1bee83fb667cd7698b3c385",
-                "reference": "7bb294fe99fc42c3b1bee83fb667cd7698b3c385",
+                "url": "https://api.github.com/repos/laravel/sail/zipball/cbf55e1a392724313f7726c38578b5e008df6a0f",
+                "reference": "cbf55e1a392724313f7726c38578b5e008df6a0f",
                 "shasum": ""
             },
             "require": {
@@ -8574,7 +8566,7 @@
                 "issues": "https://github.com/laravel/sail/issues",
                 "source": "https://github.com/laravel/sail"
             },
-            "time": "2022-04-04T15:21:51+00:00"
+            "time": "2022-04-14T18:29:22+00:00"
         },
         {
             "name": "maximebf/debugbar",
@@ -10711,16 +10703,16 @@
         },
         {
             "name": "spatie/ignition",
-            "version": "1.2.7",
+            "version": "1.2.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/ignition.git",
-                "reference": "2f059cf42b48f7c522efbba1c05ad59fc2c1a3f2"
+                "reference": "db25202fab2d5c14613b8914a1bb374998bbf870"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/ignition/zipball/2f059cf42b48f7c522efbba1c05ad59fc2c1a3f2",
-                "reference": "2f059cf42b48f7c522efbba1c05ad59fc2c1a3f2",
+                "url": "https://api.github.com/repos/spatie/ignition/zipball/db25202fab2d5c14613b8914a1bb374998bbf870",
+                "reference": "db25202fab2d5c14613b8914a1bb374998bbf870",
                 "shasum": ""
             },
             "require": {
@@ -10777,7 +10769,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-03-29T08:48:34+00:00"
+            "time": "2022-04-23T20:37:21+00:00"
         },
         {
             "name": "spatie/laravel-ignition",
