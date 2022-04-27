@@ -15,8 +15,8 @@
         @stack('styles')
 
         <!-- Styles -->
-        <link rel="stylesheet" href="{{ asset('css/common.css') }}">
-        <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/common.css') }}?t=20220427">
+        <link rel="stylesheet" href="{{ asset('css/app.css') }}?t=20220427">
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen text-gray-900 bg-gray-100">
@@ -24,7 +24,7 @@
         </div>
     </body>
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}"></script>
+    <script src="{{ asset('js/app.js') }}?t=20220427"></script>
     @if(file_exists(public_path('js/custom.js')))
         <script src="{{ asset('js/custom.js') }}"></script>
     @endif
