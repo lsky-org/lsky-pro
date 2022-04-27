@@ -24,6 +24,7 @@ use Laravel\Sanctum\HasApiTokens;
  * @property string $remember_token
  * @property boolean $is_adminer
  * @property float $capacity
+ * @property float $use_capacity
  * @property string $url
  * @property Collection $configs
  * @property int $image_num
@@ -93,6 +94,10 @@ class User extends Authenticatable implements MustVerifyEmail
 
     protected static function booted()
     {
+        static::retrieved(function (self $user) {
+            $user->use_capacity = $user->images()->sum('size');
+        });
+
         static::creating(function (self $user) {
             // 默认组
             $user->group_id = Group::query()->where('is_default', true)->value('id');

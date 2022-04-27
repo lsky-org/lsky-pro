@@ -14,14 +14,14 @@
                 <i class="fas fa-hdd text-red-500 text-5xl"></i>
                 <div class="flex flex-col">
                     <p class="text-gray-700 text-sm">可用储存</p>
-                    <p class="text-gray-800 font-semibold text-xl">{{ \App\Utils::formatSize(($user->capacity - $user->images->sum('size')) * 1024) }}</p>
+                    <p class="text-gray-800 font-semibold text-xl">{{ \App\Utils::formatSize(($user->capacity - $user->use_capacity) * 1024) }}</p>
                 </div>
             </div>
             <div class="flex bg-white rounded p-4 space-x-4">
                 <i class="fas fa-hdd text-green-500 text-5xl"></i>
                 <div class="flex flex-col">
                     <p class="text-gray-700 text-sm">使用储存</p>
-                    <p class="text-gray-800 font-semibold text-xl">{{ \App\Utils::formatSize($user->images->sum('size') * 1024) }}</p>
+                    <p class="text-gray-800 font-semibold text-xl">{{ \App\Utils::formatSize($user->use_capacity * 1024) }}</p>
                 </div>
             </div>
             <div class="flex bg-white rounded p-4 space-x-4">
