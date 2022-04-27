@@ -18,7 +18,6 @@ return new class extends Migration
             $table->index('md5');
             $table->index('sha1');
             $table->index('created_at');
-            $table->index('uploaded_ip');
         });
     }
 
@@ -34,7 +33,6 @@ return new class extends Migration
             $table->dropIndex('md5');
             $table->dropIndex('sha1');
             $table->dropIndex('created_at');
-            $table->dropIndex('uploaded_ip');
         });
     }
 };
