@@ -29,10 +29,10 @@ return new class extends Migration
     public function down()
     {
         Schema::table('images', function (Blueprint $table) {
-            $table->dropIndex('key');
-            $table->dropIndex('md5');
-            $table->dropIndex('sha1');
-            $table->dropIndex('created_at');
+            $table->dropIndex('images_key_index');
+            $table->dropIndex('images_md5_index');
+            $table->dropIndex('images_sha1_index');
+            $table->dropIndex('images_created_at_index');
         });
     }
 };
