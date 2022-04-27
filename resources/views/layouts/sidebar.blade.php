@@ -1,4 +1,4 @@
-<nav class="transition-all duration-300 -left-[600px] sm:left-0 w-3/4 sm:w-64 h-screen bg-white fixed z-10 shadow-lg sm:shadow-none" :class="{
+<nav class="transition-all duration-300 -left-[600px] sm:left-0 w-3/4 sm:w-64 h-screen bg-white fixed z-10 shadow-custom" :class="{
     '-left-[600px]': ! $store.sidebar.open,
     'left-0': $store.sidebar.open
 }">

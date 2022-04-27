@@ -8,7 +8,7 @@
     <div class="my-6 md:my-9">
         <p class="mb-3 font-semibold text-lg text-gray-700">通用</p>
         <form action="{{ route('admin.settings.save') }}">
-            <div class="relative p-4 rounded-md bg-white mb-8 space-y-4">
+            <div class="relative p-4 rounded-md bg-white mb-8 space-y-4 shadow-custom">
                 <div>
                     <label for="app_name" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>应用名称</label>
                     <x-input type="text" name="app_name" id="app_name" value="{{ $configs->get('app_name') }}" placeholder="请输入应用名称"/>
@@ -38,7 +38,7 @@
 
         <p class="mb-3 font-semibold text-lg text-gray-700">控制</p>
         <form action="{{ route('admin.settings.save') }}">
-            <div class="relative p-4 rounded-md bg-white mb-8 space-y-4">
+            <div class="relative p-4 rounded-md bg-white mb-8 space-y-4 shadow-custom">
                 <x-fieldset title="是否启用注册" faq="启用或关闭系统注册功能">
                     <x-switch name="is_enable_registration" value="1" :checked="(bool) $configs->get('is_enable_registration')" />
                 </x-fieldset>
@@ -62,7 +62,7 @@
 
         <p class="mb-3 font-semibold text-lg text-gray-700">用户</p>
         <form action="{{ route('admin.settings.save') }}">
-            <div class="relative p-4 rounded-md bg-white mb-8 space-y-4">
+            <div class="relative p-4 rounded-md bg-white mb-8 space-y-4 shadow-custom">
                 <div>
                     <label for="user_initial_capacity" class="block text-sm font-medium text-gray-700">用户初始容量(kb)</label>
                     <x-input type="number" name="user_initial_capacity" id="user_initial_capacity" step="0.01" value="{{ $configs->get('user_initial_capacity') }}" placeholder="请输入用户初始容量(kb)"/>
@@ -75,7 +75,7 @@
         </form>
 
         <p class="mb-3 font-semibold text-lg text-gray-700">邮件配置</p>
-        <div class="relative p-4 rounded-md bg-white mb-8 space-y-4">
+        <div class="relative p-4 rounded-md bg-white mb-8 space-y-4 shadow-custom">
             <x-fieldset title="发信驱动">
                 <x-fieldset-radio id="mail[default]" name="mail[default]" data-select="mailer" value="smtp" checked>SMTP</x-fieldset-radio>
             </x-fieldset>
@@ -127,7 +127,7 @@
         </div>
 
         <p class="mb-3 font-semibold text-lg text-gray-700">系统升级</p>
-        <div class="relative p-4 rounded-md bg-white mb-8">
+        <div class="relative p-4 rounded-md bg-white mb-8 shadow-custom">
             <p id="check-update" class="text-gray-600 text-center p-4" style="display: none">
                 <i class="fas fa-cog animate-spin"></i> 正在检查更新...
             </p>

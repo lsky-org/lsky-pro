@@ -20,7 +20,7 @@
                 </li>
             </ul>
             <form action="{{ route('admin.group.update', ['id' => $group->id]) }}" method="POST">
-                <div class="overflow-hidden rounded-md rounded-l-none">
+                <div class="overflow-hidden rounded-md rounded-l-none shadow-custom">
                     <div class="px-4 py-5 bg-white sm:p-6">
                         <div data-tab="basic" class="grid grid-cols-6 gap-6">
                             <div class="col-span-6">

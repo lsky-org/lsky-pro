@@ -10,7 +10,7 @@
     <div class="my-6 md:my-9">
         <p class="mb-3 font-semibold text-lg text-gray-700">概览</p>
         <div class="relative grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-            <div class="flex justify-between rounded-md bg-white p-3 overflow-hidden">
+            <div class="flex justify-between rounded-md bg-white p-3 overflow-hidden shadow-custom">
                 <div class="flex flex-col justify-between space-y-2 w-[80%]">
                     <p class="font-bold text-2xl text-red-700 truncate">
                         {{ \App\Utils::shortenNumber(\App\Models\Image::query()->count()) }}
@@ -19,7 +19,7 @@
                 </div>
                 <i class="fas fa-images text-red-600 text-2xl"></i>
             </div>
-            <div class="flex justify-between rounded-md bg-white p-3 overflow-hidden">
+            <div class="flex justify-between rounded-md bg-white p-3 overflow-hidden shadow-custom">
                 <div class="flex flex-col justify-between space-y-2 w-[80%]">
                     <p class="font-bold text-2xl text-lime-700 truncate">
                         {{ \App\Utils::shortenNumber(\App\Models\Album::query()->count()) }}
@@ -28,7 +28,7 @@
                 </div>
                 <i class="fas fa-tags text-lime-600 text-2xl"></i>
             </div>
-            <div class="flex justify-between rounded-md bg-white p-3 overflow-hidden">
+            <div class="flex justify-between rounded-md bg-white p-3 overflow-hidden shadow-custom">
                 <div class="flex flex-col justify-between space-y-2 w-[80%]">
                     <p class="font-bold text-2xl text-blue-700 truncate">
                         {{ \App\Utils::shortenNumber(\App\Models\User::query()->count()) }}
@@ -37,7 +37,7 @@
                 </div>
                 <i class="fas fa-users text-blue-600 text-2xl"></i>
             </div>
-            <div class="flex justify-between rounded-md bg-white p-3 overflow-hidden">
+            <div class="flex justify-between rounded-md bg-white p-3 overflow-hidden shadow-custom">
                 <div class="flex flex-col justify-between space-y-2 w-[80%]">
                     <p class="font-bold text-2xl text-cyan-700 truncate">
                         {{ \App\Utils::formatSize(\App\Models\Image::query()->sum('size') * 1024) }}
@@ -47,28 +47,28 @@
                 <i class="fas fa-server text-cyan-600 text-2xl"></i>
             </div>
 
-            <div class="flex justify-between rounded-md bg-white p-3 overflow-hidden">
+            <div class="flex justify-between rounded-md bg-white p-3 overflow-hidden shadow-custom">
                 <div class="flex flex-col justify-between space-y-2 w-[80%]">
                     <p class="font-bold text-2xl text-zinc-700 truncate">{{ \App\Utils::shortenNumber($numbers['today']) }}</p>
                     <p class="text-md text-gray-600">今日上传</p>
                 </div>
                 <i class="fas fa-upload text-zinc-600 text-2xl"></i>
             </div>
-            <div class="flex justify-between rounded-md bg-white p-3 overflow-hidden">
+            <div class="flex justify-between rounded-md bg-white p-3 overflow-hidden shadow-custom">
                 <div class="flex flex-col justify-between space-y-2 w-[80%]">
                     <p class="font-bold text-2xl text-zinc-700 truncate">{{ \App\Utils::shortenNumber($numbers['yesterday']) }}</p>
                     <p class="text-md text-gray-600">昨日上传</p>
                 </div>
                 <i class="fas fa-upload text-zinc-600 text-2xl"></i>
             </div>
-            <div class="flex justify-between rounded-md bg-white p-3 overflow-hidden">
+            <div class="flex justify-between rounded-md bg-white p-3 overflow-hidden shadow-custom">
                 <div class="flex flex-col justify-between space-y-2 w-[80%]">
                     <p class="font-bold text-2xl text-zinc-700 truncate">{{ \App\Utils::shortenNumber($numbers['week']) }}</p>
                     <p class="text-md text-gray-600">本周上传</p>
                 </div>
                 <i class="fas fa-upload text-zinc-600 text-2xl"></i>
             </div>
-            <div class="flex justify-between rounded-md bg-white p-3 overflow-hidden">
+            <div class="flex justify-between rounded-md bg-white p-3 overflow-hidden shadow-custom">
                 <div class="flex flex-col justify-between space-y-2 w-[80%]">
                     <p class="font-bold text-2xl text-zinc-700 truncate">{{ \App\Utils::shortenNumber($numbers['month']) }}</p>
                     <p class="text-md text-gray-600">本月上传</p>
@@ -78,12 +78,12 @@
         </div>
 
         <p class="mb-3 font-semibold text-lg text-gray-700">趋势</p>
-        <div class="relative p-4 rounded-md bg-white h-80 mb-8" id="chart">
+        <div class="relative p-4 rounded-md bg-white h-80 mb-8 shadow-custom" id="chart">
             <canvas></canvas>
         </div>
 
         <p class="mb-3 font-semibold text-lg text-gray-700">系统情况</p>
-        <div class="relative rounded-md bg-white mb-8 overflow-hidden">
+        <div class="relative rounded-md bg-white mb-8 overflow-hidden shadow-custom">
             <dl>
                 <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                     <dt class="text-sm font-medium text-gray-500">操作系统</dt>
@@ -119,7 +119,7 @@
         </div>
 
         <p class="mb-3 font-semibold text-lg text-gray-700">软件信息</p>
-        <div class="relative rounded-md bg-white mb-8 overflow-hidden">
+        <div class="relative rounded-md bg-white mb-8 overflow-hidden shadow-custom">
             <dl>
                 <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                     <dt class="text-sm font-medium text-gray-500">软件版本</dt>

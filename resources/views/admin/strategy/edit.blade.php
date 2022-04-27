@@ -7,7 +7,7 @@
         <div class="md:mt-0 md:col-span-2">
             <form action="{{ route('admin.strategy.update', ['id' => $strategy->id]) }}" method="POST">
                 <div class="overflow-hidden rounded-md">
-                    <div class="px-4 py-5 bg-white sm:p-6 space-y-4">
+                    <div class="px-4 py-5 bg-white sm:p-6 space-y-4 shadow-custom">
 
                         <div class="col-span-6">
                             <label class="block">

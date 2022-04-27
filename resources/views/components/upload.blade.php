@@ -1,7 +1,7 @@
 <div class="pb-6 h-full">
     <input type="file" id="picker" name="file" class="hidden" accept="{{ implode(',', array_map(fn ($ext) => '.'.$ext, $_group->configs->get(\App\Enums\GroupConfigKey::AcceptedFileSuffixes))) }}" multiple>
 
-    <div class="mb-4 p-4 bg-white rounded-md">
+    <div class="mb-4 p-4 bg-white rounded-md shadow-custom">
         <h1 class="tracking-wider text-2xl text-gray-700 mb-2" style="text-shadow: -4px 4px 0 rgb(0 0 0 / 10%);">Image Upload</h1>
         <p class="text-gray-500 text-sm">
             最大可上传 {{ \App\Utils::formatSize($_group->configs->get(\App\Enums\GroupConfigKey::MaximumFileSize) * 1024) }} 的图片，上传队列最多
@@ -18,7 +18,7 @@
         </div>
     </div>
 
-    <div id="links-container" class="hidden mb-4 p-4 bg-white rounded-md relative group">
+    <div id="links-container" class="hidden mb-4 p-4 bg-white rounded-md relative group shadow-custom">
         <div class="absolute top-2 right-2 flex">
             <span id="copy-all" class="px-2 py-1 rounded-md text-xs text-gray-800 bg-gray-100 cursor-pointer hidden group-hover:block">复制全部</span>
             <span id="clear-all" class="ml-1 px-2 py-1 rounded-md text-xs text-gray-800 bg-gray-100 cursor-pointer hidden group-hover:block">清除</span>

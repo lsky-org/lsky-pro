@@ -3,7 +3,7 @@
 <x-app-layout>
     <div class="my-6 md:my-9">
         <p class="text-xl mb-2 text-gray-800 font-semibold">接口说明</p>
-        <div class="space-y-4 bg-white p-3 rounded-md mb-10">
+        <div class="space-y-4 bg-white p-3 rounded-md mb-10 shadow-custom">
             <div>
                 <p class="text-lg text-gray-700 font-semibold">接口URL</p>
                 <x-code>{{ request()->getSchemeAndHttpHost() }}/api/v1</x-code>
@@ -118,7 +118,7 @@
         </div>
 
         <p class="text-xl mb-2 text-gray-800 font-semibold">授权相关</p>
-        <div class="space-y-4 bg-white p-3 rounded-md mb-10">
+        <div class="space-y-4 bg-white p-3 rounded-md mb-10 shadow-custom">
             <div>
                 <p class="text-lg text-gray-700 font-semibold">生成 Token</p>
                 <x-code><span class="text-green-500 select-none">POST </span>/tokens</x-code>
@@ -319,7 +319,7 @@
         </div>
 
         <p class="text-xl mb-2 text-gray-800 font-semibold">策略相关</p>
-        <div class="space-y-4 bg-white p-3 rounded-md mb-10">
+        <div class="space-y-4 bg-white p-3 rounded-md mb-10 shadow-custom">
             <div>
                 <p class="text-lg text-gray-700 font-semibold">策略列表</p>
                 <x-code><span class="text-sky-500 select-none">GET </span>/strategies</x-code>
@@ -404,7 +404,7 @@
         </div>
 
         <p class="text-xl mb-2 text-gray-800 font-semibold">图片相关</p>
-        <div class="space-y-4 bg-white p-3 rounded-md mb-10">
+        <div class="space-y-4 bg-white p-3 rounded-md mb-10 shadow-custom">
             <div>
                 <p class="text-lg text-gray-700 font-semibold">上传图片</p>
                 <x-code><span class="text-green-500 select-none">POST </span>/upload</x-code>
@@ -822,7 +822,7 @@
         </div>
 
         <p class="text-xl mb-2 text-gray-800 font-semibold">相册相关</p>
-        <div class="space-y-4 bg-white p-3 rounded-md mb-10">
+        <div class="space-y-4 bg-white p-3 rounded-md mb-10 shadow-custom">
             <div>
                 <p class="text-lg text-gray-700 font-semibold">相册列表</p>
                 <x-code><span class="text-sky-500 select-none">GET </span>/albums</x-code>
