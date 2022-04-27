@@ -54,3 +54,4 @@ mix.copy('node_modules/imagesloaded/imagesloaded.pkgd.min.js', 'public/js/images
 
 // markdown css
 mix.copy('node_modules/github-markdown-css/github-markdown.css', 'public/css/markdown-css')
+mix.copy('node_modules/github-markdown-css/github-markdown-light.css', 'public/css/markdown-css')

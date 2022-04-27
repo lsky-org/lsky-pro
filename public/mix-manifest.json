@@ -20,5 +20,6 @@
     "/js/echarts/echarts.min.js": "/js/echarts/echarts.min.js",
     "/js/masonry/masonry.pkgd.min.js": "/js/masonry/masonry.pkgd.min.js",
     "/js/imagesloaded/imagesloaded.pkgd.min.js": "/js/imagesloaded/imagesloaded.pkgd.min.js",
-    "/css/markdown-css/github-markdown.css": "/css/markdown-css/github-markdown.css"
+    "/css/markdown-css/github-markdown.css": "/css/markdown-css/github-markdown.css",
+    "/css/markdown-css/github-markdown-light.css": "/css/markdown-css/github-markdown-light.css"
 }

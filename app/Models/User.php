@@ -94,10 +94,6 @@ class User extends Authenticatable implements MustVerifyEmail
 
     protected static function booted()
     {
-        static::retrieved(function (self $user) {
-            $user->use_capacity = $user->images()->sum('size');
-        });
-
         static::creating(function (self $user) {
             // 默认组
             $user->group_id = Group::query()->where('is_default', true)->value('id');
@@ -110,6 +106,11 @@ class User extends Authenticatable implements MustVerifyEmail
     public function avatar(): Attribute
     {
         return new Attribute(fn () => Utils::getAvatar($this->email));
+    }
+
+    public function useCapacity(): Attribute
+    {
+        return new Attribute(fn () => $this->images()->sum('size'));
     }
 
     public function group(): BelongsTo

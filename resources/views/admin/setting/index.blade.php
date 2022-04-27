@@ -1,7 +1,7 @@
 @section('title', '系统设置')
 
 @push('styles')
-    <link rel="stylesheet" href="{{ asset('css/markdown-css/github-markdown.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/markdown-css/github-markdown-light.css') }}">
 @endpush
 
 <x-app-layout>
