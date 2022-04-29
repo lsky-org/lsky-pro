@@ -56,7 +56,7 @@ window.utils = {
             || navigator.userAgent.match(/BlackBerry/i)
             || navigator.userAgent.match(/Windows Phone/i)
         ) {
-            return true;
+            return window.screen.width < 768;
         }
         return false;
     },
