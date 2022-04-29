@@ -5,7 +5,7 @@
         <p class="mb-3 font-semibold text-lg text-gray-700">基础设置</p>
         <form action="{{ route('settings.update') }}" method="POST">
             @csrf
-            <div class="overflow-hidden sm:rounded-md">
+            <div class="overflow-hidden sm:rounded-md shadow-custom">
                 <div class="px-3 py-4 bg-white sm:p-6">
                     <div class="grid grid-cols-6 gap-6">
                         <div class="col-span-6 sm:col-span-3">
