@@ -30,7 +30,7 @@ class UserSettingRequest extends FormRequest
             'name.required' => '昵称不能为空',
             'name.between' => '昵称必须在 2-20 个字符之间',
             'url.url' => '个人主页地址格式不正确',
-            'password.between' => '昵称必须在 6-32 个字符之间',
+            'password.between' => '密码必须在 6-32 个字符之间',
             'configs.array' => '配置值不正确',
             'configs.default_album.required' => '默认相册选择错误',
             'configs.default_album.numeric' => '默认相册选择错误',
