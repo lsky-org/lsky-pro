@@ -147,7 +147,7 @@ class Utils
     {
         foreach ($array as &$value) {
             if (is_array($value)) {
-                $value = self::filter($value);
+                $value = self::filter($value, $callback, $mode);
             }
         }
         return array_filter($array, $callback, $mode);
