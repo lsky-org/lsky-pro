@@ -342,7 +342,7 @@ class ImageService
             'hours' => ['key' => GroupConfigKey::LimitPerHour, 'str' => '小时'],
             'days' => ['key' => GroupConfigKey::LimitPerDay, 'str' => '天'],
             'weeks' => ['key' => GroupConfigKey::LimitPerWeek, 'str' => '周'],
-            'months' => ['key' => GroupConfigKey::LimitPerWeek, 'str' => '月'],
+            'months' => ['key' => GroupConfigKey::LimitPerMonth, 'str' => '月'],
         ];
 
         foreach ($array as $key => $item) {
