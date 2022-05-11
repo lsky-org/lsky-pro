@@ -18,10 +18,10 @@ class ConsoleController extends Controller
         $format = 'Y-m-d H:i:s';
 
         $numbers = [
-            'today' => Image::query()->whereBetween('created_at', [$carbon->startOfDay()->format($format), $carbon->endOfDay()->format($format)])->count('id'),
-            'yesterday' => Image::query()->whereBetween('created_at', [$carbon->yesterday()->startOfDay()->format($format), $carbon->yesterday()->endOfDay()->format($format)])->count('id'),
-            'week' => Image::query()->whereBetween('created_at', [$carbon->startOfWeek()->format($format), $carbon->endOfWeek()->format($format)])->count('id'),
-            'month' => Image::query()->whereBetween('created_at', [$carbon->startOfMonth()->format($format), $carbon->endOfMonth()->format($format)])->count('id'),
+            'today' => Image::query()->whereBetween('created_at', [$carbon->startOfDay()->format($format), $carbon->endOfDay()->format($format)])->count(),
+            'yesterday' => Image::query()->whereBetween('created_at', [$carbon->yesterday()->startOfDay()->format($format), $carbon->yesterday()->endOfDay()->format($format)])->count(),
+            'week' => Image::query()->whereBetween('created_at', [$carbon->startOfWeek()->format($format), $carbon->endOfWeek()->format($format)])->count(),
+            'month' => Image::query()->whereBetween('created_at', [$carbon->startOfMonth()->format($format), $carbon->endOfMonth()->format($format)])->count(),
         ];
 
         $start = Carbon::now()->parse('-30 day')->startOfDay();
