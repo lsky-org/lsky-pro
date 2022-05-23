@@ -64,6 +64,7 @@ class GroupRequest extends FormRequest
             'configs.image_cache_ttl' => 'nullable|numeric',
 
             'configs.is_enable_watermark' => 'boolean',
+            'configs.watermark_configs.mode' => ['exclude_if:configs.is_enable_watermark,false', 'in:1,2'],
             'configs.watermark_configs.driver' => ['exclude_if:configs.is_enable_watermark,false', 'in:font,image'],
             'configs.watermark_configs.drivers.font.font' => [
                 $requiredIfWatermark('font'),
