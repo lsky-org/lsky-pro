@@ -204,9 +204,15 @@
                         <div data-tab="watermark" class="hidden grid grid-cols-6 gap-6">
                             <p class="mb-3 text-red-600 text-sm"><i class="fas fa-exclamation"></i> 开启水印功能前请注意考虑图片版权问题。</p>
                             <div class="col-span-6 mb-4">
-                                <x-fieldset title="开启水印" faq="请注意，水印功能仅在开启了「原图保护」功能的情况下生效。">
+                                <x-fieldset title="开启水印" faq="请注意，水印模式为动态生成时，仅在开启了「原图保护」功能的情况下生效。">
                                     <x-switch id="configs[is_enable_watermark]" name="configs[is_enable_watermark]" value="1"></x-switch>
                                 </x-fieldset>
+                                <div class="col-span-6 mt-4 mb-4">
+                                    <x-fieldset title="水印模式">
+                                        <x-fieldset-radio id="configs[watermark_configs][mode]_overlay" name="configs[watermark_configs][mode]" value="{{ \App\Enums\Watermark\Mode::Overlay }}" checked>覆盖原图</x-fieldset-radio>
+                                        <x-fieldset-radio id="configs[watermark_configs][mode]_dynamic" name="configs[watermark_configs][mode]" value="{{ \App\Enums\Watermark\Mode::Dynamic }}">动态生成</x-fieldset-radio>
+                                    </x-fieldset>
+                                </div>
                                 <div class="col-span-6 mt-4 mb-4">
                                     <x-fieldset title="水印类型">
                                         <x-fieldset-radio id="configs[watermark_configs][driver]_font" name="configs[watermark_configs][driver]" data-select="watermark" value="font" checked>文字水印</x-fieldset-radio>

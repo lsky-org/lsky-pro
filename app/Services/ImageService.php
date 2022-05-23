@@ -25,6 +25,7 @@ use App\Enums\UserConfigKey;
 use App\Enums\UserStatus;
 use App\Enums\Watermark\FontOption;
 use App\Enums\Watermark\ImageOption;
+use App\Enums\Watermark\Mode;
 use App\Exceptions\UploadException;
 use App\Models\Group;
 use App\Models\Image;
@@ -149,6 +150,17 @@ class ImageService
 
         // 上传频率限制
         $this->rateLimiter($configs, $request);
+
+        // 是否启用水印，覆盖原图片
+        if (
+            $configs->get(GroupConfigKey::IsEnableWatermark) &&
+            collect($configs->get(GroupConfigKey::WatermarkConfigs))->get('mode', Mode::Overlay) == Mode::Overlay &&
+            ! in_array($extension, ['ico', 'gif'])
+        ) {
+            $watermarkImage = $this->stickWatermark($file, collect($configs->get(GroupConfigKey::WatermarkConfigs)));
+            $watermarkImage->save();
+            $file = new UploadedFile($watermarkImage->basePath(), $file->getClientOriginalName(), $file->getMimeType());
+        }
 
         $filename = $this->replacePathname(
             $configs->get(GroupConfigKey::PathNamingRule).'/'.$configs->get(GroupConfigKey::FileNamingRule), $file,

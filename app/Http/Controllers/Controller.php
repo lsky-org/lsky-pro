@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Enums\GroupConfigKey;
 use App\Enums\UserStatus;
+use App\Enums\Watermark\Mode;
 use App\Exceptions\UploadException;
 use App\Http\Result;
 use App\Models\Group;
@@ -158,10 +159,15 @@ class Controller extends BaseController
                 $contents = Cache::get($cacheKey);
             } else {
                 $contents = $image->filesystem()->read($image->pathname);
+                $configs = collect($image->group?->configs->get(GroupConfigKey::WatermarkConfigs));
+
                 // 是否启用了水印功能，跳过gif和ico图片
-                if ($image->group?->configs->get(GroupConfigKey::IsEnableWatermark) && ! in_array($image->extension, ['ico', 'gif'])) {
-                    $configs = $image->group?->configs->get(GroupConfigKey::WatermarkConfigs);
-                    $contents = $service->stickWatermark($contents, collect($configs))->encode()->getEncoded();
+                if (
+                    $image->group?->configs->get(GroupConfigKey::IsEnableWatermark) &&
+                    $configs->get('mode', Mode::Overlay) == Mode::Dynamic &&
+                    ! in_array($image->extension, ['ico', 'gif'])
+                ) {
+                    $contents = $service->stickWatermark($contents, $configs)->encode()->getEncoded();
                 }
                 $cacheTtl = (int)$image->group?->configs->get(GroupConfigKey::ImageCacheTtl, 0);
                 // 是否启用了缓存
