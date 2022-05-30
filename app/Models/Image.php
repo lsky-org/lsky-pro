@@ -174,10 +174,13 @@ class Image extends Model
         return new Attribute(function () {
             // 是否启用原图保护功能
             if ($this->group?->configs->get(GroupConfigKey::IsEnableOriginalProtection)) {
-                return asset("{$this->key}.{$this->extension}");
+                $url = asset("{$this->key}.{$this->extension}");
             } else {
-                return rtrim($this->strategy?->configs->get('url'), '/').'/'.ltrim($this->pathname, '/');
+                $url = rtrim($this->strategy?->configs->get('url'), '/').'/'.ltrim($this->pathname, '/');
             }
+
+            // 拼接图片 url
+            return $url.($this->strategy?->configs->get('queries') ?: '');
         });
     }
 

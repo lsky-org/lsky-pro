@@ -50,6 +50,10 @@
                                     本地储存的访问网址必须有根路径，例如：https://www.lsky.pro/uploads 中的 uploads 就是根路径，且根路径不能和其他策略重复。修改根路径直接影响已经上传并已使用的链接的访问。
                                 </small>
                             </div>
+                            <div class="col-span-3 sm:col-span-2 mb-4">
+                                <label for="configs[queries]" class="block text-sm font-medium text-gray-700">URL Queries</label>
+                                <x-input type="text" name="configs[queries]" id="configs[queries]" placeholder="请输入 url 额外参数" value="{{ $strategy->configs->get('queries') }}" />
+                            </div>
                             <div class="col-span-6">
                                 <div class="col-span-6 sm:col-span-3 mb-4">
                                     <label for="configs[root]" class="block text-sm font-medium text-gray-700">储存路径</label>
@@ -65,6 +69,10 @@
                             <div class="col-span-3 sm:col-span-2 mb-4">
                                 <label for="configs[url]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>访问域名</label>
                                 <x-input type="url" name="configs[url]" id="configs[url]" placeholder="请输入图片访问域名 http(s)://" value="{{ $strategy->configs->get('url') }}" />
+                            </div>
+                            <div class="col-span-3 sm:col-span-2 mb-4">
+                                <label for="configs[queries]" class="block text-sm font-medium text-gray-700">URL Queries</label>
+                                <x-input type="text" name="configs[queries]" id="configs[queries]" placeholder="请输入 url 额外参数" value="{{ $strategy->configs->get('queries') }}" />
                             </div>
                             <div class="col-span-3 sm:col-span-2 mb-4">
                                 <label for="configs[access_key_id]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>AccessKeyId</label>
@@ -96,6 +104,10 @@
                                 <x-input type="url" name="configs[url]" id="configs[url]" placeholder="请输入图片访问域名 http(s)://" value="{{ $strategy->configs->get('url') }}" />
                             </div>
                             <div class="col-span-3 sm:col-span-2 mb-4">
+                                <label for="configs[queries]" class="block text-sm font-medium text-gray-700">URL Queries</label>
+                                <x-input type="text" name="configs[queries]" id="configs[queries]" placeholder="请输入 url 额外参数" value="{{ $strategy->configs->get('queries') }}" />
+                            </div>
+                            <div class="col-span-3 sm:col-span-2 mb-4">
                                 <label for="configs[access_key_id]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>AccessKeyId</label>
                                 <x-input type="text" name="configs[access_key_id]" id="configs[access_key_id]" placeholder="请输入 AccessKeyId" value="{{ $strategy->configs->get('access_key_id') }}" />
                             </div>
@@ -119,6 +131,10 @@
                             <div class="col-span-3 sm:col-span-2 mb-4">
                                 <label for="configs[url]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>访问域名</label>
                                 <x-input type="url" name="configs[url]" id="configs[url]" placeholder="请输入图片访问域名 http(s)://" value="{{ $strategy->configs->get('url') }}" />
+                            </div>
+                            <div class="col-span-3 sm:col-span-2 mb-4">
+                                <label for="configs[queries]" class="block text-sm font-medium text-gray-700">URL Queries</label>
+                                <x-input type="text" name="configs[queries]" id="configs[queries]" placeholder="请输入 url 额外参数" value="{{ $strategy->configs->get('queries') }}" />
                             </div>
                             <div class="col-span-3 sm:col-span-2 mb-4">
                                 <label for="configs[app_id]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>AppId</label>
@@ -151,6 +167,10 @@
                                 <x-input type="url" name="configs[url]" id="configs[url]" placeholder="请输入图片访问域名 http(s)://" value="{{ $strategy->configs->get('url') }}" />
                             </div>
                             <div class="col-span-3 sm:col-span-2 mb-4">
+                                <label for="configs[queries]" class="block text-sm font-medium text-gray-700">URL Queries</label>
+                                <x-input type="text" name="configs[queries]" id="configs[queries]" placeholder="请输入 url 额外参数" value="{{ $strategy->configs->get('queries') }}" />
+                            </div>
+                            <div class="col-span-3 sm:col-span-2 mb-4">
                                 <label for="configs[access_key]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>AccessKey</label>
                                 <x-input type="text" name="configs[access_key]" id="configs[access_key]" placeholder="请输入 AccessKey" value="{{ $strategy->configs->get('access_key') }}" />
                             </div>
@@ -170,6 +190,10 @@
                             <div class="col-span-3 sm:col-span-2 mb-4">
                                 <label for="configs[url]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>访问域名</label>
                                 <x-input type="url" name="configs[url]" id="configs[url]" placeholder="请输入图片访问域名 http(s)://" value="{{ $strategy->configs->get('url') }}" />
+                            </div>
+                            <div class="col-span-3 sm:col-span-2 mb-4">
+                                <label for="configs[queries]" class="block text-sm font-medium text-gray-700">URL Queries</label>
+                                <x-input type="text" name="configs[queries]" id="configs[queries]" placeholder="请输入 url 额外参数" value="{{ $strategy->configs->get('queries') }}" />
                             </div>
                             <div class="col-span-3 sm:col-span-2 mb-4">
                                 <label for="configs[service]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>服务名称</label>
@@ -192,11 +216,13 @@
                                 <label for="configs[url]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>访问域名</label>
                                 <x-input type="url" name="configs[url]" id="configs[url]" placeholder="请输入图片访问域名 http(s)://" value="{{ $strategy->configs->get('url') }}" />
                             </div>
-                            <div class="col-span-6">
-                                <div class="col-span-6 sm:col-span-3 mb-4">
-                                    <label for="configs[root]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>根目录</label>
-                                    <x-input type="text" name="configs[root]" id="configs[root]" autocomplete="text" placeholder="请输入根目录路径" value="{{ $strategy->configs->get('root') }}" />
-                                </div>
+                            <div class="col-span-3 sm:col-span-2 mb-4">
+                                <label for="configs[queries]" class="block text-sm font-medium text-gray-700">URL Queries</label>
+                                <x-input type="text" name="configs[queries]" id="configs[queries]" placeholder="请输入 url 额外参数" value="{{ $strategy->configs->get('queries') }}" />
+                            </div>
+                            <div class="col-span-6 sm:col-span-3 mb-4">
+                                <label for="configs[root]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>根目录</label>
+                                <x-input type="text" name="configs[root]" id="configs[root]" autocomplete="text" placeholder="请输入根目录路径" value="{{ $strategy->configs->get('root') }}" />
                             </div>
                             <div class="col-span-3 sm:col-span-2 mb-4">
                                 <label for="configs[host]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>主机地址</label>
@@ -240,11 +266,13 @@
                                 <label for="configs[url]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>访问域名</label>
                                 <x-input type="url" name="configs[url]" id="configs[url]" placeholder="请输入图片访问域名 http(s)://" value="{{ $strategy->configs->get('url') }}" />
                             </div>
-                            <div class="col-span-6">
-                                <div class="col-span-6 sm:col-span-3 mb-4">
-                                    <label for="configs[root]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>根目录</label>
-                                    <x-input type="text" name="configs[root]" id="configs[root]" autocomplete="text" placeholder="请输入根目录路径" value="{{ $strategy->configs->get('root') }}" />
-                                </div>
+                            <div class="col-span-3 sm:col-span-2 mb-4">
+                                <label for="configs[queries]" class="block text-sm font-medium text-gray-700">URL Queries</label>
+                                <x-input type="text" name="configs[queries]" id="configs[queries]" placeholder="请输入 url 额外参数" value="{{ $strategy->configs->get('queries') }}" />
+                            </div>
+                            <div class="col-span-6 sm:col-span-3 mb-4">
+                                <label for="configs[root]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>根目录</label>
+                                <x-input type="text" name="configs[root]" id="configs[root]" autocomplete="text" placeholder="请输入根目录路径" value="{{ $strategy->configs->get('root') }}" />
                             </div>
                             <div class="col-span-3 sm:col-span-2 mb-4">
                                 <label for="configs[host]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>主机地址</label>
@@ -281,6 +309,10 @@
                                 <x-input type="url" name="configs[url]" id="configs[url]" placeholder="请输入图片访问域名 http(s)://" value="{{ $strategy->configs->get('url') }}" />
                             </div>
                             <div class="col-span-3 sm:col-span-2 mb-4">
+                                <label for="configs[queries]" class="block text-sm font-medium text-gray-700">URL Queries</label>
+                                <x-input type="text" name="configs[queries]" id="configs[queries]" placeholder="请输入 url 额外参数" value="{{ $strategy->configs->get('queries') }}" />
+                            </div>
+                            <div class="col-span-3 sm:col-span-2 mb-4">
                                 <label for="configs[base_uri]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>连接地址</label>
                                 <x-input type="url" name="configs[base_uri]" id="configs[base_uri]" placeholder="请输入连接地址" value="{{ $strategy->configs->get('base_uri') }}" />
                             </div>
@@ -300,6 +332,10 @@
                                 <div class="col-span-3 sm:col-span-2 mb-4">
                                     <label for="configs[url]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>访问域名</label>
                                     <x-input type="url" name="configs[url]" id="configs[url]" placeholder="请输入图片访问域名 http(s)://" value="{{ $strategy->configs->get('url') }}" />
+                                </div>
+                                <div class="col-span-3 sm:col-span-2 mb-4">
+                                    <label for="configs[queries]" class="block text-sm font-medium text-gray-700">URL Queries</label>
+                                    <x-input type="text" name="configs[queries]" id="configs[queries]" placeholder="请输入 url 额外参数" value="{{ $strategy->configs->get('queries') }}" />
                                 </div>
                                 <div class="col-span-3 sm:col-span-2 mb-4">
                                     <label for="configs[access_key]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>AccessKey</label>
