@@ -188,7 +188,7 @@
                         .html()
                         .replace(/__id__/g, guid)
                         .replace(/__src__/g, blob)
-                        .replace(/__name__/g, file.name)
+                        .replace(/__name__/g, file.name.replace(/\$/g, '$$$$'))
                         .replace(/__info__/g, utils.formatSize(file.size));
                     data.$preview = $previews.append(html).show().find(`[data-id="${guid}"]`);
                     queue[guid] = data;

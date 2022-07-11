@@ -269,14 +269,14 @@
                     for (const i in images) {
                         html += $('#images-item-tpl').html()
                             .replace(/__id__/g, images[i].id)
-                            .replace(/__name__/g, images[i].filename)
+                            .replace(/__name__/g, images[i].filename.replace(/\$/g, '$$$$'))
                             .replace(/__human_date__/g, images[i].human_date)
                             .replace(/__date__/g, images[i].date)
                             .replace(/__url__/g, images[i].url)
                             .replace(/__thumb_url__/g, images[i].thumb_url)
                             .replace(/__width__/g, images[i].width)
                             .replace(/__height__/g, images[i].height)
-                            .replace(/__json__/g, JSON.stringify(images[i]))
+                            .replace(/__json__/g, JSON.stringify(images[i]).replace(/\$/g, '$$$$'))
                     }
 
                     $photos.append(html);
@@ -686,8 +686,8 @@
                             let content = $('#image-detail-tpl').html()
                                 .replace(/__album_name__/g, image.album ? image.album.name : '-')
                                 .replace(/__strategy_name__/g, image.strategy ? image.strategy.name : '-')
-                                .replace(/__filename__/g, image.filename)
-                                .replace(/__origin_name__/g, image.origin_name)
+                                .replace(/__filename__/g, image.filename.replace(/\$/g, '$$$$'))
+                                .replace(/__origin_name__/g, image.origin_name.replace(/\$/g, '$$$$'))
                                 .replace(/__size__/g, utils.formatSize(image.size * 1024))
                                 .replace(/__mimetype__/g, image.mimetype)
                                 .replace(/__width__/g, image.width)
