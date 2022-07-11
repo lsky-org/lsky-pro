@@ -194,8 +194,8 @@
             </dl>
             <dl>
                 <div class="bg-gray-50 px-2 py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                    <dt class="text-sm font-medium text-gray-500">剩余容量</dt>
-                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2 truncate">__surplus_capacity__</dd>
+                    <dt class="text-sm font-medium text-gray-500">已用容量</dt>
+                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2 truncate">__used_capacity__</dd>
                 </div>
             </dl>
             <dl>
@@ -389,7 +389,7 @@
                     .replace(/__name__/g, user.name)
                     .replace(/__email__/g, user.email)
                     .replace(/__capacity__/g, utils.formatSize(user.capacity * 1024))
-                    .replace(/__surplus_capacity__/g, utils.formatSize(user.images_sum_size * 1024))
+                    .replace(/__used_capacity__/g, utils.formatSize(user.images_sum_size * 1024))
                     .replace(/__image_num__/g, user.image_num)
                     .replace(/__album_num__/g, user.album_num)
                     .replace(/__registered_ip__/g, user.registered_ip || '-')
