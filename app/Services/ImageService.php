@@ -160,6 +160,7 @@ class ImageService
             $watermarkImage = $this->stickWatermark($file, collect($configs->get(GroupConfigKey::WatermarkConfigs)));
             $watermarkImage->save();
             $file = new UploadedFile($watermarkImage->basePath(), $file->getClientOriginalName(), $file->getMimeType());
+            $watermarkImage->destroy();
         }
 
         $filename = $this->replacePathname(
@@ -550,7 +551,7 @@ class ImageService
                 }
 
                 $img->fit($width, $height, fn($constraint) => $constraint->upsize())->encode('png')->save($pathname);
-
+                $img->destroy();
             } catch (\Throwable $e) {
                 Utils::e($e, '生成缩略图时出现异常');
             }
