@@ -10,9 +10,8 @@
                     <a href="{{ route('/') }}" class="text-white text-xl truncate">{{ \App\Utils::config(\App\Enums\ConfigKey::AppName) }}</a>
                 </div>
                 <div class="flex justify-end items-center space-x-4">
-                    @if($_group->strategies->isNotEmpty())
-                    @include('layouts.strategies')
-                    @endif
+                    @includeWhen($_is_notice, 'layouts.notice')
+                    @includeWhen($_group->strategies->isNotEmpty(), 'layouts.strategies')
 
                     @if(Auth::check())
                         @include('layouts.user-nav')

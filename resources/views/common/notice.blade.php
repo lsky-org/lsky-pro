@@ -1,4 +1,4 @@
-@if(strip_tags(\App\Utils::config(\App\Enums\ConfigKey::SiteNotice)))
+@if($_is_notice)
 
     <x-modal id="notice-modal">
         <div class="markdown-body">
@@ -12,10 +12,15 @@
     @push('scripts')
         <script>
             let noticeHash = "{{ md5(\App\Utils::config(\App\Enums\ConfigKey::SiteNotice)) }}";
+
+            let openNotice = function () {
+                Alpine.store('modal').open('notice-modal');
+                localStorage.setItem('notice-hash', noticeHash);
+            }
+
             if (localStorage.getItem('notice-hash') !== noticeHash) {
                 setTimeout(function () {
-                    Alpine.store('modal').open('notice-modal');
-                    localStorage.setItem('notice-hash', noticeHash);
+                    openNotice();
                 }, 1000)
             }
         </script>

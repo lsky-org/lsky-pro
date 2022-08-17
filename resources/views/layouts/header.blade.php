@@ -7,9 +7,8 @@
             <a href="" class="text-xl truncate" id="header-title">@yield('title', \App\Utils::config(\App\Enums\ConfigKey::AppName))</a>
         </div>
         <div class="flex justify-end items-center space-x-4">
-            @if($_group->strategies->isNotEmpty())
-                @include('layouts.strategies')
-            @endif
+            @includeWhen($_is_notice, 'layouts.notice')
+            @includeWhen($_group->strategies->isNotEmpty(), 'layouts.strategies')
             @include('layouts.user-nav')
         </div>
     </x-container>

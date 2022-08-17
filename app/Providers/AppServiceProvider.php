@@ -46,7 +46,10 @@ class AppServiceProvider extends ServiceProvider
             View::composer('*', function (\Illuminate\View\View $view) {
                 /** @var Group $group */
                 $group = Auth::check() ? Auth::user()->group : Group::query()->where('is_guest', true)->first();
-                $view->with('_group', $group);
+                $view->with([
+                    '_group' => $group,
+                    '_is_notice' => strip_tags(Utils::config(ConfigKey::SiteNotice)),
+                ]);
             });
         }
     }
