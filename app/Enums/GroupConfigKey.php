@@ -54,4 +54,10 @@ final class GroupConfigKey
 
     /** @var string 图片缓存时间 */
     const ImageCacheTtl = 'image_cache_ttl';
+
+    /** @var string 图片保存格式 */
+    const ImageSaveFormat = 'image_save_format';
+
+    /** @var string 图片保存质量 */
+    const ImageSaveQuality = 'image_save_quality';
 }

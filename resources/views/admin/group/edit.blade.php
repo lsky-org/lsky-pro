@@ -75,6 +75,21 @@
                                 <x-input type="text" name="configs[file_naming_rule]" id="file_naming_rule" autocomplete="file_naming_rule" placeholder="请输入文件命名规则" value="{{ $group->configs->get('file_naming_rule') }}" />
                             </div>
 
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="image_save_quality" class="block text-sm font-medium text-gray-700">图片保存质量</label>
+                                <x-input type="number" name="configs[image_save_quality]" id="image_save_quality" autocomplete="path_naming_rule" placeholder="请输入图片保存质量" value="{{ $group->configs->get('image_save_quality', 100) }}" />
+                            </div>
+
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="image_save_format" class="block text-sm font-medium text-gray-700">图片转换格式</label>
+                                <x-select id="configs[image_save_format]" name="configs[image_save_format]" autocomplete="image_save_format">
+                                    <option value="">不转换格式</option>
+                                    @foreach($default->get('accepted_file_suffixes') as $extension)
+                                        <option value="{{ strtolower($extension) }}" @selected($group->configs->get('image_save_format') === $extension)>{{ strtoupper($extension) }}</option>
+                                    @endforeach
+                                </x-select>
+                            </div>
+
                             <div class="col-span-6">
                                 <x-fieldset title="是否默认" faq="设置默认后，新用户注册以后将会属于该默认角色组，且默认组只能有一个。">
                                     <x-switch id="is_default" name="is_default" value="1" :checked="(bool)$group->is_default"></x-switch>

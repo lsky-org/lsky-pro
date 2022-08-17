@@ -34,6 +34,8 @@ class GroupRequest extends FormRequest
             'configs.limit_per_day' => 'required|integer',
             'configs.limit_per_week' => 'required|integer',
             'configs.limit_per_month' => 'required|integer',
+            'configs.image_save_quality' => 'required|min:1|max:100',
+            'configs.image_save_format' => '',
             'configs.path_naming_rule' => 'max:400',
             'configs.file_naming_rule' => 'max:400',
             'configs.accepted_file_suffixes' => 'required|array|in:jpeg,jpg,png,gif,tif,bmp,ico,psd,webp',
@@ -116,6 +118,8 @@ class GroupRequest extends FormRequest
             'configs.limit_per_month' => '每月上传限制',
             'configs.path_naming_rule' => '路径命名规则',
             'configs.file_naming_rule' => '文件命名规则',
+            'configs.image_save_quality' => '图片保存质量',
+            'configs.image_save_format' => '图片保存格式',
             'configs.accepted_file_suffixes' => '允许上传的文件后缀',
 
             'configs.is_enable_scan' => '是否启用图片审核',

@@ -151,16 +151,32 @@ class ImageService
         // 上传频率限制
         $this->rateLimiter($configs, $request);
 
-        // 是否启用水印，覆盖原图片
-        if (
-            $configs->get(GroupConfigKey::IsEnableWatermark) &&
-            collect($configs->get(GroupConfigKey::WatermarkConfigs))->get('mode', Mode::Overlay) == Mode::Overlay &&
-            ! in_array($extension, ['ico', 'gif'])
-        ) {
-            $watermarkImage = $this->stickWatermark($file, collect($configs->get(GroupConfigKey::WatermarkConfigs)));
-            $watermarkImage->save();
-            $file = new UploadedFile($watermarkImage->basePath(), $file->getClientOriginalName(), $file->getMimeType());
-            $watermarkImage->destroy();
+        // 图片处理，跳过 ico 于 gif
+        if (! in_array($extension, ['ico', 'gif'])) {
+            // 图片保存质量与格式
+            $quality = $configs->get(GroupConfigKey::ImageSaveQuality, 100);
+            $format = $configs->get(GroupConfigKey::ImageSaveFormat);
+            if ($quality < 100 || $format) {
+                // 获取拓展名，判断是否需要转换
+                $format = $format ?: $extension;
+                $filename = Str::replaceLast($extension, $format, $file->getClientOriginalName());
+                $handleImage = InterventionImage::make($file)->save($format, $quality);
+                $file = new UploadedFile($handleImage->basePath(), $filename, $handleImage->mime());
+                // 重新设置拓展名
+                $extension = $format;
+                $handleImage->destroy();
+            }
+
+            // 是否启用水印，覆盖原图片
+            if (
+                $configs->get(GroupConfigKey::IsEnableWatermark) &&
+                collect($configs->get(GroupConfigKey::WatermarkConfigs))->get('mode', Mode::Overlay) == Mode::Overlay
+            ) {
+                $watermarkImage = $this->stickWatermark($file, collect($configs->get(GroupConfigKey::WatermarkConfigs)));
+                $watermarkImage->save();
+                $file = new UploadedFile($watermarkImage->basePath(), $file->getClientOriginalName(), $file->getMimeType());
+                $watermarkImage->destroy();
+            }
         }
 
         $filename = $this->replacePathname(
