@@ -115,13 +115,9 @@ class UpgradeService
             $version = $this->getVersions()->first()['name'];
             Config::query()->where('name', ConfigKey::AppVersion)->update(['value' => $version]);
             // 执行数据库迁移
-            Artisan::call('migrate');
-            // 清除配置缓存
-            Cache::forget('configs');
+            Artisan::call('migrate', ['--seed' => true]);
             // 清除缓存
-            Artisan::call('route:clear');
-            Artisan::call('cache:clear');
-            Artisan::call('view:clear');
+            Artisan::call('optimize:clear');
             Artisan::call('package:discover');
         } catch (\Throwable $e) {
             Utils::e($e, '升级失败');
