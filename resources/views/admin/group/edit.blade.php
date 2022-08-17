@@ -210,7 +210,7 @@
                                 <div class="col-span-6 mt-4 mb-4">
                                     <x-fieldset title="水印模式">
                                         <x-fieldset-radio id="configs[watermark_configs][mode]_overlay" name="configs[watermark_configs][mode]" value="{{ \App\Enums\Watermark\Mode::Overlay }}" :checked="($group->configs['watermark_configs']['mode'] ?? '') == \App\Enums\Watermark\Mode::Overlay">覆盖原图</x-fieldset-radio>
-                                        <x-fieldset-radio id="configs[watermark_configs][mode]_dynamic" name="configs[watermark_configs][mode]" value="{{ \App\Enums\Watermark\Mode::Dynamic }}" :checked="($group->configs['watermark_configs']['dynamic'] ?? '') == \App\Enums\Watermark\Mode::Dynamic">动态生成</x-fieldset-radio>
+                                        <x-fieldset-radio id="configs[watermark_configs][mode]_dynamic" name="configs[watermark_configs][mode]" value="{{ \App\Enums\Watermark\Mode::Dynamic }}" :checked="($group->configs['watermark_configs']['mode'] ?? '') == \App\Enums\Watermark\Mode::Dynamic">动态生成</x-fieldset-radio>
                                     </x-fieldset>
                                 </div>
                                 <div class="col-span-6 mt-4 mb-4">
