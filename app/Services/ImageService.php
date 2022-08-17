@@ -275,10 +275,10 @@ class ImageService
                 bucket: $configs->get(S3Option::Bucket),
             ),
             StrategyKey::Oss => new OssAdapter(
-                client: new OssClient(
-                    accessKeyId: $configs->get(OssOption::AccessKeyId),
-                    accessKeySecret: $configs->get(OssOption::AccessKeySecret),
-                    endpoint: $configs->get(OssOption::Endpoint),
+                client: new OssClient($configs->get(
+                    OssOption::AccessKeyId),
+                    $configs->get(OssOption::AccessKeySecret),
+                    $configs->get(OssOption::Endpoint),
                 ),
                 bucket: $configs->get(OssOption::Bucket),
             ),
