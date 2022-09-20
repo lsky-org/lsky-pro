@@ -21,4 +21,7 @@ final class MinioOption
 
     /** @var string Bucket */
     const Bucket = 'bucket';
+
+    /** @var string BucketEndpoint */
+    const BucketEndpoint = 'bucket_endpoint';
 }

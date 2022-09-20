@@ -352,7 +352,7 @@ class ImageService
                     'endpoint' => $configs->get(MinioOption::Endpoint),
                     'region' => $configs->get(MinioOption::Region),
                     'version' => '2006-03-01',
-                    'bucket_endpoint' => true,
+                    'bucket_endpoint' => (bool)$configs->get(MinioOption::BucketEndpoint),
                 ]),
                 bucket: $configs->get(MinioOption::Bucket),
             ),

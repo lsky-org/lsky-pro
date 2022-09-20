@@ -335,6 +335,11 @@
                                 <label for="configs[bucket]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>Bucket 名称</label>
                                 <x-input type="text" name="configs[bucket]" id="configs[bucket]" placeholder="请输入 Bucket 名称" />
                             </div>
+                            <div class="col-span-6">
+                                <label for="configs[bucket_endpoint]" class="block text-sm font-medium mb-2 text-gray-700">BucketEndpoint</label>
+                                <x-switch id="configs[bucket_endpoint]" name="configs[bucket_endpoint]" value="1"></x-switch>
+                                <p><small class="text-gray-500"><i class="fas fa-exclamation-circle"></i> 开启此选项后将会直接以「连接地址」作为数据交互传输域名，否则可能会以桶名称拼接域名(例如：http://桶名称.连接地址.com)</small></p>
+                            </div>
                         </div>
                     </div>
                     <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">

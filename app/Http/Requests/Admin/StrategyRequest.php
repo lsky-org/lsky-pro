@@ -131,6 +131,7 @@ class StrategyRequest extends FormRequest
                 'configs.endpoint' => '',
                 'configs.region' => '',
                 'configs.bucket' => 'required',
+                'configs.bucket_endpoint' => '',
             ],
         });
     }
@@ -209,6 +210,7 @@ class StrategyRequest extends FormRequest
                 'configs.endpoint' => '连接地址',
                 'configs.region' => '区域',
                 'configs.bucket' => 'Bucket 名称',
+                'configs.bucket_endpoint' => 'BucketEndpoint',
             ],
         });
     }
