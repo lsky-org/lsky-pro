@@ -154,7 +154,7 @@ class ImageService
         // 图片处理，跳过 ico 于 gif
         if (! in_array($extension, ['ico', 'gif'])) {
             // 图片保存质量与格式
-            $quality = $configs->get(GroupConfigKey::ImageSaveQuality, 100);
+            $quality = $configs->get(GroupConfigKey::ImageSaveQuality, 75);
             $format = $configs->get(GroupConfigKey::ImageSaveFormat);
             if ($quality < 100 || $format) {
                 // 获取拓展名，判断是否需要转换
