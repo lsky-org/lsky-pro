@@ -23,7 +23,7 @@ class ImageRenameRequest extends FormRequest
     {
         return [
             'id' => 'required|numeric',
-            'name' => 'required|max:50|string|alpha_dash',
+            'name' => 'required|max:50|string',
         ];
     }
 
@@ -35,7 +35,6 @@ class ImageRenameRequest extends FormRequest
             'name.required' => '请输入名称',
             'name.max' => '名称长度不能超过 50 个字符',
             'name.string' => '名称格式不正确',
-            'name.alpha_dash' => '名称只能是字母、数字，短破折号（-）和下划线（_）'
         ];
     }
 }
