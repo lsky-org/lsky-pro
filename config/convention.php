@@ -108,7 +108,7 @@ return [
         GroupConfigKey::LimitPerMonth => 999,
         GroupConfigKey::AcceptedFileSuffixes => ['jpeg', 'jpg', 'png', 'gif', 'tif', 'bmp', 'ico', 'psd', 'webp'],
         GroupConfigKey::ImageSaveFormat => '',
-        GroupConfigKey::ImageSaveQuality => 100,
+        GroupConfigKey::ImageSaveQuality => 75,
         GroupConfigKey::PathNamingRule => '{Y}/{m}/{d}',
         GroupConfigKey::FileNamingRule => '{uniqid}',
         GroupConfigKey::ImageCacheTtl => 2626560,
