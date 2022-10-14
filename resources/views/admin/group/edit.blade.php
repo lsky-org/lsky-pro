@@ -277,7 +277,7 @@
                                     <div class="col-span-6 sm:col-span-3 mb-4">
                                         <label for="configs[watermark_configs][drivers][image][image]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>水印图片</label>
                                         <x-input type="text" name="configs[watermark_configs][drivers][image][image]" id="configs[watermark_configs][drivers][image][image]" autocomplete="image" placeholder="请输入水印路径，例如：images/lsky.png" value="{{ $group->configs['watermark_configs']['drivers']['image']['image'] ?? '' }}" />
-                                        <small class="text-yellow-500">请将水印图片放置 {{ public_path() }} 目录下</small>
+                                        <small class="text-yellow-500">请将水印图片放置 {{ storage_path('app/public') }} 目录下</small>
                                     </div>
                                     <div class="col-span-6 sm:col-span-3 mb-4">
                                         <label for="configs[watermark_configs][drivers][image][position]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>水印位置</label>
