@@ -15,7 +15,7 @@
 [官网](https://www.lsky.pro) &middot;
 [文档](https://docs.lsky.pro) &middot;
 [社区](https://github.com/lsky-org/lsky-pro/discussions) &middot;
-[演示](https://pic.iqy.ink) &middot;
+[演示](https://pic.vv1234.cn) &middot;
 [Telegram 群组](https://t.me/lsky_pro)
 
 > master 分支为未安装三方拓展的版本，通常包含了最新未发布版本的一些实验性新特性和修复补丁，正式版本请点击 [这里](https://github.com/lsky-org/lsky-pro/releases) 下载。  
