@@ -52,8 +52,8 @@ use League\Flysystem\FilesystemException;
 use League\Flysystem\Ftp\FtpAdapter;
 use League\Flysystem\Ftp\FtpConnectionOptions;
 use League\Flysystem\Local\LocalFilesystemAdapter;
-use League\Flysystem\PhpseclibV2\SftpAdapter;
-use League\Flysystem\PhpseclibV2\SftpConnectionProvider;
+use League\Flysystem\PhpseclibV3\SftpAdapter;
+use League\Flysystem\PhpseclibV3\SftpConnectionProvider;
 use League\Flysystem\WebDAV\WebDAVAdapter;
 use Overtrue\Flysystem\Cos\CosAdapter;
 use Overtrue\Flysystem\Qiniu\QiniuAdapter;
@@ -338,11 +338,12 @@ class ImageService
                     'timeout' => 30,
                 ]),
             ),
-            StrategyKey::Webdav => new WebDAVAdapter(new Client([
+            StrategyKey::Webdav => new WebDAVAdapter(new Client(([
                 'baseUri' => $configs->get(WebDavOption::BaseUri),
                 'userName' => $configs->get(WebDavOption::Username),
-                'password' => $configs->get(WebDavOption::Password)
-            ])),
+                'password' => $configs->get(WebDavOption::Password),
+                'authType' => (int)$configs->get(WebDavOption::AuthType),
+            ])), $configs->get(WebDavOption::Prefix) ?: ''),
             StrategyKey::Minio => new AwsS3V3Adapter(
                 client: new S3Client([
                     'credentials' => [

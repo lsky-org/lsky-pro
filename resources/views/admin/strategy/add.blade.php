@@ -297,6 +297,18 @@
                                 <x-input type="url" name="configs[base_uri]" id="configs[base_uri]" placeholder="请输入连接地址" />
                             </div>
                             <div class="col-span-3 sm:col-span-2 mb-4">
+                                <label for="webdav-configs[auth_type]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>认证方式</label>
+                                <x-select id="webdav-auth-type" name="configs[auth_type]" select2>
+                                    @foreach(\App\Models\Strategy::WEBDAV_AUTH_TYPES as $key => $type)
+                                        <option value="{{ $key }}" {{ $loop->first ? 'selected' : '' }}>{{ $type }}</option>
+                                    @endforeach
+                                </x-select>
+                            </div>
+                            <div class="col-span-3 sm:col-span-2 mb-4">
+                                <label for="webdav-configs[prefix]" class="block text-sm font-medium text-gray-700">路径前缀</label>
+                                <x-input type="text" name="configs[prefix]" id="webdav-configs[prefix]" placeholder="请输入路径前缀"></x-input>
+                            </div>
+                            <div class="col-span-3 sm:col-span-2 mb-4">
                                 <label for="configs[username]" class="block text-sm font-medium text-gray-700">用户名</label>
                                 <x-input type="text" name="configs[username]" id="configs[username]" placeholder="请输入用户名" />
                             </div>

@@ -15,4 +15,10 @@ final class WebDavOption
 
     /** @var string 密码 */
     const Password = 'password';
+
+    /** @var string 认证方式 */
+    const AuthType = 'auth_type';
+
+    /** @var string 地址前缀 */
+    const Prefix = 'prefix';
 }

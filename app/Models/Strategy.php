@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Carbon;
+use Sabre\DAV\Client;
 
 /**
  * @property int $id
@@ -54,6 +55,13 @@ class Strategy extends Model
         StrategyKey::Ftp => 'FTP',
         StrategyKey::Webdav => 'WebDav',
         StrategyKey::Minio => 'Minio',
+    ];
+
+    const WEBDAV_AUTH_TYPES = [
+        '' => 'Auto',
+        Client::AUTH_BASIC => 'Basic',
+        Client::AUTH_DIGEST => 'Digest',
+        Client::AUTH_NTLM => 'Ntlm',
     ];
 
     protected static function booted()

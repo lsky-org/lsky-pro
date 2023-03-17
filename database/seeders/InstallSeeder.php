@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Enums\ConfigKey;
 use App\Enums\StrategyKey;
 use App\Models\Group;
 use Illuminate\Database\Seeder;

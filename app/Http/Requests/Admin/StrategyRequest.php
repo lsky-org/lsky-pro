@@ -124,6 +124,8 @@ class StrategyRequest extends FormRequest
                 'configs.base_uri' => 'required',
                 'configs.username' => '',
                 'configs.password' => '',
+                'configs.auth_type' => '',
+                'configs.prefix' => '',
             ],
             StrategyKey::Minio => [
                 'configs.access_key' => 'required',
@@ -200,9 +202,11 @@ class StrategyRequest extends FormRequest
                 'configs.passive' => '被动模式',
             ],
             StrategyKey::Webdav => [
-                'configs.base_uri' => 'required',
-                'configs.username' => 'required',
-                'configs.password' => 'required',
+                'configs.base_uri' => '连接地址',
+                'configs.username' => '用户名',
+                'configs.password' => '密码',
+                'configs.auth_type' => '认证方式',
+                'configs.prefix' => '前缀',
             ],
             StrategyKey::Minio => [
                 'configs.access_key' => 'AccessKey',
