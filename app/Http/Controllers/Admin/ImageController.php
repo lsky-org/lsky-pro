@@ -65,7 +65,7 @@ class ImageController extends Controller
 
             foreach ($words as $word) {
                 $builder->where('name', 'like', "%{$word}%")
-                    ->where('origin_name', 'like', "%{$word}%")
+                    ->orWhere('origin_name', 'like', "%{$word}%")
                     ->orWhere('alias_name', 'like', "%{$word}%");
             }
         })->latest()->paginate(40);
