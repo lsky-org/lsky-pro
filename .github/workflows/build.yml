@@ -1,0 +1,33 @@
+name: Lsky-pro-build
+
+on:
+  push:
+    branches: [ master ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.1' 
+
+    - name: Install Composer Dependencies
+      run: composer install --no-progress
+
+    - name: Get Commit SHA
+      run: echo "COMMIT_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+
+    - name: Zip Project
+      run: zip -r lsky_${{ env.COMMIT_SHA }}.zip . -x "*.git*"
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: lsky_${{ env.COMMIT_SHA }}.zip
+        path: lsky_${{ env.COMMIT_SHA }}.zip
