@@ -1,4 +1,4 @@
-name: Lsky-pro
+name: Lsky-pro-tests
 
 on:
   push:
