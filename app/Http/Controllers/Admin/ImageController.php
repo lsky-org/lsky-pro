@@ -18,12 +18,14 @@ class ImageController extends Controller
     public function index(Request $request): View
     {
         $keywords = $request->query('keywords');
+
         $images = Image::query()->with(['user' => function (BelongsTo $belongsTo) {
             $belongsTo->withSum('images', 'size');
-        }, 'album', 'group', 'strategy'])->when($keywords, function (Builder $builder, $keywords) {
+        }, 'album', 'group', 'strategy'])
+        ->when($keywords, function (Builder $builder, $keywords) {
             $words = [];
             $qualifiers = [
-                'name:', 'album:', 'group:', 'strategy:', 'email:', 'extension:', 'md5:', 'sha1:', 'ip:', 'is:', 'order:',
+                'name:', 'album:', 'group:', 'strategy:', 'email:', 'extension:', 'md5:', 'sha1:', 'ip:', 'is:', 'order:', 'updated:',
             ];
             collect(array_filter(explode(' ', $keywords)))->filter(function ($keyword) use ($qualifiers, &$words) {
                 if (Str::startsWith($keyword, $qualifiers)) {
@@ -32,27 +34,29 @@ class ImageController extends Controller
                 $words[] = $keyword;
                 return false;
             })->each(function ($filter) use ($builder) {
-                match ($filter) {
-                    'is:public' => $builder->where('permission', ImagePermission::Public),
-                    'is:private' => $builder->where('permission', ImagePermission::Private),
-                    'is:unhealthy' => $builder->where('is_unhealthy', 1),
-                    'is:guest' => $builder->whereNull('user_id'),
-                    'is:adminer' => $builder->whereHas('user', fn (Builder $builder) => $builder->where('is_adminer', 1)),
-                    'order:earliest' => $builder->orderBy('created_at'),
-                    'order:utmost' => $builder->orderByDesc('size'),
-                    'order:least' => $builder->orderBy('size'),
-                    default => 0,
-                };
-
                 [$qualifier, $value] = explode(':', $filter);
 
                 if ($value) {
-                    $callback = fn (Builder $builder) => $builder->where('name', $value);
                     match ($qualifier) {
-                        'name' => $builder->whereHas('user', $callback),
-                        'album' => $builder->whereHas('album', $callback),
-                        'group' => $builder->whereHas('group', $callback),
-                        'strategy' => $builder->whereHas('strategy', $callback),
+                        'is' => match ($value) {
+                            'public' => $builder->where('permission', ImagePermission::Public),
+                            'private' => $builder->where('permission', ImagePermission::Private),
+                            'unhealthy' => $builder->where('is_unhealthy', 1),
+                            'guest' => $builder->whereNull('user_id'),
+                            'adminer' => $builder->whereHas('user', fn (Builder $builder) => $builder->where('is_adminer', 1)),
+                            default => 0,
+                        },
+                        'order' => match ($value) {
+                            'earliest' => $builder->orderBy('created_at'),
+                            'utmost' => $builder->orderByDesc('size'),
+                            'least' => $builder->orderBy('size'),
+                            default => 0,
+                        },
+                        'updated' => $this->applyUpdatedFilter($builder, $value),
+                        'name' => $builder->whereHas('user', fn (Builder $builder) => $builder->where('name', $value)),
+                        'album' => $builder->whereHas('album', fn (Builder $builder) => $builder->where('name', $value)),
+                        'group' => $builder->whereHas('group', fn (Builder $builder) => $builder->where('name', $value)),
+                        'strategy' => $builder->whereHas('strategy', fn (Builder $builder) => $builder->where('name', $value)),
                         'email' => $builder->whereHas('user', fn (Builder $builder) => $builder->where('email', $value)),
                         'extension' => $builder->where('extension', $value),
                         'md5' => $builder->where('md5', $value),
@@ -68,7 +72,10 @@ class ImageController extends Controller
                     ->orWhere('origin_name', 'like', "%{$word}%")
                     ->orWhere('alias_name', 'like', "%{$word}%");
             }
-        })->latest()->paginate(40);
+        })
+        ->latest()
+        ->paginate(40);
+
         $images->getCollection()->each(function (Image $image) {
             $image->append('url', 'pathname', 'thumb_url');
             $image->album?->setVisible(['name']);
@@ -92,5 +99,15 @@ class ImageController extends Controller
         $image = Image::with('user', 'strategy', 'album')->find($request->route('id'));
         (new UserService())->deleteImages([$image->id]);
         return $this->success('删除成功');
+    }
+
+    private function applyUpdatedFilter(Builder $builder, string $value): void
+    {
+        if (Str::contains($value, '~')) {
+            [$startDate, $endDate] = explode('~', $value);
+            $builder->whereBetween('created_at', [$startDate, $endDate]);
+        } else {
+            $builder->whereDate('created_at', $value);
+        }
     }
 }
