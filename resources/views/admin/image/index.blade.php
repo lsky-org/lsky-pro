@@ -23,7 +23,7 @@
                             <span class="bg-white rounded-md text-sm px-1 py-0">Gif</span>
                         @endif
                     </div>
-                    <img class="w-full h-36 object-cover transition-all group-hover:brightness-50" src="{{ $image->thumb_url }}">
+                    <img class="w-full h-36 object-cover transition-all group-hover:brightness-50" src="{{ $image->url }}">
 
                     <div class="absolute top-2 right-2 space-x-1 hidden group-hover:flex">
                         <i data-id="{{ $image->id }}" class="delete fas fa-trash text-red-500 w-4 h-4"></i>
@@ -246,6 +246,14 @@
             </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
+            <tr>
+                <td class="px-3 py-2 text-gray-600 text-sm">updated:<span class="italic">YYYY-MM-DD</span></td>
+                <td class="px-3 py-2 text-sm">查询单个日期的记录。</td>
+            </tr>
+            <tr>
+                <td class="px-3 py-2 text-gray-600 text-sm">updated:<span class="italic">YYYY-MM-DD~YYYY-MM-DD</span></td>
+                <td class="px-3 py-2 text-sm">查询日期范围内的记录。</td>
+            </tr>
             <tr>
                 <td class="px-3 py-2 text-gray-600 text-sm">name:<span class="italic">USERNAME</span></td>
                 <td class="px-3 py-2 text-sm">匹配用户名为 USERNAME 的图片</td>
