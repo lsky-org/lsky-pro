@@ -106,7 +106,7 @@ return [
         GroupConfigKey::LimitPerDay => 300,
         GroupConfigKey::LimitPerWeek => 600,
         GroupConfigKey::LimitPerMonth => 999,
-        GroupConfigKey::AcceptedFileSuffixes => ['jpeg', 'jpg', 'png', 'gif', 'tif', 'bmp', 'ico', 'psd', 'webp'],
+        GroupConfigKey::AcceptedFileSuffixes => ['jpeg', 'jpg', 'png', 'gif', 'tif', 'bmp', 'ico', 'psd', 'webp', 'svg'],
         GroupConfigKey::ImageSaveFormat => '',
         GroupConfigKey::ImageSaveQuality => 75,
         GroupConfigKey::PathNamingRule => '{Y}/{m}/{d}',
