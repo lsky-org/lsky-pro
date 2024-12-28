@@ -14,7 +14,7 @@
         "@tailwindcss/forms": "^0.4.0",
         "alpinejs": "^3.4.2",
         "autoprefixer": "^10.1.0",
-        "axios": "^0.25",
+        "axios": "^0.28",
         "blueimp-canvas-to-blob": "^3.29.0",
         "blueimp-file-upload": "^10.32.0",
         "blueimp-load-image": "^5.16.0",
