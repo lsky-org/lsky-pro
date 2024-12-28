@@ -151,8 +151,8 @@ class ImageService
         // 上传频率限制
         $this->rateLimiter($configs, $request);
 
-        // 图片处理，跳过 ico 于 gif
-        if (! in_array($extension, ['ico', 'gif'])) {
+        // 图片处理，跳过 ico gif svg
+        if (! in_array($extension, ['ico', 'gif', 'svg'])) {
             // 图片保存质量与格式
             $quality = $configs->get(GroupConfigKey::ImageSaveQuality, 75);
             $format = $configs->get(GroupConfigKey::ImageSaveFormat);
@@ -245,8 +245,8 @@ class ImageService
             throw new UploadException('图片记录保存失败');
         }
 
-        // 图片检测，跳过 tif、ico 以及 psd 格式
-        if ($configs->get(GroupConfigKey::IsEnableScan) && ! in_array($extension, ['psd', 'ico', 'tif'])) {
+        // 图片检测，跳过 tif、ico、psd、svg 格式
+        if ($configs->get(GroupConfigKey::IsEnableScan) && ! in_array($extension, ['psd', 'ico', 'tif', 'svg'])) {
             $scanConfigs = $configs->get(GroupConfigKey::ScanConfigs);
             if ($this->scan(
                 driver: $scanConfigs['driver'],
@@ -266,8 +266,10 @@ class ImageService
             }
         }
 
-        // 生成缩略图
-        $this->makeThumbnail($image, $file);
+        // 生成缩略图，svg等格式本身体积足够小且网页原生支持(比生成的png缩略图还小)，不用生成缩略图
+        if(!in_array($extension, ['svg'])) {
+            $this->makeThumbnail($image, $file);
+        }
 
         return $image;
     }
