@@ -33,7 +33,7 @@
         "less-loader": "^10.2.0",
         "lodash": "^4.17.19",
         "masonry-layout": "^4.2.2",
-        "postcss": "^8.2.1",
+        "postcss": "^8.4.31",
         "postcss-import": "^14.0.1",
         "resolve-url-loader": "^4.0.0",
         "sweetalert2": "^11.3.3",
