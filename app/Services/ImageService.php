@@ -160,7 +160,7 @@ class ImageService
                 // 获取拓展名，判断是否需要转换
                 $format = $format ?: $extension;
                 $filename = Str::replaceLast($extension, $format, $file->getClientOriginalName());
-                $handleImage = InterventionImage::make($file)->save($format, $quality);
+                $handleImage = InterventionImage::make($file)->save('tmp_' . md5_file($file->getRealPath()), $quality);
                 $file = new UploadedFile($handleImage->basePath(), $filename, $handleImage->mime());
                 // 重新设置拓展名
                 $extension = $format;
@@ -270,6 +270,9 @@ class ImageService
         if(!in_array($extension, ['svg'])) {
             $this->makeThumbnail($image, $file);
         }
+
+        // 上传完成后删除临时文件
+        unlink($file->getPathname());
 
         return $image;
     }
