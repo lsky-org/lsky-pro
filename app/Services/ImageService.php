@@ -266,10 +266,7 @@ class ImageService
             }
         }
 
-        // 生成缩略图，svg等格式本身体积足够小且网页原生支持(比生成的png缩略图还小)，不用生成缩略图
-        if(!in_array($extension, ['svg'])) {
-            $this->makeThumbnail($image, $file);
-        }
+        $this->makeThumbnail($image, $file);
 
         // 上传完成后删除临时文件
         unlink($file->getPathname());
@@ -560,21 +557,26 @@ class ImageService
                     @mkdir(dirname($pathname));
                 }
 
-                @ini_set('memory_limit', '512M');
+                // 生成缩略图，svg等格式本身体积足够小且网页原生支持(比生成的png缩略图还小)，不用生成缩略图，直接复制文件
+                if($image->extension ==='svg') {
+                    copy($data->getPathname(), $pathname);
+                }else{
+                    @ini_set('memory_limit', '512M');
 
-                $img = InterventionImage::make($data);
+                    $img = InterventionImage::make($data);
 
-                $width = $w = $image->width;
-                $height = $h = $image->height;
+                    $width = $w = $image->width;
+                    $height = $h = $image->height;
 
-                if ($w > $max && $h > $max) {
-                    $scale = min($max / $w, $max / $h);
-                    $width  = (int)($w * $scale);
-                    $height = (int)($h * $scale);
+                    if ($w > $max && $h > $max) {
+                        $scale = min($max / $w, $max / $h);
+                        $width  = (int)($w * $scale);
+                        $height = (int)($h * $scale);
+                    }
+
+                    $img->fit($width, $height, fn($constraint) => $constraint->upsize())->encode('png', 60)->save($pathname);
+                    $img->destroy();
                 }
-
-                $img->fit($width, $height, fn($constraint) => $constraint->upsize())->encode('png', 60)->save($pathname);
-                $img->destroy();
             } catch (\Throwable $e) {
                 Utils::e($e, '生成缩略图时出现异常');
             }
