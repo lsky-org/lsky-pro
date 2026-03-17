@@ -1,0 +1,383 @@
+/* ═══════════════════════════════════════════
+   Lsky-Pro Unified Design System (lsky-ui)
+   ═══════════════════════════════════════════ */
+
+/* ── Page wrapper ── */
+.lsky-page { width: 100%; margin: 0; color: #111827; }
+.lsky-page .page-stack { display: grid; gap: 14px; }
+
+/* ── Panel (white card) ── */
+.lsky-page .panel {
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    background: #fff;
+    box-shadow: 0 1px 3px rgba(15,23,42,.06);
+    overflow: hidden;
+}
+
+.lsky-page .panel-head {
+    border-bottom: 1px solid #e2e8f0;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.lsky-page .panel-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.lsky-page .panel-sub {
+    font-size: 12px;
+    color: #64748b;
+}
+
+.lsky-page .panel-body {
+    padding: 14px 16px 16px;
+}
+
+/* ── Grid layouts ── */
+.lsky-page .grid-2 {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0,1fr));
+    gap: 12px;
+}
+
+.lsky-page .grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0,1fr));
+    gap: 12px;
+}
+
+.lsky-page .grid-4 {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0,1fr));
+    gap: 12px;
+}
+
+.lsky-page .two-col {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 14px;
+}
+
+/* ── Stat card (big number) ── */
+.lsky-page .stat-card {
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    background: #fff;
+    box-shadow: 0 1px 2px rgba(15,23,42,.05);
+    padding: 14px;
+}
+
+.lsky-page .stat-label {
+    font-size: 12px;
+    color: #64748b;
+}
+
+.lsky-page .stat-value {
+    margin-top: 6px;
+    font-size: 26px;
+    font-weight: 700;
+    color: #0f172a;
+    line-height: 1.2;
+}
+
+.lsky-page .stat-hint {
+    margin-top: 4px;
+    font-size: 12px;
+    color: #94a3b8;
+}
+
+/* ── Dashed info card ── */
+.lsky-page .info-card {
+    border: 1px dashed #cbd5e1;
+    border-radius: 10px;
+    background: #f8fafc;
+    padding: 10px 12px;
+}
+
+.lsky-page .info-label {
+    font-size: 12px;
+    color: #64748b;
+}
+
+.lsky-page .info-value {
+    margin-top: 3px;
+    font-size: 15px;
+    font-weight: 700;
+    color: #0f172a;
+    word-break: break-word;
+}
+
+/* ── Status chip / badge ── */
+.lsky-page .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    min-height: 24px;
+    padding: 0 10px;
+    border-radius: 999px;
+    border: 1px solid #dbe2ea;
+    background: #fff;
+    color: #475569;
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+.lsky-page .chip.success { border-color: #86efac; background: #dcfce7; color: #166534; }
+.lsky-page .chip.warn    { border-color: #fde68a; background: #fffbeb; color: #92400e; }
+.lsky-page .chip.danger  { border-color: #fecaca; background: #fef2f2; color: #b91c1c; }
+.lsky-page .chip.info    { border-color: #bfdbfe; background: #eff6ff; color: #1e40af; }
+.lsky-page .chip.muted   { background: #f8fafc; color: #64748b; }
+
+/* ── Field grid (form layout) ── */
+.lsky-page .field-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0,1fr));
+    gap: 12px 14px;
+}
+
+.lsky-page .field { min-width: 0; }
+.lsky-page .field.full { grid-column: 1 / -1; }
+
+.lsky-page .field > label,
+.lsky-page .field-label {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 12px;
+    color: #64748b;
+    font-weight: 600;
+}
+
+/* ── KV list (key-value rows) ── */
+.lsky-page .kv-list { display: grid; gap: 8px; }
+
+.lsky-page .kv-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    border-bottom: 1px dashed #e2e8f0;
+    padding-bottom: 7px;
+    font-size: 13px;
+}
+.lsky-page .kv-row:last-child { border-bottom: 0; padding-bottom: 0; }
+.lsky-page .kv-k { color: #64748b; flex: 0 0 40%; }
+.lsky-page .kv-v { color: #0f172a; text-align: right; flex: 1; word-break: break-word; }
+
+/* ── Progress bar ── */
+.lsky-page .progress-wrap { margin-bottom: 12px; }
+
+.lsky-page .progress-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 13px;
+    color: #334155;
+    margin-bottom: 6px;
+}
+
+.lsky-page .progress-track {
+    height: 10px;
+    border-radius: 999px;
+    background: #e2e8f0;
+    overflow: hidden;
+}
+
+.lsky-page .progress-fill {
+    height: 100%;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #22c55e, #06b6d4);
+    transition: width .4s ease;
+}
+
+.lsky-page .progress-fill.warn { background: linear-gradient(90deg, #f59e0b, #ef4444); }
+
+/* ── Quick link buttons ── */
+.lsky-page .quick-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0,1fr));
+    gap: 8px;
+}
+
+.lsky-page .quick-link {
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    background: #f8fafc;
+    color: #0f172a;
+    padding: 10px;
+    font-size: 13px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    transition: .15s ease;
+    text-decoration: none;
+}
+
+.lsky-page .quick-link:hover {
+    background: #eff6ff;
+    border-color: #93c5fd;
+}
+
+.lsky-page .quick-link.disabled {
+    opacity: .5;
+    cursor: not-allowed;
+}
+
+.lsky-page .quick-link.primary {
+    background: linear-gradient(95deg, #0284c7, #0369a1);
+    color: #fff;
+    border-color: transparent;
+    font-weight: 700;
+    box-shadow: 0 6px 16px rgba(2,132,199,.2);
+}
+
+.lsky-page .quick-link.primary:hover {
+    filter: brightness(1.05);
+}
+
+/* ── Item list (strategy, device, etc.) ── */
+.lsky-page .item-list { display: grid; gap: 8px; }
+
+.lsky-page .item-row {
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 10px 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+
+.lsky-page .item-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: #0f172a;
+}
+
+.lsky-page .item-desc {
+    margin-top: 2px;
+    font-size: 12px;
+    color: #64748b;
+}
+
+.lsky-page .item-tag {
+    flex-shrink: 0;
+    border-radius: 999px;
+    border: 1px solid #86efac;
+    background: #dcfce7;
+    color: #166534;
+    padding: 2px 8px;
+    font-size: 12px;
+}
+
+/* ── Chart container ── */
+.lsky-page .chart-wrap {
+    height: 340px;
+}
+
+/* ── Alert banners ── */
+.lsky-page .alert {
+    border-radius: 10px;
+    padding: 11px 14px;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.lsky-page .alert.danger {
+    border: 1px solid #fecaca;
+    background: #fef2f2;
+    color: #b91c1c;
+}
+
+.lsky-page .alert.success {
+    border: 1px solid #bbf7d0;
+    background: #f0fdf4;
+    color: #15803d;
+}
+
+.lsky-page .alert.warn {
+    border: 1px solid #fde68a;
+    background: #fffbeb;
+    color: #92400e;
+}
+
+.lsky-page .alert.info {
+    border: 1px solid #bfdbfe;
+    background: #eff6ff;
+    color: #1e40af;
+}
+
+.lsky-page .alert a {
+    color: inherit;
+    text-decoration: underline;
+    font-weight: 700;
+}
+
+/* ── Primary button ── */
+.lsky-page .btn-primary {
+    appearance: none;
+    min-height: 44px;
+    border-radius: 12px;
+    padding: 0 20px;
+    border: 0;
+    background: linear-gradient(95deg, #0284c7, #0369a1);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    box-shadow: 0 8px 20px rgba(2,132,199,.22);
+    transition: .2s ease;
+}
+
+.lsky-page .btn-primary:hover { filter: brightness(1.05); }
+
+.lsky-page .btn-primary.full { width: 100%; }
+
+/* ── Secondary / outline button ── */
+.lsky-page .btn-outline {
+    appearance: none;
+    min-height: 36px;
+    border-radius: 10px;
+    padding: 0 14px;
+    border: 1px solid #cbd5e1;
+    background: #fff;
+    color: #0f172a;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: .15s ease;
+}
+
+.lsky-page .btn-outline:hover { background: #f1f5f9; }
+.lsky-page .btn-outline.danger { border-color: #fecaca; color: #dc2626; }
+.lsky-page .btn-outline.danger:hover { background: #fef2f2; }
+
+/* ── Responsive ── */
+@media (max-width: 1100px) {
+    .lsky-page .two-col { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 820px) {
+    .lsky-page .grid-4 { grid-template-columns: repeat(2, 1fr); }
+    .lsky-page .grid-3 { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 640px) {
+    .lsky-page .grid-4,
+    .lsky-page .grid-2,
+    .lsky-page .field-grid,
+    .lsky-page .quick-grid { grid-template-columns: 1fr; }
+}

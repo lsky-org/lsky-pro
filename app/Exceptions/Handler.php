@@ -6,6 +6,7 @@ use App\Http\Result;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\Exceptions\ThrottleRequestsException;
+use Illuminate\Support\Facades\Log;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -44,7 +45,35 @@ class Handler extends ExceptionHandler
         });
 
         $this->renderable(function (ThrottleRequestsException $e) {
-            return $this->fail($e->getMessage())->setStatusCode(429);
+            $request = request();
+            $retryAfter = (int)($e->getHeaders()['Retry-After'] ?? 0);
+            $requestId = $request ? $request->attributes->get('request_id') : null;
+            $traceId = $request ? $request->attributes->get('trace_id') : null;
+            $message = '请求过于频繁，请稍后再试';
+
+            if ($retryAfter > 0) {
+                $message .= "（建议 {$retryAfter} 秒后重试）";
+            }
+
+            Log::warning('Throttle hit', [
+                'request_id' => $requestId,
+                'trace_id' => $traceId,
+                'path' => $request ? $request->path() : null,
+                'method' => $request ? $request->method() : null,
+                'retry_after' => $retryAfter,
+            ]);
+
+            $response = $this->fail($message, [
+                'retry_after' => $retryAfter,
+                'request_id' => $requestId,
+                'trace_id' => $traceId,
+            ])->setStatusCode(429);
+
+            if ($retryAfter > 0) {
+                $response->headers->set('Retry-After', (string) $retryAfter);
+            }
+
+            return $response;
         });
     }
 

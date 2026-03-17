@@ -1,20 +1,57 @@
-/installed.lock
-/upgrading.lock
-/*.zip
-/node_modules
+# Dependencies
+/vendor/
+/node_modules/
+package-lock.json
+
+# Environment & secrets
+.env
+.env.local
+.env.*.local
+.env.testing
+
+# Storage (uploads, cache, logs)
+/storage/app/
+/storage/debugbar/
+/storage/framework/cache/
+/storage/framework/sessions/
+/storage/framework/views/
+/storage/logs/
+
+# Database files
+*.sqlite
+*.sqlite-journal
+/database/*.sqlite
+
+# PHP & test cache
+.phpunit.cache/
+.phpunit.result.cache
+/test-results/
+
+# IDE & OS
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Build artifacts
 /public/hot
 /public/storage
-/public/js/custom.js
-/storage/*.key
-/vendor
-.env
-.env.backup
-.phpunit.result.cache
+/public/build/
+
+# Docker local overrides
 docker-compose.override.yml
-Homestead.json
-Homestead.yaml
-npm-debug.log
-yarn-error.log
-/.idea
-/.vscode
-/public/i
+
+# Misc
+installed.lock
+composer-setup.php
+*.bak
+*.patch
+/star.txt
+
+# Agent / debug artifacts
+/queue/
+/models/
+PLANS.md
+.claude/

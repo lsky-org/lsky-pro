@@ -30,7 +30,10 @@ use App\Exceptions\UploadException;
 use App\Models\Group;
 use App\Models\Image;
 use App\Models\Strategy;
+use App\Models\Tag;
 use App\Models\User;
+use App\Services\ImageIntelligence\ImageIntelligenceService;
+use App\Services\HookManager;
 use App\Utils;
 use Aws\S3\S3Client;
 use Illuminate\Support\Carbon;
@@ -77,14 +80,22 @@ class ImageService
     public function store(Request $request): Image
     {
         $file = $request->file('file');
+        /** @var User|null $user */
+        $user = $request->user();
+
+        app(HookManager::class)->dispatch('image.uploading', [
+            'user_id' => $user ? (int) $user->id : null,
+            'ip' => (string) $request->ip(),
+            'origin_name' => $file ? (string) $file->getClientOriginalName() : '',
+            'size' => $file ? (float) ($file->getSize() / 1024) : 0.0,
+            'mimetype' => $file ? (string) $file->getMimeType() : '',
+        ]);
 
         if (Auth::guest() && !Utils::config(ConfigKey::IsAllowGuestUpload, true)) {
             throw new UploadException('管理员关闭了游客上传');
         }
 
         $image = new Image();
-        /** @var User|null $user */
-        $user = $request->user();
 
         /** @var Group $group */
         $group = ! is_null($user) ? $user->group : Group::query()->where('is_guest', true)->first();
@@ -100,6 +111,22 @@ class ImageService
 
         if (! in_array($extension, $configs->get(GroupConfigKey::AcceptedFileSuffixes))) {
             throw new UploadException('不支持的文件类型');
+        }
+
+        // FIX-02: 校验文件真实 MIME 类型（magic bytes），防止扩展名伪造
+        $realMime = $file->getMimeType();
+        $dangerousMimes = [
+            'application/x-php', 'application/x-httpd-php', 'text/x-php',
+            'application/x-executable', 'application/x-sharedlib',
+            'application/x-shellscript', 'text/x-shellscript',
+        ];
+        if (in_array($realMime, $dangerousMimes, true)) {
+            throw new UploadException('不支持的文件类型');
+        }
+        // 图片扩展名必须匹配图片 MIME
+        $imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp', 'ico', 'svg', 'avif'];
+        if (in_array($extension, $imageExtensions, true) && ! str_starts_with((string) $realMime, 'image/')) {
+            throw new UploadException('文件内容与扩展名不匹配');
         }
 
         if ($file->getSize() / 1024 > $configs->get(GroupConfigKey::MaximumFileSize)) {
@@ -136,12 +163,21 @@ class ImageService
                 throw new UploadException('储存空间不足');
             }
 
-            // 图片保存至默认相册(若有)
-            if ($albumId = $user->configs->get(UserConfigKey::DefaultAlbum)) {
-                if ($user->albums()->where('id', $albumId)->exists()) {
+            // 显式指定相册优先于默认相册。
+            $requestAlbumId = (int) $request->input('album_id', 0);
+            if ($requestAlbumId > 0 && $user->albums()->where('id', $requestAlbumId)->exists()) {
+                $image->album_id = $requestAlbumId;
+            } elseif ($albumId = (int) $user->configs->get(UserConfigKey::DefaultAlbum, 0)) {
+                if ($albumId > 0 && $user->albums()->where('id', $albumId)->exists()) {
                     $image->album_id = $albumId;
                 }
             }
+
+            $spaceId = app(TeamSpaceService::class)->resolveCurrentSpaceId(
+                $user,
+                (int) $request->attributes->get('space_id', 0)
+            );
+            $image->space_id = $spaceId > 0 ? $spaceId : null;
 
             $image->user_id = $user->id;
             // 用户设置的图片默认权限
@@ -151,8 +187,10 @@ class ImageService
         // 上传频率限制
         $this->rateLimiter($configs, $request);
 
-        // 图片处理，跳过 ico gif svg
-        if (! in_array($extension, ['ico', 'gif', 'svg'])) {
+        $isImageFile = str_starts_with((string) $file->getMimeType(), 'image/');
+
+        // 图片处理，跳过 ico 与 gif，非图片文件不做图片处理
+        if ($isImageFile && ! in_array($extension, ['ico', 'gif'])) {
             // 图片保存质量与格式
             $quality = $configs->get(GroupConfigKey::ImageSaveQuality, 75);
             $format = $configs->get(GroupConfigKey::ImageSaveFormat);
@@ -160,7 +198,7 @@ class ImageService
                 // 获取拓展名，判断是否需要转换
                 $format = $format ?: $extension;
                 $filename = Str::replaceLast($extension, $format, $file->getClientOriginalName());
-                $handleImage = InterventionImage::make($file)->save('tmp_' . md5_file($file->getRealPath()), $quality);
+                $handleImage = InterventionImage::make($file)->save($format, $quality);
                 $file = new UploadedFile($handleImage->basePath(), $filename, $handleImage->mime());
                 // 重新设置拓展名
                 $extension = $format;
@@ -184,7 +222,25 @@ class ImageService
         );
         $pathname = $filename.".{$extension}";
 
-        [$width, $height] = @getimagesize($file->getRealPath()) ?: [400, 400];
+        // FIX-19: getimagesize fallback to Imagick for PSD/RAW/HEIC etc.
+        try {
+            $imageSize = getimagesize($file->getRealPath());
+            [$width, $height] = $imageSize ? [$imageSize[0], $imageSize[1]] : [0, 0];
+        } catch (\Throwable $e) {
+            [$width, $height] = [0, 0];
+        }
+
+        // Imagick fallback: PSD/RAW/HEIC/AVIF 等格式 getimagesize 可能返回 0
+        if ($isImageFile && ($width === 0 || $height === 0)) {
+            try {
+                $imagick = new \Imagick($file->getRealPath());
+                $width = $imagick->getImageWidth();
+                $height = $imagick->getImageHeight();
+                $imagick->destroy();
+            } catch (\Throwable $e) {
+                // Imagick 也失败则保持 0
+            }
+        }
 
         $image->fill([
             'md5' => md5_file($file->getRealPath()),
@@ -199,6 +255,7 @@ class ImageService
             'height' => $height,
             'is_unhealthy' => false,
             'uploaded_ip' => $request->ip(),
+            'expire_at' => $this->resolveExpireAt(),
         ]);
 
         $filesystem = new Filesystem($this->getAdapter($strategy));
@@ -214,11 +271,35 @@ class ImageService
                 $filesystem->writeStream($pathname, $handle);
             } catch (FilesystemException $e) {
                 Utils::e($e, '保存图片时出现异常');
-                throw new UploadException(config('app.debug', false) ? $e->getMessage() : '图片上传失败');
+                throw new UploadException('图片上传失败');
+            } finally {
+                if (is_resource($handle)) fclose($handle);
             }
-            if (is_resource($handle)) @fclose($handle);
         } else {
             $image->fill($existing->only('path', 'name'));
+        }
+
+        // FIX-06: 将内容扫描移到 save() 之前，防止违规内容短暂公开
+        $scanFailed = false;
+        if ($isImageFile && $configs->get(GroupConfigKey::IsEnableScan) && ! in_array($extension, ['psd', 'ico', 'tif'])) {
+            $scanConfigs = $configs->get(GroupConfigKey::ScanConfigs);
+            if ($this->scan(
+                driver: $scanConfigs['driver'],
+                configs: collect($scanConfigs['drivers'][$scanConfigs['driver']]),
+                image: $image,
+                file: $file,
+            )) {
+                if ($configs->get(GroupConfigKey::ScannedAction) === 'delete') {
+                    // 违规且策略为删除：直接清理物理文件并拒绝
+                    if (is_null($existing)) {
+                        try { $filesystem->delete($pathname); } catch (\Throwable $e) {}
+                    }
+                    throw new UploadException('图片涉嫌违规，禁止上传。');
+                } else {
+                    $image->is_unhealthy = true;
+                    $scanFailed = true;
+                }
+            }
         }
 
         // 增加当前用户的图片数量和相册图片数量
@@ -239,39 +320,86 @@ class ImageService
                 if (is_null($existing)) $filesystem->delete($image->pathname);
                 throw new \Exception('图片记录保存失败');
             }
+
+            $this->syncImageTags($image, $this->normalizeTags($request->input('tags')));
             $updateNum('increment');
         } catch (\Throwable $e) {
             Utils::e($e, '保存图片记录时出现异常');
             throw new UploadException('图片记录保存失败');
         }
 
-        // 图片检测，跳过 tif、ico、psd、svg 格式
-        if ($configs->get(GroupConfigKey::IsEnableScan) && ! in_array($extension, ['psd', 'ico', 'tif', 'svg'])) {
-            $scanConfigs = $configs->get(GroupConfigKey::ScanConfigs);
-            if ($this->scan(
-                driver: $scanConfigs['driver'],
-                configs: collect($scanConfigs['drivers'][$scanConfigs['driver']]),
-                image: $image,
-                file: $file,
-            )) {
-                // 标记 or 删除
-                if ($configs->get(GroupConfigKey::ScannedAction) === 'delete') {
-                    $image->delete();
-                    $updateNum('decrement');
-                    throw new UploadException('图片涉嫌违规，禁止上传。');
-                } else {
-                    $image->is_unhealthy = true;
-                    $image->save();
-                }
-            }
+        // 仅图片生成缩略图
+        if ($isImageFile) {
+            $this->makeThumbnail($image, $file);
         }
 
-        $this->makeThumbnail($image, $file);
-
-        // 上传完成后删除临时文件
-        unlink($file->getPathname());
+        $this->dispatchImageIntelligence($image);
 
         return $image;
+    }
+
+    private function dispatchImageIntelligence(Image $image): void
+    {
+        try {
+            app(ImageIntelligenceService::class)->dispatch($image);
+        } catch (\Throwable $e) {
+            // 图像智能分析属于附加能力，不能阻断上传主流程。
+            Utils::e($e, '派发图像智能分析任务失败，已忽略');
+        }
+    }
+
+    private function syncImageTags(Image $image, array $tags): void
+    {
+        if (empty($tags)) {
+            $image->tags()->sync([]);
+            return;
+        }
+
+        $tagIds = collect($tags)->map(function (string $tagName) {
+            /** @var Tag $tag */
+            $tag = Tag::query()->firstOrCreate(['name' => $tagName]);
+            return (int) $tag->id;
+        })->values()->all();
+
+        $image->tags()->sync($tagIds);
+    }
+
+    private function normalizeTags(mixed $rawTags): array
+    {
+        if ($rawTags === null || $rawTags === '') {
+            return [];
+        }
+
+        if (is_string($rawTags)) {
+            $rawTags = preg_split('/[\s,，]+/u', $rawTags, -1, PREG_SPLIT_NO_EMPTY);
+        }
+
+        if (! is_array($rawTags)) {
+            return [];
+        }
+
+        return collect($rawTags)
+            ->map(fn ($item) => trim((string) $item))
+            ->filter(fn ($item) => $item !== '')
+            ->map(fn ($item) => mb_substr($item, 0, 64))
+            ->unique()
+            ->take(20)
+            ->values()
+            ->all();
+    }
+
+    private function resolveExpireAt(): ?Carbon
+    {
+        if (! config('lifecycle.ttl.enabled', false)) {
+            return null;
+        }
+
+        $seconds = (int) config('lifecycle.ttl.default_seconds', 0);
+        if ($seconds <= 0) {
+            return null;
+        }
+
+        return now()->addSeconds($seconds);
     }
 
     public function getAdapter(Strategy $strategy): FilesystemAdapter
@@ -279,7 +407,7 @@ class ImageService
         $configs = $strategy->configs;
         return match ($strategy->key) {
             StrategyKey::Local => new LocalFilesystemAdapter(
-                location: $configs->get(LocalOption::Root) ?: config('filesystems.disks.uploads.root')
+                location: config('filesystems.disks.uploads.root')
             ),
             StrategyKey::S3 => new AwsS3V3Adapter(
                 client: new S3Client([
@@ -380,15 +508,21 @@ class ImageService
 
         foreach ($array as $key => $item) {
             $value = $configs->get($item['key'], 0);
-            $count = Image::query()->whereBetween('created_at', [
+            if (! $value) {
+                continue;
+            }
+
+            $query = Image::query()->select('id')->whereBetween('created_at', [
                 $carbon->parse("-1 {$key}"), $carbon,
             ])->when(! is_null($user), function (Builder $builder) use ($user) {
                 $builder->where('user_id', $user->id);
             }, function (Builder $builder) use ($request) {
                 $builder->where('uploaded_ip', $request->ip())->whereNull('user_id');
-            })->count();
+            });
 
-            if ($value && $count >= $value) {
+            // 频控只需要判断“是否达到阈值”，不需要精确总数：
+            // 使用 OFFSET + EXISTS 避免大窗口下的全量 count 聚合。
+            if ($query->skip($value - 1)->limit(1)->exists()) {
                 throw new UploadException("每{$item['str']}内你最多可以上传 {$value} 张图片");
             }
         }
@@ -554,29 +688,24 @@ class ImageService
             try {
                 // 创建文件夹
                 if (! is_dir(dirname($pathname))) {
-                    @mkdir(dirname($pathname));
+                    mkdir(dirname($pathname), 0755, true);
                 }
 
-                // 生成缩略图，svg等格式本身体积足够小且网页原生支持(比生成的png缩略图还小)，不用生成缩略图，直接复制文件
-                if($image->extension ==='svg') {
-                    copy($data->getPathname(), $pathname);
-                }else{
-                    @ini_set('memory_limit', '512M');
+                @ini_set('memory_limit', '512M');
 
-                    $img = InterventionImage::make($data);
+                $img = InterventionImage::make($data);
 
-                    $width = $w = $image->width;
-                    $height = $h = $image->height;
+                $width = $w = $image->width;
+                $height = $h = $image->height;
 
-                    if ($w > $max && $h > $max) {
-                        $scale = min($max / $w, $max / $h);
-                        $width  = (int)($w * $scale);
-                        $height = (int)($h * $scale);
-                    }
-
-                    $img->fit($width, $height, fn($constraint) => $constraint->upsize())->encode('png', 60)->save($pathname);
-                    $img->destroy();
+                if ($w > $max && $h > $max) {
+                    $scale = min($max / $w, $max / $h);
+                    $width  = (int)($w * $scale);
+                    $height = (int)($h * $scale);
                 }
+
+                $img->fit($width, $height, fn($constraint) => $constraint->upsize())->encode('png', 60)->save($pathname);
+                $img->destroy();
             } catch (\Throwable $e) {
                 Utils::e($e, '生成缩略图时出现异常');
             }
@@ -644,8 +773,9 @@ class ImageService
             '{md5-16}' => substr(md5(microtime().Str::random()), 0, 16),
             '{str-random-16}' => Str::random(),
             '{str-random-10}' => Str::random(10),
-            '{filename}' => Str::replaceLast('.'.$file->getClientOriginalExtension(), '', $file->getClientOriginalName()),
+            '{filename}' => preg_replace('/[\.\/\\\\]/', '_', Str::replaceLast('.'.$file->getClientOriginalExtension(), '', $file->getClientOriginalName())),
             '{uid}' => Auth::check() ? Auth::id() : 0,
+            '{user_uuid}' => Auth::check() ? (Auth::user()->uuid ?? 'guest') : 'guest',
         ];
         return str_replace(array_keys($array), array_values($array), $pathname);
     }

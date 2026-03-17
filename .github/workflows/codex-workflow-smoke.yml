@@ -1,0 +1,32 @@
+name: codex-workflow-smoke
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "PLANS.md"
+      - "STATUS.md"
+      - "docs/runbook/STATUS.md"
+      - "scripts/run-all.sh"
+      - "scripts/codex/noninteractive-exec.sh"
+      - "scripts/codex/validate.sh"
+      - ".github/workflows/codex-workflow-smoke.yml"
+  pull_request:
+    paths:
+      - "PLANS.md"
+      - "STATUS.md"
+      - "docs/runbook/STATUS.md"
+      - "scripts/run-all.sh"
+      - "scripts/codex/noninteractive-exec.sh"
+      - "scripts/codex/validate.sh"
+      - ".github/workflows/codex-workflow-smoke.yml"
+
+jobs:
+  validate-codex-workflow:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate non-interactive workflow files
+        run: bash scripts/codex/validate.sh

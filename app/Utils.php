@@ -8,6 +8,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Schema;
 
 class Utils
 {
@@ -50,6 +51,12 @@ class Utils
     {
         /** @var Collection $configs */
         $configs = Cache::rememberForever('configs', function () {
+            // During fresh install / early boot (including test bootstrap), the configs
+            // table may not exist yet. Fall back to convention defaults.
+            if (! self::isConfigTableReady()) {
+                return self::defaultConfigs();
+            }
+
             return Config::query()->pluck('value', 'name')->transform(function ($value, $key) {
                 switch ($key) {
                     case ConfigKey::IsAllowGuestUpload:
@@ -57,14 +64,19 @@ class Utils
                     case ConfigKey::IsEnableApi:
                     case ConfigKey::IsEnableRegistration:
                     case ConfigKey::IsUserNeedVerify:
+                    case ConfigKey::UploadPipelineAsyncEnabled:
                         $value = (bool) $value;
                         break;
                     case ConfigKey::Mail:
                     case ConfigKey::Group:
+                    case ConfigKey::AiProviderSettings:
                         $value = collect(json_decode($value, true));
                         break;
                     case ConfigKey::UserInitialCapacity:
                         $value = sprintf('%.2f', $value);
+                        break;
+                    case ConfigKey::StorageCostPerGbMonth:
+                        $value = (float) $value;
                         break;
                     default:
                 }
@@ -72,6 +84,45 @@ class Utils
             });
         });
         return '' === $name ? $configs : $configs->get($name, $default);
+    }
+
+    private static function isConfigTableReady(): bool
+    {
+        try {
+            return Schema::hasTable('configs');
+        } catch (\Throwable) {
+            return false;
+        }
+    }
+
+    private static function defaultConfigs(): Collection
+    {
+        return collect(config('convention.app', []))->transform(function ($value, $key) {
+            switch ($key) {
+                case ConfigKey::IsAllowGuestUpload:
+                case ConfigKey::IsEnableGallery:
+                case ConfigKey::IsEnableApi:
+                case ConfigKey::IsEnableRegistration:
+                case ConfigKey::IsUserNeedVerify:
+                case ConfigKey::UploadPipelineAsyncEnabled:
+                    $value = (bool) $value;
+                    break;
+                case ConfigKey::Mail:
+                case ConfigKey::Group:
+                case ConfigKey::AiProviderSettings:
+                    $value = collect($value);
+                    break;
+                case ConfigKey::UserInitialCapacity:
+                    $value = sprintf('%.2f', $value);
+                    break;
+                case ConfigKey::StorageCostPerGbMonth:
+                    $value = (float) $value;
+                    break;
+                default:
+            }
+
+            return $value;
+        });
     }
 
     /**

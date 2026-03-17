@@ -12,11 +12,12 @@
         <!-- Fonts -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
         <link rel="stylesheet" href="{{ asset('css/fontawesome.css') }}">
-        @stack('styles')
 
         <!-- Styles -->
         <link rel="stylesheet" href="{{ asset('css/common.css') }}?t=20220817">
         <link rel="stylesheet" href="{{ asset('css/app.css') }}?t=20220817">
+
+        @stack('styles')
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen text-gray-900 bg-gray-100">

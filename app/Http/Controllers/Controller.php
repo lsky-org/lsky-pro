@@ -3,15 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Enums\GroupConfigKey;
-use App\Enums\UserStatus;
 use App\Enums\Watermark\Mode;
+use App\Enums\ConfigKey;
 use App\Exceptions\UploadException;
 use App\Http\Result;
-use App\Models\Group;
 use App\Models\Image;
-use App\Models\Strategy;
-use App\Models\User;
+use App\Services\ImagePlaceholderService;
 use App\Services\ImageService;
+use App\Services\InstallStateService;
+use App\Services\UploadTaskService;
+use App\Services\SignedUrlService;
 use App\Utils;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
@@ -21,20 +22,19 @@ use Illuminate\Http\Response;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\View\View;
 use Intervention\Image\Facades\Image as InterventionImage;
-use League\Flysystem\FilesystemException;
 use Symfony\Component\Console\Output\BufferedOutput;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests, Result;
 
-    public function install(Request $request): View|Response
+    public function install(Request $request, InstallStateService $installState): View|Response
     {
-        if (file_exists(base_path('installed.lock'))) {
+        if ($installState->isInstalled()) {
             if ($request->expectsJson()) {
                 return $this->fail('Already installed. if you want to reinstall, please remove installed.lock file.');
             }
@@ -84,36 +84,35 @@ class Controller extends BaseController
         if ($request->method() === 'POST') {
             try {
                 $request->validate([
+                    'connection' => 'required|in:mysql,pgsql,sqlite,sqlsrv',
+                    'database' => 'nullable|string|max:255',
                     'account.email' => 'required|email',
-                    'account.password' => 'required|between:6,32'
+                    'account.password' => 'required|between:6,32',
                 ], [], [
+                    'connection' => '数据库类型',
+                    'database' => '数据库名称/路径',
                     'account.email' => '管理员账号邮箱',
-                    'account.password' => '管理员账号密码'
+                    'account.password' => '管理员账号密码',
                 ]);
 
                 $data = collect($request->only([
                     'connection', 'host', 'port', 'database', 'username', 'password',
                 ]))->transform(fn($item, $key) => ['--'.$key => $item])->collapse();
+                $data = $data->merge([
+                    '--admin-email' => $request->input('account.email'),
+                    '--admin-password' => $request->input('account.password'),
+                    '--admin-name' => '超级管理员',
+                    '--app-url' => $request->getSchemeAndHttpHost(),
+                ]);
                 $output = new BufferedOutput();
                 $exitCode = Artisan::call('lsky:install', $data->toArray(), $output);
                 if ($exitCode) {
                     throw new \Exception(str_replace(PHP_EOL, '<br/>', $output->fetch()));
                 }
-                $user = new User([
-                    'name' => '超级管理员',
-                    'email' => $request->input('account.email'),
-                    'password' => Hash::make($request->input('account.password')),
-                    'registered_ip' => $request->ip(),
-                ]);
-                $user->group_id = Group::query()->first()['id'];
-                $user->is_adminer = true;
-                $user->status = UserStatus::Normal;
-                $user->email_verified_at = date('Y-m-d H:i:s');
-                // 设置默认策略组的 url 为当前请求 url
-                Strategy::query()->update(['configs->url' => $request->getSchemeAndHttpHost().'/i']);
-                $user->save();
             } catch (\Throwable $e) {
-                @unlink(base_path('installed.lock'));
+                if (file_exists(base_path('installed.lock')) && ! $installState->isInstalled()) {
+                    @unlink(base_path('installed.lock'));
+                }
                 Utils::e($e, '执行安装程序时出现异常');
                 return $this->fail($e->getMessage());
             }
@@ -123,9 +122,15 @@ class Controller extends BaseController
         return view('install', compact('extensions', 'status'));
     }
 
-    public function upload(Request $request, ImageService $service): Response
+    public function upload(Request $request, ImageService $service, UploadTaskService $uploadTaskService): Response
     {
         try {
+            if (Utils::config(ConfigKey::UploadPipelineAsyncEnabled, false)) {
+                $task = $uploadTaskService->createTask($request);
+
+                return $this->success('上传任务已提交', $uploadTaskService->makeTaskResponse($task));
+            }
+
             $image = $service->store($request);
         } catch (UploadException $e) {
             return $this->fail($e->getMessage());
@@ -136,12 +141,10 @@ class Controller extends BaseController
             }
             return $this->fail('服务异常，请稍后再试');
         }
-        return $this->success('上传成功', $image->setAppends(['pathname', 'links'])->only(
-            'id', 'pathname', 'origin_name', 'size', 'mimetype', 'md5', 'sha1', 'links'
-        ));
+        return $this->success('上传成功', $uploadTaskService->makeImageResponse($image));
     }
 
-    public function output(Request $request, ImageService $service): StreamedResponse
+    public function output(Request $request, ImageService $service, SignedUrlService $signedUrlService, ImagePlaceholderService $placeholderService): StreamedResponse|BinaryFileResponse
     {
         /** @var Image $image */
         $image = Image::query()
@@ -152,6 +155,11 @@ class Controller extends BaseController
         if (! $image->group?->configs->get(GroupConfigKey::IsEnableOriginalProtection)) {
             abort(404);
         }
+
+        if ($signedUrlService->shouldSignImage($image) && ! $signedUrlService->validateRequest($request)) {
+            abort(403);
+        }
+
         try {
             $cacheKey = "image_{$image->key}";
 
@@ -165,10 +173,9 @@ class Controller extends BaseController
                 if (
                     $image->group?->configs->get(GroupConfigKey::IsEnableWatermark) &&
                     $configs->get('mode', Mode::Overlay) == Mode::Dynamic &&
-                    ! in_array($image->extension, ['ico', 'gif', 'svg'])
+                    ! in_array($image->extension, ['ico', 'gif'])
                 ) {
-                    $quality = $image->group?->configs->get(GroupConfigKey::ImageSaveQuality, 75);
-                    $contents = $service->stickWatermark($contents, $configs)->encode($image->extension, $quality)->getEncoded();
+                    $contents = $service->stickWatermark($contents, $configs)->encode()->getEncoded();
                 }
                 $cacheTtl = (int)$image->group?->configs->get(GroupConfigKey::ImageCacheTtl, 0);
                 // 是否启用了缓存
@@ -178,15 +185,21 @@ class Controller extends BaseController
                     if (Cache::has($cacheKey)) Cache::forget($cacheKey);
                 }
             }
-        } catch (FilesystemException $e) {
+        } catch (\Throwable $e) {
             Utils::e($e, '图片输出时出现异常');
-            abort(404);
+
+            $placeholderPath = $placeholderService->ensureMissingSourcePlaceholder($image);
+
+            return response()->file($placeholderPath, [
+                'Content-Type' => 'image/png',
+                'Cache-Control' => 'public, max-age=86400',
+            ]);
         }
 
         $mimetype = $image->mimetype;
 
-        // ico svg 图片直接输出，不经过 InterventionImage 处理
-        if (in_array($image->extension, ['ico', 'svg'])) {
+        // ico 图片直接输出，不经过 InterventionImage 处理
+        if ($image->extension === 'ico') {
             goto out;
         }
 

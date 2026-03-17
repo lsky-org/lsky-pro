@@ -32,6 +32,10 @@ class Group extends Model
         'configs',
     ];
 
+    protected $hidden = [
+        'configs',
+    ];
+
     protected $casts = [
         'id' => 'integer',
         'is_default' => 'bool',

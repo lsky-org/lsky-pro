@@ -18,6 +18,30 @@ class UpgradeService
 {
     const ApiUrl = 'https://api.lsky.pro/v2';
 
+    /** @var string[] 允许升级写入的顶级目录 */
+    protected array $allowedTopLevelDirectories = [
+        'app',
+        'bootstrap',
+        'config',
+        'database',
+        'public',
+        'resources',
+        'routes',
+        'storage',
+        'vendor',
+    ];
+
+    /** @var string[] 允许升级写入的根目录文件 */
+    protected array $allowedRootFiles = [
+        'artisan',
+        'composer.json',
+        'composer.lock',
+        'package.json',
+        'package-lock.json',
+        'pnpm-lock.yaml',
+        'yarn.lock',
+    ];
+
     /** @var array|array[] 所有版本 */
     protected array $versions = [];
 
@@ -92,22 +116,24 @@ class UpgradeService
 
             $this->setProgress('下载补丁包...');
             foreach ($files as $file) {
+                $pathname = $this->normalizeAndValidatePatchPathname($file['pathname'] ?? '');
                 if ($file['action'] === 'deleted') continue;
-                $res = $this->http->baseUrl($result['download_url'])->get($file['pathname']);
+                $res = $this->http->baseUrl($result['download_url'])->get($pathname);
                 if ($res->failed()) {
-                    throw new \Exception("补丁文件 {$file['pathname']} 下载失败。");
+                    throw new \Exception("补丁文件 {$pathname} 下载失败。");
                 }
-                $this->filesystem->write($this->temp.'/'.$file['pathname'], $res->body());
+                $this->writePatchTempFile($pathname, $res->body());
                 // 校验文件
-                if ($file['md5'] !== md5_file(base_path($this->temp).'/'.$file['pathname'])) {
-                    throw new \Exception("补丁文件 {$file['pathname']} 校验失败。");
+                if ($file['md5'] !== md5_file(base_path($this->buildTempPatchPath($pathname)))) {
+                    throw new \Exception("补丁文件 {$pathname} 校验失败。");
                 }
             }
             $this->setProgress('执行升级...');
             foreach ($files as $file) {
+                $pathname = $this->normalizeAndValidatePatchPathname($file['pathname'] ?? '');
                 match ($file['action']) {
-                    'added', 'copied' => $this->filesystem->copy($this->temp.'/'.$file['pathname'], $file['pathname']),
-                    'deleted' => $this->filesystem->delete($file['pathname']),
+                    'added', 'copied' => $this->copyPatchIntoProject($pathname),
+                    'deleted' => $this->deleteProjectFile($pathname),
                 };
             }
             $this->setProgress('清除缓存...');
@@ -160,5 +186,68 @@ class UpgradeService
             $this->filesystem->deleteDirectory($this->temp);
         } catch (FilesystemException $e) {
         }
+    }
+
+    protected function writePatchTempFile(string $pathname, string $contents): void
+    {
+        $normalized = $this->normalizeAndValidatePatchPathname($pathname);
+        $this->filesystem->write($this->buildTempPatchPath($normalized), $contents);
+    }
+
+    protected function copyPatchIntoProject(string $pathname): void
+    {
+        $normalized = $this->normalizeAndValidatePatchPathname($pathname);
+        $this->filesystem->copy($this->buildTempPatchPath($normalized), $normalized);
+    }
+
+    protected function deleteProjectFile(string $pathname): void
+    {
+        $normalized = $this->normalizeAndValidatePatchPathname($pathname);
+        $this->filesystem->delete($normalized);
+    }
+
+    protected function buildTempPatchPath(string $pathname): string
+    {
+        $normalized = $this->normalizeAndValidatePatchPathname($pathname);
+        return trim($this->temp, '/').'/'.$normalized;
+    }
+
+    protected function normalizeAndValidatePatchPathname(string $pathname): string
+    {
+        $pathname = trim(str_replace('\\', '/', $pathname));
+        if (str_starts_with($pathname, '/') || preg_match('/^[A-Za-z]:\//', $pathname)) {
+            throw new \Exception("补丁路径 {$pathname} 非法：不允许绝对路径。");
+        }
+        $pathname = preg_replace('#/+#', '/', $pathname) ?: '';
+        while (str_starts_with($pathname, './')) {
+            $pathname = substr($pathname, 2);
+        }
+        $pathname = trim($pathname, '/');
+
+        if ($pathname === '') {
+            throw new \Exception('补丁路径不能为空。');
+        }
+
+        $segments = array_values(array_filter(explode('/', $pathname), static fn ($item) => $item !== ''));
+        if (! $segments) {
+            throw new \Exception('补丁路径不能为空。');
+        }
+
+        foreach ($segments as $segment) {
+            if ($segment === '.' || $segment === '..') {
+                throw new \Exception("补丁路径 {$pathname} 非法：不允许路径穿越。");
+            }
+        }
+
+        $top = $segments[0];
+        if (count($segments) === 1 && in_array($top, $this->allowedRootFiles, true)) {
+            return $pathname;
+        }
+
+        if (! in_array($top, $this->allowedTopLevelDirectories, true)) {
+            throw new \Exception("补丁路径 {$pathname} 非法：顶级目录 {$top} 不在允许列表中。");
+        }
+
+        return $pathname;
     }
 }

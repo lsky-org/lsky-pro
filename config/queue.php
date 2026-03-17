@@ -38,7 +38,7 @@ return [
             'driver' => 'database',
             'table' => 'jobs',
             'queue' => 'default',
-            'retry_after' => 90,
+            'retry_after' => 2000,
             'after_commit' => false,
         ],
 
@@ -46,7 +46,7 @@ return [
             'driver' => 'beanstalkd',
             'host' => 'localhost',
             'queue' => 'default',
-            'retry_after' => 90,
+            'retry_after' => 2000,
             'block_for' => 0,
             'after_commit' => false,
         ],
@@ -66,11 +66,82 @@ return [
             'driver' => 'redis',
             'connection' => 'default',
             'queue' => env('REDIS_QUEUE', 'default'),
-            'retry_after' => 90,
+            'retry_after' => 2000,
             'block_for' => null,
             'after_commit' => false,
         ],
 
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Image Delete Queue
+    |--------------------------------------------------------------------------
+    |
+    | Controls whether physical file deletion runs asynchronously.
+    | When enabled, a worker should listen on the configured queue.
+    |
+    */
+
+    'image_delete' => [
+        'async' => env('IMAGE_DELETE_ASYNC', false),
+        // Follow global QUEUE_CONNECTION by default to keep fresh installs usable without Redis.
+        'connection' => env('IMAGE_DELETE_QUEUE_CONNECTION', env('QUEUE_CONNECTION', 'sync')),
+        'queue' => env('IMAGE_DELETE_QUEUE', 'image-delete'),
+        'tries' => (int) env('IMAGE_DELETE_QUEUE_TRIES', 3),
+        'timeout' => (int) env('IMAGE_DELETE_QUEUE_TIMEOUT', 120),
+        'backoff' => array_values(array_filter(array_map('intval', explode(',', (string) env('IMAGE_DELETE_QUEUE_BACKOFF', '10,30,60'))))),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Upload Pipeline Queue
+    |--------------------------------------------------------------------------
+    |
+    | Controls queue runtime behavior for asynchronous upload processing.
+    |
+    */
+
+    'upload_pipeline' => [
+        'connection' => env('UPLOAD_PIPELINE_QUEUE_CONNECTION', env('QUEUE_CONNECTION', 'sync')),
+        'queue' => env('UPLOAD_PIPELINE_QUEUE', 'upload-critical'),
+        'tries' => (int) env('UPLOAD_PIPELINE_QUEUE_TRIES', 3),
+        'timeout' => (int) env('UPLOAD_PIPELINE_QUEUE_TIMEOUT', 180),
+        'backoff' => array_values(array_filter(array_map('intval', explode(',', (string) env('UPLOAD_PIPELINE_QUEUE_BACKOFF', '5,15,30'))))),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Webhook Queue
+    |--------------------------------------------------------------------------
+    |
+    | Controls runtime behavior for async webhook event delivery.
+    |
+    */
+
+    'webhook' => [
+        'connection' => env('WEBHOOK_QUEUE_CONNECTION', env('QUEUE_CONNECTION', 'sync')),
+        'queue' => env('WEBHOOK_QUEUE', 'webhook-events'),
+        'tries' => (int) env('WEBHOOK_QUEUE_TRIES', 3),
+        'timeout' => (int) env('WEBHOOK_QUEUE_TIMEOUT', 30),
+        'request_timeout' => (int) env('WEBHOOK_REQUEST_TIMEOUT', 10),
+        'backoff' => array_values(array_filter(array_map('intval', explode(',', (string) env('WEBHOOK_QUEUE_BACKOFF', '5,15,30'))))),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | AI Prompt Queue
+    |--------------------------------------------------------------------------
+    |
+    | Controls runtime behavior for asynchronous AI prompt generation jobs.
+    |
+    */
+
+    'ai_prompt' => [
+        'connection' => env('AI_PROMPT_QUEUE_CONNECTION', env('QUEUE_CONNECTION', 'sync')),
+        'queue' => env('AI_PROMPT_QUEUE', 'ai-prompt'),
+        'tries' => (int) env('AI_PROMPT_QUEUE_TRIES', 2),
+        'timeout' => (int) env('AI_PROMPT_QUEUE_TIMEOUT', 60),
     ],
 
     /*

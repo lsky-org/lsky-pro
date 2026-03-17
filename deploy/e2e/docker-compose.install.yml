@@ -1,0 +1,57 @@
+services:
+  db:
+    image: mariadb:10.11
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+      - --max-connections=50
+      - --innodb-buffer-pool-size=64M
+      - --innodb-log-buffer-size=8M
+    environment:
+      MARIADB_DATABASE: ${E2E_DB_DATABASE:-lsky_e2e_install}
+      MARIADB_USER: ${E2E_DB_USERNAME:-lsky}
+      MARIADB_PASSWORD: ${E2E_DB_PASSWORD:-lsky_pass}
+      MARIADB_ROOT_PASSWORD: ${E2E_DB_ROOT_PASSWORD:-root_pass}
+    healthcheck:
+      test: ["CMD-SHELL", "mariadb-admin ping -h 127.0.0.1 -uroot -p${E2E_DB_ROOT_PASSWORD:-root_pass} --silent"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+    volumes:
+      - lsky_e2e_install_db:/var/lib/mysql
+
+  app:
+    build:
+      context: ../..
+      dockerfile: deploy/php83/Dockerfile
+    image: lsky-e2e-install:php83
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "${LSKY_E2E_INSTALL_PORT:-18080}:80"
+    environment:
+      APP_NAME: ${APP_NAME:-Lsky Pro E2E Install}
+      APP_ENV: prod
+      APP_KEY: ${APP_KEY:-base64:RlGwvPrZmwmOxVfIOueFcGkbQHOlEGlWxYEH0QJMkPE=}
+      APP_DEBUG: ${APP_DEBUG:-true}
+      APP_URL: ${APP_URL:-http://127.0.0.1:18080}
+      DB_CONNECTION: mysql
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_DATABASE: ${E2E_DB_DATABASE:-lsky_e2e_install}
+      DB_USERNAME: ${E2E_DB_USERNAME:-lsky}
+      DB_PASSWORD: ${E2E_DB_PASSWORD:-lsky_pass}
+      CACHE_DRIVER: file
+      SESSION_DRIVER: file
+      QUEUE_CONNECTION: sync
+      UPLOAD_PIPELINE_QUEUE_CONNECTION: sync
+      IMAGE_DELETE_QUEUE_CONNECTION: sync
+      WEBHOOK_QUEUE_CONNECTION: sync
+      AI_PROMPT_QUEUE_CONNECTION: sync
+      MAIL_MAILER: array
+      INIT_AUTO_BOOTSTRAP: "false"
+      ALLOW_DESTRUCTIVE: "0"
+
+volumes:
+  lsky_e2e_install_db:

@@ -1,4 +1,4 @@
-@if($_is_notice)
+@if(filled($_is_notice ?? null))
 
     <x-modal id="notice-modal">
         <div class="markdown-body">

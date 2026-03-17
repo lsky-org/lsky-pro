@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Auth;
 
+use App\Services\Auth\WebSessionAuthService;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
@@ -51,6 +52,15 @@ class LoginRequest extends FormRequest
             throw ValidationException::withMessages([
                 'email' => __('auth.failed'),
             ]);
+        }
+
+        $user = Auth::user();
+        try {
+            app(WebSessionAuthService::class)->ensureCanCreateSession($user);
+        } catch (ValidationException $e) {
+            Auth::logout();
+            RateLimiter::hit($this->throttleKey());
+            throw $e;
         }
 
         RateLimiter::clear($this->throttleKey());

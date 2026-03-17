@@ -1,0 +1,38 @@
+name: coverage-ci
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+
+jobs:
+  coverage:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: mbstring, dom, fileinfo, pdo_mysql, bcmath, tokenizer, xml, ctype, json, openssl, gd, imagick
+          coverage: xdebug
+
+      - name: Prepare env
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+
+      - name: Install dependencies
+        run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: Generate coverage
+        run: bash scripts/ci/coverage.sh
+
+      - name: Upload coverage artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: lsky-coverage-clover
+          path: storage/coverage/clover.xml

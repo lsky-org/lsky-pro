@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Http\Result;
+use App\Services\InstallStateService;
 use Closure;
 use Illuminate\Http\Request;
 
@@ -10,14 +11,13 @@ class CheckIsInstalled
 {
     use Result;
 
-    public function handle(Request $request, Closure $next)
+    public function handle(Request $request, Closure $next, InstallStateService $installState)
     {
-        // 检测程序是否安装
-        if (! file_exists(base_path('installed.lock'))) {
+        if (! $installState->isInstalled()) {
             if (! $request->expectsJson()) {
                 return redirect('install');
             } else {
-                return $this->fail('It has already been installed.');
+                return $this->fail('Application is not installed yet.');
             }
         }
 

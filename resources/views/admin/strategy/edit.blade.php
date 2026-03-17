@@ -1,404 +1,521 @@
+<x-app-layout>
+
 @section('title', '编辑储存策略')
 
-<x-app-layout>
-    <div class="my-6 md:my-9">
-        @include('admin.strategy.tips')
+@push('styles')
+<style>
+.se-card{background:#fff;border:1px solid #e2e8f0;border-radius:12px;box-shadow:0 1px 3px rgba(0,0,0,.04);overflow:hidden;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif}
+.se-toolbar{position:sticky;top:0;z-index:40;background:rgba(255,255,255,.97);backdrop-filter:blur(10px);border-bottom:1px solid #f1f5f9;padding:8px 16px;display:flex;align-items:center;justify-content:flex-end}
+.se-toolbar-group{display:inline-flex;border:1px solid #e2e8f0;border-radius:8px;overflow:hidden;background:#f8fafc}
+.se-toolbar-group a,.se-toolbar-group button{height:30px;border:0;border-right:1px solid #e2e8f0;background:transparent;font-size:12px;padding:0 14px;color:#475569;cursor:pointer;display:inline-flex;align-items:center;gap:5px;text-decoration:none;font-family:inherit;line-height:1;white-space:nowrap}
+.se-toolbar-group a:last-child,.se-toolbar-group button:last-child{border-right:0}
+.se-toolbar-group a:hover,.se-toolbar-group button:hover{background:#eff6ff;color:#2563eb}
+.se-section{border-bottom:1px solid #f1f5f9;padding:16px}
+.se-section:last-child{border-bottom:0}
+.se-section-title{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:#1e293b;margin-bottom:14px}
+.se-section-title::before{content:'';display:block;width:3px;height:14px;background:#3b82f6;border-radius:2px;flex-shrink:0}
+.se-section-title i{font-size:12px;color:#3b82f6}
+.se-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.se-field{display:flex;flex-direction:column;gap:3px}
+.se-field.span-2{grid-column:span 2}
+.se-label{font-size:12px;font-weight:600;color:#334155}
+.se-help{font-size:11px;color:#94a3b8}
+.se-help.warn{color:#b45309}
+.se-driver-badge{display:inline-flex;align-items:center;gap:6px;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:8px;padding:7px 12px;font-size:13px;color:#475569}
+.se-driver-badge i{color:#94a3b8;font-size:11px}
+.se-driver-help{font-size:11px;color:#94a3b8;margin-top:6px}
+.se-driver-config{background:#fafbfc;border:1px solid #e8ecf0;border-radius:10px;padding:14px;margin-top:10px}
+.se-driver-config-title{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:#475569;margin-bottom:12px}
+.se-driver-config-title i{color:#64748b;font-size:11px}
+.se-warn-note{background:#fffbeb;border:1px solid #fde68a;border-radius:8px;padding:8px 10px;font-size:11px;color:#92400e;line-height:1.5}
+.se-switch-row{display:flex;align-items:center;justify-content:space-between;padding:4px 0}
+.se-switch-label{font-size:12px;font-weight:600;color:#334155}
+.se-ftp-warn{background:#fef2f2;border:1px solid #fecaca;border-radius:8px;padding:8px 10px;font-size:11px;color:#991b1b;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.se-ftp-warn i{color:#dc2626;font-size:12px}
+@media(max-width:768px){
+.se-grid{grid-template-columns:1fr}
+.se-field.span-2{grid-column:span 1}
+}
+</style>
+@endpush
 
-        <div class="md:mt-0 md:col-span-2">
-            <form action="{{ route('admin.strategy.update', ['id' => $strategy->id]) }}" method="POST">
-                <div class="overflow-hidden rounded-md">
-                    <div class="px-4 py-5 bg-white sm:p-6 space-y-4 shadow-custom">
-
-                        <div class="col-span-6">
-                            <label class="block">
-                                <span class="text-gray-700">选择角色组</span>
-                                <x-select name="groups[]" class="block w-full mt-1 form-multiselect" multiple>
-                                    @foreach(\App\Models\Group::query()->get() as $group)
-                                        <option value="{{ $group->id }}" {{ $strategy->groups->where('id', $group->id)->isNotEmpty() ? 'selected' : '' }}>{{ $group->name }}</option>
-                                    @endforeach
-                                </x-select>
-                            </label>
-                        </div>
-
-                        <div class="col-span-6">
-                            <label for="name" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>名称</label>
-                            <x-input type="text" name="name" id="name" placeholder="请输入策略名称" autocomplete="name" value="{{ $strategy->name }}"  />
-                        </div>
-
-                        <div class="col-span-6">
-                            <label for="intro" class="block text-sm font-medium text-gray-700">简介</label>
-                            <x-textarea id="intro" name="intro" rows="3" placeholder="请输入简介，可为空">{{ $strategy->intro }}</x-textarea>
-                        </div>
-
-                        <div class="col-span-6 sm:col-span-3">
-                            <label for="key" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>储存策略</label>
-                            <x-select autocomplete="key" disabled>
-                                @foreach(\App\Models\Strategy::DRIVERS as $key => $driver)
-                                    <option value="{{ $key }}" {{ $key === $strategy->key ? 'selected' : '' }}>{{ $driver }}</option>
-                                @endforeach
-                            </x-select>
-                            <input type="hidden" name="key" value="{{ $strategy->key }}">
-                            <small class="text-gray-500"><i class="fas fa-exclamation-circle"></i> 为了确保已存在于该储存上的图片能够在平台正常预览，已创建的策略无法继续更改储存方式。</small>
-                        </div>
-
-                        @if($strategy->key === \App\Enums\StrategyKey::Local)
-                        <div class="col-span-6 mb-4" data-driver="{{ \App\Enums\StrategyKey::Local }}">
-                            <div class="col-span-3 sm:col-span-2 mb-4">
-                                <label for="configs[url]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>访问网址</label>
-                                <x-input type="text" name="configs[url]" id="configs[url]" placeholder="请输入图片访问域名，需要加 http(s)://" value="{{ $strategy->configs->get('url') }}" />
-                                <small class="text-orange-500"><i class="fas fa-exclamation"></i>
-                                    本地储存的访问网址必须有根路径，例如：https://www.lsky.pro/uploads 中的 uploads 就是根路径，且根路径不能和其他策略重复。修改根路径直接影响已经上传并已使用的链接的访问。
-                                </small>
-                            </div>
-                            <div class="col-span-3 sm:col-span-2 mb-4">
-                                <label for="configs[queries]" class="block text-sm font-medium text-gray-700">URL Queries</label>
-                                <x-input type="text" name="configs[queries]" id="configs[queries]" placeholder="请输入 url 额外参数" value="{{ $strategy->configs->get('queries') }}" />
-                            </div>
-                            <div class="col-span-6">
-                                <div class="col-span-6 sm:col-span-3 mb-4">
-                                    <label for="configs[root]" class="block text-sm font-medium text-gray-700">储存路径</label>
-                                    <x-input type="text" name="configs[root]" id="configs[root]" autocomplete="text" placeholder="图片保存位置，默认：{{ config('filesystems.disks.uploads.root') }}" value="{{ $strategy->configs->get('root') }}" />
-                                    <small class="text-orange-500"><i class="fas fa-exclamation"></i> 储存路径为绝对路径，设置错误或没有读写权限可能会导致图片保存失败。如果储存路径与其他策略相同，那么请注意使用角色组的路径命名规则、文件命名规则来区分不同文件夹，否则可能会因为名称重复而导致图片物理文件被覆盖。</small>
-                                </div>
-                            </div>
-                        </div>
-                        @endif
-
-                        @if($strategy->key === \App\Enums\StrategyKey::S3)
-                        <div class="col-span-6 mb-4" data-driver="{{ \App\Enums\StrategyKey::S3 }}">
-                            <div class="col-span-3 sm:col-span-2 mb-4">
-                                <label for="configs[url]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>访问域名</label>
-                                <x-input type="url" name="configs[url]" id="configs[url]" placeholder="请输入图片访问域名 http(s)://" value="{{ $strategy->configs->get('url') }}" />
-                            </div>
-                            <div class="col-span-3 sm:col-span-2 mb-4">
-                                <label for="configs[queries]" class="block text-sm font-medium text-gray-700">URL Queries</label>
-                                <x-input type="text" name="configs[queries]" id="configs[queries]" placeholder="请输入 url 额外参数" value="{{ $strategy->configs->get('queries') }}" />
-                            </div>
-                            <div class="col-span-3 sm:col-span-2 mb-4">
-                                <label for="configs[access_key_id]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>AccessKeyId</label>
-                                <x-input type="text" name="configs[access_key_id]" id="configs[access_key_id]" placeholder="请输入 AccessKeyId" value="{{ $strategy->configs->get('access_key_id') }}" />
-                            </div>
-                            <div class="col-span-3 sm:col-span-2 mb-4">
-                                <label for="configs[secret_access_key]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>SecretAccessKey</label>
-                                <x-input type="password" name="configs[secret_access_key]" id="configs[secret_access_key]" placeholder="请输入 SecretAccessKey" value="{{ $strategy->configs->get('secret_access_key') }}" />
-                            </div>
-                            <div class="col-span-3 sm:col-span-2 mb-4">
-                                <label for="configs[endpoint]" class="block text-sm font-medium text-gray-700">连接地址</label>
-                                <x-input type="url" name="configs[endpoint]" id="configs[endpoint]" placeholder="请输入连接地址" value="{{ $strategy->configs->get('endpoint') }}" />
-                            </div>
-                            <div class="col-span-3 sm:col-span-2 mb-4">
-                                <label for="configs[region]" class="block text-sm font-medium text-gray-700">区域(region)</label>
-                                <x-input type="text" name="configs[region]" id="configs[region]" placeholder="请输入区域，例如：us-east-1" value="{{ $strategy->configs->get('region') }}" />
-                            </div>
-                            <div class="col-span-3 sm:col-span-2 mb-4">
-                                <label for="configs[bucket]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>储存桶名称</label>
-                                <x-input type="text" name="configs[bucket]" id="configs[bucket]" placeholder="请输入 Bucket 名称" value="{{ $strategy->configs->get('bucket') }}" />
-                            </div>
-                        </div>
-                        @endif
-
-                        @if($strategy->key === \App\Enums\StrategyKey::Oss)
-                        <div class="col-span-6 mb-4" data-driver="{{ \App\Enums\StrategyKey::Oss }}">
-                            <div class="col-span-3 sm:col-span-2 mb-4">
-                                <label for="configs[url]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>访问域名</label>
-                                <x-input type="url" name="configs[url]" id="configs[url]" placeholder="请输入图片访问域名 http(s)://" value="{{ $strategy->configs->get('url') }}" />
-                            </div>
-                            <div class="col-span-3 sm:col-span-2 mb-4">
-                                <label for="configs[queries]" class="block text-sm font-medium text-gray-700">URL Queries</label>
-                                <x-input type="text" name="configs[queries]" id="configs[queries]" placeholder="请输入 url 额外参数" value="{{ $strategy->configs->get('queries') }}" />
-                            </div>
-                            <div class="col-span-3 sm:col-span-2 mb-4">
-                                <label for="configs[access_key_id]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>AccessKeyId</label>
-                                <x-input type="text" name="configs[access_key_id]" id="configs[access_key_id]" placeholder="请输入 AccessKeyId" value="{{ $strategy->configs->get('access_key_id') }}" />
-                            </div>
-                            <div class="col-span-3 sm:col-span-2 mb-4">
-                                <label for="configs[access_key_secret]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>AccessKeySecret</label>
-                                <x-input type="password" name="configs[access_key_secret]" id="configs[access_key_secret]" placeholder="请输入 AccessKeySecret" value="{{ $strategy->configs->get('access_key_secret') }}" />
-                            </div>
-                            <div class="col-span-3 sm:col-span-2 mb-4">
-                                <label for="configs[endpoint]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>地域节点(Endpoint)</label>
-                                <x-input type="text" name="configs[endpoint]" id="configs[endpoint]" placeholder="请输入所属地域节点，例如：oss-cn-beijing.aliyuncs.com" value="{{ $strategy->configs->get('endpoint') }}" />
-                            </div>
-                            <div class="col-span-3 sm:col-span-2 mb-4">
-                                <label for="configs[bucket]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>Bucket 名称</label>
-                                <x-input type="text" name="configs[bucket]" id="configs[bucket]" placeholder="请输入 Bucket 名称" value="{{ $strategy->configs->get('bucket') }}" />
-                            </div>
-                        </div>
-                        @endif
-
-                        @if($strategy->key === \App\Enums\StrategyKey::Cos)
-                        <div class="col-span-6 mb-4" data-driver="{{ \App\Enums\StrategyKey::Cos }}">
-                            <div class="col-span-3 sm:col-span-2 mb-4">
-                                <label for="configs[url]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>访问域名</label>
-                                <x-input type="url" name="configs[url]" id="configs[url]" placeholder="请输入图片访问域名 http(s)://" value="{{ $strategy->configs->get('url') }}" />
-                            </div>
-                            <div class="col-span-3 sm:col-span-2 mb-4">
-                                <label for="configs[queries]" class="block text-sm font-medium text-gray-700">URL Queries</label>
-                                <x-input type="text" name="configs[queries]" id="configs[queries]" placeholder="请输入 url 额外参数" value="{{ $strategy->configs->get('queries') }}" />
-                            </div>
-                            <div class="col-span-3 sm:col-span-2 mb-4">
-                                <label for="configs[app_id]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>AppId</label>
-                                <x-input type="text" name="configs[app_id]" id="configs[app_id]" placeholder="请输入 AppId" value="{{ $strategy->configs->get('app_id') }}" />
-                            </div>
-                            <div class="col-span-3 sm:col-span-2 mb-4">
-                                <label for="configs[secret_id]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>SecretId</label>
-                                <x-input type="text" name="configs[secret_id]" id="configs[secret_id]" placeholder="请输入 SecretId" value="{{ $strategy->configs->get('secret_id') }}" />
-                            </div>
-                            <div class="col-span-3 sm:col-span-2 mb-4">
-                                <label for="configs[secret_key]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>SecretKey</label>
-                                <x-input type="password" name="configs[secret_key]" id="configs[secret_key]" placeholder="请输入 SecretKey" value="{{ $strategy->configs->get('secret_key') }}" />
-                            </div>
-                            <div class="col-span-3 sm:col-span-2 mb-4">
-                                <label for="configs[region]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>所属地域</label>
-                                <x-input type="text" name="configs[region]" id="configs[region]" placeholder="请输入所属地域，例如：ap-chengdu" value="{{ $strategy->configs->get('region') }}" />
-                            </div>
-                            <div class="col-span-3 sm:col-span-2 mb-4">
-                                <label for="configs[bucket]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>储存桶名称</label>
-                                <x-input type="text" name="configs[bucket]" id="configs[bucket]" placeholder="请输入储存桶名称" value="{{ $strategy->configs->get('bucket') }}" />
-                                <small class="text-gray-500"><i class="fas fa-exclamation-circle"></i> 腾讯云储存桶名称由 名称+appid 组合，例如：test-125146xxxx，此处应该填写 test</>
-                            </div>
-                        </div>
-                        @endif
-
-                        @if($strategy->key === \App\Enums\StrategyKey::Kodo)
-                        <div class="col-span-6 mb-4" data-driver="{{ \App\Enums\StrategyKey::Kodo }}">
-                            <div class="col-span-3 sm:col-span-2 mb-4">
-                                <label for="configs[url]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>访问域名</label>
-                                <x-input type="url" name="configs[url]" id="configs[url]" placeholder="请输入图片访问域名 http(s)://" value="{{ $strategy->configs->get('url') }}" />
-                            </div>
-                            <div class="col-span-3 sm:col-span-2 mb-4">
-                                <label for="configs[queries]" class="block text-sm font-medium text-gray-700">URL Queries</label>
-                                <x-input type="text" name="configs[queries]" id="configs[queries]" placeholder="请输入 url 额外参数" value="{{ $strategy->configs->get('queries') }}" />
-                            </div>
-                            <div class="col-span-3 sm:col-span-2 mb-4">
-                                <label for="configs[access_key]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>AccessKey</label>
-                                <x-input type="text" name="configs[access_key]" id="configs[access_key]" placeholder="请输入 AccessKey" value="{{ $strategy->configs->get('access_key') }}" />
-                            </div>
-                            <div class="col-span-3 sm:col-span-2 mb-4">
-                                <label for="configs[secret_key]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>SecretKey</label>
-                                <x-input type="password" name="configs[secret_key]" id="configs[secret_key]" placeholder="请输入 SecretKey" value="{{ $strategy->configs->get('secret_key') }}" />
-                            </div>
-                            <div class="col-span-3 sm:col-span-2 mb-4">
-                                <label for="configs[bucket]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>Bucket</label>
-                                <x-input type="text" name="configs[bucket]" id="configs[bucket]" placeholder="请输入 Bucket" value="{{ $strategy->configs->get('bucket') }}" />
-                            </div>
-                        </div>
-                        @endif
-
-                        @if($strategy->key === \App\Enums\StrategyKey::Uss)
-                        <div class="col-span-6 mb-4" data-driver="{{ \App\Enums\StrategyKey::Uss }}">
-                            <div class="col-span-3 sm:col-span-2 mb-4">
-                                <label for="configs[url]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>访问域名</label>
-                                <x-input type="url" name="configs[url]" id="configs[url]" placeholder="请输入图片访问域名 http(s)://" value="{{ $strategy->configs->get('url') }}" />
-                            </div>
-                            <div class="col-span-3 sm:col-span-2 mb-4">
-                                <label for="configs[queries]" class="block text-sm font-medium text-gray-700">URL Queries</label>
-                                <x-input type="text" name="configs[queries]" id="configs[queries]" placeholder="请输入 url 额外参数" value="{{ $strategy->configs->get('queries') }}" />
-                            </div>
-                            <div class="col-span-3 sm:col-span-2 mb-4">
-                                <label for="configs[service]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>服务名称</label>
-                                <x-input type="text" name="configs[service]" id="configs[service]" placeholder="请输入服务名称" value="{{ $strategy->configs->get('service') }}" />
-                            </div>
-                            <div class="col-span-3 sm:col-span-2 mb-4">
-                                <label for="configs[operator]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>操作员名称</label>
-                                <x-input type="text" name="configs[operator]" id="configs[operator]" placeholder="请输入操作员名称" value="{{ $strategy->configs->get('operator') }}" />
-                            </div>
-                            <div class="col-span-3 sm:col-span-2 mb-4">
-                                <label for="configs[password]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>操作员密码</label>
-                                <x-input type="password" name="configs[password]" id="configs[password]" placeholder="请输入操作员密码" value="{{ $strategy->configs->get('password') }}" />
-                            </div>
-                        </div>
-                        @endif
-
-                        @if($strategy->key === \App\Enums\StrategyKey::Sftp)
-                        <div class="col-span-6 mb-4" data-driver="{{ \App\Enums\StrategyKey::Sftp }}">
-                            <div class="col-span-3 sm:col-span-2 mb-4">
-                                <label for="configs[url]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>访问域名</label>
-                                <x-input type="url" name="configs[url]" id="configs[url]" placeholder="请输入图片访问域名 http(s)://" value="{{ $strategy->configs->get('url') }}" />
-                            </div>
-                            <div class="col-span-3 sm:col-span-2 mb-4">
-                                <label for="configs[queries]" class="block text-sm font-medium text-gray-700">URL Queries</label>
-                                <x-input type="text" name="configs[queries]" id="configs[queries]" placeholder="请输入 url 额外参数" value="{{ $strategy->configs->get('queries') }}" />
-                            </div>
-                            <div class="col-span-6 sm:col-span-3 mb-4">
-                                <label for="configs[root]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>根目录</label>
-                                <x-input type="text" name="configs[root]" id="configs[root]" autocomplete="text" placeholder="请输入根目录路径" value="{{ $strategy->configs->get('root') }}" />
-                            </div>
-                            <div class="col-span-3 sm:col-span-2 mb-4">
-                                <label for="configs[host]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>主机地址</label>
-                                <x-input type="text" name="configs[host]" id="configs[host]" placeholder="请输入主机地址，例如：127.0.0.1" value="{{ $strategy->configs->get('host') }}" />
-                            </div>
-                            <div class="col-span-3 sm:col-span-2 mb-4">
-                                <label for="configs[port]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>连接端口</label>
-                                <x-input type="number" name="configs[port]" id="configs[port]" placeholder="请输入连接端口" value="{{ $strategy->configs->get('port') }}" />
-                            </div>
-                            <div class="col-span-3 sm:col-span-2 mb-4">
-                                <label for="configs[username]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>用户名</label>
-                                <x-input type="text" name="configs[username]" id="configs[username]" placeholder="请输入用户名" value="{{ $strategy->configs->get('username') }}" />
-                            </div>
-                            <div class="col-span-3 sm:col-span-2 mb-4">
-                                <label for="configs[password]" class="block text-sm font-medium text-gray-700"><span class="text-yellow-500">*</span>密码</label>
-                                <x-input type="password" name="configs[password]" id="configs[password]" placeholder="如果使用私钥连接，可为空" value="{{ $strategy->configs->get('password') }}" />
-                            </div>
-                            <div class="col-span-3 sm:col-span-2 mb-4">
-                                <label for="configs[private_key]" class="block text-sm font-medium text-gray-700"><span class="text-yellow-500">*</span>私钥</label>
-                                <x-textarea name="configs[private_key]" id="configs[private_key]" placeholder="输入私钥文本内容，如果使用密码连接，可为空">{{ $strategy->configs->get('private_key') }}</x-textarea>
-                            </div>
-                            <div class="col-span-3 sm:col-span-2 mb-4">
-                                <label for="configs[passphrase]" class="block text-sm font-medium text-gray-700">私钥口令</label>
-                                <x-input type="password" name="configs[passphrase]" id="configs[passphrase]" placeholder="如果未设置私钥或私钥未设置口令，可为空" value="{{ $strategy->configs->get('passphrase') }}" />
-                            </div>
-                            <div class="col-span-6">
-                                <label for="configs[use_agent]" class="block text-sm font-medium mb-2 text-gray-700">是否使用代理</label>
-                                <x-switch id="configs[use_agent]" name="configs[use_agent]" value="1" :checked="(bool)$strategy->configs->get('use_agent')"></x-switch>
-                            </div>
-                        </div>
-                        @endif
-
-                        @if($strategy->key === \App\Enums\StrategyKey::Ftp)
-                        <div class="col-span-6 mb-4" data-driver="{{ \App\Enums\StrategyKey::Ftp }}">
-                            @if(! extension_loaded('ftp'))
-                                <p class="bg-yellow-500 p-2 mb-4 rounded text-sm text-white">
-                                    <i class="fas fa-exclamation-circle"></i> 系统检测到 ftp 拓展未启用，可能无法正常使用 FTP 储存方式。
-                                </p>
-                            @endif
-                            <div class="col-span-3 sm:col-span-2 mb-4">
-                                <label for="configs[url]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>访问域名</label>
-                                <x-input type="url" name="configs[url]" id="configs[url]" placeholder="请输入图片访问域名 http(s)://" value="{{ $strategy->configs->get('url') }}" />
-                            </div>
-                            <div class="col-span-3 sm:col-span-2 mb-4">
-                                <label for="configs[queries]" class="block text-sm font-medium text-gray-700">URL Queries</label>
-                                <x-input type="text" name="configs[queries]" id="configs[queries]" placeholder="请输入 url 额外参数" value="{{ $strategy->configs->get('queries') }}" />
-                            </div>
-                            <div class="col-span-6 sm:col-span-3 mb-4">
-                                <label for="configs[root]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>根目录</label>
-                                <x-input type="text" name="configs[root]" id="configs[root]" autocomplete="text" placeholder="请输入根目录路径" value="{{ $strategy->configs->get('root') }}" />
-                            </div>
-                            <div class="col-span-3 sm:col-span-2 mb-4">
-                                <label for="configs[host]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>主机地址</label>
-                                <x-input type="text" name="configs[host]" id="configs[host]" placeholder="请输入主机地址，例如：127.0.0.1" value="{{ $strategy->configs->get('host') }}" />
-                            </div>
-                            <div class="col-span-3 sm:col-span-2 mb-4">
-                                <label for="configs[port]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>连接端口</label>
-                                <x-input type="number" name="configs[port]" id="configs[port]" placeholder="请输入连接端口 21/20" value="20" value="{{ $strategy->configs->get('port') }}" />
-                                <small class="text-gray-500"><i class="fas fa-exclamation-circle"></i> 通常情况下，FTP 的被动模式连接端口为 21，主动模式为 20</small>
-                            </div>
-                            <div class="col-span-3 sm:col-span-2 mb-4">
-                                <label for="configs[username]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>用户名</label>
-                                <x-input type="text" name="configs[username]" id="configs[username]" placeholder="请输入用户名" value="{{ $strategy->configs->get('username') }}" />
-                            </div>
-                            <div class="col-span-3 sm:col-span-2 mb-4">
-                                <label for="configs[password]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>密码</label>
-                                <x-input type="password" name="configs[password]" id="configs[password]" placeholder="请输入密码" value="{{ $strategy->configs->get('password') }}" />
-                            </div>
-                            <div class="col-span-6">
-                                <label for="configs[ssl]" class="block text-sm font-medium mb-2 text-gray-700">加密连接</label>
-                                <x-switch id="configs[ssl]" name="configs[ssl]" value="1" :checked="(bool)$strategy->configs->get('ssl')"></x-switch>
-                            </div>
-                            <div class="col-span-6">
-                                <label for="configs[passive]" class="block text-sm font-medium my-2 text-gray-700">被动模式</label>
-                                <x-switch id="configs[passive]" name="configs[passive]" value="1" :checked="(bool)$strategy->configs->get('passive')"></x-switch>
-                            </div>
-                        </div>
-                        @endif
-
-                        @if($strategy->key === \App\Enums\StrategyKey::Webdav)
-                        <div class="col-span-6 mb-4" data-driver="{{ \App\Enums\StrategyKey::Webdav }}">
-                            <div class="col-span-3 sm:col-span-2 mb-4">
-                                <label for="configs[url]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>访问域名</label>
-                                <x-input type="url" name="configs[url]" id="configs[url]" placeholder="请输入图片访问域名 http(s)://" value="{{ $strategy->configs->get('url') }}" />
-                            </div>
-                            <div class="col-span-3 sm:col-span-2 mb-4">
-                                <label for="configs[queries]" class="block text-sm font-medium text-gray-700">URL Queries</label>
-                                <x-input type="text" name="configs[queries]" id="configs[queries]" placeholder="请输入 url 额外参数" value="{{ $strategy->configs->get('queries') }}" />
-                            </div>
-                            <div class="col-span-3 sm:col-span-2 mb-4">
-                                <label for="configs[base_uri]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>连接地址</label>
-                                <x-input type="url" name="configs[base_uri]" id="configs[base_uri]" placeholder="请输入连接地址" value="{{ $strategy->configs->get('base_uri') }}" />
-                            </div>
-                            <div class="col-span-3 sm:col-span-2 mb-4">
-                                <label for="webdav-configs[auth_type]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>认证方式</label>
-                                <x-select id="webdav-auth-type" name="configs[auth_type]" select2>
-                                    @foreach(\App\Models\Strategy::WEBDAV_AUTH_TYPES as $key => $type)
-                                        <option value="{{ $key }}" {{ $key == $strategy->configs->get('auth_type') ? 'selected' : '' }}>{{ $type }}</option>
-                                    @endforeach
-                                </x-select>
-                            </div>
-                            <div class="col-span-3 sm:col-span-2 mb-4">
-                                <label for="webdav-configs[prefix]" class="block text-sm font-medium text-gray-700">路径前缀</label>
-                                <x-input type="text" name="configs[prefix]" id="webdav-configs[prefix]" placeholder="请输入路径前缀" value="{{ $strategy->configs->get('prefix') }}"></x-input>
-                            </div>
-                            <div class="col-span-3 sm:col-span-2 mb-4">
-                                <label for="configs[username]" class="block text-sm font-medium text-gray-700">用户名</label>
-                                <x-input type="text" name="configs[username]" id="configs[username]" placeholder="请输入用户名" value="{{ $strategy->configs->get('username') }}" />
-                            </div>
-                            <div class="col-span-3 sm:col-span-2 mb-4">
-                                <label for="configs[password]" class="block text-sm font-medium text-gray-700">密码</label>
-                                <x-input type="password" name="configs[password]" id="configs[password]" placeholder="请输入密码" value="{{ $strategy->configs->get('password') }}" />
-                            </div>
-                        </div>
-                        @endif
-
-                        @if($strategy->key === \App\Enums\StrategyKey::Minio)
-                            <div class="col-span-6 mb-4" data-driver="{{ \App\Enums\StrategyKey::Minio }}">
-                                <div class="col-span-3 sm:col-span-2 mb-4">
-                                    <label for="configs[url]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>访问域名</label>
-                                    <x-input type="url" name="configs[url]" id="configs[url]" placeholder="请输入图片访问域名 http(s)://" value="{{ $strategy->configs->get('url') }}" />
-                                </div>
-                                <div class="col-span-3 sm:col-span-2 mb-4">
-                                    <label for="configs[queries]" class="block text-sm font-medium text-gray-700">URL Queries</label>
-                                    <x-input type="text" name="configs[queries]" id="configs[queries]" placeholder="请输入 url 额外参数" value="{{ $strategy->configs->get('queries') }}" />
-                                </div>
-                                <div class="col-span-3 sm:col-span-2 mb-4">
-                                    <label for="configs[access_key]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>AccessKey</label>
-                                    <x-input type="text" name="configs[access_key]" id="configs[access_key]" placeholder="请输入 AccessKey" value="{{ $strategy->configs->get('access_key') }}" />
-                                </div>
-                                <div class="col-span-3 sm:col-span-2 mb-4">
-                                    <label for="configs[secret_key]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>SecretKey</label>
-                                    <x-input type="password" name="configs[secret_key]" id="configs[secret_key]" placeholder="请输入 SecretKey" value="{{ $strategy->configs->get('secret_key') }}" />
-                                </div>
-                                <div class="col-span-3 sm:col-span-2 mb-4">
-                                    <label for="configs[endpoint]" class="block text-sm font-medium text-gray-700">连接地址</label>
-                                    <x-input type="url" name="configs[endpoint]" id="configs[endpoint]" placeholder="请输入连接地址" value="{{ $strategy->configs->get('endpoint') }}" />
-                                </div>
-                                <div class="col-span-3 sm:col-span-2 mb-4">
-                                    <label for="configs[region]" class="block text-sm font-medium text-gray-700">区域(region)</label>
-                                    <x-input type="text" name="configs[region]" id="configs[region]" placeholder="请输入区域，例如：us-east-1" value="{{ $strategy->configs->get('region') }}" />
-                                </div>
-                                <div class="col-span-3 sm:col-span-2 mb-4">
-                                    <label for="configs[bucket]" class="block text-sm font-medium text-gray-700"><span class="text-red-600">*</span>储存桶名称</label>
-                                    <x-input type="text" name="configs[bucket]" id="configs[bucket]" placeholder="请输入 Bucket 名称" value="{{ $strategy->configs->get('bucket') }}" />
-                                </div>
-                                <div class="col-span-6">
-                                    <label for="configs[bucket_endpoint]" class="block text-sm font-medium mb-2 text-gray-700">BucketEndpoint</label>
-                                    <x-switch id="configs[bucket_endpoint]" name="configs[bucket_endpoint]" value="1" :checked="(bool)$strategy->configs->get('bucket_endpoint')"></x-switch>
-                                    <p><small class="text-gray-500"><i class="fas fa-exclamation-circle"></i> 开启此选项后将会直接以「连接地址」作为数据交互传输域名，否则可能会以桶名称拼接域名(例如：http://桶名称.连接地址.com)</small></p>
-                                </div>
-                            </div>
-                        @endif
-                    </div>
-                    <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">
-                        <x-button type="button" class="bg-gray-500" onclick="history.go(-1)">取消</x-button>
-                        <x-button>确认修改</x-button>
-                    </div>
-                </div>
-            </form>
+<div class="se-card">
+    {{-- Sticky Toolbar --}}
+    <div class="se-toolbar">
+        <div class="se-toolbar-group">
+            <a href="{{ route('admin.strategies') }}">
+                <i class="fas fa-arrow-left"></i> 返回
+            </a>
+            <button type="submit" form="se-form">
+                <i class="fas fa-check"></i> 确认保存
+            </button>
         </div>
     </div>
 
-    @push('scripts')
-        <script>
-            $('form').submit(function (e) {
-                e.preventDefault();
-                axios.put(this.action, $(this).serialize()).then(response => {
-                    if (response.data.status) {
-                        toastr.success(response.data.message);
-                    } else {
-                        toastr.error(response.data.message);
-                    }
-                });
-            });
-        </script>
-    @endpush
+    {{-- Form --}}
+    <form id="se-form" action="{{ route('admin.strategy.update', ['id' => $strategy->id]) }}" method="POST">
+        @csrf
+
+        {{-- Section 1: 基础信息 --}}
+        <div class="se-section">
+            <div class="se-section-title">
+                <i class="fas fa-info-circle"></i> 基础信息
+            </div>
+            <div class="se-grid">
+                <div class="se-field">
+                    <label class="se-label">策略名称 <span style="color:#ef4444">*</span></label>
+                    <x-input type="text" name="name" value="{{ $strategy->name }}" required />
+                </div>
+                <div class="se-field">
+                    <label class="se-label">简介</label>
+                    <x-input type="text" name="intro" value="{{ $strategy->intro }}" />
+                </div>
+                <div class="se-field span-2">
+                    <label class="se-label">选择角色组</label>
+                    <x-select name="groups[]" multiple>
+                        @foreach(\App\Models\Group::query()->get() as $group)
+                            <option value="{{ $group->id }}" {{ $strategy->groups->where('id', $group->id)->isNotEmpty() ? 'selected' : '' }}>{{ $group->name }}</option>
+                        @endforeach
+                    </x-select>
+                </div>
+            </div>
+        </div>
+
+        {{-- Section 2: 储存配置 --}}
+        <div class="se-section">
+            <div class="se-section-title">
+                <i class="fas fa-hdd"></i> 储存配置
+            </div>
+
+            {{-- Driver locked display --}}
+            <div class="se-driver-badge">
+                <i class="fas fa-lock"></i> {{ \App\Models\Strategy::DRIVERS[$strategy->key] }}
+            </div>
+            <input type="hidden" name="key" value="{{ $strategy->key }}">
+            <div class="se-driver-help">已创建的策略无法更改储存方式</div>
+
+            {{-- Local --}}
+            @if($strategy->key === \App\Enums\StrategyKey::Local)
+            <div class="se-driver-config">
+                <div class="se-driver-config-title">
+                    <i class="fas fa-folder"></i> 本地储存配置
+                </div>
+                <div class="se-grid">
+                    <div class="se-field span-2">
+                        <label class="se-label">访问网址 <span style="color:#ef4444">*</span></label>
+                        <x-input type="url" name="configs[url]" value="{{ $strategy->configs->get('url') }}" required />
+                        <div class="se-warn-note">
+                            <i class="fas fa-exclamation-triangle"></i> 请确保该网址指向储存路径的根目录，否则图片将无法正常访问
+                        </div>
+                    </div>
+                    <div class="se-field">
+                        <label class="se-label">URL Queries</label>
+                        <x-input type="text" name="configs[queries]" value="{{ $strategy->configs->get('queries') }}" />
+                        <span class="se-help">URL 额外查询参数，例如 ?token=xxx</span>
+                    </div>
+                </div>
+            </div>
+            @endif
+
+            {{-- S3 --}}
+            @if($strategy->key === \App\Enums\StrategyKey::S3)
+            <div class="se-driver-config">
+                <div class="se-driver-config-title">
+                    <i class="fab fa-aws"></i> S3 储存配置
+                </div>
+                <div class="se-grid">
+                    <div class="se-field">
+                        <label class="se-label">访问域名 <span style="color:#ef4444">*</span></label>
+                        <x-input type="url" name="configs[url]" value="{{ $strategy->configs->get('url') }}" required />
+                    </div>
+                    <div class="se-field">
+                        <label class="se-label">URL Queries</label>
+                        <x-input type="text" name="configs[queries]" value="{{ $strategy->configs->get('queries') }}" />
+                    </div>
+                    <div class="se-field">
+                        <label class="se-label">AccessKeyId <span style="color:#ef4444">*</span></label>
+                        <x-input type="text" name="configs[access_key_id]" value="{{ $strategy->configs->get('access_key_id') }}" required />
+                    </div>
+                    <div class="se-field">
+                        <label class="se-label">SecretAccessKey <span style="color:#ef4444">*</span></label>
+                        <x-input type="password" name="configs[secret_access_key]" value="{{ $strategy->configs->get('secret_access_key') }}" required />
+                    </div>
+                    <div class="se-field">
+                        <label class="se-label">连接地址</label>
+                        <x-input type="url" name="configs[endpoint]" value="{{ $strategy->configs->get('endpoint') }}" />
+                    </div>
+                    <div class="se-field">
+                        <label class="se-label">区域</label>
+                        <x-input type="text" name="configs[region]" value="{{ $strategy->configs->get('region') }}" />
+                    </div>
+                    <div class="se-field">
+                        <label class="se-label">储存桶名称 <span style="color:#ef4444">*</span></label>
+                        <x-input type="text" name="configs[bucket]" value="{{ $strategy->configs->get('bucket') }}" required />
+                    </div>
+                </div>
+            </div>
+            @endif
+
+            {{-- Oss --}}
+            @if($strategy->key === \App\Enums\StrategyKey::Oss)
+            <div class="se-driver-config">
+                <div class="se-driver-config-title">
+                    <i class="fas fa-cloud"></i> 阿里云 OSS 配置
+                </div>
+                <div class="se-grid">
+                    <div class="se-field">
+                        <label class="se-label">访问域名 <span style="color:#ef4444">*</span></label>
+                        <x-input type="url" name="configs[url]" value="{{ $strategy->configs->get('url') }}" required />
+                    </div>
+                    <div class="se-field">
+                        <label class="se-label">URL Queries</label>
+                        <x-input type="text" name="configs[queries]" value="{{ $strategy->configs->get('queries') }}" />
+                    </div>
+                    <div class="se-field">
+                        <label class="se-label">AccessKeyId <span style="color:#ef4444">*</span></label>
+                        <x-input type="text" name="configs[access_key_id]" value="{{ $strategy->configs->get('access_key_id') }}" required />
+                    </div>
+                    <div class="se-field">
+                        <label class="se-label">AccessKeySecret <span style="color:#ef4444">*</span></label>
+                        <x-input type="password" name="configs[access_key_secret]" value="{{ $strategy->configs->get('access_key_secret') }}" required />
+                    </div>
+                    <div class="se-field">
+                        <label class="se-label">地域节点 <span style="color:#ef4444">*</span></label>
+                        <x-input type="text" name="configs[endpoint]" value="{{ $strategy->configs->get('endpoint') }}" required />
+                    </div>
+                    <div class="se-field">
+                        <label class="se-label">Bucket 名称 <span style="color:#ef4444">*</span></label>
+                        <x-input type="text" name="configs[bucket]" value="{{ $strategy->configs->get('bucket') }}" required />
+                    </div>
+                </div>
+            </div>
+            @endif
+
+            {{-- Cos --}}
+            @if($strategy->key === \App\Enums\StrategyKey::Cos)
+            <div class="se-driver-config">
+                <div class="se-driver-config-title">
+                    <i class="fas fa-cloud"></i> 腾讯云 COS 配置
+                </div>
+                <div class="se-grid">
+                    <div class="se-field">
+                        <label class="se-label">访问域名 <span style="color:#ef4444">*</span></label>
+                        <x-input type="url" name="configs[url]" value="{{ $strategy->configs->get('url') }}" required />
+                    </div>
+                    <div class="se-field">
+                        <label class="se-label">URL Queries</label>
+                        <x-input type="text" name="configs[queries]" value="{{ $strategy->configs->get('queries') }}" />
+                    </div>
+                    <div class="se-field">
+                        <label class="se-label">AppId <span style="color:#ef4444">*</span></label>
+                        <x-input type="text" name="configs[app_id]" value="{{ $strategy->configs->get('app_id') }}" required />
+                    </div>
+                    <div class="se-field">
+                        <label class="se-label">SecretId <span style="color:#ef4444">*</span></label>
+                        <x-input type="text" name="configs[secret_id]" value="{{ $strategy->configs->get('secret_id') }}" required />
+                    </div>
+                    <div class="se-field">
+                        <label class="se-label">SecretKey <span style="color:#ef4444">*</span></label>
+                        <x-input type="password" name="configs[secret_key]" value="{{ $strategy->configs->get('secret_key') }}" required />
+                    </div>
+                    <div class="se-field">
+                        <label class="se-label">所属地域 <span style="color:#ef4444">*</span></label>
+                        <x-input type="text" name="configs[region]" value="{{ $strategy->configs->get('region') }}" required />
+                    </div>
+                    <div class="se-field">
+                        <label class="se-label">储存桶名称 <span style="color:#ef4444">*</span></label>
+                        <x-input type="text" name="configs[bucket]" value="{{ $strategy->configs->get('bucket') }}" required />
+                        <span class="se-help">不需要包含 AppId 后缀</span>
+                    </div>
+                </div>
+            </div>
+            @endif
+
+            {{-- Kodo --}}
+            @if($strategy->key === \App\Enums\StrategyKey::Kodo)
+            <div class="se-driver-config">
+                <div class="se-driver-config-title">
+                    <i class="fas fa-cloud"></i> 七牛云 Kodo 配置
+                </div>
+                <div class="se-grid">
+                    <div class="se-field">
+                        <label class="se-label">访问域名 <span style="color:#ef4444">*</span></label>
+                        <x-input type="url" name="configs[url]" value="{{ $strategy->configs->get('url') }}" required />
+                    </div>
+                    <div class="se-field">
+                        <label class="se-label">URL Queries</label>
+                        <x-input type="text" name="configs[queries]" value="{{ $strategy->configs->get('queries') }}" />
+                    </div>
+                    <div class="se-field">
+                        <label class="se-label">AccessKey <span style="color:#ef4444">*</span></label>
+                        <x-input type="text" name="configs[access_key]" value="{{ $strategy->configs->get('access_key') }}" required />
+                    </div>
+                    <div class="se-field">
+                        <label class="se-label">SecretKey <span style="color:#ef4444">*</span></label>
+                        <x-input type="password" name="configs[secret_key]" value="{{ $strategy->configs->get('secret_key') }}" required />
+                    </div>
+                    <div class="se-field">
+                        <label class="se-label">Bucket <span style="color:#ef4444">*</span></label>
+                        <x-input type="text" name="configs[bucket]" value="{{ $strategy->configs->get('bucket') }}" required />
+                    </div>
+                </div>
+            </div>
+            @endif
+
+            {{-- Uss --}}
+            @if($strategy->key === \App\Enums\StrategyKey::Uss)
+            <div class="se-driver-config">
+                <div class="se-driver-config-title">
+                    <i class="fas fa-cloud"></i> 又拍云 USS 配置
+                </div>
+                <div class="se-grid">
+                    <div class="se-field">
+                        <label class="se-label">访问域名 <span style="color:#ef4444">*</span></label>
+                        <x-input type="url" name="configs[url]" value="{{ $strategy->configs->get('url') }}" required />
+                    </div>
+                    <div class="se-field">
+                        <label class="se-label">URL Queries</label>
+                        <x-input type="text" name="configs[queries]" value="{{ $strategy->configs->get('queries') }}" />
+                    </div>
+                    <div class="se-field">
+                        <label class="se-label">服务名称 <span style="color:#ef4444">*</span></label>
+                        <x-input type="text" name="configs[service]" value="{{ $strategy->configs->get('service') }}" required />
+                    </div>
+                    <div class="se-field">
+                        <label class="se-label">操作员名称 <span style="color:#ef4444">*</span></label>
+                        <x-input type="text" name="configs[operator]" value="{{ $strategy->configs->get('operator') }}" required />
+                    </div>
+                    <div class="se-field">
+                        <label class="se-label">操作员密码 <span style="color:#ef4444">*</span></label>
+                        <x-input type="password" name="configs[password]" value="{{ $strategy->configs->get('password') }}" required />
+                    </div>
+                </div>
+            </div>
+            @endif
+
+            {{-- Sftp --}}
+            @if($strategy->key === \App\Enums\StrategyKey::Sftp)
+            <div class="se-driver-config">
+                <div class="se-driver-config-title">
+                    <i class="fas fa-server"></i> SFTP 配置
+                </div>
+                <div class="se-grid">
+                    <div class="se-field">
+                        <label class="se-label">访问域名 <span style="color:#ef4444">*</span></label>
+                        <x-input type="url" name="configs[url]" value="{{ $strategy->configs->get('url') }}" required />
+                    </div>
+                    <div class="se-field">
+                        <label class="se-label">URL Queries</label>
+                        <x-input type="text" name="configs[queries]" value="{{ $strategy->configs->get('queries') }}" />
+                    </div>
+                    <div class="se-field">
+                        <label class="se-label">根目录 <span style="color:#ef4444">*</span></label>
+                        <x-input type="text" name="configs[root]" value="{{ $strategy->configs->get('root') }}" required />
+                    </div>
+                    <div class="se-field">
+                        <label class="se-label">主机地址 <span style="color:#ef4444">*</span></label>
+                        <x-input type="text" name="configs[host]" value="{{ $strategy->configs->get('host') }}" required />
+                    </div>
+                    <div class="se-field">
+                        <label class="se-label">连接端口 <span style="color:#ef4444">*</span></label>
+                        <x-input type="number" name="configs[port]" value="{{ $strategy->configs->get('port') }}" required />
+                    </div>
+                    <div class="se-field">
+                        <label class="se-label">用户名 <span style="color:#ef4444">*</span></label>
+                        <x-input type="text" name="configs[username]" value="{{ $strategy->configs->get('username') }}" required />
+                    </div>
+                    <div class="se-field">
+                        <label class="se-label">密码</label>
+                        <x-input type="password" name="configs[password]" value="{{ $strategy->configs->get('password') }}" />
+                    </div>
+                    <div class="se-field span-2">
+                        <label class="se-label">私钥</label>
+                        <x-textarea name="configs[private_key]" rows="3">{{ $strategy->configs->get('private_key') }}</x-textarea>
+                    </div>
+                    <div class="se-field">
+                        <label class="se-label">私钥口令</label>
+                        <x-input type="password" name="configs[passphrase]" value="{{ $strategy->configs->get('passphrase') }}" />
+                    </div>
+                    <div class="se-field span-2">
+                        <div class="se-switch-row">
+                            <span class="se-switch-label">是否使用代理</span>
+                            <x-switch name="configs[use_agent]" :checked="(bool)$strategy->configs->get('use_agent')" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @endif
+
+            {{-- Ftp --}}
+            @if($strategy->key === \App\Enums\StrategyKey::Ftp)
+            <div class="se-driver-config">
+                <div class="se-driver-config-title">
+                    <i class="fas fa-network-wired"></i> FTP 配置
+                </div>
+                @if(! extension_loaded('ftp'))
+                <div class="se-ftp-warn">
+                    <i class="fas fa-exclamation-circle"></i> 未检测到 FTP 扩展，请先安装并启用 PHP FTP 扩展
+                </div>
+                @endif
+                <div class="se-grid">
+                    <div class="se-field">
+                        <label class="se-label">访问域名 <span style="color:#ef4444">*</span></label>
+                        <x-input type="url" name="configs[url]" value="{{ $strategy->configs->get('url') }}" required />
+                    </div>
+                    <div class="se-field">
+                        <label class="se-label">URL Queries</label>
+                        <x-input type="text" name="configs[queries]" value="{{ $strategy->configs->get('queries') }}" />
+                    </div>
+                    <div class="se-field">
+                        <label class="se-label">根目录 <span style="color:#ef4444">*</span></label>
+                        <x-input type="text" name="configs[root]" value="{{ $strategy->configs->get('root') }}" required />
+                    </div>
+                    <div class="se-field">
+                        <label class="se-label">主机地址 <span style="color:#ef4444">*</span></label>
+                        <x-input type="text" name="configs[host]" value="{{ $strategy->configs->get('host') }}" required />
+                    </div>
+                    <div class="se-field">
+                        <label class="se-label">连接端口 <span style="color:#ef4444">*</span></label>
+                        <x-input type="number" name="configs[port]" value="{{ $strategy->configs->get('port') }}" required />
+                        <span class="se-help">默认为 21</span>
+                    </div>
+                    <div class="se-field">
+                        <label class="se-label">用户名 <span style="color:#ef4444">*</span></label>
+                        <x-input type="text" name="configs[username]" value="{{ $strategy->configs->get('username') }}" required />
+                    </div>
+                    <div class="se-field">
+                        <label class="se-label">密码 <span style="color:#ef4444">*</span></label>
+                        <x-input type="password" name="configs[password]" value="{{ $strategy->configs->get('password') }}" required />
+                    </div>
+                    <div class="se-field span-2">
+                        <div class="se-switch-row">
+                            <span class="se-switch-label">加密连接 (SSL)</span>
+                            <x-switch name="configs[ssl]" :checked="(bool)$strategy->configs->get('ssl')" />
+                        </div>
+                    </div>
+                    <div class="se-field span-2">
+                        <div class="se-switch-row">
+                            <span class="se-switch-label">被动模式</span>
+                            <x-switch name="configs[passive]" :checked="(bool)$strategy->configs->get('passive')" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @endif
+
+            {{-- Webdav --}}
+            @if($strategy->key === \App\Enums\StrategyKey::Webdav)
+            <div class="se-driver-config">
+                <div class="se-driver-config-title">
+                    <i class="fas fa-globe"></i> WebDAV 配置
+                </div>
+                <div class="se-grid">
+                    <div class="se-field">
+                        <label class="se-label">访问域名 <span style="color:#ef4444">*</span></label>
+                        <x-input type="url" name="configs[url]" value="{{ $strategy->configs->get('url') }}" required />
+                    </div>
+                    <div class="se-field">
+                        <label class="se-label">URL Queries</label>
+                        <x-input type="text" name="configs[queries]" value="{{ $strategy->configs->get('queries') }}" />
+                    </div>
+                    <div class="se-field">
+                        <label class="se-label">连接地址 <span style="color:#ef4444">*</span></label>
+                        <x-input type="url" name="configs[baseUri]" value="{{ $strategy->configs->get('baseUri') }}" required />
+                    </div>
+                    <div class="se-field">
+                        <label class="se-label">认证方式 <span style="color:#ef4444">*</span></label>
+                        <x-select name="configs[authType]">
+                            @foreach(\App\Models\Strategy::WEBDAV_AUTH_TYPES as $value => $label)
+                                <option value="{{ $value }}" {{ $strategy->configs->get('authType') == $value ? 'selected' : '' }}>{{ $label }}</option>
+                            @endforeach
+                        </x-select>
+                    </div>
+                    <div class="se-field">
+                        <label class="se-label">路径前缀</label>
+                        <x-input type="text" name="configs[prefix]" value="{{ $strategy->configs->get('prefix') }}" />
+                    </div>
+                    <div class="se-field">
+                        <label class="se-label">用户名</label>
+                        <x-input type="text" name="configs[userName]" value="{{ $strategy->configs->get('userName') }}" />
+                    </div>
+                    <div class="se-field">
+                        <label class="se-label">密码</label>
+                        <x-input type="password" name="configs[password]" value="{{ $strategy->configs->get('password') }}" />
+                    </div>
+                </div>
+            </div>
+            @endif
+
+            {{-- Minio --}}
+            @if($strategy->key === \App\Enums\StrategyKey::Minio)
+            <div class="se-driver-config">
+                <div class="se-driver-config-title">
+                    <i class="fas fa-database"></i> MinIO 配置
+                </div>
+                <div class="se-grid">
+                    <div class="se-field">
+                        <label class="se-label">访问域名 <span style="color:#ef4444">*</span></label>
+                        <x-input type="url" name="configs[url]" value="{{ $strategy->configs->get('url') }}" required />
+                    </div>
+                    <div class="se-field">
+                        <label class="se-label">URL Queries</label>
+                        <x-input type="text" name="configs[queries]" value="{{ $strategy->configs->get('queries') }}" />
+                    </div>
+                    <div class="se-field">
+                        <label class="se-label">AccessKey <span style="color:#ef4444">*</span></label>
+                        <x-input type="text" name="configs[access_key]" value="{{ $strategy->configs->get('access_key') }}" required />
+                    </div>
+                    <div class="se-field">
+                        <label class="se-label">SecretKey <span style="color:#ef4444">*</span></label>
+                        <x-input type="password" name="configs[secret_key]" value="{{ $strategy->configs->get('secret_key') }}" required />
+                    </div>
+                    <div class="se-field">
+                        <label class="se-label">连接地址</label>
+                        <x-input type="url" name="configs[endpoint]" value="{{ $strategy->configs->get('endpoint') }}" />
+                    </div>
+                    <div class="se-field">
+                        <label class="se-label">区域</label>
+                        <x-input type="text" name="configs[region]" value="{{ $strategy->configs->get('region') }}" />
+                    </div>
+                    <div class="se-field">
+                        <label class="se-label">储存桶名称 <span style="color:#ef4444">*</span></label>
+                        <x-input type="text" name="configs[bucket]" value="{{ $strategy->configs->get('bucket') }}" required />
+                    </div>
+                    <div class="se-field span-2">
+                        <div class="se-switch-row">
+                            <span class="se-switch-label">BucketEndpoint</span>
+                            <x-switch name="configs[bucket_endpoint]" :checked="(bool)$strategy->configs->get('bucket_endpoint')" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @endif
+
+        </div>
+    </form>
+</div>
+
+@push('scripts')
+<script>
+$(function () {
+    $('#se-form').submit(function (e) {
+        e.preventDefault();
+        var btn = $('[form="se-form"]');
+        btn.prop('disabled', true);
+        axios.put(this.action, $(this).serialize()).then(function (response) {
+            if (response.data.status) {
+                toastr.success(response.data.message);
+            } else {
+                toastr.error(response.data.message);
+            }
+        }).catch(function (error) {
+            toastr.error(error.response?.data?.message || '请求失败，请重试');
+        }).finally(function () {
+            btn.prop('disabled', false);
+        });
+    });
+});
+</script>
+@endpush
 
 </x-app-layout>

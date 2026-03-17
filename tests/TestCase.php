@@ -4,6 +4,7 @@ namespace Tests;
 
 use Database\Seeders\InstallSeeder;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+use Illuminate\Support\Facades\Cache;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -16,7 +17,9 @@ abstract class TestCase extends BaseTestCase
         parent::setUp();
 
         $this->links = \config('filesystems.links');
+        Cache::forget('configs');
         $this->seed(InstallSeeder::class);
+        Cache::forget('configs');
     }
 
     protected function tearDown(): void

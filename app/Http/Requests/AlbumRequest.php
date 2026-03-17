@@ -13,7 +13,8 @@ class AlbumRequest extends FormRequest
     {
         return [
             'name' => 'required|max:60|alpha_dash',
-            'intro' => 'max:600'
+            'intro' => 'max:600',
+            'parent_id' => 'nullable|integer|exists:albums,id'
         ];
     }
 

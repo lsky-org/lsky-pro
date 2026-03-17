@@ -6,6 +6,7 @@ use App\Enums\ConfigKey;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
+use App\Services\Auth\AuthIdentityGovernanceService;
 use App\Utils;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
@@ -46,6 +47,9 @@ class RegisteredUserController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'registered_ip' => $request->ip(),
+        ]);
+        app(AuthIdentityGovernanceService::class)->record($user, 'password_enabled', [
+            'provider' => 'password',
         ]);
 
         if (Utils::config(ConfigKey::IsUserNeedVerify)) {

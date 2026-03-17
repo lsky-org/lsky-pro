@@ -1,7 +1,7 @@
 @section('title', '用户管理')
 
 <x-app-layout>
-    <div class="my-6 md:my-9">
+    <div class="admin-page-v2">
         <form id="search-form" action="{{ route('admin.users') }}" method="get">
             <div class="mb-3 flex justify-between">
                 <select name="status" class="text-sm rounded-md bg-white border-transparent focus:border-gray-500 focus:bg-white focus:ring-0" onchange="$('#search-form').submit()">
@@ -117,21 +117,29 @@
     @push('scripts')
         <script>
             let modal = Alpine.store('modal');
+            const escapeHtml = (value) => {
+                return String(value ?? '')
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;')
+                    .replace(/\"/g, '&quot;')
+                    .replace(/'/g, '&#39;');
+            };
 
             $('[data-operate="detail"]').click(function () {
                 let user = $(this).closest('tr').data('json');
                 let html = $('#user-tpl').html()
-                    .replace(/__avatar__/g, user.avatar)
-                    .replace(/__name__/g, user.name)
-                    .replace(/__email__/g, user.email)
-                    .replace(/__capacity__/g, utils.formatSize(user.capacity * 1024))
-                    .replace(/__surplus_capacity__/g, utils.formatSize((user.capacity - user.images_sum_size) * 1024))
-                    .replace(/__image_num__/g, user.image_num)
-                    .replace(/__album_num__/g, user.album_num)
-                    .replace(/__registered_ip__/g, user.registered_ip || '-')
+                    .replace(/__avatar__/g, escapeHtml(user.avatar))
+                    .replace(/__name__/g, escapeHtml(user.name))
+                    .replace(/__email__/g, escapeHtml(user.email))
+                    .replace(/__capacity__/g, escapeHtml(utils.formatSize(user.capacity * 1024)))
+                    .replace(/__surplus_capacity__/g, escapeHtml(utils.formatSize((user.capacity - user.images_sum_size) * 1024)))
+                    .replace(/__image_num__/g, escapeHtml(user.image_num))
+                    .replace(/__album_num__/g, escapeHtml(user.album_num))
+                    .replace(/__registered_ip__/g, escapeHtml(user.registered_ip || '-'))
                     .replace(/__status__/g, user.status === 1 ? '<span class="text-green-500">正常</span>' : '<span class="text-red-500">冻结</span>')
-                    .replace(/__email_verified_at__/g, user.email_verified_at || '-')
-                    .replace(/__created_at__/g, user.created_at);
+                    .replace(/__email_verified_at__/g, escapeHtml(user.email_verified_at || '-'))
+                    .replace(/__created_at__/g, escapeHtml(user.created_at));
 
                 $('#modal-content').html(html);
 

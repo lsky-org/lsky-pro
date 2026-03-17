@@ -9,6 +9,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -38,10 +39,13 @@ use Laravel\Sanctum\HasApiTokens;
  * @property-read Group $group
  * @property-read \Illuminate\Database\Eloquent\Collection $albums
  * @property-read \Illuminate\Database\Eloquent\Collection $images
+ * @property-read \Illuminate\Database\Eloquent\Collection $processTemplates
  */
 class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable;
+
+    public const CONFIG_PASSWORD_LOGIN_READY = 'auth_password_login_ready';
 
     /**
      * The attributes that are mass assignable.
@@ -49,6 +53,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array<int, string>
      */
     protected $fillable = [
+        'uuid',
         'name',
         'email',
         'password',
@@ -56,8 +61,13 @@ class User extends Authenticatable implements MustVerifyEmail
         'capacity',
         'configs',
         'configs->default_strategy',
+        'configs->header_pinned_tabs',
         'registered_ip',
         'status',
+        'provider',
+        'provider_id',
+        'provider_avatar',
+        'email_verified_at',
     ];
 
     /**
@@ -95,11 +105,38 @@ class User extends Authenticatable implements MustVerifyEmail
     protected static function booted()
     {
         static::creating(function (self $user) {
+            // 自动生成 UUID
+            if (empty($user->uuid)) {
+                $user->uuid = (string) \Illuminate\Support\Str::uuid();
+            }
             // 默认组
             $user->group_id = Group::query()->where('is_default', true)->value('id');
             // 初始容量
-            $user->capacity = Utils::config(ConfigKey::UserInitialCapacity);
-            $user->configs = collect(config('convention.user'))->merge($user->configs ?: []);
+            $capacity = Utils::config(ConfigKey::UserInitialCapacity);
+            if ($capacity === null || $capacity === '') {
+                $capacity = data_get(config('convention.app'), ConfigKey::UserInitialCapacity, 512000);
+            }
+            $user->capacity = (float) $capacity;
+            $user->configs = collect(config('convention.user'))
+                ->merge([
+                    self::CONFIG_PASSWORD_LOGIN_READY => true,
+                ])
+                ->merge($user->configs ?: []);
+        });
+
+        static::created(function (self $user) {
+            $space = TeamSpace::query()->create([
+                'owner_user_id' => $user->id,
+                'name' => $user->name.' 的个人空间',
+                'is_personal' => true,
+            ]);
+
+            TeamMembership::query()->create([
+                'team_space_id' => $space->id,
+                'user_id' => $user->id,
+                'role' => TeamMembership::ROLE_OWNER,
+                'permissions' => TeamMembership::rolePermissions(TeamMembership::ROLE_OWNER),
+            ]);
         });
     }
 
@@ -127,4 +164,48 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(Image::class, 'user_id', 'id');
     }
+
+    public function processTemplates(): HasMany
+    {
+        return $this->hasMany(ImageProcessTemplate::class, 'user_id', 'id');
+    }
+
+    public function teamMemberships(): HasMany
+    {
+        return $this->hasMany(TeamMembership::class, 'user_id', 'id');
+    }
+
+    public function teamSpaces(): BelongsToMany
+    {
+        return $this->belongsToMany(TeamSpace::class, 'team_memberships', 'user_id', 'team_space_id')
+            ->withPivot('role', 'permissions')
+            ->withTimestamps();
+    }
+
+    public function authIdentities(): HasMany
+    {
+        return $this->hasMany(AuthIdentity::class, 'user_id', 'id');
+    }
+
+    public function webauthnCredentials(): HasMany
+    {
+        return $this->hasMany(WebauthnCredential::class, 'user_id', 'id');
+    }
+
+    public function hasPasswordLoginReady(): bool
+    {
+        if (blank($this->password ?? null)) {
+            return false;
+        }
+
+        return (bool) $this->configs->get(self::CONFIG_PASSWORD_LOGIN_READY, false);
+    }
+
+    public function sharedAlbums(): BelongsToMany
+    {
+        return $this->belongsToMany(Album::class, 'album_shares')
+            ->withPivot('permission', 'shared_by')
+            ->withTimestamps();
+    }
+
 }

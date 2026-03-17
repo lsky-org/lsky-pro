@@ -3,6 +3,76 @@
 
 define('LARAVEL_START', microtime(true));
 
+$argv = $_SERVER['argv'] ?? [];
+$command = $argv[1] ?? '';
+$destructiveCommands = [
+    'migrate:fresh',
+    'migrate:refresh',
+    'migrate:reset',
+    'migrate:rollback',
+    'db:wipe',
+];
+
+$readEnvValue = static function (string $path, string $key): ?string {
+    if (! is_file($path) || ! is_readable($path)) {
+        return null;
+    }
+
+    $prefix = $key.'=';
+    foreach (file($path, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) ?: [] as $line) {
+        $line = trim($line);
+        if ($line === '' || str_starts_with($line, '#') || ! str_starts_with($line, $prefix)) {
+            continue;
+        }
+
+        return trim(substr($line, strlen($prefix)), "\"'");
+    }
+
+    return null;
+};
+
+$resolveCliOption = static function (array $args, string $name): ?string {
+    foreach ($args as $index => $arg) {
+        if ($arg === '--'.$name) {
+            return $args[$index + 1] ?? null;
+        }
+
+        if (str_starts_with($arg, '--'.$name.'=')) {
+            return substr($arg, strlen($name) + 3);
+        }
+    }
+
+    return null;
+};
+
+if (in_array($command, $destructiveCommands, true)) {
+    $allowDestructive = (string) getenv('ALLOW_DESTRUCTIVE') === '1';
+    $selectedEnv = $resolveCliOption($argv, 'env') ?: (getenv('APP_ENV') ?: null);
+
+    if ($selectedEnv === 'testing') {
+        $testingEnvPath = __DIR__.'/.env.testing';
+        $dbConnection = getenv('DB_CONNECTION')
+            ?: $readEnvValue($testingEnvPath, 'DB_CONNECTION')
+            ?: $readEnvValue(__DIR__.'/.env', 'DB_CONNECTION')
+            ?: '';
+
+        if ($dbConnection !== 'sqlite' && ! $allowDestructive) {
+            fwrite(STDERR, sprintf(
+                "Refusing destructive artisan command \"%s\" in testing because DB_CONNECTION=%s. Use sqlite for testing or set ALLOW_DESTRUCTIVE=1 explicitly.\n",
+                $command,
+                $dbConnection !== '' ? $dbConnection : 'unknown'
+            ));
+            exit(1);
+        }
+    } elseif (! $allowDestructive) {
+        fwrite(STDERR, sprintf(
+            "Refusing destructive artisan command \"%s\". Set ALLOW_DESTRUCTIVE=1 explicitly if this is intentional.\n",
+            $command
+        ));
+        exit(1);
+    }
+}
+
 /*
 |--------------------------------------------------------------------------
 | Register The Auto Loader

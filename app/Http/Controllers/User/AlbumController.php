@@ -13,10 +13,20 @@ use Illuminate\Support\Facades\DB;
 
 class AlbumController extends Controller
 {
-    public function albums(): Response
+    public function albums(Request $request): Response
     {
         /** @var User $user */
         $user = Auth::user();
+
+        if ($request->boolean('tree')) {
+            $albums = $user->albums()
+                ->whereNull('parent_id')
+                ->with('childrenRecursive:id,parent_id,name,intro,image_num')
+                ->orderBy('name')
+                ->get(['id', 'parent_id', 'name', 'intro', 'image_num']);
+            return $this->success('success', compact('albums'));
+        }
+
         $albums = $user->albums()->latest()->paginate(40);
         $albums->getCollection()->each(function (Album $album) {
             $album->setVisible(['id', 'name', 'intro', 'image_num']);
@@ -28,6 +38,14 @@ class AlbumController extends Controller
     {
         /** @var User $user */
         $user = Auth::user();
+
+        if ($request->filled('parent_id')) {
+            $parentAlbum = $user->albums()->find($request->input('parent_id'));
+            if (is_null($parentAlbum)) {
+                return $this->fail('父相册不存在');
+            }
+        }
+
         DB::transaction(function () use ($user, $request) {
             $user->albums()->create(array_filter($request->validated()));
             $user->album_num = $user->albums()->count();

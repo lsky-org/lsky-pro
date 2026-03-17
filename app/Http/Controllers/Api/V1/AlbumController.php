@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Http\Controllers\Concerns\AuditsOperations;
 use App\Http\Controllers\Controller;
 use App\Models\Album;
 use App\Models\User;
@@ -11,6 +12,8 @@ use Illuminate\Support\Facades\Auth;
 
 class AlbumController extends Controller
 {
+    use AuditsOperations;
+
     public function index(Request $request): Response
     {
         /** @var User $user */
@@ -19,6 +22,7 @@ class AlbumController extends Controller
         $albums->getCollection()->each(function (Album $album) {
             $album->setVisible(['id', 'name', 'intro', 'image_num']);
         });
+
         return $this->success('success', $albums);
     }
 
@@ -26,7 +30,14 @@ class AlbumController extends Controller
     {
         /** @var User $user */
         $user = Auth::user();
-        $user->albums()->where('id', $request->route('id'))->delete();
+        $albumId = $request->route('id');
+        $deleted = $user->albums()->where('id', $albumId)->delete();
+
+        $this->auditOperation($request, 'api.album.delete', 'album', 'success', [
+            'target' => $albumId,
+            'deleted_count' => $deleted,
+        ]);
+
         return $this->success('删除成功');
     }
 }

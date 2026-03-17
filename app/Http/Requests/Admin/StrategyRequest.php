@@ -60,16 +60,6 @@ class StrategyRequest extends FormRequest
         return array_merge($array, match((int)$this->input('key')) {
             StrategyKey::Local => [
                 'configs.url' => ['required', 'url', $checkUrl],
-                'configs.root' => ['max:1000', function ($attribute, $value, $fail) {
-                    if ($value) {
-                        if (! is_dir($value)) {
-                            return $fail('储存路径不存在');
-                        }
-                        if (! is_writeable($value)) {
-                            return $fail('储存路径没有写入权限');
-                        }
-                    }
-                }],
             ],
             StrategyKey::S3 => [
                 'configs.access_key_id' => 'required',
@@ -150,7 +140,6 @@ class StrategyRequest extends FormRequest
 
         return array_merge($array, match((int)$this->input('key')) {
             StrategyKey::Local => [
-                'configs.root' => '根目录路径',
             ],
             StrategyKey::S3 => [
                 'configs.access_key_id' => 'AccessKeyId',

@@ -29,6 +29,40 @@ return [
         ConfigKey::IsAllowGuestUpload => 1,
         ConfigKey::UserInitialCapacity => 512000,
         ConfigKey::IsUserNeedVerify => 0,
+        ConfigKey::UploadPipelineAsyncEnabled => 0,
+        ConfigKey::StorageCostPerGbMonth => 0.12,
+        ConfigKey::StorageCostCurrency => 'CNY',
+        ConfigKey::AiProvider => 'gpt',
+        ConfigKey::AiProviderSettings => [
+            'gpt' => [
+                'label' => 'OpenAI GPT',
+                'base_url' => 'https://api.openai.com/v1',
+                'api_key' => '',
+                'default_model' => 'gpt-4.1-mini',
+                'models' => ['gpt-4.1-mini', 'gpt-4.1', 'gpt-4o-mini'],
+            ],
+            'deepseek' => [
+                'label' => 'DeepSeek',
+                'base_url' => 'https://api.deepseek.com/v1',
+                'api_key' => '',
+                'default_model' => 'deepseek-chat',
+                'models' => ['deepseek-chat', 'deepseek-reasoner'],
+            ],
+            'qwen' => [
+                'label' => '阿里千问',
+                'base_url' => 'https://dashscope.aliyuncs.com/compatible-mode/v1',
+                'api_key' => '',
+                'default_model' => 'qwen-vl-max',
+                'models' => ['qwen-vl-max', 'qwen-vl-plus', 'qwen2.5-vl-72b-instruct'],
+            ],
+            'gemini' => [
+                'label' => 'Google Gemini',
+                'base_url' => 'https://generativelanguage.googleapis.com/v1beta',
+                'api_key' => '',
+                'default_model' => 'gemini-2.0-flash',
+                'models' => ['gemini-2.0-flash', 'gemini-2.5-flash', 'gemini-2.5-pro'],
+            ],
+        ],
         ConfigKey::Mail => [
             'default' => 'smtp',
             'mailers' => [
@@ -106,7 +140,7 @@ return [
         GroupConfigKey::LimitPerDay => 300,
         GroupConfigKey::LimitPerWeek => 600,
         GroupConfigKey::LimitPerMonth => 999,
-        GroupConfigKey::AcceptedFileSuffixes => ['jpeg', 'jpg', 'png', 'gif', 'tif', 'bmp', 'ico', 'psd', 'webp', 'svg'],
+        GroupConfigKey::AcceptedFileSuffixes => ['jpeg', 'jpg', 'png', 'gif', 'tif', 'tiff', 'bmp', 'ico', 'psd', 'webp', 'avif', 'heic', 'heif', 'svg', 'pdf', 'doc', 'docx', 'xls', 'xlsx', 'csv', 'ppt', 'pptx', 'raw', 'cr2', 'nef', 'arw', 'dng', 'raf', 'zip', 'rar'],
         GroupConfigKey::ImageSaveFormat => '',
         GroupConfigKey::ImageSaveQuality => 75,
         GroupConfigKey::PathNamingRule => '{Y}/{m}/{d}',
@@ -119,5 +153,11 @@ return [
         UserConfigKey::DefaultPermission => ImagePermission::Private,
         UserConfigKey::PastedAction => PastedAction::Waiting,
         UserConfigKey::IsAutoClearPreview => false,
+        UserConfigKey::HeaderPinnedTabs => [
+            [
+                'title' => '仪表盘',
+                'url' => '/dashboard',
+            ],
+        ],
     ]
 ];

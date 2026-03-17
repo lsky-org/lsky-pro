@@ -18,7 +18,7 @@ class InstallSeeder extends Seeder
     public function run()
     {
         $date = Carbon::now()->format('Y-m-d H:i:s');
-        $array = collect(config('convention.app'))->transform(function ($value, $key) use ($date) {
+        $rows = collect(config('convention.app'))->transform(function ($value, $key) use ($date) {
             return [
                 'name' => $key,
                 'value' => is_array($value) ? json_encode($value, JSON_UNESCAPED_UNICODE) : $value,
@@ -26,23 +26,36 @@ class InstallSeeder extends Seeder
                 'created_at' => $date,
             ];
         })->values()->toArray();
-        DB::transaction(function () use ($array) {
-            DB::table('configs')->insert($array);
-            // 创建默认组和默认策略
+
+        DB::transaction(function () use ($rows) {
+            DB::table('configs')->upsert($rows, ['name'], ['value', 'updated_at']);
+
             /** @var Group $group */
-            $group = Group::query()->create([
-                'name' => '系统默认组&游客组',
-                'is_default' => true,
-                'is_guest' => true,
-                'configs' => config('convention.group'),
-            ]);
-            // 创建默认策略
-            $group->strategies()->create([
-                'key' => StrategyKey::Local,
-                'name' => '默认本地策略',
-                'intro' => '系统默认的本地策略',
-                'configs' => config('filesystems.disks.uploads'),
-            ]);
+            $group = Group::query()->firstOrCreate(
+                ['is_default' => true],
+                [
+                    'name' => '系统默认组&游客组',
+                    'is_guest' => true,
+                    'configs' => config('convention.group'),
+                ]
+            );
+
+            if (! $group->is_guest) {
+                $group->is_guest = true;
+                $group->save();
+            }
+
+            $strategy = $group->strategies()->where('key', StrategyKey::Local)->first();
+            if (! $strategy) {
+                $strategy = $group->strategies()->create([
+                    'key' => StrategyKey::Local,
+                    'name' => '默认本地策略',
+                    'intro' => '系统默认的本地策略',
+                    'configs' => config('filesystems.disks.uploads'),
+                ]);
+            }
+
+            $group->strategies()->syncWithoutDetaching([$strategy->id]);
         });
     }
 }

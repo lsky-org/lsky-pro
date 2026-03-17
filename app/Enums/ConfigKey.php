@@ -40,6 +40,21 @@ final class ConfigKey
     /** @var string 账户是否需要验证 */
     const IsUserNeedVerify = 'is_user_need_verify';
 
+    /** @var string 是否启用异步上传流水线 */
+    const UploadPipelineAsyncEnabled = 'upload_pipeline_async_enabled';
+
+    /** @var string 存储成本单价（每 GB / 月） */
+    const StorageCostPerGbMonth = 'storage_cost_per_gb_month';
+
+    /** @var string 存储成本币种（ISO 货币代码） */
+    const StorageCostCurrency = 'storage_cost_currency';
+
+    /** @var string 当前启用的 AI 提供商 */
+    const AiProvider = 'ai_provider';
+
+    /** @var string AI 提供商配置 */
+    const AiProviderSettings = 'ai_provider_settings';
+
     /** @var string 邮件配置 */
     const Mail = 'mail';
 

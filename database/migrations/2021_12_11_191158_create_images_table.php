@@ -29,7 +29,7 @@ return new class extends Migration
             $table->string('origin_name')->default('')->comment('原始名称');
             $table->string('alias_name')->default('')->comment('别名');
             $table->decimal('size')->default(0)->comment('图片大小(kb)');
-            $table->string('mimetype', 32)->comment('文件类型');
+            $table->string('mimetype', 128)->comment('文件类型');
             $table->string('extension', 32)->comment('文件后缀');
             $table->string('md5', 32)->comment('文件MD5');
             $table->string('sha1')->comment('文件SHA1');

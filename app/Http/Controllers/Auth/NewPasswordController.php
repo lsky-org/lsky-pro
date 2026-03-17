@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
+use App\Services\Auth\AuthIdentityGovernanceService;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -45,10 +47,16 @@ class NewPasswordController extends Controller
         $status = Password::reset(
             $request->only('email', 'password', 'password_confirmation', 'token'),
             function ($user) use ($request) {
+                $passwordEventType = $user->hasPasswordLoginReady() ? 'password_updated' : 'password_enabled';
                 $user->forceFill([
                     'password' => Hash::make($request->password),
                     'remember_token' => Str::random(60),
-                ])->save();
+                ]);
+                $user->configs = $user->configs->put(User::CONFIG_PASSWORD_LOGIN_READY, true);
+                $user->save();
+                app(AuthIdentityGovernanceService::class)->record($user, $passwordEventType, [
+                    'provider' => 'password',
+                ]);
 
                 event(new PasswordReset($user));
             }

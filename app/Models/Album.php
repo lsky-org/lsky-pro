@@ -6,12 +6,14 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\Request;
 
 /**
  * @property int $id
  * @property int $user_id
+ * @property int|null $parent_id
  * @property string $name
  * @property string $intro
  * @property int $image_num
@@ -25,11 +27,13 @@ class Album extends Model
     protected $fillable = [
         'name',
         'intro',
-        'image_num'
+        'image_num',
+        'parent_id'
     ];
 
     protected $hidden = [
         'user_id',
+        'parent_id',
     ];
 
     protected $attributes = [
@@ -39,6 +43,7 @@ class Album extends Model
     protected $casts = [
         'id' => 'integer',
         'user_id' => 'integer',
+        'parent_id' => 'integer',
         'image_num' => 'integer',
     ];
 
@@ -59,7 +64,9 @@ class Album extends Model
                     $builder->latest();
             }
         })->when($request->query('keyword'), function (Builder $builder, $keyword) {
-            $builder->where('name', 'like', "%{$keyword}%")->orWhere('intro', 'like', "%{$keyword}%");
+            $builder->where(function (Builder $q) use ($keyword) {
+                $q->where('name', 'like', "%{$keyword}%")->orWhere('intro', 'like', "%{$keyword}%");
+            });
         });
     }
 
@@ -72,4 +79,32 @@ class Album extends Model
     {
         return $this->hasMany(Image::class, 'album_id', 'id');
     }
+
+    public function parent(): BelongsTo
+    {
+        return $this->belongsTo(Album::class, 'parent_id');
+    }
+
+    public function children(): HasMany
+    {
+        return $this->hasMany(Album::class, 'parent_id');
+    }
+
+    public function childrenRecursive(): HasMany
+    {
+        return $this->children()->with('childrenRecursive');
+    }
+
+    public function shares(): HasMany
+    {
+        return $this->hasMany(AlbumShare::class);
+    }
+
+    public function sharedUsers(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'album_shares')
+            ->withPivot('permission', 'shared_by')
+            ->withTimestamps();
+    }
+
 }

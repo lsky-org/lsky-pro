@@ -3,6 +3,7 @@
 @endpush
 
 <x-guest-layout>
+    @php($noticePayload = $_is_notice ?? null)
     <div class="py-14">
         <header class="w-full h-14 bg-gray-700 text-white flex justify-center fixed top-0 z-[9]">
             <div class="container mx-auto px-5 sm:px-10 md:px-10 lg:px-10 xl:px-10 2xl:px-60 flex justify-between items-center">
@@ -10,7 +11,7 @@
                     <a href="{{ route('/') }}" class="text-white text-xl truncate">{{ \App\Utils::config(\App\Enums\ConfigKey::AppName) }}</a>
                 </div>
                 <div class="flex justify-end items-center space-x-4">
-                    @includeWhen($_is_notice, 'layouts.notice')
+                    @includeWhen(filled($noticePayload), 'layouts.notice', ['_is_notice' => $noticePayload])
                     @includeWhen($_group->strategies->isNotEmpty(), 'layouts.strategies')
 
                     @if(Auth::check())
@@ -34,6 +35,6 @@
         </footer>
     </div>
 
-    @include('common.notice')
+    @include('common.notice', ['_is_notice' => $noticePayload])
 
 </x-guest-layout>

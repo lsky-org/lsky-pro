@@ -19,20 +19,27 @@ class UserService
      * @param string $field
      * @return int
      */
-    public function deleteImages(array $keys, ?User $user = null, string $field = 'id'): int
+    public function deleteImages(array $keys, ?User $user = null, string $field = 'id', ?int $spaceId = null): int
     {
         $count = 0;
+        $useRecycleBin = config('lifecycle.recycle_bin.enabled', false);
         $model = Image::with('user', 'strategy', 'album')->when(! is_null($user), function (Builder $builder) use ($user) {
             $builder->where('user_id', $user->id);
+        })->when(! is_null($spaceId), function (Builder $builder) use ($spaceId) {
+            $builder->where('space_id', $spaceId);
         })->whereIn($field, $keys);
 
-        DB::transaction(function () use ($model, $keys, &$count) {
+        DB::transaction(function () use ($model, $useRecycleBin, &$count) {
             /** @var Image $image */
             foreach ($model->cursor() as $image) {
                 // 相册图片数量更新
                 $image->album?->decrement('image_num');
                 // 更新相册图片数量
-                $image->delete();
+                if ($useRecycleBin) {
+                    $image->delete();
+                } else {
+                    $image->forceDelete();
+                }
                 // 更新数量
                 if ($image->user) {
                     $image->user->image_num = $image->user->images()->count();
