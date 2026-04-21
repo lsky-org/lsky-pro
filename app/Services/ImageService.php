@@ -160,8 +160,10 @@ class ImageService
                 // 获取拓展名，判断是否需要转换
                 $format = $format ?: $extension;
                 $filename = Str::replaceLast($extension, $format, $file->getClientOriginalName());
-                $handleImage = InterventionImage::make($file)->save('tmp_' . md5_file($file->getRealPath()), $quality);
-                $file = new UploadedFile($handleImage->basePath(), $filename, $handleImage->mime());
+                $handleImage = InterventionImage::make($file);
+                $tmpPath = $this->makeTemporaryPath($format);
+                $handleImage->save($tmpPath, $quality);
+                $file = new UploadedFile($handleImage->basePath(), $filename, $handleImage->mime(), test: true);
                 // 重新设置拓展名
                 $extension = $format;
                 $handleImage->destroy();
@@ -173,8 +175,9 @@ class ImageService
                 collect($configs->get(GroupConfigKey::WatermarkConfigs))->get('mode', Mode::Overlay) == Mode::Overlay
             ) {
                 $watermarkImage = $this->stickWatermark($file, collect($configs->get(GroupConfigKey::WatermarkConfigs)));
-                $watermarkImage->save();
-                $file = new UploadedFile($watermarkImage->basePath(), $file->getClientOriginalName(), $file->getMimeType());
+                $tmpPath = $this->makeTemporaryPath($extension);
+                $watermarkImage->save($tmpPath);
+                $file = new UploadedFile($watermarkImage->basePath(), $file->getClientOriginalName(), $file->getMimeType(), test: true);
                 $watermarkImage->destroy();
             }
         }
@@ -554,7 +557,7 @@ class ImageService
             try {
                 // 创建文件夹
                 if (! is_dir(dirname($pathname))) {
-                    @mkdir(dirname($pathname));
+                    @mkdir(dirname($pathname), 0755, true);
                 }
 
                 // 生成缩略图，svg等格式本身体积足够小且网页原生支持(比生成的png缩略图还小)，不用生成缩略图，直接复制文件
@@ -648,5 +651,16 @@ class ImageService
             '{uid}' => Auth::check() ? Auth::id() : 0,
         ];
         return str_replace(array_keys($array), array_values($array), $pathname);
+    }
+
+    protected function makeTemporaryPath(string $extension = 'tmp'): string
+    {
+        $directory = storage_path('app/tmp');
+
+        if (! is_dir($directory)) {
+            mkdir($directory, 0755, true);
+        }
+
+        return $directory.'/'.uniqid('upload_', true).'.'.ltrim(strtolower($extension), '.');
     }
 }
