@@ -1,0 +1,40 @@
+services:
+  lsky:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: lsky-pro:local
+    ports:
+      - "${LSKY_HTTP_PORT:-8080}:80"
+    environment:
+      APP_NAME: "Lsky Pro"
+      APP_ENV: prod
+      APP_DEBUG: "false"
+      APP_URL: "${LSKY_APP_URL:-http://localhost:8080}"
+      APP_KEY: "${LSKY_APP_KEY:-base64:2E0mD0a6jx1N1pAVccahJgN9zeps2sonMSKcwk5Y8ZQ=}"
+      LOG_CHANNEL: daily
+      LOG_LEVEL: debug
+      DB_CONNECTION: sqlite
+      DB_DATABASE: /data/database.sqlite
+      CACHE_DRIVER: file
+      FILESYSTEM_DISK: uploads
+      QUEUE_CONNECTION: sync
+      SESSION_DRIVER: file
+      SESSION_LIFETIME: 120
+      LSKY_ADMIN_NAME: "${LSKY_ADMIN_NAME:-admin}"
+      LSKY_ADMIN_EMAIL: "${LSKY_ADMIN_EMAIL:-admin@local.test}"
+      LSKY_ADMIN_PASSWORD: "${LSKY_ADMIN_PASSWORD:-admin123456}"
+    volumes:
+      - lsky_data:/data
+      - lsky_storage:/var/www/html/storage
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://127.0.0.1/"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+volumes:
+  lsky_data:
+  lsky_storage:

@@ -59,6 +59,45 @@
 - putenv、getenv 函数
 - chmod、chown、fileperms 函数
 
+### 🐳 Docker Compose 一键启动
+适用于本地体验或快速联调，默认使用 `SQLite` 持久化数据，不依赖额外数据库容器。
+
+```bash
+docker compose up -d --build
+```
+
+启动完成后访问：
+
+- 地址：`http://localhost:8080`
+- 登录页：`http://localhost:8080/login`
+- 默认管理员邮箱：`admin@local.test`
+- 默认管理员密码：`admin123456`
+
+说明：
+
+- 首次启动会自动完成依赖安装、数据库初始化、创建 `installed.lock`、生成管理员账号。
+- 上传文件和 SQLite 数据库都使用 Docker Volume 持久化，重建容器后不会丢失。
+- 默认上传目录映射为应用内本地策略，对应访问路径为 `/i`。
+
+常用自定义变量：
+
+```bash
+LSKY_HTTP_PORT=9090 \
+LSKY_APP_URL=http://localhost:9090 \
+LSKY_ADMIN_EMAIL=admin@example.com \
+LSKY_ADMIN_PASSWORD=ChangeMe123 \
+docker compose up -d --build
+```
+
+如果需要彻底重置数据：
+
+```bash
+docker compose down -v
+```
+
+> [!WARNING]
+> 该 Compose 配置默认凭据和固定 `APP_KEY` 仅适合本地开发/演示环境，正式部署前请务必改成你自己的安全配置。
+
 ### 😋 鸣谢
 - [Laravel](https://laravel.com)
 - [Tailwindcss](https://tailwindcss.com)
@@ -98,4 +137,3 @@ Lsky Pro 的开发和更新等，都是作者在业余时间独立开发，并�
 [GPL 3.0](https://opensource.org/licenses/GPL-3.0)
 
 Copyright (c) 2018-present Lsky Pro.
-
